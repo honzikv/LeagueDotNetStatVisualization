@@ -9,7 +9,7 @@ namespace dotNetSpLeagueApp.Models {
         /// Entity id
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public int SummonerInfoId { get; set; }
 
         /// <summary>
         /// In-game name

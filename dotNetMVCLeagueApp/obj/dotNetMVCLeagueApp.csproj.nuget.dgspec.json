@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\itznu\\RiderProjects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj": {}
+    "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\itznu\\RiderProjects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj": {
+    "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\itznu\\RiderProjects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
+        "projectUniqueName": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
         "projectName": "dotNetMVCLeagueApp",
-        "projectPath": "C:\\Users\\itznu\\RiderProjects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
+        "projectPath": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
         "packagesPath": "C:\\Users\\itznu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\itznu\\RiderProjects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\obj\\",
+        "outputPath": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\itznu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -56,6 +52,10 @@
               "target": "Package",
               "version": "[5.0.3, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.0-preview.2.21154.2, )"
+            },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[5.0.3, )"
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

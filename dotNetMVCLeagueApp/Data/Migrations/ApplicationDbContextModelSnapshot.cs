@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace dotNetMVCLeagueApp.Data.Migrations {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(LeagueDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot {
         protected override void BuildModel(ModelBuilder modelBuilder) {
 #pragma warning disable 612, 618

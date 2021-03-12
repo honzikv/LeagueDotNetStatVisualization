@@ -7,10 +7,10 @@ using MingweiSamuel.Camille.SummonerV4;
 namespace dotNetSpLeagueApp.Repositories.SummonerInfo {
     public class SummonerInfoRepository : ISummonerInfoRepository {
 
-        private ApplicationDbContext applicationDbContext;
+        private LeagueDbContext leagueDbContext;
 
-        public SummonerInfoRepository(ApplicationDbContext applicationDbContext) {
-            this.applicationDbContext = applicationDbContext;
+        public SummonerInfoRepository(LeagueDbContext leagueDbContext) {
+            this.leagueDbContext = leagueDbContext;
         }
 
         public async Task<SummonerInfoModel> GetSummonerInfoAsync(string summonerName, Region region) {
