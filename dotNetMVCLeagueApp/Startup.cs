@@ -22,13 +22,13 @@ namespace dotNetMVCLeagueApp {
             // Register database context linked to the local Microsoft SQL Express server
             services.AddDbContext<LeagueDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString")));
-            
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LeagueDbContext>();
             services.AddControllersWithViews();
-            
+
             services.AddScoped<ISummonerInfoRepository, SummonerInfoRepository>();
             services.AddScoped<SummonerInfoService>();
         }
