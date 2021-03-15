@@ -1,26 +1,16 @@
 ﻿using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Models;
-using dotNetSpLeagueApp.Repositories.SummonerInfo;
+using Microsoft.EntityFrameworkCore;
 using MingweiSamuel.Camille.Enums;
-using MingweiSamuel.Camille.SummonerV4;
 
 namespace dotNetMVCLeagueApp.Repositories.SummonerInfo {
     public class SummonerInfoRepository : EfCoreRepository<SummonerInfoModel, LeagueDbContext> {
+        public SummonerInfoRepository(LeagueDbContext leagueLeagueDbLeagueDbContext) : base(
+            leagueLeagueDbLeagueDbContext) { }
 
-        public SummonerInfoRepository(LeagueDbContext leagueDbDbContext) : base(leagueDbDbContext) {
-        }
-
-        public async Task<SummonerInfoModel> GetSummonerInfoAsync(string summonerName, Region region) {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<SummonerInfoModel> GetSummonerInfoFromDbAsync(string summonerName, Region region) {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<SummonerInfoModel> AddSummonerInfoModelToDbAsync(Summoner summoner, Region region) {
-            throw new System.NotImplementedException();
-        }
+        public async Task<SummonerInfoModel> GetSummonerByUsernameAndRegion(string username, Region region) =>
+            await LeagueDbContext.SummonerInfoModels.FirstOrDefaultAsync(summonerInfo =>
+                summonerInfo.Name == username && summonerInfo.Region == region.Key);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using dotNetMVCLeagueApp.Data;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Models {
     public class SummonerInfoModel : IEntity {
@@ -19,6 +21,12 @@ namespace dotNetMVCLeagueApp.Models {
         /// Last update of this entity
         /// </summary>
         public DateTime LastUpdate { get; set; }
+        
+        /// <summary>
+        /// Encrypted summoner id which is required to query data about user
+        /// </summary>
+        [MaxLength(63)]
+        public String EncryptedSummonerId { get; set; }
 
         /// <summary>
         /// Region of the player
@@ -35,15 +43,7 @@ namespace dotNetMVCLeagueApp.Models {
         /// </summary>
         public int ProfileIconId { get; set; }
 
-        /// <summary>
-        /// Solo queue rank
-        /// </summary>
-        public int SoloqRank { get; set; }
-
-        /// <summary>
-        /// Flex queue rank
-        /// </summary>
-        public int FlexqRank { get; set; }
-
+        [ForeignKey("Id")]
+        public RankedInfoModel RankedInfo { get; set; }
     }
 }

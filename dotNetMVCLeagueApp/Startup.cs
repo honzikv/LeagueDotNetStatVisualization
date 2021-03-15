@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories.SummonerInfo;
 using dotNetMVCLeagueApp.Services;
-using dotNetSpLeagueApp.Repositories.SummonerInfo;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +29,6 @@ namespace dotNetMVCLeagueApp {
                 .AddEntityFrameworkStores<LeagueDbContext>();
             services.AddControllersWithViews();
 
-            services.AddScoped<ISummonerInfoRepository, SummonerInfoRepository>();
             services.AddScoped<SummonerInfoService>();
         }
 
