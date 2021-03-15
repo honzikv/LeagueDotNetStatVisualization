@@ -1,15 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using MingweiSamuel.Camille.Enums;
+using dotNetMVCLeagueApp.Data;
 
-namespace dotNetSpLeagueApp.Models {
-    public class SummonerInfoModel {
-        
+namespace dotNetMVCLeagueApp.Models {
+    public class SummonerInfoModel : IEntity {
+
         /// <summary>
-        /// Entity id
+        /// Primary key
         /// </summary>
-        [Key]
-        public int SummonerInfoId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// In-game name
@@ -45,5 +44,6 @@ namespace dotNetSpLeagueApp.Models {
         /// Flex queue rank
         /// </summary>
         public int FlexqRank { get; set; }
+
     }
 }

@@ -1,6 +1,4 @@
-using System;
-
-namespace dotNetMVCLeagueApp.Models {
+namespace dotNetMVCLeagueApp.Data.Models {
     public class ErrorViewModel {
         public string RequestId { get; set; }
 

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using dotNetMVCLeagueApp.Data;
+using dotNetMVCLeagueApp.Repositories.SummonerInfo;
+using dotNetMVCLeagueApp.Services;
 using dotNetSpLeagueApp.Repositories.SummonerInfo;
-using dotNetSpLeagueApp.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,7 +36,7 @@ namespace dotNetMVCLeagueApp {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment()) {
+            if (env.IsDevelopment()) { 
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
