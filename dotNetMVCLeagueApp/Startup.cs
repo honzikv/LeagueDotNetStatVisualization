@@ -27,6 +27,7 @@ namespace dotNetMVCLeagueApp {
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LeagueDbContext>();
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
 
             services.AddScoped<SummonerInfoService>();

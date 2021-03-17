@@ -47,6 +47,17 @@ namespace dotNetMVCLeagueApp.Data {
         }
 
         /// <summary>
+        /// Add list of entities to the database
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public async Task<List<TEntity>> AddAll(List<TEntity> entities) {
+            LeagueDbContext.Set<TEntity>().AddRange(entities);
+            await LeagueDbContext.SaveChangesAsync();
+            return entities;
+        }
+
+        /// <summary>
         /// Update entity in the database
         /// </summary>
         /// <param name="entity">reference to the entity</param>

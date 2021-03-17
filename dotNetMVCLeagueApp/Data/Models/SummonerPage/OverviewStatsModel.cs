@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace dotNetMVCLeagueApp.Models.SummonerPage {
+namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
     public class OverviewStatsModel {
         /// <summary>
         /// Database id

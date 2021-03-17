@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Models;
 using Microsoft.EntityFrameworkCore;
 using MingweiSamuel.Camille.Enums;

@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using dotNetMVCLeagueApp.Data;
-using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
-namespace dotNetMVCLeagueApp.Models {
+namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
     public class SummonerInfoModel : IEntity {
-
         /// <summary>
         /// Primary key
         /// </summary>
@@ -21,7 +19,7 @@ namespace dotNetMVCLeagueApp.Models {
         /// Last update of this entity
         /// </summary>
         public DateTime LastUpdate { get; set; }
-        
+
         /// <summary>
         /// Encrypted summoner id which is required to query data about user
         /// </summary>
@@ -36,14 +34,17 @@ namespace dotNetMVCLeagueApp.Models {
         /// <summary>
         /// In-game level
         /// </summary>
-        public long Level { get; set; }
+        public long SummonerLevel { get; set; }
 
         /// <summary>
         /// Profile icon id for correct image
         /// </summary>
         public int ProfileIconId { get; set; }
 
+        /// <summary>
+        /// All objects with (ranked) information for given queue (solo queue, flex queue, ... )
+        /// </summary>
         [ForeignKey("Id")]
-        public RankedInfoModel RankedInfo { get; set; }
+        public List<QueueInfoModel> QueueInfo { get; set; }
     }
 }
