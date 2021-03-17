@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Models;
 using Microsoft.EntityFrameworkCore;
 using MingweiSamuel.Camille.Enums;
 
-namespace dotNetMVCLeagueApp.Repositories.SummonerInfo {
+namespace dotNetMVCLeagueApp.Repositories {
     public class SummonerInfoRepository : EfCoreRepository<SummonerInfoModel, LeagueDbContext> {
         public SummonerInfoRepository(LeagueDbContext leagueLeagueDbLeagueDbContext) : base(
             leagueLeagueDbLeagueDbContext) { }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace dotNetMVCLeagueApp.Models.Match {
+namespace dotNetMVCLeagueApp.Data.Models.Match {
     public class ChampionBanModel {
         
         /// <summary>

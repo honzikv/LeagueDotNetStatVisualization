@@ -7,13 +7,16 @@ using dotNetMVCLeagueApp.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotNetMVCLeagueApp.Models;
+using dotNetMVCLeagueApp.Services;
 
 namespace dotNetMVCLeagueApp.Controllers {
     public class HomeController : Controller {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly SummonerInfoService summonerInfoService;
 
-        public HomeController(ILogger<HomeController> logger) {
-            _logger = logger;
+        public HomeController(ILogger<HomeController> logger, SummonerInfoService summonerInfoService) {
+            this.logger = logger;
+            this.summonerInfoService = summonerInfoService;
         }
 
         public IActionResult Index() {

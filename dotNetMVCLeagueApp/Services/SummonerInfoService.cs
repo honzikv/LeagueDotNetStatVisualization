@@ -6,7 +6,7 @@ using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exception;
 using dotNetMVCLeagueApp.Repositories;
-using dotNetMVCLeagueApp.Repositories.SummonerInfo;
+using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Services {
@@ -20,16 +20,20 @@ namespace dotNetMVCLeagueApp.Services {
         private readonly RiotApiRepository riotApiRepository;
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
 
+        private readonly ILogger<SummonerInfoService> logger;
+
         public SummonerInfoService(
             SummonerInfoRepository summonerInfoRepository,
             RankedInfoRepository queueInfoRepository,
             RiotApiRepository riotApiRepository,
-            RiotApiUpdateConfig riotApiUpdateConfig
+            RiotApiUpdateConfig riotApiUpdateConfig,
+            ILogger<SummonerInfoService> logger
         ) {
             this.summonerInfoRepository = summonerInfoRepository;
             this.riotApiRepository = riotApiRepository;
             this.queueInfoRepository = queueInfoRepository;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
+            this.logger = logger;
         }
 
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
@@ -43,8 +47,8 @@ namespace dotNetMVCLeagueApp.Services {
 
             // Otherwise create a new info (if it exists in league api)
             summonerInfo = await riotApiRepository.GetSummonerInfo(summonerName, region);
-            if (summonerInfo is null) { // return null if it does not exist
-                return null;
+            if (summonerInfo is null) { // throw exception if it does not exist
+                throw new ActionNotSuccessfulException($"User {summonerName} on server {region.Key} does not exist!");
             }
 
             // if its not null also call api for ranked stats
