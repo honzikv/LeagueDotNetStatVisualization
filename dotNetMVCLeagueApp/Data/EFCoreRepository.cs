@@ -7,7 +7,6 @@ namespace dotNetMVCLeagueApp.Data {
     public abstract class EfCoreRepository<TEntity, TContext> : IRepository<TEntity>
         where TEntity : class, IEntity
         where TContext : DbContext {
-
         /// <summary>
         /// Reference to the (database) context
         /// </summary>
@@ -47,17 +46,6 @@ namespace dotNetMVCLeagueApp.Data {
         }
 
         /// <summary>
-        /// Add list of entities to the database
-        /// </summary>
-        /// <param name="entities"></param>
-        /// <returns></returns>
-        public async Task<List<TEntity>> AddAll(List<TEntity> entities) {
-            LeagueDbContext.Set<TEntity>().AddRange(entities);
-            await LeagueDbContext.SaveChangesAsync();
-            return entities;
-        }
-
-        /// <summary>
         /// Update entity in the database
         /// </summary>
         /// <param name="entity">reference to the entity</param>
@@ -66,6 +54,17 @@ namespace dotNetMVCLeagueApp.Data {
             LeagueDbContext.Entry(entity).State = EntityState.Modified;
             await LeagueDbContext.SaveChangesAsync();
             return entity;
+        }
+
+        /// <summary>
+        /// Add collection of entities to the database
+        /// </summary>
+        /// <param name="entities">Collection of entities - i.e., a list</param>
+        /// <returns>The same colleciton of entities, each with corresponding Id</returns>
+        public async Task<ICollection<TEntity>> AddAll(ICollection<TEntity> entities) {
+            LeagueDbContext.Set<TEntity>().AddRange(entities);
+            await LeagueDbContext.SaveChangesAsync();
+            return entities;
         }
 
         /// <summary>

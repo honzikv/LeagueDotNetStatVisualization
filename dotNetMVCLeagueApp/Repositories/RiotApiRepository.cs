@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Models;
 using MingweiSamuel.Camille;
 using MingweiSamuel.Camille.Enums;
 
-namespace dotNetMVCLeagueApp.Data {
+namespace dotNetMVCLeagueApp.Repositories {
     /// <summary>
     /// This repository wraps functionality of RiotApi object for better abstraction
     /// </summary>

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using dotNetMVCLeagueApp.Data;
-using dotNetMVCLeagueApp.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,15 +21,19 @@ namespace dotNetMVCLeagueApp {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            // Register database context linked to the local Microsoft SQL Express server
+            // Register database context linked to the local SQLite database
             services.AddDbContext<LeagueDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString")));
+                    options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options =>
+                    options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LeagueDbContext>();
+            
+            // Add automapper service
             services.AddAutoMapper(typeof(Startup));
+            
+            // Add MVC
             services.AddControllersWithViews();
 
             // Configure user defined services such as repositories and service objects
@@ -52,12 +55,9 @@ namespace dotNetMVCLeagueApp {
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",

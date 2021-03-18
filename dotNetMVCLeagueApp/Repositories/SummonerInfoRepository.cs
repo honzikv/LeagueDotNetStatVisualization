@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +10,9 @@ namespace dotNetMVCLeagueApp.Repositories {
         public SummonerInfoRepository(LeagueDbContext leagueLeagueDbLeagueDbContext) : base(
             leagueLeagueDbLeagueDbContext) { }
 
-        public async Task<SummonerInfoModel> GetSummonerByUsernameAndRegion(string username, Region region) =>
-            await LeagueDbContext.SummonerInfoModels.FirstOrDefaultAsync(summonerInfo =>
+        public async Task<SummonerInfoModel> GetSummonerByUsernameAndRegion(string username, Region region) {
+            return await LeagueDbContext.SummonerInfoModels.FirstOrDefaultAsync(summonerInfo =>
                 summonerInfo.Name == username && summonerInfo.Region == region.Key);
+        }
     }
 }

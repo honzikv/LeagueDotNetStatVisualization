@@ -5,7 +5,7 @@ using dotNetMVCLeagueApp.Data.Models;
 
 namespace dotNetMVCLeagueApp.Repositories {
     /// <summary>
-    /// Abstraction layer between controller and EF Core for more conscise code
+    /// Abstraction layer between controller and EF Core for more concise code
     /// </summary>
     /// <typeparam name="T">Entity class</typeparam>
     public interface IRepository<T> where T : class, IEntity {
@@ -36,6 +36,13 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<T> Update(T entity);
+
+        /// <summary>
+        /// Add list of entities
+        /// </summary>
+        /// <param name="entities">list of entities</param>
+        /// <returns></returns>
+        Task<ICollection<T>> AddAll(ICollection<T> entities);
         
         /// <summary>
         /// Delete entity with specific id from the repository

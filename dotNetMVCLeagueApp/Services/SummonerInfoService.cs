@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
@@ -37,6 +38,7 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
+            logger.LogInformation($"Fetching summoner info for {region.Key} {summonerName}");
             // First, query the information from the database
             var summonerInfo = await summonerInfoRepository.GetSummonerByUsernameAndRegion(summonerName, region);
 
@@ -52,17 +54,15 @@ namespace dotNetMVCLeagueApp.Services {
             }
 
             // if its not null also call api for ranked stats
-            var queueInfoModels =
+            summonerInfo.QueueInfo =
                 await riotApiRepository.GetRankedInfoList(summonerInfo.EncryptedSummonerId, region);
-
-            summonerInfo.QueueInfo = await queueInfoRepository.AddAll(queueInfoModels);
             return await summonerInfoRepository.Add(summonerInfo); // Save summonerInfoModel and return it
         }
 
-        private void UpdateQueueInfoList(List<QueueInfoModel> oldQueueInfo, List<QueueInfoModel> newQueueInfo) {
+        private void UpdateQueueInfoList(ICollection<QueueInfoModel> oldQueueInfo, ICollection<QueueInfoModel> newQueueInfo) {
             foreach (var queueInfo in newQueueInfo) {
                 var existingQueueInfo =
-                    oldQueueInfo.Find(info => info.QueueType == queueInfo.QueueType);
+                    oldQueueInfo.FirstOrDefault(info => info.QueueType == queueInfo.QueueType);
 
                 // Assign Id if it exists
                 if (existingQueueInfo is not null) {
@@ -87,11 +87,14 @@ namespace dotNetMVCLeagueApp.Services {
                                                        $"in {(riotApiUpdateConfig.MinUpdateTimeSpan - diff).Seconds}");
             }
 
+            // Get updated summoner info from Riot api
             var updatedSummonerInfo =
                 await riotApiRepository.GetSummonerInfo(oldSummonerInfo.Name, Region.Get(oldSummonerInfo.Region));
 
+            // Get updated queue info from Riot api
             var updatedQueueInfo =
-                await riotApiRepository.GetRankedInfoList(oldSummonerInfo.Name, Region.Get(oldSummonerInfo.Region));
+                await riotApiRepository.GetRankedInfoList(oldSummonerInfo.EncryptedSummonerId,
+                    Region.Get(oldSummonerInfo.Region));
 
             // Set Ids for queue info and summoner model
             UpdateQueueInfoList(oldSummonerInfo.QueueInfo, updatedQueueInfo);

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data.Models;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using dotNetMVCLeagueApp.Models;
 using dotNetMVCLeagueApp.Services;
+using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Controllers {
     public class HomeController : Controller {
@@ -21,6 +19,12 @@ namespace dotNetMVCLeagueApp.Controllers {
 
         public IActionResult Index() {
             return View();
+        }
+
+        public SummonerInfoModel LULW() {
+            var result = summonerInfoService.GetSummonerInfo("LULW", Region.EUW);
+            result.Wait();
+            return result.Result;
         }
 
         public IActionResult Privacy() {

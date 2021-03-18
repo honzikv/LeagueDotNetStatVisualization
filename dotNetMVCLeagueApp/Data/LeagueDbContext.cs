@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using dotNetMVCLeagueApp.Data.Models.Match;
+﻿using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Models;
-using dotNetMVCLeagueApp.Models.Match;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Data {
-    public class LeagueDbContext : IdentityDbContext {
+    public class LeagueDbContext : DbContext {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
             : base(options) {
         }
 
-        public DbSet<SummonerInfoModel> SummonerInfoModels;
+        public DbSet<SummonerInfoModel> SummonerInfoModels { get; set; }
 
-        public DbSet<MatchInfoModel> MatchInfoModels;
+        public DbSet<MatchInfoModel> MatchInfoModels { get; set; }
 
-        public DbSet<ChampionBanModel> ChampionBanModels;
+        public DbSet<ChampionBanModel> ChampionBanModels { get; set; }
     }
 }

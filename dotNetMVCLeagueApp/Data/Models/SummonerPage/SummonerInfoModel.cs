@@ -45,6 +45,6 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// All objects with (ranked) information for given queue (solo queue, flex queue, ... )
         /// </summary>
         [ForeignKey("Id")]
-        public List<QueueInfoModel> QueueInfo { get; set; }
+        public virtual ICollection<QueueInfoModel> QueueInfo { get; set; }
     }
 }
