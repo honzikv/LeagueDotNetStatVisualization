@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exception;
+using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Repositories;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
@@ -37,7 +36,15 @@ namespace dotNetMVCLeagueApp.Services {
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Obtains summoner info or throws an ActionNotSuccessfulException which means that the summoner does not exist
+        /// </summary>
+        /// <param name="summonerName"></param>
+        /// <param name="region"></param>
+        /// <returns></returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
+            Console.WriteLine(logger);
             logger.LogInformation($"Fetching summoner info for {region.Key} {summonerName}");
             // First, query the information from the database
             var summonerInfo = await summonerInfoRepository.GetSummonerByUsernameAndRegion(summonerName, region);
@@ -47,19 +54,22 @@ namespace dotNetMVCLeagueApp.Services {
                 return summonerInfo;
             }
 
+            logger.LogInformation("Summoner info was null, trying to fetch from API");
             // Otherwise create a new info (if it exists in league api)
             summonerInfo = await riotApiRepository.GetSummonerInfo(summonerName, region);
             if (summonerInfo is null) { // throw exception if it does not exist
                 throw new ActionNotSuccessfulException($"User {summonerName} on server {region.Key} does not exist!");
             }
 
+            logger.LogDebug($"Fetched: {summonerInfo}");
             // if its not null also call api for ranked stats
             summonerInfo.QueueInfo =
-                await riotApiRepository.GetRankedInfoList(summonerInfo.EncryptedSummonerId, region);
+                await riotApiRepository.GetQueueInfoList(summonerInfo.EncryptedSummonerId, region);
             return await summonerInfoRepository.Add(summonerInfo); // Save summonerInfoModel and return it
         }
 
-        private void UpdateQueueInfoList(ICollection<QueueInfoModel> oldQueueInfo, ICollection<QueueInfoModel> newQueueInfo) {
+        private void UpdateQueueInfoList(ICollection<QueueInfoModel> oldQueueInfo,
+            ICollection<QueueInfoModel> newQueueInfo) {
             foreach (var queueInfo in newQueueInfo) {
                 var existingQueueInfo =
                     oldQueueInfo.FirstOrDefault(info => info.QueueType == queueInfo.QueueType);
@@ -83,8 +93,9 @@ namespace dotNetMVCLeagueApp.Services {
             // If not, throw an exception with corresponding message
             if (diff < riotApiUpdateConfig.MinUpdateTimeSpan) {
                 throw new ActionNotSuccessfulException($"Error, user was updated {diff.Seconds} seconds ago," +
-                                                       $"it can be updated again " +
-                                                       $"in {(riotApiUpdateConfig.MinUpdateTimeSpan - diff).Seconds}");
+                                                       "it can be updated again " +
+                                                       $"in {(riotApiUpdateConfig.MinUpdateTimeSpan - diff).Seconds} " +
+                                                       "seconds");
             }
 
             // Get updated summoner info from Riot api
@@ -93,14 +104,13 @@ namespace dotNetMVCLeagueApp.Services {
 
             // Get updated queue info from Riot api
             var updatedQueueInfo =
-                await riotApiRepository.GetRankedInfoList(oldSummonerInfo.EncryptedSummonerId,
+                await riotApiRepository.GetQueueInfoList(oldSummonerInfo.EncryptedSummonerId,
                     Region.Get(oldSummonerInfo.Region));
 
             // Set Ids for queue info and summoner model
             UpdateQueueInfoList(oldSummonerInfo.QueueInfo, updatedQueueInfo);
             updatedSummonerInfo.Id = oldSummonerInfo.Id;
-            updatedSummonerInfo.QueueInfo =
-                await queueInfoRepository.AddAll(updatedQueueInfo); // assign updated queue info
+            updatedSummonerInfo.QueueInfo = updatedQueueInfo; // assign updated queue info
 
             return await summonerInfoRepository.Add(updatedSummonerInfo);
         }

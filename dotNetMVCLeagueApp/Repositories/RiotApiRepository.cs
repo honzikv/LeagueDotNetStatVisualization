@@ -4,39 +4,54 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Exceptions;
+using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille;
 using MingweiSamuel.Camille.Enums;
+using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Repositories {
     /// <summary>
     /// This repository wraps functionality of RiotApi object for better abstraction
     /// </summary>
     public class RiotApiRepository {
-        private readonly RiotApi riotApi;
+        private const string ApiErrorMessage = "There was an error while communicating with the Riot API";
 
+        private readonly RiotApi riotApi;
         private readonly IMapper mapper;
 
-        public RiotApiRepository(RiotApi riotApi, IMapper mapper) {
+        private readonly ILogger<RiotApiRepository> logger;
+
+        public RiotApiRepository(RiotApi riotApi, IMapper mapper, ILogger<RiotApiRepository> logger) {
             this.riotApi = riotApi;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
-            var summoner = await riotApi.SummonerV4.GetBySummonerNameAsync(region, summonerName);
-            if (summoner is null) { // return null, this means that the user does not exist
-                return null;
-            }
+            try {
+                var summoner = await riotApi.SummonerV4.GetBySummonerNameAsync(region, summonerName);
+                if (summoner is null) { // return null, this means that the user does not exist
+                    return null;
+                }
 
-            // Map to model object
-            return new SummonerInfoModel {
-                SummonerLevel = summoner.SummonerLevel,
-                Name = summoner.Name,
-                ProfileIconId = summoner.ProfileIconId,
-                EncryptedSummonerId = summoner.Id,
-                Region = region.Key,
-                LastUpdate = DateTime.Now
-            };
+                // Map to model object
+                return new SummonerInfoModel {
+                    SummonerLevel = summoner.SummonerLevel,
+                    Name = summoner.Name,
+                    ProfileIconId = summoner.ProfileIconId,
+                    EncryptedSummonerId = summoner.Id,
+                    EncryptedAccountId = summoner.AccountId,
+                    Region = region.Key,
+                    LastUpdate = DateTime.Now
+                };
+            }
+            catch (Exception ex) {
+                logger.LogCritical(ex.Message);
+                throw new ActionNotSuccessfulException(ApiErrorMessage);
+            }
         }
 
         /// <summary>
@@ -45,20 +60,120 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="encryptedSummonerId">Encrypted summoner id</param>
         /// <param name="region">Region of the user</param>
         /// <returns>List of QueueInfoModels</returns>
-        public async Task<List<QueueInfoModel>> GetRankedInfoList(string encryptedSummonerId, Region region) {
-            var leagueEntries =
-                await riotApi.LeagueV4.GetLeagueEntriesForSummonerAsync(region, encryptedSummonerId);
+        public async Task<List<QueueInfoModel>> GetQueueInfoList(string encryptedSummonerId, Region region) {
+            try {
+                var leagueEntries =
+                    await riotApi.LeagueV4.GetLeagueEntriesForSummonerAsync(region, encryptedSummonerId);
 
-            // Return empty ranked info model since the use has not played any ranked
-            if (leagueEntries is null) {
-                return new();
+                // Return empty ranked info model since the use has not played any ranked
+                if (leagueEntries is null) {
+                    return new();
+                }
+
+                // Iterate over all entries, map flex queue and solo queue to the rankedInfoModel object
+                return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == LeagueEntryConst.RankedFlex ||
+                                                          leagueEntry.QueueType == LeagueEntryConst.RankedSolo)
+                    .Select(leagueEntry => mapper.Map<QueueInfoModel>(leagueEntry))
+                    .ToList();
+            }
+            catch (Exception ex) {
+                logger.LogCritical(ex.Message);
+                throw new ActionNotSuccessfulException(ApiErrorMessage);
+            }
+        }
+
+        private MatchInfoModel MapToMatchInfo(Match match) {
+            var result = mapper.Map<MatchInfoModel>(match); // shallow map from Match to MatchInfo object
+
+            // Map nested objects - team stats and players
+            var teams = new List<TeamStatsInfoModel>();
+            // Map TeamStatsInfoModel objects
+            foreach (var team in match.Teams) {
+                var teamStatsInfo = mapper.Map<TeamStatsInfoModel>(team);
+                var bans = mapper.Map<List<ChampionBanModel>>(team.Bans);
+                teamStatsInfo.Bans = bans;
+                teams.Add(teamStatsInfo);
             }
 
-            // Iterate over all entries, map flex queue and solo queue to the rankedInfoModel object
-            return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == LeagueEntryConst.RankedFlex ||
-                                                      leagueEntry.QueueType == LeagueEntryConst.RankedSolo)
-                .Select(leagueEntry => mapper.Map<QueueInfoModel>(leagueEntry))
-                .ToList();
+            // Map participants
+            var players = new List<PlayerInfoModel>();
+            foreach (var participantIdentity in match.ParticipantIdentities) {
+                var playerInfo = MapParticipantToPlayer(match, participantIdentity);
+                players.Add(playerInfo);
+            }
+            
+            result.Teams = teams;
+            result.PlayerInfoList = players;
+            return result;
+        }
+
+        private PlayerInfoModel MapParticipantToPlayer(Match match, ParticipantIdentity participantIdentity) {
+            var participant = match.Participants
+                .FirstOrDefault(x => x.ParticipantId == participantIdentity.ParticipantId);
+
+            if (participant == null) {
+                throw new RiotApiError("Error when mapping participant");
+            }
+
+            var playerInfo = mapper.Map<PlayerInfoModel>(participant);
+            var playerStats = mapper.Map<PlayerStatsModel>(participant.Stats);
+
+            playerInfo.PlayerStatsModel = playerStats;
+
+            // Get CsPerMinute, GoldDiffAt10, CsDiffPer10 and role from timeline
+            var timeline = participant.Timeline;
+
+            // Calculate cs per minute if present
+            if (timeline.CreepsPerMinDeltas.Count > 0) {
+                playerInfo.CsPerMinute = timeline.CreepsPerMinDeltas.Values.Sum() /
+                                         timeline.CreepsPerMinDeltas.Values.Count;
+            }
+
+            playerInfo.Role = timeline.Role;
+            playerInfo.Lane = timeline.Lane;
+            playerInfo.CsDiffAt10 = timeline.CsDiffPerMinDeltas.TryGetValue("0-10", out var csDiffAt10)
+                ? csDiffAt10
+                : null;
+            playerInfo.GoldDiffAt10 = timeline.GoldPerMinDeltas.TryGetValue("0-10", out var goldDiffAt10)
+                ? goldDiffAt10
+                : null;
+            return playerInfo;
+        }
+
+        public async Task<List<MatchInfoModel>>
+            GetMatchList(string encryptedAccountId, Region region, int numberOfGames, int beginIdx, int endIdx) {
+            try {
+                var matches = await riotApi.MatchV4.GetMatchlistAsync(
+                    region: region,
+                    encryptedAccountId: encryptedAccountId,
+                    beginIndex: beginIdx,
+                    endIndex: endIdx + numberOfGames
+                );
+
+                // If there are no games returned then simply return an empty list
+                if (matches is null) {
+                    return new();
+                }
+
+
+                // List of tasks with each match
+                var matchTasks = new List<Task<Match>>(matches.TotalGames);
+                foreach (var match in matches.Matches) {
+                    matchTasks.Add(riotApi.MatchV4.GetMatchAsync(region, match.GameId));
+                }
+
+                var matchList = new List<MatchInfoModel>(matches.TotalGames);
+                foreach (var matchTask in matchTasks) {
+                    matchList.Add(MapToMatchInfo(await matchTask));
+                }
+
+                return matchList;
+            }
+
+            catch (Exception ex) {
+                logger.LogCritical(ex.Message);
+                throw new ActionNotSuccessfulException(ApiErrorMessage);
+            }
         }
     }
 }

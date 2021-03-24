@@ -21,8 +21,8 @@ namespace dotNetMVCLeagueApp.Controllers {
             return View();
         }
 
-        public SummonerInfoModel LULW() {
-            var result = summonerInfoService.GetSummonerInfo("LULW", Region.EUW);
+        public SummonerInfoModel User(string username) {
+            var result = summonerInfoService.GetSummonerInfo(username, Region.EUW);
             result.Wait();
             return result.Result;
         }

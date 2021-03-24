@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNetMVCLeagueApp.Exception {
+namespace dotNetMVCLeagueApp.Exceptions {
     /// <summary>
     /// Simple exception that is used when an operation did not succeed
     /// </summary>

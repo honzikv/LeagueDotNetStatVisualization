@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class ChampionBanModel {
+    public class ChampionBanModel : IEntity {
         
-        /// <summary>
-        /// Database id
-        /// </summary>
-        [Key]
-        public int ChampionBanId { get; set; }
+        public int Id { get; set; }
         
         /// <summary>
         /// Id of the champion
@@ -18,5 +15,14 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// Turn in the draft (unused)
         /// </summary>
         public int PickTurn { get; set; }
+        
+        /// <summary>
+        /// Either 100 - for blue, or 200 - for red
+        /// </summary>
+        public int TeamId { get; set; }
+
+        [Required]
+        [ForeignKey("TeamStatsInfoModel")]
+        public int TeamStatsInfoModelId;
     }
 }

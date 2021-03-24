@@ -37,5 +37,9 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// </summary>
         public int Losses { get; set; }
         
+        /// <summary>
+        /// Reference to summoner info
+        /// </summary>
+        public virtual SummonerInfoModel SummonerInfo { get; set; }
     }
 }

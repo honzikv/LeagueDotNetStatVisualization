@@ -25,14 +25,8 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         /// List of all bans
         /// </summary>
-        public List<ChampionBanModel> Bans { get; set; }
-        
-        /// <summary>
-        /// Champion info entity that contains general information about summoners champion such as items, summoner
-        /// spells, etc.
-        /// </summary>
-        public ChampionInfoModel ChampionInfo { get; set; }
-        
+        public IEnumerable<TeamStatsInfoModel> Teams { get; set; }
+
         /// <summary>
         /// Date and time when the game was played
         /// </summary>
@@ -43,5 +37,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// </summary>
         [ForeignKey("SummonerInfoModel")]
         public int SummonerInfoId { get; set; }
+
+        public IEnumerable<PlayerInfoModel> PlayerInfoList;
     }
 }

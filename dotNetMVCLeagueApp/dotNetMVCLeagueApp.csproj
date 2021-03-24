@@ -30,7 +30,6 @@
 
     <ItemGroup>
       <Folder Include="Tests" />
-      <Folder Include="Views\SummonerInfo" />
     </ItemGroup>
 
     
