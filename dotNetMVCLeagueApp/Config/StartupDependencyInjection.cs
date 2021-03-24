@@ -21,7 +21,7 @@ namespace dotNetMVCLeagueApp {
             // Add repositories
             services.AddScoped<RiotApiRepository>();
             services.AddScoped<SummonerInfoRepository>();
-            services.AddScoped<RankedInfoRepository>();
+            services.AddScoped<MatchInfoRepository>();
             services.AddScoped<SummonerInfoService>();
         }
     }

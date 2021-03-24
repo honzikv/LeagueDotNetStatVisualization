@@ -25,7 +25,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// </summary>
         [MaxLength(63)]
         public String EncryptedSummonerId { get; set; }
-        
+
         /// <summary>
         /// Encrypted account id which is required to query data about matches
         /// </summary>
@@ -49,8 +49,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// <summary>
         /// All objects with (ranked) information for given queue (solo queue, flex queue, ... )
         /// </summary>
-        [ForeignKey("Id")]
-        public virtual ICollection<QueueInfoModel> QueueInfo { get; set; }
+        public ICollection<QueueInfoModel> QueueInfo { get; set; }
 
         public override string ToString() => $"{Name} {EncryptedSummonerId} {Region} {SummonerLevel} {ProfileIconId}";
     }

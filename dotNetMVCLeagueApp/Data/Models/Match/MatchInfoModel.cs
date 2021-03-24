@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class MatchInfoModel {
-        /// <summary>
-        /// Id in database
-        /// </summary>
-        [Key]
-        public int MatchInfoId { get; set; }
+    public class MatchInfoModel : IEntity {
 
+        public int Id { get; set; }
+        
+        public SummonerInfoModel SummonerInfoModel { get; set; }
+        
         /// <summary>
         /// Whether the player won
         /// </summary>
@@ -32,12 +32,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// </summary>
         public DateTime PlayTime { get; set; }
 
-        /// <summary>
-        /// SummonerInfo id reference
-        /// </summary>
-        [ForeignKey("SummonerInfoModel")]
-        public int SummonerInfoId { get; set; }
-
-        public IEnumerable<PlayerInfoModel> PlayerInfoList;
+        public IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
+        
     }
 }

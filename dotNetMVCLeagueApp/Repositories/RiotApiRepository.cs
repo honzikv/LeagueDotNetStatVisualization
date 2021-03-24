@@ -101,7 +101,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 var playerInfo = MapParticipantToPlayer(match, participantIdentity);
                 players.Add(playerInfo);
             }
-            
+
             result.Teams = teams;
             result.PlayerInfoList = players;
             return result;
@@ -140,8 +140,12 @@ namespace dotNetMVCLeagueApp.Repositories {
             return playerInfo;
         }
 
+        public async Task<List<MatchInfoModel>> GetMatchList(string encryptedAccountId, Region region,
+            int numberOfGames)
+            => await GetMatchList(encryptedAccountId, region, numberOfGames, null, 0);
+
         public async Task<List<MatchInfoModel>>
-            GetMatchList(string encryptedAccountId, Region region, int numberOfGames, int beginIdx, int endIdx) {
+            GetMatchList(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx, int endIdx) {
             try {
                 var matches = await riotApi.MatchV4.GetMatchlistAsync(
                     region: region,

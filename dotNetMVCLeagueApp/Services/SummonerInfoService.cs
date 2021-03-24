@@ -16,7 +16,6 @@ namespace dotNetMVCLeagueApp.Services {
     /// </summary>
     public class SummonerInfoService {
         private readonly SummonerInfoRepository summonerInfoRepository;
-        private readonly RankedInfoRepository queueInfoRepository;
         private readonly RiotApiRepository riotApiRepository;
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
 
@@ -24,14 +23,12 @@ namespace dotNetMVCLeagueApp.Services {
 
         public SummonerInfoService(
             SummonerInfoRepository summonerInfoRepository,
-            RankedInfoRepository queueInfoRepository,
             RiotApiRepository riotApiRepository,
             RiotApiUpdateConfig riotApiUpdateConfig,
             ILogger<SummonerInfoService> logger
         ) {
             this.summonerInfoRepository = summonerInfoRepository;
             this.riotApiRepository = riotApiRepository;
-            this.queueInfoRepository = queueInfoRepository;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
             this.logger = logger;
         }
@@ -67,7 +64,12 @@ namespace dotNetMVCLeagueApp.Services {
                 await riotApiRepository.GetQueueInfoList(summonerInfo.EncryptedSummonerId, region);
             return await summonerInfoRepository.Add(summonerInfo); // Save summonerInfoModel and return it
         }
-
+        
+        /// <summary>
+        /// Updates queue info list with previous ids if they exist
+        /// </summary>
+        /// <param name="oldQueueInfo">List with old values</param>
+        /// <param name="newQueueInfo">List with new values</param>
         private void UpdateQueueInfoList(ICollection<QueueInfoModel> oldQueueInfo,
             ICollection<QueueInfoModel> newQueueInfo) {
             foreach (var queueInfo in newQueueInfo) {

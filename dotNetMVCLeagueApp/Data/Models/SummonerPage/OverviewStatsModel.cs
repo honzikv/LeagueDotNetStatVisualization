@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
-    public class OverviewStatsModel {
-        /// <summary>
-        /// Database id
-        /// </summary>
-        [Key]
-        public int OverviewStatsId { get; set; }
+    public class OverviewStatsModel : IEntity {
+
+        public int Id { get; set; }
 
         /// <summary>
         /// Number of games won
@@ -37,5 +34,6 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// The second most played position throughout all displayed games
         /// </summary>
         public int SecondaryPosition { get; set; }
+
     }
 }
