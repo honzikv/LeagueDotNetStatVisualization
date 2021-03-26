@@ -9,7 +9,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
 
         public int Id { get; set; }
         
-        public SummonerInfoModel SummonerInfoModel { get; set; }
+        public virtual SummonerInfoModel SummonerInfoModel { get; set; }
         
         /// <summary>
         /// Whether the player won
@@ -25,14 +25,14 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         /// List of all bans
         /// </summary>
-        public IEnumerable<TeamStatsInfoModel> Teams { get; set; }
+        public virtual IEnumerable<TeamStatsInfoModel> Teams { get; set; }
 
         /// <summary>
         /// Date and time when the game was played
         /// </summary>
         public DateTime PlayTime { get; set; }
 
-        public IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
+        public virtual IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
         
     }
 }

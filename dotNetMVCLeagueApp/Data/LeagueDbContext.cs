@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace dotNetMVCLeagueApp.Data {
     public class LeagueDbContext : DbContext {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
-            : base(options) { }
+            : base(options) {
+        }
 
         // Summoner Page
         public DbSet<SummonerInfoModel> SummonerInfoModels { get; set; }

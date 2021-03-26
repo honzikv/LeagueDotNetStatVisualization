@@ -5,9 +5,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     public class TeamStatsInfoModel : IEntity {
         public int Id { get; set; }
 
-        public MatchInfoModel MatchInfo { get; set; }
+        public virtual MatchInfoModel MatchInfo { get; set; }
 
-        public IEnumerable<ChampionBanModel> Bans { get; set; }
+        public virtual IEnumerable<ChampionBanModel> Bans { get; set; }
 
         public int TeamId { get; set; }
 

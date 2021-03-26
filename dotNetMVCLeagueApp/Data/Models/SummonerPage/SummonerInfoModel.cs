@@ -49,7 +49,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// <summary>
         /// All objects with (ranked) information for given queue (solo queue, flex queue, ... )
         /// </summary>
-        public ICollection<QueueInfoModel> QueueInfo { get; set; }
+        public virtual ICollection<QueueInfoModel> QueueInfo { get; set; }
 
         public override string ToString() => $"{Name} {EncryptedSummonerId} {Region} {SummonerLevel} {ProfileIconId}";
     }

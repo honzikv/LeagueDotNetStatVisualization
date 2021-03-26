@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using dotNetMVCLeagueApp.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -23,8 +24,10 @@ namespace dotNetMVCLeagueApp {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             // Register database context linked to the local SQLite database
-            services.AddDbContext<LeagueDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString")));
+            services.AddDbContext<LeagueDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString"));
+                options.UseLazyLoadingProxies();
+            });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<IdentityUser>(options =>
@@ -35,8 +38,11 @@ namespace dotNetMVCLeagueApp {
             services.AddAutoMapper(typeof(Startup));
             
             // Add MVC
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(config => {
+                config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
 
+            
             // Configure user defined services such as repositories and service objects
             ConfigureUserServices(services);
         }

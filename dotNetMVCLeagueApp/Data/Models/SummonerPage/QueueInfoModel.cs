@@ -42,6 +42,6 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// Reference to summoner info
         /// </summary>
         [Required]
-        public SummonerInfoModel SummonerInfo { get; set; }
+        public virtual SummonerInfoModel SummonerInfo { get; set; }
     }
 }

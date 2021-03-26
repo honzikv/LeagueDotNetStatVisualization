@@ -4,8 +4,8 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     public class PlayerInfoModel : IEntity {
         public int Id { get; set; }
 
-        [Required] public MatchInfoModel MatchInfoModel { get; set; }
-        [Required] public PlayerStatsModel PlayerStatsModel { get; set; }
+        [Required] public virtual MatchInfoModel MatchInfoModel { get; set; }
+        [Required] public virtual PlayerStatsModel PlayerStatsModel { get; set; }
 
         public string SummonerName { get; set; }
 
