@@ -17,6 +17,10 @@ namespace dotNetMVCLeagueApp.Repositories {
     /// This repository wraps functionality of RiotApi object for better abstraction
     /// </summary>
     public class RiotApiRepository {
+        /// <summary>
+        /// This error message shows to user whenever there is some problem with the API
+        /// The real error is logged in debug level
+        /// </summary>
         private const string ApiErrorMessage = "There was an error while communicating with the Riot API";
 
         private readonly RiotApi riotApi;
@@ -65,7 +69,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 var leagueEntries =
                     await riotApi.LeagueV4.GetLeagueEntriesForSummonerAsync(region, encryptedSummonerId);
 
-                // Return empty ranked info model since the use has not played any ranked
+                // Return empty QueueInfo list since there are no league entries in the api
                 if (leagueEntries is null) {
                     return new();
                 }
@@ -140,12 +144,12 @@ namespace dotNetMVCLeagueApp.Repositories {
             return playerInfo;
         }
 
-        public async Task<List<MatchInfoModel>> GetMatchList(string encryptedAccountId, Region region,
+        public async Task<List<MatchInfoModel>> GetMatchListFromApi(string encryptedAccountId, Region region,
             int numberOfGames)
-            => await GetMatchList(encryptedAccountId, region, numberOfGames, null, 0);
+            => await GetMatchListFromApi(encryptedAccountId, region, numberOfGames, null, 0);
 
         public async Task<List<MatchInfoModel>>
-            GetMatchList(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx, int endIdx) {
+            GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx, int endIdx) {
             try {
                 var matches = await riotApi.MatchV4.GetMatchlistAsync(
                     region: region,

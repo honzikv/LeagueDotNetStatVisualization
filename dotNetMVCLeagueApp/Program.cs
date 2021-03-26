@@ -13,6 +13,13 @@ namespace dotNetMVCLeagueApp {
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging((ctx, logging) => {
+                    logging.ClearProviders();
+                    logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
+                    logging.AddDebug();
+                    logging.AddConsole();
+                })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+
     }
 }

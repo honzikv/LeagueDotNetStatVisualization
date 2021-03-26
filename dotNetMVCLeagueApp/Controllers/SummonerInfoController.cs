@@ -1,4 +1,5 @@
-﻿using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+﻿using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using MingweiSamuel.Camille.Enums;
@@ -15,10 +16,20 @@ namespace dotNetMVCLeagueApp.Controllers {
             this.matchHistoryService = matchHistoryService;
         }
 
-
         public IActionResult Index() {
             return View();
         }
 
+        public SummonerInfoModel SummonerInfo(string summonerName, string server) {
+            Region region;
+            try {
+                region = Region.Get(server);
+            }
+            catch {
+                return null;
+            }
+
+            return summonerInfoService.GetSummonerInfo(summonerName, region).GetAwaiter().GetResult();
+        }
     }
 }

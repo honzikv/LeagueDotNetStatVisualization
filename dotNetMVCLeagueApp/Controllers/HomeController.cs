@@ -23,8 +23,7 @@ namespace dotNetMVCLeagueApp.Controllers {
 
         public SummonerInfoModel User(string username) {
             var result = summonerInfoService.GetSummonerInfo(username, Region.EUW);
-            result.Wait();
-            return result.Result;
+            return result.GetAwaiter().GetResult();
         }
 
         public IActionResult Privacy() {

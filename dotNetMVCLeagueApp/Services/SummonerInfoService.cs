@@ -41,8 +41,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
-            Console.WriteLine(logger);
-            logger.LogInformation($"Fetching summoner info for {region.Key} {summonerName}");
+            logger.LogDebug($"Fetching summoner info for {region.Key} {summonerName}");
             // First, query the information from the database
             var summonerInfo = await summonerInfoRepository.GetSummonerByUsernameAndRegion(summonerName, region);
 
@@ -51,7 +50,8 @@ namespace dotNetMVCLeagueApp.Services {
                 return summonerInfo;
             }
 
-            logger.LogInformation("Summoner info was null, trying to fetch from API");
+            logger.LogDebug(
+                $"Summoner info was null, trying to fetch from API summonerName={summonerName}, region={region.Key}");
             // Otherwise create a new info (if it exists in league api)
             summonerInfo = await riotApiRepository.GetSummonerInfo(summonerName, region);
             if (summonerInfo is null) { // throw exception if it does not exist
@@ -64,7 +64,7 @@ namespace dotNetMVCLeagueApp.Services {
                 await riotApiRepository.GetQueueInfoList(summonerInfo.EncryptedSummonerId, region);
             return await summonerInfoRepository.Add(summonerInfo); // Save summonerInfoModel and return it
         }
-        
+
         /// <summary>
         /// Updates queue info list with previous ids if they exist
         /// </summary>

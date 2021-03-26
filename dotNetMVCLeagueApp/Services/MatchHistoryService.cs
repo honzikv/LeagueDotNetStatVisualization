@@ -18,6 +18,7 @@ namespace dotNetMVCLeagueApp.Services {
             ILogger<MatchHistoryService> logger) {
             this.riotApiRepository = riotApiRepository;
             this.logger = logger;
+            this.matchInfoRepository = matchInfoRepository;
         }
 
         /// <summary>
