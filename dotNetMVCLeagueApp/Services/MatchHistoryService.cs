@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
+using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Repositories;
@@ -27,9 +29,24 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="summoner"></param>
         /// <param name="numberOfGames"></param>
         /// <returns></returns>
-        public List<MatchInfoModel> GetGameMatchList(SummonerInfoModel summoner, int numberOfGames) {
+        public async Task<List<MatchInfoModel>> GetGameMatchList(SummonerInfoModel summoner, int numberOfGames) {
             logger.LogDebug($"Getting games for {summoner}");
-            return matchInfoRepository.GetLastNMatches(summoner, numberOfGames).ToList();
+            var games = matchInfoRepository.GetLastNMatches(summoner, numberOfGames).ToList();
+
+            if (games.IsNullOrEmpty()) {
+                // Await from api
+                games = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
+                    Region.Get(summoner.Region),
+                    numberOfGames);
+                
+                // Assign summoner
+                games.ForAll(x => x.SummonerInfoModel = summoner);
+
+                // Add to database
+                games = (await matchInfoRepository.AddAll(games)).ToList();
+            }
+
+            return games; // return list
         }
     }
 }

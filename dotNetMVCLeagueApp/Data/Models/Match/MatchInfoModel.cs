@@ -33,6 +33,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public DateTime PlayTime { get; set; }
 
         public virtual IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
-        
+
+        public override string ToString() => $"Win={Win} TeamId={TeamId} PlayTime={PlayTime}";
     }
 }

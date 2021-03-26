@@ -88,13 +88,19 @@ namespace dotNetMVCLeagueApp.Repositories {
 
         private MatchInfoModel MapToMatchInfo(Match match) {
             var result = mapper.Map<MatchInfoModel>(match); // shallow map from Match to MatchInfo object
+            logger.LogDebug(result.ToString());
 
             // Map nested objects - team stats and players
             var teams = new List<TeamStatsInfoModel>();
             // Map TeamStatsInfoModel objects
             foreach (var team in match.Teams) {
                 var teamStatsInfo = mapper.Map<TeamStatsInfoModel>(team);
-                var bans = mapper.Map<List<ChampionBanModel>>(team.Bans);
+
+                var bans = new List<ChampionBanModel>(team.Bans.Length);
+                foreach (var ban in team.Bans) {
+                    bans.Add(mapper.Map<ChampionBanModel>(ban));
+                }
+                
                 teamStatsInfo.Bans = bans;
                 teams.Add(teamStatsInfo);
             }
@@ -135,12 +141,11 @@ namespace dotNetMVCLeagueApp.Repositories {
 
             playerInfo.Role = timeline.Role;
             playerInfo.Lane = timeline.Lane;
-            playerInfo.CsDiffAt10 = timeline.CsDiffPerMinDeltas.TryGetValue("0-10", out var csDiffAt10)
-                ? csDiffAt10
-                : null;
-            playerInfo.GoldDiffAt10 = timeline.GoldPerMinDeltas.TryGetValue("0-10", out var goldDiffAt10)
-                ? goldDiffAt10
-                : null;
+            // timeline.CsDiffPerMinDeltas.TryGetValue("0-10", out var csDiffAt10);
+            // playerInfo.CsDiffAt10 = csDiffAt10;
+            // timeline.GoldPerMinDeltas.TryGetValue("0-10", out var goldDiffAt10);
+            // playerInfo.GoldDiffAt10 = goldDiffAt10;
+            
             return playerInfo;
         }
 
@@ -162,8 +167,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 if (matches is null) {
                     return new();
                 }
-
-
+                
                 // List of tasks with each match
                 var matchTasks = new List<Task<Match>>(matches.TotalGames);
                 foreach (var match in matches.Matches) {
@@ -174,6 +178,8 @@ namespace dotNetMVCLeagueApp.Repositories {
                 foreach (var matchTask in matchTasks) {
                     matchList.Add(MapToMatchInfo(await matchTask));
                 }
+                
+                logger.LogDebug("Matchlist mapped");
 
                 return matchList;
             }

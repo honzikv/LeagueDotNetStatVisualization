@@ -30,6 +30,7 @@
 
 
     <ItemGroup>
+      <Folder Include="Data\Mappings" />
       <Folder Include="Tests" />
     </ItemGroup>
 
