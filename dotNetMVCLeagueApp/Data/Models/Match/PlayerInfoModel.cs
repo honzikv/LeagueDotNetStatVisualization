@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class PlayerInfoModel : IEntity {
+    public class PlayerInfoModel {
         public int Id { get; set; }
 
         [Required] public virtual MatchInfoModel MatchInfoModel { get; set; }

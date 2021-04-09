@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class ChampionBanModel : IEntity {
+    public class ChampionBanModel {
         public int Id { get; set; }
 
         /// <summary>

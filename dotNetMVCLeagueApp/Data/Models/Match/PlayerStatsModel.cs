@@ -4,7 +4,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
     /// 
     /// </summary>
-    public class PlayerStatsModel : IEntity {
+    public class PlayerStatsModel {
         public int Id { get; set; }
         
         public bool Win { get; set; }

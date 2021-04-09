@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class TeamStatsInfoModel : IEntity {
+    public class TeamStatsInfoModel {
         public int Id { get; set; }
 
         public virtual MatchInfoModel MatchInfo { get; set; }

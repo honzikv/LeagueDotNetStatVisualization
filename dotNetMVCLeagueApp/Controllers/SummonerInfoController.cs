@@ -2,7 +2,6 @@
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Services;
-using dotNetMVCLeagueApp.Utils;
 using Microsoft.AspNetCore.Mvc;
 using MingweiSamuel.Camille.Enums;
 
@@ -44,7 +43,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             }
 
             var summoner = summonerInfoService.GetSummonerInfo(summonerName, region).GetAwaiter().GetResult();
-            return matchHistoryService.GetGameMatchList(summoner, 20).GetAwaiter().GetResult();
+            return matchHistoryService.GetGameMatchList(summoner, 20);
         }
     }
 }

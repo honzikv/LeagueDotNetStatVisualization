@@ -2,7 +2,7 @@
 using MingweiSamuel.Camille.LeagueV4;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
-    public class QueueInfoModel : IEntity {
+    public class QueueInfoModel {
         /// <summary>
         /// Primary key
         /// </summary>

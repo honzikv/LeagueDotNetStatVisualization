@@ -23,5 +23,21 @@ namespace dotNetMVCLeagueApp.Data {
         public DbSet<PlayerInfoModel> PlayerInfoModels { get; set; }
 
         public DbSet<TeamStatsInfoModel> TeamStatsInfoModels { get; set; }
+        public DbSet<MatchInfoSummonerInfo> MatchInfoSummonerInfos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            // Override to implement M : N for MatchInfo and SummonerInfo model objects
+            modelBuilder.Entity<MatchInfoSummonerInfo>()
+                .HasKey(matchSummoner => new {
+                    matchSummoner.MatchInfoModelId,
+                    matchSummoner.SummonerInfoModelId
+                });
+
+            modelBuilder.Entity<MatchInfoSummonerInfo>()
+                .HasOne(matchSummoner => matchSummoner.MatchInfo)
+                .WithMany(matchInfo => matchInfo.SummonerInfoList)
+                .HasForeignKey(matchInfo => matchInfo.MatchInfoModelId);
+            
+        }
     }
 }

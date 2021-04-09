@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
-    public class OverviewStatsModel : IEntity {
+    public class OverviewStatsModel {
 
         public int Id { get; set; }
 

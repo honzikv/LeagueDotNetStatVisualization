@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
-    public class SummonerInfoModel : IEntity {
+    public class SummonerInfoModel {
         /// <summary>
         /// Primary key
         /// </summary>

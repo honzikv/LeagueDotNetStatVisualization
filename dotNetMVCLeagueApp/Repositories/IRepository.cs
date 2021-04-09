@@ -8,7 +8,7 @@ namespace dotNetMVCLeagueApp.Repositories {
     /// Abstraction layer between controller and EF Core for more concise code
     /// </summary>
     /// <typeparam name="T">Entity class</typeparam>
-    public interface IRepository<T> where T : class, IEntity {
+    public interface IRepository<T> where T : class {
         
         /// <summary>
         /// Query all objects
@@ -19,9 +19,9 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <summary>
         /// Get object with specific id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id - int or long</param>
         /// <returns></returns>
-        Task<T> Get(int id);
+        Task<T> Get(object id);
         
         /// <summary>
         /// Add entity to the repository
@@ -49,6 +49,6 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<T> Delete(int id);
+        Task<T> Delete(object id);
     }
 }

@@ -5,22 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class MatchInfoModel : IEntity {
-
-        public int Id { get; set; }
-        
-        public virtual SummonerInfoModel SummonerInfoModel { get; set; }
-        
-        /// <summary>
-        /// Whether the player won
-        /// </summary>
-        public bool Win { get; set; }
+    public class MatchInfoModel {
 
         /// <summary>
-        /// Id of the team - blue or red
-        /// Legal values: 100 === blue, 200 === red
+        /// This id is derived from riot api and is not auto incremented
         /// </summary>
-        public int TeamId { get; set; }
+        public long Id { get; set; }
+        
+        /// <summary>
+        /// M:N relation - several summoners can have the same game
+        /// </summary>
+        public virtual ICollection<MatchInfoSummonerInfo> SummonerInfoList { get; set; }
 
         /// <summary>
         /// List of all bans
@@ -34,6 +29,5 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
 
         public virtual IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
 
-        public override string ToString() => $"Win={Win} TeamId={TeamId} PlayTime={PlayTime}";
     }
 }

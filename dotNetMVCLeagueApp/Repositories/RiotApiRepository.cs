@@ -88,6 +88,7 @@ namespace dotNetMVCLeagueApp.Repositories {
 
         private MatchInfoModel MapToMatchInfo(Match match) {
             var result = mapper.Map<MatchInfoModel>(match); // shallow map from Match to MatchInfo object
+            result.Id = match.GameId; // Set Id
             logger.LogDebug(result.ToString());
 
             // Map nested objects - team stats and players
