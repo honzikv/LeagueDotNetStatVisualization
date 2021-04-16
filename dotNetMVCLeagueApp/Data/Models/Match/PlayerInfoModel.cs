@@ -22,6 +22,8 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public string Role { get; set; }
 
         public string Lane { get; set; }
+        
+        public int ChampionId { get; set; }
 
         public double? CsPerMinute { get; set; }
 

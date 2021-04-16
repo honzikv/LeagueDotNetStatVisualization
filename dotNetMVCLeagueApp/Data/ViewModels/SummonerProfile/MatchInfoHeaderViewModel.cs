@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
@@ -15,10 +16,16 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         public int TeamId { get; set; }
         
         /// <summary>
-        /// Whether the player won
+        /// Date the game was played
         /// </summary>
         [NotNull]
-        public bool Win { get; set; }
+        public DateTime PlayTime { get; set; }
+        
+        /// <summary>
+        /// Zdali hrac vyhral, prohral popr. remake
+        /// </summary>
+        [NotNull]
+        public string Win { get; set; }
         
         /// <summary>
         /// Type of the queue - blind pick, draft pick, ranked solo and ranked flex
@@ -69,7 +76,7 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         /// Vision score
         /// </summary>
         [NotNull]
-        public int VisionScore { get; set; }
+        public long VisionScore { get; set; }
         
         /// <summary>
         /// Primary rune Id

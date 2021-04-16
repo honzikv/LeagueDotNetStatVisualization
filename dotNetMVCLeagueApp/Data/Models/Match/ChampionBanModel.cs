@@ -3,23 +3,24 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
     public class ChampionBanModel {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// Id of the champion
+        /// Id postavy
         /// </summary>
         public int ChampionId { get; set; }
 
         /// <summary>
-        /// Turn in the draft (unused)
+        /// Turn v draftu (nepouzito)
         /// </summary>
         public int PickTurn { get; set; }
 
         /// <summary>
-        /// Either 100 - for blue, or 200 - for red
+        /// 100 pro modrou, 200 pro cervenou
         /// </summary>
         public int TeamId { get; set; }
 
+        // Reference na TeamStatsInfoModel
         [Required] public virtual TeamStatsInfoModel TeamStatsInfoModel { get; set; }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
     public class TeamStatsInfoModel {
         public int Id { get; set; }
 
-        public virtual MatchInfoModel MatchInfo { get; set; }
+        [Required] public virtual MatchInfoModel MatchInfo { get; set; }
 
         public virtual IEnumerable<ChampionBanModel> Bans { get; set; }
 

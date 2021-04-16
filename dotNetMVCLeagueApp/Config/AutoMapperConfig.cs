@@ -2,6 +2,7 @@
 using AutoMapper;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile;
 using MingweiSamuel.Camille.LeagueV4;
 using MingweiSamuel.Camille.MatchV4;
 using Participant = MingweiSamuel.Camille.MatchV4.Participant;
@@ -12,7 +13,7 @@ namespace dotNetMVCLeagueApp.Config {
     /// </summary>
     public class AutoMapperConfig : Profile {
         public AutoMapperConfig() {
-            // Map long to date time
+            // Mapping long na DateTime
             CreateMap<long, DateTime>().ConvertUsing<TicksToDateTimeConverter>();
                 
             // Mapping from -> to
@@ -24,6 +25,7 @@ namespace dotNetMVCLeagueApp.Config {
             CreateMap<TeamStats, TeamStatsInfoModel>();
             CreateMap<Participant, PlayerInfoModel>();
             CreateMap<ParticipantStats, PlayerStatsModel>();
+            CreateMap<MatchInfoModel, MatchInfoHeaderViewModel>();
         }
     }
 

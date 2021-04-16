@@ -71,10 +71,11 @@ namespace dotNetMVCLeagueApp.Services {
             // to the specific game (games do not update so only adding the summoner is necessary)
             var tasks = new List<Task<MatchInfoModel>>(games.Count);
             foreach (var game in games) {
-                tasks.Add(AddOrUpdateMatchInfo(summoner, game));
+                tasks.Add(AddOrUpdateMatchInfo(summoner, game)); // for each game either add it to the database or
+                // update the join table MatchInfoSummonerInfo
             }
 
-            var result = await Task.WhenAll(tasks);
+            var result = await Task.WhenAll(tasks); // wait until all tasks are done
             return result.ToList();
         }
     }

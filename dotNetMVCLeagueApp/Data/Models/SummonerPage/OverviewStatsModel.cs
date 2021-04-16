@@ -6,34 +6,34 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         public int Id { get; set; }
 
         /// <summary>
-        /// Number of games won
+        /// Pocet vyhranych her
         /// </summary>
         public int GamesWon { get; set; }
 
         /// <summary>
-        /// Number of games lost
+        /// Pocet prohranych her
         /// </summary>
         public int GamesLost { get; set; }
 
         /// <summary>
-        /// Number of games that were remade
+        /// Pocet her, ktere byly "remake" - tzn spustily se ale nedohraly
         /// </summary>
         public int NumberOfRemakes { get; set; }
 
         /// <summary>
-        /// Games won / Games lost
+        /// Pocet vyhranych / prohranym hram
         /// </summary>
         public double Winrate { get; set; }
 
         /// <summary>
-        /// The most played position throughout all displayed games
+        /// Primarni pozice hrace - TOP, MID, JUNGLE, ADC, SUP
         /// </summary>
         public int PrimaryPosition { get; set; }
 
         /// <summary>
-        /// The second most played position throughout all displayed games
+        /// Sekundarni pozice hrace (null pokud je 100% her primarnich)
         /// </summary>
-        public int SecondaryPosition { get; set; }
+        public int? SecondaryPosition { get; set; }
 
     }
 }

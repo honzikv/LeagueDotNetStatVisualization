@@ -8,25 +8,38 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     public class MatchInfoModel {
 
         /// <summary>
-        /// This id is derived from riot api and is not auto incremented
+        /// Toto Id je ziskano z Riot API a neni automaticky inkrementovano
         /// </summary>
         public long Id { get; set; }
         
         /// <summary>
-        /// M:N relation - several summoners can have the same game
+        /// Reference na summonery - M : N
         /// </summary>
         public virtual ICollection<MatchInfoSummonerInfo> SummonerInfoList { get; set; }
+        
+        /// <summary>
+        /// Typ hry - blind pick, draft pick, solo queue nebo flex queue
+        /// </summary>
+        public string GameType { get; set; }
+        
+        /// <summary>
+        /// Jak dlouho hra trvala
+        /// </summary>
+        public long GameDuration { get; set; }
 
         /// <summary>
-        /// List of all bans
+        /// Seznam vsech banu postav
         /// </summary>
         public virtual IEnumerable<TeamStatsInfoModel> Teams { get; set; }
 
         /// <summary>
-        /// Date and time when the game was played
+        /// Cas, kdy se hra hrala
         /// </summary>
         public DateTime PlayTime { get; set; }
 
+        /// <summary>
+        /// Reference na hrace
+        /// </summary>
         public virtual IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
 
     }
