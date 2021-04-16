@@ -25,7 +25,7 @@ namespace dotNetMVCLeagueApp.Repositories {
             .Select(t => t.t.item);
     }
 
-    public abstract class EfCoreRepository<TEntity, TContext> : IRepository<TEntity>
+    public abstract class EfCoreEntityRepository<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : class
         where TContext : DbContext {
         /// <summary>
@@ -39,7 +39,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// The constructor may only be inherited by child classes
         /// </summary>
         /// <param name="leagueDbContext">reference for dependency injection</param>
-        protected EfCoreRepository(TContext leagueDbContext) {
+        protected EfCoreEntityRepository(TContext leagueDbContext) {
             this.LeagueDbContext = leagueDbContext;
         }
 

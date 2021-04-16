@@ -1,5 +1,6 @@
 ﻿using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Data {
@@ -11,14 +12,14 @@ namespace dotNetMVCLeagueApp.Data {
             : base(options) {
         }
 
-        // Summoner Page
         public DbSet<SummonerInfoModel> SummonerInfoModels { get; set; }
 
         public DbSet<QueueInfoModel> QueueInfoModels { get; set; }
+        
+        public DbSet<User> Users { get; set; }
+        
+        public DbSet<MatchNote> MatchNotes { get; set; }
 
-        public DbSet<OverviewStatsModel> OverviewStatsModels;
-
-        // Match
         public DbSet<MatchInfoModel> MatchInfoModels { get; set; }
 
         public DbSet<ChampionBanModel> ChampionBanModels { get; set; }
@@ -26,11 +27,12 @@ namespace dotNetMVCLeagueApp.Data {
         public DbSet<PlayerInfoModel> PlayerInfoModels { get; set; }
 
         public DbSet<TeamStatsInfoModel> TeamStatsInfoModels { get; set; }
+        
+        public DbSet<PlayerStatsModel> PlayerStatsModels { get; set; }
         public DbSet<MatchInfoSummonerInfo> MatchInfoSummonerInfos { get; set; }
 
         // Implementace M : N pro summoner a match
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            // Override to implement M : N for MatchInfo and SummonerInfo model objects
             modelBuilder.Entity<MatchInfoSummonerInfo>()
                 .HasKey(matchSummoner => new {
                     matchSummoner.MatchInfoModelId,

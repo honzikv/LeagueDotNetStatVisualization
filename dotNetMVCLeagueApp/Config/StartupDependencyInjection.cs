@@ -13,19 +13,18 @@ namespace dotNetMVCLeagueApp {
             services.AddSingleton(_ => RiotApi.NewInstance(
                 apiKey: Configuration["RiotApiKey"]
             ));
-
-            // User can update once per minute (can be changed in the appsettings.json config file)
-            services.AddSingleton(_ => new RiotApiUpdateConfig(
-                        TimeSpan.FromMinutes(Convert.ToInt32(Configuration["SummonerUpdateMinutes"]))));
-
-            // Add repositories
-            services.AddScoped<RiotApiRepository>();
-            services.AddScoped<SummonerInfoRepository>();
-            services.AddScoped<MatchInfoRepository>();
             
-            // Add services
-            services.AddScoped<SummonerInfoService>();
-            services.AddScoped<MatchHistoryService>();
+            services.AddSingleton(_ => new RiotApiUpdateConfig(TimeSpan.FromMinutes(1)));
+
+            // Repozitare
+            services.AddScoped<RiotApiRepository>();
+            services.AddScoped<SummonerInfoEntityRepository>();
+            services.AddScoped<MatchInfoEntityRepository>();
+            
+            // Services - wrapper nad repozitari, ktery se vola z controlleru
+            services.AddScoped<SummonerInfoService>(); // Pro info o hracich
+            services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
+            services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
         }
     }
 }

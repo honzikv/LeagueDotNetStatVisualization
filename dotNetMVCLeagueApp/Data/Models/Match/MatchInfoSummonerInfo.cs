@@ -4,7 +4,7 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
-    /// M : N table for connecting matches and summoners
+    /// M : N tabulka pro propojeni summoner info a match info
     /// </summary>
     public class MatchInfoSummonerInfo {
         
@@ -12,8 +12,8 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         
         public long MatchInfoModelId { get; set; }
         
-        public SummonerInfoModel SummonerInfo { get; set; }
+        public virtual SummonerInfoModel SummonerInfo { get; set; }
         
-        public MatchInfoModel MatchInfo { get; set; }
+        public virtual MatchInfoModel MatchInfo { get; set; }
     }
 }

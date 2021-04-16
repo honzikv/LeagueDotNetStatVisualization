@@ -6,7 +6,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
 
         [Required] public virtual MatchInfoModel MatchInfoModel { get; set; }
         [Required] public virtual PlayerStatsModel PlayerStatsModel { get; set; }
-
+        
         public string SummonerName { get; set; }
 
         public string SummonerId { get; set; }

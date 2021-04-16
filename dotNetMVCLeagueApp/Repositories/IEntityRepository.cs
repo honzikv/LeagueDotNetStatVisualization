@@ -8,7 +8,7 @@ namespace dotNetMVCLeagueApp.Repositories {
     /// Abstraction layer between controller and EF Core for more concise code
     /// </summary>
     /// <typeparam name="T">Entity class</typeparam>
-    public interface IRepository<T> where T : class {
+    public interface IEntityRepository<T> where T : class {
         
         /// <summary>
         /// Query all objects

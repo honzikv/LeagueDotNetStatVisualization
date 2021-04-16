@@ -14,7 +14,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         public string QueueType { get; set; }
 
         /// <summary>
-        /// I.e. Diamond, Gold, Platinum ...
+        /// i.e. Diamond, Gold, Platinum ...
         /// </summary>
         public string Tier { get; set; }
 

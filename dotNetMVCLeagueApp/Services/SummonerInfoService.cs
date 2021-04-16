@@ -15,19 +15,18 @@ namespace dotNetMVCLeagueApp.Services {
     /// database
     /// </summary>
     public class SummonerInfoService {
-        private readonly SummonerInfoRepository summonerInfoRepository;
+        private readonly SummonerInfoEntityRepository summonerInfoEntityRepository;
         private readonly RiotApiRepository riotApiRepository;
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
 
         private readonly ILogger<SummonerInfoService> logger;
 
         public SummonerInfoService(
-            SummonerInfoRepository summonerInfoRepository,
+            SummonerInfoEntityRepository summonerInfoEntityRepository,
             RiotApiRepository riotApiRepository,
-            RiotApiUpdateConfig riotApiUpdateConfig,
             ILogger<SummonerInfoService> logger
         ) {
-            this.summonerInfoRepository = summonerInfoRepository;
+            this.summonerInfoEntityRepository = summonerInfoEntityRepository;
             this.riotApiRepository = riotApiRepository;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
             this.logger = logger;
@@ -35,15 +34,16 @@ namespace dotNetMVCLeagueApp.Services {
 
         /// <summary>
         /// Obtains summoner info or throws an ActionNotSuccessfulException which means that the summoner does not exist
+        /// Ziska summoner info nebo vyhodi ActionNotSuccessfulException coz znamena ze uzivatel neexistuje
         /// </summary>
-        /// <param name="summonerName"></param>
-        /// <param name="region"></param>
+        /// <param name="summonerName">Uzivatelske jmeno</param>
+        /// <param name="region">Server, pro ktery hledame uzivatele</param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
             logger.LogDebug($"Fetching summoner info for {region.Key} {summonerName}");
             // First, query the information from the database
-            var summonerInfo = await summonerInfoRepository.GetSummonerByUsernameAndRegion(summonerName, region);
+            var summonerInfo = await summonerInfoEntityRepository.GetSummonerByUsernameAndRegion(summonerName, region);
 
             // If it is not null, return
             if (summonerInfo is not null) {
@@ -62,7 +62,7 @@ namespace dotNetMVCLeagueApp.Services {
             // if its not null also call api for ranked stats
             summonerInfo.QueueInfo =
                 await riotApiRepository.GetQueueInfoList(summonerInfo.EncryptedSummonerId, region);
-            return await summonerInfoRepository.Add(summonerInfo); // Save summonerInfoModel and return it
+            return await summonerInfoEntityRepository.Add(summonerInfo); // Save summonerInfoModel and return it
         }
 
         /// <summary>
@@ -84,15 +84,15 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         public async Task<SummonerInfoModel> UpdateSummonerInfo(int summonerId) {
-            var oldSummonerInfo = await summonerInfoRepository.Get(summonerId);
+            var oldSummonerInfo = await summonerInfoEntityRepository.Get(summonerId);
             if (oldSummonerInfo == null) {
                 throw new ActionNotSuccessfulException("Error, user does not exist");
             }
 
-            // Calculate diff to determine if the profile can be updated
+            // Vypocet, zda-li lze profil aktualizovat
             var diff = DateTime.Now - oldSummonerInfo.LastUpdate;
 
-            // If not, throw an exception with corresponding message
+            // Pokud ne, vyhodime exception
             if (diff < riotApiUpdateConfig.MinUpdateTimeSpan) {
                 throw new ActionNotSuccessfulException($"Error, user was updated {diff.Seconds} seconds ago," +
                                                        "it can be updated again " +
@@ -100,21 +100,21 @@ namespace dotNetMVCLeagueApp.Services {
                                                        "seconds");
             }
 
-            // Get updated summoner info from Riot api
+            // Ziskani aktualizovaneho profilu z Riot api
             var updatedSummonerInfo =
                 await riotApiRepository.GetSummonerInfo(oldSummonerInfo.Name, Region.Get(oldSummonerInfo.Region));
 
-            // Get updated queue info from Riot api
+            // Ziskani queue info pro uzivatele
             var updatedQueueInfo =
                 await riotApiRepository.GetQueueInfoList(oldSummonerInfo.EncryptedSummonerId,
                     Region.Get(oldSummonerInfo.Region));
 
-            // Set Ids for queue info and summoner model
+            // Aktualizace v db
             UpdateQueueInfoList(oldSummonerInfo.QueueInfo, updatedQueueInfo);
             updatedSummonerInfo.Id = oldSummonerInfo.Id;
             updatedSummonerInfo.QueueInfo = updatedQueueInfo; // assign updated queue info
 
-            return await summonerInfoRepository.Add(updatedSummonerInfo);
+            return await summonerInfoEntityRepository.Add(updatedSummonerInfo);
         }
     }
 }

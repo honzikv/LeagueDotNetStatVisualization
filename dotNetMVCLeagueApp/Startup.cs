@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Text.Json.Serialization;
 using dotNetMVCLeagueApp.Config;
 using Microsoft.AspNetCore.Builder;
@@ -5,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using dotNetMVCLeagueApp.Data;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,26 +24,32 @@ namespace dotNetMVCLeagueApp {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            // Register database context linked to the local SQLite database
+            // Vytvoreni DbContextu
             services.AddDbContext<LeagueDbContext>(options => {
-                options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString"));
+                options.UseSqlite(Configuration.GetConnectionString("LeagueStatsDbSqliteConnString"));
                 options.UseLazyLoadingProxies();
             });
+
+            // Puvodni SQL Express server
+            // services.AddDbContext<LeagueDbContext>(options => {
+            //     options.UseSqlServer(Configuration.GetConnectionString("LeagueStatsDbConnectionString"));
+            //     options.UseLazyLoadingProxies();
+            // });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<IdentityUser>(options =>
                     options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LeagueDbContext>();
-            
-            // Add automapper service
+
+            // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
-            
-            // Add MVC
+
+            // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
             services.AddControllersWithViews().AddJsonOptions(config => {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
-            
-            // Configure user defined services such as repositories and service objects
+
+            // Konfigurace uzivatelskeho dependency injection pro rpehlednost
             ConfigureUserServices(services);
         }
 

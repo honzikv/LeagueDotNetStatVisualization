@@ -20,7 +20,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// </summary>
         public int TeamId { get; set; }
 
-        // Reference na TeamStatsInfoModel
+        /// <summary>
+        /// Reference na TeamStatsInfoModel
+        /// </summary>
         [Required] public virtual TeamStatsInfoModel TeamStatsInfoModel { get; set; }
     }
 }
