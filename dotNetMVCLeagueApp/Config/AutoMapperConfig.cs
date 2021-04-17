@@ -21,7 +21,6 @@ namespace dotNetMVCLeagueApp.Config {
             CreateMap<Match, MatchInfoModel>()
                 .ForMember(info => info.PlayTime,
                     opt => opt.MapFrom(src => src.GameCreation));
-            CreateMap<TeamBans, ChampionBanModel>();
             CreateMap<TeamStats, TeamStatsInfoModel>();
             CreateMap<Participant, PlayerInfoModel>();
             CreateMap<ParticipantStats, PlayerStatsModel>();

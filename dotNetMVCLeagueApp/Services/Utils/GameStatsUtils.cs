@@ -61,7 +61,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <summary>
         /// Aktualizuje slovnik s frekvencemi roli - pricte 1 pro spravnou roli
         /// </summary>
-        /// <param name="playerStats"></param>
+        /// <param name="playerInfo">Info o hraci</param>
         /// <param name="roles"></param>
         public static void UpdateRoleFrequency(PlayerInfoModel playerInfo, Dictionary<string, int> roles) {
             var role = playerInfo.Role;

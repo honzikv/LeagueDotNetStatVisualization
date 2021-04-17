@@ -36,13 +36,22 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         /// <summary>
+        /// Synchronizovana verze metody pro controller aby nemusel volat GetAwaiter a GetResult
+        /// </summary>
+        /// <param name="summonerName">Uzivatelske jmeno</param>
+        /// <param name="region">Server, pro ktery hledame uzivatele</param>
+        /// <returns></returns>
+        public SummonerInfoModel GetSummonerInfoAsync(string summonerName, Region region) =>
+            GetSummonerInfo(summonerName, region).GetAwaiter().GetResult();
+
+        /// <summary>
         /// Ziska summoner info nebo vyhodi ActionNotSuccessfulException coz znamena ze uzivatel neexistuje
         /// </summary>
         /// <param name="summonerName">Uzivatelske jmeno</param>
         /// <param name="region">Server, pro ktery hledame uzivatele</param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
+        private async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
             logger.LogDebug($"Fetching summoner info for {region.Key} {summonerName}");
             // Nejprve provedeme query do db zda-li jsme summonera uz nekdy predtim nenacitali
             var summonerInfo = await summonerInfoEntityRepository.GetSummonerByUsernameAndRegion(summonerName, region);
@@ -68,31 +77,20 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         /// <summary>
-        /// Aktualizuje queue info seznam spolu s predchozimi id (pokud existuji)
+        /// Synchronizace pro controller, aby nemusel volat GetAwaiter a GetResult
         /// </summary>
-        /// <param name="oldQueueInfo">Stary seznam</param>
-        /// <param name="newQueueInfo">Novy seznam</param>
-        private void UpdateQueueInfoList(ICollection<QueueInfoModel> oldQueueInfo,
-            ICollection<QueueInfoModel> newQueueInfo) {
-            foreach (var queueInfo in newQueueInfo) {
-                
-                var existingQueueInfo =
-                    oldQueueInfo.FirstOrDefault(info => info.QueueType == queueInfo.QueueType);
-
-                // K aktualizovane hodnote priradime id pokud neni null
-                if (existingQueueInfo is not null) {
-                    queueInfo.Id = existingQueueInfo.Id;
-                }
-            }
-        }
-
+        /// <param name="summonerId"></param>
+        /// <returns></returns>
+        public SummonerInfoModel UpdateSummonerInfoAsync(int summonerId) =>
+            UpdateSummonerInfo(summonerId).GetAwaiter().GetResult();
+        
         /// <summary>
         /// Aktualizuje summoner info z Riot api
         /// </summary>
         /// <param name="summonerId"></param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public async Task<SummonerInfoModel> UpdateSummonerInfo(int summonerId) {
+        private async Task<SummonerInfoModel> UpdateSummonerInfo(int summonerId) {
             // Tracked entita z db, ktera se bude updatovat
             var dbSummonerInfo = await summonerInfoEntityRepository.Get(summonerId);
             if (dbSummonerInfo == null) {

@@ -12,7 +12,9 @@ namespace dotNetMVCLeagueApp.Repositories {
 
         public async Task<SummonerInfoModel> GetSummonerByUsernameAndRegion(string username, Region region) {
             return await LeagueDbContext.SummonerInfoModels.FirstOrDefaultAsync(summonerInfo =>
-                summonerInfo.Name == username && summonerInfo.Region == region.Key);
+                // Z nejakeho duvodu neslo String.Equals s ignore capitalization
+                summonerInfo.Name.ToLower() == username.ToLower() &&
+                summonerInfo.Region == region.Key);
         }
     }
 }

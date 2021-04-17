@@ -8,8 +8,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
 
         [Required] public virtual MatchInfoModel MatchInfo { get; set; }
 
-        public virtual IEnumerable<ChampionBanModel> Bans { get; set; }
-
         public int TeamId { get; set; }
 
         public string Win { get; set; }

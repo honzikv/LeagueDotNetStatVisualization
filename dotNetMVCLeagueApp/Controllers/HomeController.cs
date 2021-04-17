@@ -21,11 +21,6 @@ namespace dotNetMVCLeagueApp.Controllers {
             return View();
         }
 
-        public SummonerInfoModel User(string username) {
-            var result = summonerInfoService.GetSummonerInfo(username, Region.EUW);
-            return result.GetAwaiter().GetResult();
-        }
-
         public IActionResult Privacy() {
             return View();
         }

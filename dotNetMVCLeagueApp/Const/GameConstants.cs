@@ -28,7 +28,7 @@ namespace dotNetMVCLeagueApp.Const {
         public static readonly string LANE_JG = "JUNGLE";
 
         public static readonly string ROLE_MID = "SOLO";
-        public static readonly string LANE_MID = "SOLO";
+        public static readonly string LANE_MID = "MIDDLE";
 
         public static readonly string TOP = "TOP";
         public static readonly string MID = "MID";

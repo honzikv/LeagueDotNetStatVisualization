@@ -9,25 +9,22 @@ namespace dotNetMVCLeagueApp.Data {
     /// </summary>
     public class LeagueDbContext : DbContext {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
-            : base(options) {
-        }
+            : base(options) { }
 
         public DbSet<SummonerInfoModel> SummonerInfoModels { get; set; }
 
         public DbSet<QueueInfoModel> QueueInfoModels { get; set; }
-        
-        public DbSet<User> Users { get; set; }
-        
-        public DbSet<MatchNote> MatchNotes { get; set; }
+
+        public DbSet<UserModel> Users { get; set; }
+
+        public DbSet<ProfileCardModel> MatchNotes { get; set; }
 
         public DbSet<MatchInfoModel> MatchInfoModels { get; set; }
-
-        public DbSet<ChampionBanModel> ChampionBanModels { get; set; }
 
         public DbSet<PlayerInfoModel> PlayerInfoModels { get; set; }
 
         public DbSet<TeamStatsInfoModel> TeamStatsInfoModels { get; set; }
-        
+
         public DbSet<PlayerStatsModel> PlayerStatsModels { get; set; }
         public DbSet<MatchInfoSummonerInfo> MatchInfoSummonerInfos { get; set; }
 
@@ -43,7 +40,11 @@ namespace dotNetMVCLeagueApp.Data {
                 .HasOne(matchSummoner => matchSummoner.MatchInfo)
                 .WithMany(matchInfo => matchInfo.SummonerInfoList)
                 .HasForeignKey(matchInfo => matchInfo.MatchInfoModelId);
-            
+
+            // Pouze jeden uzivatel muze mit pripojeny dany ucet
+            modelBuilder.Entity<UserModel>()
+                .HasIndex(user => user.SummonerInfo)
+                .IsUnique();
         }
     }
 }

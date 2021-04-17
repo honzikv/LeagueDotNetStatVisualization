@@ -14,7 +14,8 @@ namespace dotNetMVCLeagueApp {
                 apiKey: Configuration["RiotApiKey"]
             ));
             
-            services.AddSingleton(_ => new RiotApiUpdateConfig(TimeSpan.FromMinutes(1)));
+            // TODO: momentalne je na 0, nasledne bude jeste zmeneno
+            services.AddSingleton(_ => new RiotApiUpdateConfig(TimeSpan.FromMinutes(0)));
 
             // Repozitare
             services.AddScoped<RiotApiRepository>();

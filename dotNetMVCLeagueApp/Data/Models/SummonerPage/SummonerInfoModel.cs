@@ -2,56 +2,62 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using dotNetMVCLeagueApp.Data.Models.User;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
     public class SummonerInfoModel {
-        /// <summary>
-        /// Primary key
-        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// In-game name
+        /// Jmeno ve hre
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Last update of this entity
+        /// Posledni aktualizace entity
         /// </summary>
         public DateTime LastUpdate { get; set; }
 
         /// <summary>
-        /// Encrypted summoner id which is required to query data about user
+        /// Encrypted summoner id pro query dat
         /// </summary>
         [MaxLength(63)]
         public String EncryptedSummonerId { get; set; }
 
         /// <summary>
-        /// Encrypted account id which is required to query data about matches
+        /// Encrypted account id pro query dat o zapasech
         /// </summary>
         public String EncryptedAccountId { get; set; }
 
         /// <summary>
-        /// Region of the player
+        /// Region hrace - EUW, NA, ...
         /// </summary>
         public string Region { get; set; }
 
         /// <summary>
-        /// In-game level
+        /// In-game uroven
         /// </summary>
         public long SummonerLevel { get; set; }
 
         /// <summary>
-        /// Profile icon id for correct image
+        /// Id ikonky
         /// </summary>
         public int ProfileIconId { get; set; }
 
         /// <summary>
-        /// All objects with (ranked) information for given queue (solo queue, flex queue, ... )
+        /// Reference na queue info - pro jednotlive herni mody
         /// </summary>
         public virtual ICollection<QueueInfoModel> QueueInfo { get; set; }
 
-        public override string ToString() => $"{Name} {EncryptedSummonerId} {Region} {SummonerLevel} {ProfileIconId}";
+        /// <summary>
+        /// Pro debug
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() =>
+            $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(LastUpdate)}: {LastUpdate}, " +
+            $"{nameof(EncryptedSummonerId)}: {EncryptedSummonerId}, {nameof(EncryptedAccountId)}: " +
+            $"{EncryptedAccountId}, {nameof(Region)}: {Region}, {nameof(SummonerLevel)}: {SummonerLevel}, " +
+            $"{nameof(ProfileIconId)}: {ProfileIconId}, {nameof(QueueInfo)}: {QueueInfo}";
 
         /// <summary>
         /// Provede update z novejsiho objektu ziskaneho z api

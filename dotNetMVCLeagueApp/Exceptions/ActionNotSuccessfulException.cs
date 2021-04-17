@@ -2,7 +2,7 @@
 
 namespace dotNetMVCLeagueApp.Exceptions {
     /// <summary>
-    /// Simple exception that is used when an operation did not succeed
+    /// Vyhazuje se vetsinou v Service kdyz dojde k nejake chybe
     /// </summary>
     public class ActionNotSuccessfulException : ApplicationException {
         public ActionNotSuccessfulException(string message) : base(message) { }

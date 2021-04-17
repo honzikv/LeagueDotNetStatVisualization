@@ -25,8 +25,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
 
         public int Item5 { get; set; }
 
-        public int LargestMultiKill { get; set; }
-
         public int GoldEarned { get; set; }
 
         public bool FirstInhibitorKill { get; set; }

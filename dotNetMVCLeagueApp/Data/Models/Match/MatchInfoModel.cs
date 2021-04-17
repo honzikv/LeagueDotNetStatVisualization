@@ -9,12 +9,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// Toto Id je ziskano z Riot API a neni automaticky inkrementovano
         /// </summary>
         public long Id { get; set; }
-        
-        /// <summary>
-        /// Poznamky k dane hre
-        /// </summary>
-        public virtual IEnumerable<MatchNote> MatchNotes { get; set; }
-        
+
         /// <summary>
         /// Reference na summonery - M : N
         /// </summary>

@@ -87,26 +87,18 @@ namespace dotNetMVCLeagueApp.Repositories {
         }
 
         private MatchInfoModel MapToMatchInfo(Match match) {
-            var result = mapper.Map<MatchInfoModel>(match); // shallow map from Match to MatchInfo object
+            var result = mapper.Map<MatchInfoModel>(match); // mapping Match na MatchInfoModel
             result.Id = match.GameId; // Set Id
             logger.LogDebug(result.ToString());
 
-            // Map nested objects - team stats and players
+            // Mapping vnorenych objektu - tymove statistiky a hraci
             var teams = new List<TeamStatsInfoModel>();
             // Map TeamStatsInfoModel objects
             foreach (var team in match.Teams) {
-                var teamStatsInfo = mapper.Map<TeamStatsInfoModel>(team);
-
-                var bans = new List<ChampionBanModel>(team.Bans.Length);
-                foreach (var ban in team.Bans) {
-                    bans.Add(mapper.Map<ChampionBanModel>(ban));
-                }
-                
-                teamStatsInfo.Bans = bans;
-                teams.Add(teamStatsInfo);
+                teams.Add(mapper.Map<TeamStatsInfoModel>(team));
             }
 
-            // Map participants
+            // Mapping participant objektu na PlayeryInfoModel objekty
             var players = new List<PlayerInfoModel>();
             foreach (var participantIdentity in match.ParticipantIdentities) {
                 var playerInfo = MapParticipantToPlayer(match, participantIdentity);
@@ -134,11 +126,6 @@ namespace dotNetMVCLeagueApp.Repositories {
             // Get CsPerMinute, GoldDiffAt10, CsDiffPer10 and role from timeline
             var timeline = participant.Timeline;
 
-            // Calculate cs per minute if present
-            if (timeline.CreepsPerMinDeltas.Count > 0) {
-                playerInfo.CsPerMinute = timeline.CreepsPerMinDeltas.Values.Sum() /
-                                         timeline.CreepsPerMinDeltas.Values.Count;
-            }
 
             playerInfo.Role = timeline.Role;
             playerInfo.Lane = timeline.Lane;

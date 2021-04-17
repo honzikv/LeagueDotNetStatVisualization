@@ -13,12 +13,21 @@ namespace dotNetMVCLeagueApp.Services {
     /// Sluzba pro vypocty statistik pro zobrazeni na strance
     /// </summary>
     public class SummonerProfileStatsService {
-
         private readonly ILogger<SummonerProfileStatsService> logger;
 
         public SummonerProfileStatsService(ILogger<SummonerProfileStatsService> logger) {
             this.logger = logger;
         }
+
+        /// <summary>
+        /// Funkce, ktera provede GetMatchInfoHeader() pro seznam se zapasy misto jednoho objektu
+        /// </summary>
+        /// <param name="summonerInfo"></param>
+        /// <param name="matchInfoList"></param>
+        /// <returns></returns>
+        public List<MatchInfoHeaderViewModel> GetMatchInfoHeaderList(SummonerInfoModel summonerInfo,
+            List<MatchInfoModel> matchInfoList) =>
+            matchInfoList.Select(matchInfo => GetMatchInfoHeader(summonerInfo, matchInfo)).ToList();
 
         public MatchInfoHeaderViewModel GetMatchInfoHeader(SummonerInfoModel summonerInfo,
             MatchInfoModel matchInfo) {
@@ -54,6 +63,12 @@ namespace dotNetMVCLeagueApp.Services {
             };
         }
 
+        /// <summary>
+        /// Vypocte statistiky pro dany seznam her pro daneho hrace
+        /// </summary>
+        /// <param name="matchInfoList">Seznam her, pro ktere se vypoctou statistiky</param>
+        /// <param name="summonerInfo">Info o hraci v danych hrach - pro nej se statistiky pocitaji</param>
+        /// <returns></returns>
         public GameListStatsViewModel GetGameListStatsViewModel(List<MatchInfoModel> matchInfoList,
             SummonerInfoModel summonerInfo) {
             var totals = new StatTotals();
@@ -65,11 +80,20 @@ namespace dotNetMVCLeagueApp.Services {
 
             GameStatsUtils.CalculateAverages(result, totals);
 
+            logger.LogDebug($"GameStats calculated, result: {result}");
             return result;
         }
 
+        /// <summary>
+        /// Vypocte celkove pocty pro dane metriky a ulozi je do StatsTotals objektu
+        /// </summary>
+        /// <param name="summonerInfo">Reference na summoner info</param>
+        /// <param name="matchInfo">Reference na match info</param>
+        /// <param name="gameListStats">Statistiky pro seznam her</param>
+        /// <param name="totals">Objekt s celkovymi pocty</param>
+        /// <exception cref="ActionNotSuccessfulException">Pokud je hrac null nebo je hracuv team null</exception>
         private void CalculateTotals(SummonerInfoModel summonerInfo, MatchInfoModel matchInfo,
-            GameListStatsViewModel result, StatTotals totals) {
+            GameListStatsViewModel gameListStats, StatTotals totals) {
             var playerInfo = matchInfo.PlayerInfoList
                 .FirstOrDefault(player => player.SummonerId == summonerInfo.EncryptedSummonerId);
 
@@ -83,26 +107,33 @@ namespace dotNetMVCLeagueApp.Services {
             }
 
             var playerStats = playerInfo.PlayerStatsModel;
-
+            GameStatsUtils.UpdateRoleFrequency(playerInfo, totals.Roles); // Aktualizace role je i pro remake
+            
+            logger.LogDebug("Role frequency update:");
+            foreach(var role in totals.Roles) { logger.LogDebug($"{role.Key}: {role.Value}"); }
+            
             if (GameStatsUtils.IsRemake(matchInfo.GameDuration)) {
-                result.Remakes += 1;
-                GameStatsUtils.UpdateRoleFrequency(playerInfo, totals.Roles); // Aktualizace role je i pro remake
+                logger.LogDebug("Found a remake game, increasing number of remakes");
+                gameListStats.Remakes += 1;
                 return;
             }
 
             // Jinak pricteme win / loss podle stringu
             if (playerTeam.Win == GameConstants.Win) {
-                result.GamesWon += 1;
+                logger.LogDebug("Found win");
+                gameListStats.GamesWon += 1;
             }
             else {
-                result.GamesLost += 1;
+                logger.LogDebug("Found loss");
+                gameListStats.GamesLost += 1;
             }
 
             // Celkovy pocet pro zabiti, smrti a asistence
             totals.TotalKills += playerStats.Kills;
             totals.TotalAssists += playerStats.Assists;
             totals.TotalDeaths += playerStats.Deaths;
-            
+
+            // Pridani CS (creep score) za minutu do seznamu
             totals.CsPerMinuteList.Add(
                 GameStatsUtils.GetCsPerMinute(playerStats.TotalMinionsKilled, matchInfo.GameDuration));
 
