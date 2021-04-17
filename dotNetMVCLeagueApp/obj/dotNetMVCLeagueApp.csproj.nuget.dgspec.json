@@ -78,9 +78,17 @@
               "target": "Package",
               "version": "[6.0.0-preview.2.21154.2, )"
             },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.9.4, )"
+            },
             "MingweiSamuel.Camille": {
               "target": "Package",
               "version": "[2.7.3-nightly-2021-01-17-519ad84617, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
             }
           },
           "imports": [

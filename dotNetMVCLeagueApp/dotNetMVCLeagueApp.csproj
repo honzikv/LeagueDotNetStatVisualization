@@ -6,6 +6,7 @@
 
     <PropertyGroup>
         <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+        <GenerateProgramFile>false</GenerateProgramFile>
     </PropertyGroup>
     
 <!--    <ItemGroup>-->
@@ -25,12 +26,9 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="MingweiSamuel.Camille" Version="2.7.3-nightly-2021-01-17-519ad84617" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <Folder Include="Tests" />
+        <PackageReference Include="xunit" Version="2.4.1" />
     </ItemGroup>
 
     

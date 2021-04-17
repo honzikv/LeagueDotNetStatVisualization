@@ -1,0 +1,17 @@
+﻿@page
+<div class="text-center">
+    <div class="container-fluid">
+        <h1 class="display-1">User info</h1>
+        <p>Username: @ViewBag.SummonerInfo.Name</p>
+        <p>Level: @ViewBag.SummonerInfo.SummonerLevel</p>
+        <p>LastUpdate: @ViewBag.SummonerInfo.LastUpdate</p>
+        <p>EncryptedSummonerId: @ViewBag.SummonerInfo.EncryptedSummonerId</p>
+        <p>EncryptedAccountId: @ViewBag.SummonerInfo.EncryptedAccountId</p>
+        <p>Region: @ViewBag.SummonerInfo.Region</p>
+        <p>Profile icon id: @ViewBag.SummonerInfo.ProfileIconId</p>
+
+        <a href="/" class="btn btn-primary">Return</a>
+        <a href="/Summoner/MatchHistory?" class="btn btn-primary">Load Last 20 Games</a>
+    </div>
+    
+</div>

@@ -55,6 +55,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="id">id of the entity</param>
         /// <returns>entity object</returns>
         public async Task<TEntity> Get(object id) => await LeagueDbContext.Set<TEntity>().FindAsync(id);
+        
 
         /// <summary>
         /// Add entity to the database
@@ -90,7 +91,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         }
 
         /// <summary>
-        /// Remove entity from the database
+        /// Odstrani entitu z databaze
         /// </summary>
         /// <param name="id">id of the entity</param>
         /// <returns>null if it does not exist or the reference to the deleted entity</returns>
@@ -104,5 +105,6 @@ namespace dotNetMVCLeagueApp.Repositories {
             await LeagueDbContext.SaveChangesAsync();
             return entity;
         }
+        
     }
 }

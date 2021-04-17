@@ -26,7 +26,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public string GameType { get; set; }
         
         /// <summary>
-        /// Jak dlouho hra trvala
+        /// Jak dlouho hra trvala v s
         /// </summary>
         public long GameDuration { get; set; }
 

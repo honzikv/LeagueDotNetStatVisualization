@@ -157,6 +157,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         public async Task<List<MatchInfoModel>>
             GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx, int endIdx) {
             try {
+                logger.LogDebug($"Geting matches for {region.Key} encrypted acc id: {encryptedAccountId}");
                 var matches = await riotApi.MatchV4.GetMatchlistAsync(
                     region: region,
                     encryptedAccountId: encryptedAccountId,
@@ -166,6 +167,7 @@ namespace dotNetMVCLeagueApp.Repositories {
 
                 // If there are no games returned then simply return an empty list
                 if (matches is null) {
+                    logger.LogDebug("Matches are null");
                     return new();
                 }
                 

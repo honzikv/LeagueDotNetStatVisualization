@@ -5,6 +5,14 @@ namespace dotNetMVCLeagueApp.Const {
         public static readonly string Win = "WIN";
 
         public static readonly string Loss = "Fail";
+        
+        public static readonly string DoubleKill = "Double Kill";
+
+        public static readonly string TripleKill = "Triple Kill";
+
+        public static readonly string QuadraKill = "Quadra Kill";
+
+        public static readonly string PentaKill = "Penta Kill";
 
         public static readonly TimeSpan
             GameDurationForRemake = TimeSpan.FromMinutes(4); // do 4 minut se bere jako remake

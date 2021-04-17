@@ -52,5 +52,19 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         public virtual ICollection<QueueInfoModel> QueueInfo { get; set; }
 
         public override string ToString() => $"{Name} {EncryptedSummonerId} {Region} {SummonerLevel} {ProfileIconId}";
+
+        /// <summary>
+        /// Provede update z novejsiho objektu ziskaneho z api
+        /// </summary>
+        /// <param name="apiModel">Objekt z api</param>
+        public void UpdateFromApi(SummonerInfoModel apiModel) {
+            Name = apiModel.Name;
+            LastUpdate = DateTime.Now;
+            EncryptedSummonerId = apiModel.EncryptedSummonerId;
+            EncryptedAccountId = apiModel.EncryptedAccountId;
+            Region = apiModel.Region;
+            SummonerLevel = apiModel.SummonerLevel;
+            ProfileIconId = apiModel.ProfileIconId;
+        }
     }
 }

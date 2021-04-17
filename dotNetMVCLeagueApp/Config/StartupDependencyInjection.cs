@@ -20,6 +20,7 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<RiotApiRepository>();
             services.AddScoped<SummonerInfoEntityRepository>();
             services.AddScoped<MatchInfoEntityRepository>();
+            services.AddScoped<QueueInfoRepository>();
             
             // Services - wrapper nad repozitari, ktery se vola z controlleru
             services.AddScoped<SummonerInfoService>(); // Pro info o hracich

@@ -22,7 +22,7 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         /// <summary>
-        /// Get list of matches for specified summoner
+        /// Ziska seznam zapasu pro daneho uzivatele
         /// </summary>
         /// <param name="summoner">summoner, pro ktereho match list hledame</param>
         /// <param name="numberOfGames">pocet her</param>
@@ -45,8 +45,10 @@ namespace dotNetMVCLeagueApp.Services {
             // Zkusime pridat match info do db pokud jeste nebylo pridano a ziskame vysledek
             var matchInfo = await matchInfoEntityRepository.Get(apiMatchInfo.Id) ??
                             await matchInfoEntityRepository.Add(apiMatchInfo);
+            
+            logger.LogDebug($"Summoner: {summonerInfo}, matchInfo: {matchInfo.Id}");
 
-            // Add link if it does not exist
+            // Pridame link pokud neexistuje
             var matchSummoner = await matchInfoEntityRepository.FindMatchInfoSummonerInfo(matchInfo.Id, summonerInfo.Id);
             if (matchSummoner is null) {
                 await matchInfoEntityRepository.LinkMatchInfoToSummonerInfo(new MatchInfoSummonerInfo {
@@ -68,11 +70,13 @@ namespace dotNetMVCLeagueApp.Services {
         /// <returns></returns>
         public async Task<List<MatchInfoModel>> UpdateGameMatchList(SummonerInfoModel summoner, int numberOfGames) {
             // Await from api
+            logger.LogDebug("Getting games from API");
             var games = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
                 Region.Get(summoner.Region),
                 numberOfGames);
-
             
+            
+            logger.LogDebug("Games from API obtained, updating/adding to db");
             // Nektere zaznamy o hrach uz mohou v databazi existovat, proto misto toho pridame pouze hrace k dane hre
             // aby bylo v DB co nejmene udaju
             var tasks = new List<Task<MatchInfoModel>>(games.Count);
@@ -82,6 +86,7 @@ namespace dotNetMVCLeagueApp.Services {
             }
 
             var result = await Task.WhenAll(tasks); // Pockame dokud nebudou vsechny akce hotove
+            logger.LogDebug("All tasks were awaited, match list is updated and ready to be sent");
             return result.ToList();
         }
     }
