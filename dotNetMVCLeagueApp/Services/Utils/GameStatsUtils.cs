@@ -7,7 +7,6 @@ using dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile;
 
 namespace dotNetMVCLeagueApp.Services.Utils {
     public static class GameStatsUtils {
-        
         /// <summary>
         /// Zjisti nejvetsi killstreak
         /// </summary>
@@ -32,11 +31,15 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <summary>
         /// Jednoducha funkce pro vypocet CS za minutu z game duration a celkoveho cs
         /// </summary>
-        /// <param name="totalCs">Celkovy pocet CS</param>
+        /// <param name="playerStats">Reference na statistiky hrace</param>
         /// <param name="gameDuration">Doba trvani v sekundach</param>
         /// <returns></returns>
-        public static double GetCsPerMinute(long totalCs, long gameDuration) =>
-            totalCs / TimeSpan.FromSeconds(gameDuration).TotalMinutes;
+        public static double GetCsPerMinute(PlayerStatsModel playerStats, long gameDuration) =>
+            GetTotalCs(playerStats) / TimeSpan.FromSeconds(gameDuration).TotalMinutes;
+
+        public static int GetTotalCs(PlayerStatsModel playerStats) {
+            return playerStats.NeutralMinionsKilled + playerStats.TotalMinionsKilled;
+        }
 
         /// <summary>
         /// Ziska podil na celkovemu poctu zabiti - kill participation
@@ -44,18 +47,18 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <param name="playerStats"></param>
         /// <param name="matchInfoModel"></param>
         /// <param name="teamId"></param>
-        /// <returns></returns>
+        /// <returns>Kill participaci pro daneho hrace</returns>
         public static double GetKillParticipation(PlayerStatsModel playerStats, MatchInfoModel matchInfoModel,
             int teamId) {
-            var total = 0; // celkovy pocet zabiti
+            var totalKills = 0; // celkovy pocet zabiti
             foreach (var player in matchInfoModel.PlayerInfoList) {
                 if (player.TeamId == teamId) {
-                    total += player.PlayerStatsModel.Kills;
+                    totalKills += player.PlayerStatsModel.Kills;
                 }
             }
 
-            // Pokud je total 0 tak vratime 1.0, jinak vratime kills / total kills
-            return total == 0 ? 1.0 : (double) playerStats.Kills / total;
+            // Pokud je total 0 tak vratime 1.0, jinak vratime kills + assists / total kills
+            return totalKills == 0 ? 1.0 : (double) (playerStats.Kills + playerStats.Assists) / totalKills;
         }
 
         /// <summary>
@@ -67,55 +70,80 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             var role = playerInfo.Role;
             var lane = playerInfo.Lane;
 
-            if (role == GameConstants.RoleJg && lane == GameConstants.LaneJg) {
-                roles[GameConstants.Jg] += 1;
-            }
-            else if (role == GameConstants.RoleAdc && lane == GameConstants.LaneBot) {
-                roles[GameConstants.RoleAdc] += 1;
-            }
-            else if (role == GameConstants.RoleMid && lane == GameConstants.LaneMid) {
-                roles[GameConstants.Mid] += 1;
-            }
-            else if (role == GameConstants.RoleTop && lane == GameConstants.LaneTop) {
-                roles[GameConstants.Top] += 1;
-            }
-            else {
-                roles[GameConstants.Sup] += 1; // jedina linka, ktera zbyva
-            }
+            roles[GetRole(role, lane)] += 1;
         }
+
+        /// <summary>
+        /// Ziska roli podle parametru role a lane (z nejakeho duvodu ma Riot Api dva retezce, ze kterych je potreba
+        /// vyparsovat)
+        /// </summary>
+        /// <param name="role">role z riot api</param>
+        /// <param name="lane">linka (lane) z riot api</param>
+        /// <returns></returns>
+        public static string GetRole(string role, string lane) =>
+            role switch {
+                GameConstants.RoleJg when lane == GameConstants.LaneJg => GameConstants.Jg,
+                GameConstants.RoleAdc when lane == GameConstants.LaneBot => GameConstants.Adc,
+                GameConstants.RoleMid when lane == GameConstants.LaneMid => GameConstants.Mid,
+                GameConstants.RoleTop when lane == GameConstants.LaneTop => GameConstants.Top,
+                _ => GameConstants.Sup
+            };
 
         /// <summary>
         /// Zjisti, zda-li se jedna o remake - pokud je hra do 4 minut (vcetne)
         /// </summary>
-        /// <param name="matchInfoGameDuration">Doba trvani hry v s - z Riot Api</param>
+        /// <param name="matchInfoGameDuration">Doba trvani hry v sekundach - z Riot Api</param>
         /// <returns></returns>
         public static bool IsRemake(long matchInfoGameDuration) =>
             TimeSpan.FromSeconds(matchInfoGameDuration) <= GameConstants.GameDurationForRemake;
 
+        public static void UpdateStatTotals(GameListStats stats, MatchInfoModel matchInfo, PlayerInfoModel playerInfo,
+            TeamStatsInfoModel playerTeam) {
+            var playerStats = playerInfo.PlayerStatsModel;
+            // Celkovy pocet pro zabiti, smrti a asistence
+            stats.Kills.Add(playerStats.Kills);
+            stats.Assists.Add(playerStats.Assists);
+            stats.Deaths.Add(playerStats.Deaths);
+
+            // Pridani CS (creep score) za minutu do seznamu
+            stats.CsPerMinuteList.Add(
+                GetCsPerMinute(playerStats, matchInfo.GameDuration));
+
+            // Pridani kill participaci do seznamu
+            stats.KillParticipations.Add(
+                GetKillParticipation(playerStats, matchInfo, playerTeam.TeamId));
+
+            if (playerInfo.GoldDiffAt10 is not null) {
+                stats.GoldDiffsAt10.Add((double) playerInfo.GoldDiffAt10);
+            }
+        }
+
         /// <summary>
-        /// Vypocte prumery pro dane hodnoty
+        /// Vypocte prumery pro dane hodnoty v GameListStatsViewModel
         /// </summary>
-        /// <param name="gameListStats">ViewModel objekt</param>
+        /// <param name="statsViewModel">ViewModel objekt</param>
         /// <param name="totals">Objekt s celkovym poctem pro dany seznam her</param>
-        public static void CalculateAverages(GameListStatsViewModel gameListStats, StatTotals totals) {
-            var realGamesPlayed = gameListStats.GamesWon + gameListStats.GamesLost; // Nepocitame remake hry
+        public static void CalculateAverages(GameListStatsViewModel statsViewModel, GameListStats totals) {
+            var realGamesPlayed = statsViewModel.GamesWon + statsViewModel.GamesLost; // Nepocitame remake hry
             if (realGamesPlayed == 0) { // Pokud se nehraly zadne hry vratime se
                 return;
             }
 
-            gameListStats.AverageKills = totals.TotalKills / realGamesPlayed;
-            gameListStats.AverageDeaths = totals.TotalDeaths / realGamesPlayed;
-            gameListStats.AverageAssists = totals.TotalAssists / realGamesPlayed;
-            gameListStats.AverageKda = ((double) totals.TotalAssists + totals.TotalKills) / totals.TotalDeaths;
-            gameListStats.AverageKillParticipation = totals.KillParticipations.Average();
-            gameListStats.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();
-            gameListStats.AverageCsPerMinute = totals.CsPerMinuteList.Average();
+            statsViewModel.AverageKills = totals.Kills.Average();
+            statsViewModel.AverageDeaths = totals.Deaths.Average();
+            statsViewModel.AverageAssists = totals.Assists.Average();
+
+            statsViewModel.AverageKda = ((double) totals.Kills.Sum() + totals.Assists.Sum()) / totals.Deaths.Sum();
+
+            statsViewModel.AverageKillParticipation = totals.KillParticipations.Average();
+            statsViewModel.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();
+            statsViewModel.AverageCsPerMinute = totals.CsPerMinuteList.Average();
 
             var mostPlayedRoles = GetTwoMostPlayedRoles(totals.Roles);
-            gameListStats.MostPlayedRole = mostPlayedRoles.Item1;
-            gameListStats.SecondMostPlayedRole = mostPlayedRoles.Item2;
-
+            statsViewModel.MostPlayedRole = mostPlayedRoles.Item1;
+            statsViewModel.SecondMostPlayedRole = mostPlayedRoles.Item2;
         }
+
 
         /// <summary>
         /// Ziska dve nejhranejsi role (pokud je alespon 1 nebo vice her)

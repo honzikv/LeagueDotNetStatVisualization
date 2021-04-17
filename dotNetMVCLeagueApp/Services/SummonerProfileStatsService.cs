@@ -38,6 +38,7 @@ namespace dotNetMVCLeagueApp.Services {
                 throw new ActionNotSuccessfulException("Error while obtaining the data from the database");
             }
 
+            // Statistika hrace
             var playerStats = playerInfo.PlayerStatsModel;
 
             // Mapping do jednoho objektu
@@ -45,16 +46,23 @@ namespace dotNetMVCLeagueApp.Services {
                 PlayTime = matchInfo.PlayTime,
                 ChampionIconId = playerInfo.ChampionId,
                 TeamId = playerInfo.TeamId,
-                Win = matchInfo.Teams.FirstOrDefault(team => team.Id == playerInfo.TeamId)?.Win,
+                Kills = playerStats.Kills,
+                Deaths = playerStats.Deaths,
+                Assists = playerStats.Assists,
+                KillParticipation = GameStatsUtils.GetKillParticipation(playerStats, matchInfo, playerInfo.TeamId),
+                Kda = ((double) playerStats.Kills + playerStats.Assists) / playerStats.Deaths,
+                DamageDealt = playerStats.TotalDamageDealtToChampions,
+                Role = GameStatsUtils.GetRole(playerInfo.Role, playerInfo.Lane),
+                Win = matchInfo.Teams.FirstOrDefault(
+                    team => team.TeamId == playerInfo.TeamId)?.Win == GameConstants.Win,
                 QueueType = matchInfo.QueueType,
                 Items = new() {
                     playerStats.Item0, playerStats.Item1, playerStats.Item2, playerStats.Item3, playerStats.Item4,
                     playerStats.Item5, playerStats.Item6
                 },
                 LargestMultiKill = GameStatsUtils.GetLargestMultiKill(playerStats),
-                CsPerMinute =
-                    GameStatsUtils.GetCsPerMinute(playerStats.TotalMinionsKilled, matchInfo.GameDuration),
-                TotalCs = playerStats.TotalMinionsKilled,
+                CsPerMinute = GameStatsUtils.GetCsPerMinute(playerStats, matchInfo.GameDuration),
+                TotalCs = GameStatsUtils.GetTotalCs(playerStats),
                 SummonerSpell1Id = playerInfo.Spell1Id,
                 SummonerSpell2Id = playerInfo.Spell2Id,
                 VisionScore = playerStats.VisionScore,
@@ -71,11 +79,11 @@ namespace dotNetMVCLeagueApp.Services {
         /// <returns></returns>
         public GameListStatsViewModel GetGameListStatsViewModel(List<MatchInfoModel> matchInfoList,
             SummonerInfoModel summonerInfo) {
-            var totals = new StatTotals();
+            var totals = new GameListStats();
             var result = new GameListStatsViewModel();
 
             foreach (var matchInfo in matchInfoList) {
-                CalculateTotals(summonerInfo, matchInfo, result, totals); // vypocet statistik
+                CalculateStatTotals(summonerInfo, matchInfo, result, totals); // vypocet statistik
             }
 
             GameStatsUtils.CalculateAverages(result, totals);
@@ -92,26 +100,22 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="gameListStats">Statistiky pro seznam her</param>
         /// <param name="totals">Objekt s celkovymi pocty</param>
         /// <exception cref="ActionNotSuccessfulException">Pokud je hrac null nebo je hracuv team null</exception>
-        private void CalculateTotals(SummonerInfoModel summonerInfo, MatchInfoModel matchInfo,
-            GameListStatsViewModel gameListStats, StatTotals totals) {
+        private void CalculateStatTotals(SummonerInfoModel summonerInfo, MatchInfoModel matchInfo,
+            GameListStatsViewModel gameListStats, GameListStats totals) {
             var playerInfo = matchInfo.PlayerInfoList
                 .FirstOrDefault(player => player.SummonerId == summonerInfo.EncryptedSummonerId);
 
             if (playerInfo is null) {
-                throw new ActionNotSuccessfulException("Error while obtaining the data from the database");
+                throw new ActionNotSuccessfulException("Error player info is null for the given match");
             }
 
             var playerTeam = matchInfo.Teams.FirstOrDefault(team => team.TeamId == playerInfo.TeamId);
             if (playerTeam is null) {
-                throw new ActionNotSuccessfulException("Error while obtaining the data from the database");
+                throw new ActionNotSuccessfulException("Error player team is null for the given match");
             }
 
-            var playerStats = playerInfo.PlayerStatsModel;
             GameStatsUtils.UpdateRoleFrequency(playerInfo, totals.Roles); // Aktualizace role je i pro remake
-            
-            logger.LogDebug("Role frequency update:");
-            foreach(var role in totals.Roles) { logger.LogDebug($"{role.Key}: {role.Value}"); }
-            
+
             if (GameStatsUtils.IsRemake(matchInfo.GameDuration)) {
                 logger.LogDebug("Found a remake game, increasing number of remakes");
                 gameListStats.Remakes += 1;
@@ -128,22 +132,8 @@ namespace dotNetMVCLeagueApp.Services {
                 gameListStats.GamesLost += 1;
             }
 
-            // Celkovy pocet pro zabiti, smrti a asistence
-            totals.TotalKills += playerStats.Kills;
-            totals.TotalAssists += playerStats.Assists;
-            totals.TotalDeaths += playerStats.Deaths;
-
-            // Pridani CS (creep score) za minutu do seznamu
-            totals.CsPerMinuteList.Add(
-                GameStatsUtils.GetCsPerMinute(playerStats.TotalMinionsKilled, matchInfo.GameDuration));
-
-            // Pridani kill participaci do seznamu
-            totals.KillParticipations.Add(
-                GameStatsUtils.GetKillParticipation(playerStats, matchInfo, playerTeam.TeamId));
-
-            if (playerInfo.GoldDiffAt10 is not null) {
-                totals.GoldDiffsAt10.Add((double) playerInfo.GoldDiffAt10);
-            }
+            // Aktualizace stat totals - pricteme celkove smrti, zabiti, asistence ...
+            GameStatsUtils.UpdateStatTotals(totals, matchInfo, playerInfo, playerTeam);
         }
     }
 }

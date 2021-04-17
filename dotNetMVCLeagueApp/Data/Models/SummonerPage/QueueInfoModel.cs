@@ -3,13 +3,10 @@ using MingweiSamuel.Camille.LeagueV4;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
     public class QueueInfoModel {
-        /// <summary>
-        /// Primary key
-        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Type of queue - can be compared with Const/LeagueEntryConst
+        /// Typ queue - ranked, solo ...
         /// </summary>
         public string QueueType { get; set; }
 
@@ -24,24 +21,24 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         public string Rank { get; set; }
 
         /// <summary>
-        /// Number of league points
+        /// Pocet LP
         /// </summary>
         public int LeaguePoints { get; set; }
 
         /// <summary>
-        /// Number of wins
+        /// Pocet vyher
         /// </summary>
         public int Wins { get; set; }
 
         /// <summary>
-        /// Number of losses
+        /// Pocet proher
         /// </summary>
         public int Losses { get; set; }
 
         /// <summary>
-        /// Reference to summoner info
+        /// Reference na summoner info
         /// </summary>
-        [Required]
         public virtual SummonerInfoModel SummonerInfo { get; set; }
+        
     }
 }

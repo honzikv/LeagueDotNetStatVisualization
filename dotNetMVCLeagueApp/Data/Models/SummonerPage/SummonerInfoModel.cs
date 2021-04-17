@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using dotNetMVCLeagueApp.Data.Models.User;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
     public class SummonerInfoModel {
@@ -21,13 +18,12 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// <summary>
         /// Encrypted summoner id pro query dat
         /// </summary>
-        [MaxLength(63)]
-        public String EncryptedSummonerId { get; set; }
+        public string EncryptedSummonerId { get; set; }
 
         /// <summary>
         /// Encrypted account id pro query dat o zapasech
         /// </summary>
-        public String EncryptedAccountId { get; set; }
+        public string EncryptedAccountId { get; set; }
 
         /// <summary>
         /// Region hrace - EUW, NA, ...

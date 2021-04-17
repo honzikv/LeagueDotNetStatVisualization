@@ -16,9 +16,7 @@ namespace dotNetMVCLeagueApp.Config {
                 
             // Mapping from -> to
             CreateMap<LeagueEntry, QueueInfoModel>();
-            CreateMap<Match, MatchInfoModel>()
-                .ForMember(info => info.PlayTime,
-                    opt => opt.MapFrom(src => src.GameCreation));
+            CreateMap<Match, MatchInfoModel>();
             CreateMap<TeamStats, TeamStatsInfoModel>();
             CreateMap<Participant, PlayerInfoModel>();
             CreateMap<ParticipantStats, PlayerStatsModel>();

@@ -12,10 +12,30 @@
 </div>
 <div class="container-fluid">
     
+    <div id="listStats" class="card mb-lg-5">
+        <div class="card-body">
+            <h5 class="card-title">Overall</h5>
+            <p>Games Won: @ViewBag.GameListStats.GamesWon Games Lost: @ViewBag.GameListStats.GamesLost</p>
+            <p>Average KDA: @ViewBag.GameListStats.AverageKda</p>
+            <p>Average Kills: @ViewBag.GameListStats.AverageKills</p>
+            <p>Average Assists: @ViewBag.GameListStats.AverageAssists</p>
+            <p>Average Deaths: @ViewBag.GameListStats.AverageDeaths</p>
+            <p>Most Played role: @ViewBag.GameListStats.MostPlayedRole</p>
+            <p>Average Gold diff @@ 10: @ViewBag.GameListStats.AverageGoldDiffAt10</p>
+            <p>Average Cs Per Minute: @ViewBag.GameListStats.AverageCsPerMinute</p>
+        </div>
+    </div>
+
+    <h5>Matches: </h5>
     @foreach (var matchHeader in ViewBag.MatchHeaders) {
-        <div class="card">
+        <div class="card  mt-lg-2">
             <div class="card-body">
                 <h5 class="card-title">QueueType: @matchHeader.QueueType</h5>
+                <p>Victory: @matchHeader.Win</p>
+                <p>Role: @matchHeader.Role</p>
+                <p>Kills: @matchHeader.Kills Deaths: @matchHeader.Deaths Assists: @matchHeader.Assists</p>
+                <p>KDA: @matchHeader.Kda</p>
+                <p>Kill Participation: @matchHeader.KillParticipation</p>
                 <p>Largest Multikill: @matchHeader.LargestMultiKill</p>
                 <p>Date played: @matchHeader.PlayTime</p>
                 <p>CSPM: @matchHeader.CsPerMinute</p>
@@ -24,11 +44,11 @@
             </div>
         </div>
     }
-    
-    
-    
+
+
+
     <a href="/TestCore/RefreshMatchList?name=@ViewBag.SummonerInfo.Name&server=@ViewBag.SummonerInfo.Region"
-       class="btn btn-primary float-right">
+       class="btn btn-primary float-right mb-lg-2 mt-lg-2">
         Refresh
     </a>
 </div>

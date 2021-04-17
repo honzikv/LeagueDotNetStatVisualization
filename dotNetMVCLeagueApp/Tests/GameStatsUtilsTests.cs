@@ -24,6 +24,35 @@ namespace dotNetMVCLeagueApp.Tests {
         }
 
         [Fact]
+        public void TestGetCsPerMinute_PerfectCS() {
+            var statsModel = new PlayerStatsModel {
+                NeutralMinionsKilled = 10,
+                NeutralMinionsKilledTeamJungle = 5,
+                NeutralMinionsKilledEnemyJungle = 5,
+                TotalMinionsKilled = 110
+            };
+            var gameDuration = 10 * 60; // 10 minut
+            var expected = 12;
+            var actual = GameStatsUtils.GetCsPerMinute(statsModel, gameDuration);
+            
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestGetCsPerMinute_JungleOnly() {
+            var statsModel = new PlayerStatsModel {
+                NeutralMinionsKilled = 64,
+                NeutralMinionsKilledTeamJungle = 60,
+                NeutralMinionsKilledEnemyJungle = 4
+            };
+            var gameDuration = 10 * 60; // 10 minut
+            var expected = 6.4;
+            var actual = GameStatsUtils.GetCsPerMinute(statsModel, gameDuration);
+            
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void GetLargestMultiKill_None() {
             var playerStats = new PlayerStatsModel();
 
@@ -40,19 +69,22 @@ namespace dotNetMVCLeagueApp.Tests {
                 new() {
                     TeamId = blueSide,
                     PlayerStatsModel = new() {
-                        Kills = 12
+                        Kills = 12,
+                        Assists = 8
                     }
                 },
                 new() {
                     TeamId = blueSide,
                     PlayerStatsModel = new() {
-                        Kills = 5
+                        Kills = 5,
+                        Assists = 2
                     }
                 },
                 new() {
                     TeamId = blueSide,
                     PlayerStatsModel = new() {
-                        Kills = 3
+                        Kills = 3,
+                        Assists = 4
                     }
                 }
             };
@@ -61,8 +93,8 @@ namespace dotNetMVCLeagueApp.Tests {
                 PlayerInfoList = playerInfoList
             };
 
-            var player = playerInfoList[2]; // hrac, pro ktereho pocitame kill participation
-            var expected = 3.0 / (12 + 5 + 3);
+            var player = playerInfoList[2]; // hrac, pro ktereho pocitame kill participation - posledni ze seznamu
+            var expected = 0.35;
             var actual = GameStatsUtils.GetKillParticipation(player.PlayerStatsModel, matchInfo, blueSide);
             Assert.Equal(expected, actual);
         }
@@ -103,7 +135,7 @@ namespace dotNetMVCLeagueApp.Tests {
 
         [Fact]
         public void TestGetTwoMostPlayedRoles_TopMid() {
-            var stats = new StatTotals {
+            var stats = new GameListStats {
                 Roles = {
                     [GameConstants.Top] = 10, [GameConstants.Mid] = 8, [GameConstants.Jg] = 1, [GameConstants.Adc] = 3
                 }

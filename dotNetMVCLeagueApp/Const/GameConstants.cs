@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace dotNetMVCLeagueApp.Const {
     public class GameConstants {
-        public static readonly string Win = "WIN";
+        public static readonly string Win = "Win";
 
         public static readonly string Loss = "Fail";
 

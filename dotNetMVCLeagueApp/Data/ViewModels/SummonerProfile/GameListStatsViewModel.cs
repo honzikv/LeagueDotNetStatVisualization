@@ -14,11 +14,11 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
 
         public Dictionary<int, int> PlayedChampionIds { get; } = new();
 
-        public int AverageKills { get; set; }
+        public double AverageKills { get; set; }
 
-        public int AverageDeaths { get; set; }
+        public double AverageDeaths { get; set; }
 
-        public int AverageAssists { get; set; }
+        public double AverageAssists { get; set; }
 
         public double AverageKda { get; set; }
 

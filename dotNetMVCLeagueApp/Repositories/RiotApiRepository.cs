@@ -7,6 +7,7 @@ using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exceptions;
+using dotNetMVCLeagueApp.Utils;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille;
 using MingweiSamuel.Camille.Enums;
@@ -93,7 +94,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         private MatchInfoModel MapToMatchInfo(Match match) {
             var result = mapper.Map<MatchInfoModel>(match); // mapping Match na MatchInfoModel
             result.Id = match.GameId; // Nastavime id
-            result.PlayTime = new DateTime(match.GameCreation);
+            result.PlayTime = DateTimeUtils.ConvertFromUnixTimestamp(match.GameCreation);
             result.QueueType = GameConstants.GetQueueNameFromQueueId(match.QueueId);
             logger.LogDebug(result.ToString());
 

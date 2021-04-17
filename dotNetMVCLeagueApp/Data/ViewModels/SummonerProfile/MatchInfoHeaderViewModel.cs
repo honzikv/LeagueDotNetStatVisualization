@@ -4,76 +4,81 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
     /// <summary>
-    /// Class that holds information about individual match for specific summoner - only for header
+    /// Trida, ktera obsahuje informace pro hlavicku pro dany zapas
     /// </summary>
     public class MatchInfoHeaderViewModel {
         /// <summary>
-        /// Id of the player's team
+        /// Id tymu - blue 100, red 200
         /// </summary>
-        [NotNull]
         public int TeamId { get; set; }
 
         /// <summary>
-        /// Date the game was played
+        /// Datum hry
         /// </summary>
-        [NotNull]
         public DateTime PlayTime { get; set; }
 
         /// <summary>
         /// Zdali hrac vyhral, prohral popr. remake
         /// </summary>
-        [NotNull]
-        public string Win { get; set; }
+        public bool Win { get; set; }
+        
+        public string Role { get; set; }
+        
+        public long DamageDealt { get; set; }
+        
+        public int Kills { get; set; }
+        
+        public int Assists { get; set; }
+        
+        public int Deaths { get; set; }
+        
+        public double Kda { get; set; }
+        
+        public double KillParticipation { get; set; }
 
         /// <summary>
         /// Type of the queue - blind pick, draft pick, ranked solo and ranked flex
         /// </summary>
-        [NotNull]
         public string QueueType { get; set; }
 
         /// <summary>
         /// Items + trinket - this list should always be size of 7
         /// </summary>
-        [NotNull]
         public List<int> Items { get; set; }
 
         /// <summary>
-        /// Largest achieved multikill - null if only one kill, double, triple ...
+        /// Nejvetsi multi kill
         /// </summary>
         public string LargestMultiKill { get; set; }
 
         /// <summary>
-        /// Creeps per minute
+        /// CS za minutu
         /// </summary>
         public double CsPerMinute { get; set; }
 
         /// <summary>
-        /// Total creep score
+        /// Celkovy pocet CS
         /// </summary>
         public int TotalCs { get; set; }
 
         /// <summary>
-        /// Icon id of the champion the player played
+        /// Ikonka postavy, kterou hrac hral
         /// </summary>
-        [NotNull]
         public int ChampionIconId { get; set; }
 
         /// <summary>
-        /// The first summoner spell
+        /// Prvni summoner spell
         /// </summary>
-        [NotNull]
         public int SummonerSpell1Id { get; set; }
 
         /// <summary>
-        /// The second summoner spell
+        /// Druhy summoner spell
         /// </summary>
-        [NotNull]
         public int SummonerSpell2Id { get; set; }
 
         /// <summary>
         /// Vision score
         /// </summary>
-        [NotNull]
         public long VisionScore { get; set; }
 
         /// <summary>

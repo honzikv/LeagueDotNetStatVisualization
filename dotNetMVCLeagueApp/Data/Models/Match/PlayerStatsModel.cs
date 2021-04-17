@@ -1,4 +1,5 @@
 ﻿using MingweiSamuel.Camille.MatchV4;
+using MingweiSamuel.Camille.ValMatchV1;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
@@ -42,6 +43,11 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public int NeutralMinionsKilled { get; set; }
 
         public int Deaths { get; set; }
+        
+        
+        public int NeutralMinionsKilledTeamJungle { get; set; }
+        
+        public int NeutralMinionsKilledEnemyJungle { get; set; }
 
         public int TripleKills { get; set; }
 
@@ -52,8 +58,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public int PentaKills { get; set; }
 
         public long DamageSelfMitigated { get; set; }
-
-        public int LargestCriticalStrike { get; set; }
 
         public int TotalTimeCrowdControlDealt { get; set; }
 
