@@ -6,10 +6,19 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
     /// profilu
     /// </summary>
     public class GameListStatsViewModel {
+        /// <summary>
+        /// Pocet vyhranych her
+        /// </summary>
         public int GamesWon { get; set; }
 
+        /// <summary>
+        /// Pocet prohranych her
+        /// </summary>
         public int GamesLost { get; set; }
 
+        /// <summary>
+        /// Pocet nedohranych her
+        /// </summary>
         public int Remakes { get; set; }
 
         public Dictionary<int, int> PlayedChampionIds { get; } = new();

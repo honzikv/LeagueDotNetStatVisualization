@@ -2,6 +2,9 @@
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Data.Models.User {
+    /// <summary>
+    /// Model pro registraci uzivatele
+    /// </summary>
     public class UserModel {
         public int Id { get; set; }
 

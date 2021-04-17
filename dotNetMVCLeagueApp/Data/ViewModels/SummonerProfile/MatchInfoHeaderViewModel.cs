@@ -22,18 +22,39 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         /// </summary>
         public bool Win { get; set; }
         
+        /// <summary>
+        /// Detekovana role
+        /// </summary>
         public string Role { get; set; }
         
+        /// <summary>
+        /// Poskozeni do hracu
+        /// </summary>
         public long DamageDealt { get; set; }
         
+        /// <summary>
+        /// Pocet zabiti
+        /// </summary>
         public int Kills { get; set; }
         
+        /// <summary>
+        /// Pocet asistenci
+        /// </summary>
         public int Assists { get; set; }
         
+        /// <summary>
+        /// Pocet smrti
+        /// </summary>
         public int Deaths { get; set; }
         
+        /// <summary>
+        /// Pocet zabiti a asistenci deleno poctem smrti
+        /// </summary>
         public double Kda { get; set; }
         
+        /// <summary>
+        /// Ucast na zabitich v ramci tymu
+        /// </summary>
         public double KillParticipation { get; set; }
 
         /// <summary>
@@ -77,7 +98,7 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         public int SummonerSpell2Id { get; set; }
 
         /// <summary>
-        /// Vision score
+        /// Vision skore - kolik vize hrac poskytl svemu tymu
         /// </summary>
         public long VisionScore { get; set; }
 
