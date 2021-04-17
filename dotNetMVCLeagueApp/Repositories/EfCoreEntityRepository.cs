@@ -11,8 +11,9 @@ namespace dotNetMVCLeagueApp.Repositories {
         public static void TryUpdateManyToMany<T, TKey>(this DbContext db, IEnumerable<T> currentItems,
             IEnumerable<T> newItems, Func<T, TKey> getKey) where T : class {
             var enumerable = currentItems as T[] ?? currentItems.ToArray();
-            db.Set<T>().RemoveRange(enumerable.Except(newItems, getKey));
-            db.Set<T>().AddRange(newItems.Except(enumerable, getKey));
+            var second = newItems as T[] ?? newItems.ToArray();
+            db.Set<T>().RemoveRange(enumerable.Except(second, getKey));
+            db.Set<T>().AddRange(second.Except(enumerable, getKey));
         }
 
         public static IEnumerable<T> Except<T, TKey>(this IEnumerable<T> items, IEnumerable<T> other,
@@ -29,39 +30,39 @@ namespace dotNetMVCLeagueApp.Repositories {
         where TEntity : class
         where TContext : DbContext {
         /// <summary>
-        /// Reference to the (database) context
+        /// Reference na db kontext
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly TContext LeagueDbContext;
 
 
         /// <summary>
-        /// The constructor may only be inherited by child classes
+        /// Konstruktor bude mit injektovany kontext
         /// </summary>
-        /// <param name="leagueDbContext">reference for dependency injection</param>
+        /// <param name="leagueDbContext">reference pro dependency injection</param>
         protected EfCoreEntityRepository(TContext leagueDbContext) {
             this.LeagueDbContext = leagueDbContext;
         }
 
         /// <summary>
-        /// Get all records of a specific entity
+        /// Ziska vsechny zaznamy pro specificikou entitu
         /// </summary>
-        /// <returns>list of all entities in the table</returns>
+        /// <returns>IEnumerable se vsemi zaznamy v tabulce</returns>
         public async Task<IEnumerable<TEntity>> GetAll() => await LeagueDbContext.Set<TEntity>().ToListAsync();
 
         /// <summary>
-        /// Get specific entity by id
+        /// Ziska entitu podle id
         /// </summary>
-        /// <param name="id">id of the entity</param>
-        /// <returns>entity object</returns>
+        /// <param name="id">id entity; je typu object, protoze nekdy se pouziva long misto intu (kvuli api)</param>
+        /// <returns>Entitu s danym id</returns>
         public async Task<TEntity> Get(object id) => await LeagueDbContext.Set<TEntity>().FindAsync(id);
         
 
         /// <summary>
-        /// Add entity to the database
+        /// Prida objekt s entitou do databaze
         /// </summary>
-        /// <param name="entity">reference to the entity</param>
-        /// <returns></returns>
+        /// <param name="entity">Reference na entitu</param>
+        /// <returns>Entitu z databaze</returns>
         public async Task<TEntity> Add(TEntity entity) {
             LeagueDbContext.Set<TEntity>().Add(entity);
             await LeagueDbContext.SaveChangesAsync();
@@ -80,10 +81,10 @@ namespace dotNetMVCLeagueApp.Repositories {
         }
 
         /// <summary>
-        /// Add collection of entities to the database
+        /// Prida kolekci entit do databaze
         /// </summary>
-        /// <param name="entities">Collection of entities - i.e., a list</param>
-        /// <returns>The same colleciton of entities, each with corresponding Id</returns>
+        /// <param name="entities">Kolekce entit - seznam</param>
+        /// <returns>Vrati stejnou kolekci, kdy entity maji validni id</returns>
         public async Task<ICollection<TEntity>> AddAll(ICollection<TEntity> entities) {
             await LeagueDbContext.Set<TEntity>().AddRangeAsync(entities);
             await LeagueDbContext.SaveChangesAsync();
@@ -93,8 +94,8 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <summary>
         /// Odstrani entitu z databaze
         /// </summary>
-        /// <param name="id">id of the entity</param>
-        /// <returns>null if it does not exist or the reference to the deleted entity</returns>
+        /// <param name="id">id entity</param>
+        /// <returns>null pokud entita neexistuje jinak entitu</returns>
         public async Task<TEntity> Delete(object id) {
             var entity = await LeagueDbContext.Set<TEntity>().FindAsync(id);
             if (entity == null) {

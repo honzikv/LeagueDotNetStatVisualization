@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper.Internal;
 using Castle.Core.Internal;
-using dotNetMVCLeagueApp.Data.Models.Match;
-using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
-using MingweiSamuel.Camille.SummonerV4;
 
 namespace dotNetMVCLeagueApp.Controllers {
+    /// <summary>
+    /// Controller pro testovani backendu
+    /// </summary>
     public class TestCoreController : Controller {
         private readonly SummonerInfoService summonerInfoService;
         private readonly MatchHistoryService matchHistoryService;

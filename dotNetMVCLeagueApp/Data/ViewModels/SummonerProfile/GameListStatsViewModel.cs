@@ -14,22 +14,59 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
 
         public Dictionary<int, int> PlayedChampionIds { get; } = new();
 
+        /// <summary>
+        /// Prumerne zabiti
+        /// </summary>
         public double AverageKills { get; set; }
 
+        /// <summary>
+        /// Prumerne smrti
+        /// </summary>
         public double AverageDeaths { get; set; }
 
+        /// <summary>
+        /// Prumerne asistenci
+        /// </summary>
         public double AverageAssists { get; set; }
 
+        /// <summary>
+        /// Prumerne KDA
+        /// </summary>
         public double AverageKda { get; set; }
 
+        /// <summary>
+        /// Prumerna spoluucast na zabitich
+        /// </summary>
         public double AverageKillParticipation { get; set; }
 
+        /// <summary>
+        /// Nejhranejsi role
+        /// </summary>
         public string MostPlayedRole { get; set; }
 
+        /// <summary>
+        /// Druha nejhranejsi role
+        /// </summary>
         public string SecondMostPlayedRole { get; set; }
+        
+        /// <summary>
+        /// Prumerne zlata
+        /// </summary>
+        public double AverageGold { get; set; }
+        
+        /// <summary>
+        /// Maximum zlata
+        /// </summary>
+        public double MaxGold { get; set; }
 
+        /// <summary>
+        /// Prumerny rozdil zlata v 10 minute
+        /// </summary>
         public double AverageGoldDiffAt10 { get; set; }
 
+        /// <summary>
+        /// Prumerne CS za minutu
+        /// </summary>
         public double AverageCsPerMinute { get; set; }
 
         /// <summary>

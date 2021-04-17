@@ -8,9 +8,9 @@ using dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile;
 namespace dotNetMVCLeagueApp.Services.Utils {
     public static class GameStatsUtils {
         /// <summary>
-        /// Zjisti nejvetsi killstreak
+        /// Zjisti nejvetsi multi kill, pokud neni vrati null
         /// </summary>
-        /// <param name="playerStats"></param>
+        /// <param name="playerStats">Statistiky hrace</param>
         /// <returns></returns>
         public static string GetLargestMultiKill(PlayerStatsModel playerStats) {
             if (playerStats.PentaKills > 0) {
@@ -104,14 +104,14 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             stats.Kills.Add(playerStats.Kills);
             stats.Assists.Add(playerStats.Assists);
             stats.Deaths.Add(playerStats.Deaths);
+            
+            stats.Gold.Add(playerStats.GoldEarned);
 
             // Pridani CS (creep score) za minutu do seznamu
-            stats.CsPerMinuteList.Add(
-                GetCsPerMinute(playerStats, matchInfo.GameDuration));
+            stats.CsPerMinuteList.Add(GetCsPerMinute(playerStats, matchInfo.GameDuration));
 
             // Pridani kill participaci do seznamu
-            stats.KillParticipations.Add(
-                GetKillParticipation(playerStats, matchInfo, playerTeam.TeamId));
+            stats.KillParticipations.Add(GetKillParticipation(playerStats, matchInfo, playerTeam.TeamId));
 
             if (playerInfo.GoldDiffAt10 is not null) {
                 stats.GoldDiffsAt10.Add((double) playerInfo.GoldDiffAt10);

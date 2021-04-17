@@ -9,7 +9,7 @@ using Participant = MingweiSamuel.Camille.MatchV4.Participant;
 
 namespace dotNetMVCLeagueApp.Config {
     /// <summary>
-    /// Automapper config
+    /// Automapper config pro snazsi mapping mezi objekty
     /// </summary>
     public class AutoMapperConfig : Profile {
         public AutoMapperConfig() {

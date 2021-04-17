@@ -8,6 +8,9 @@ using MingweiSamuel.Camille;
 
 // ReSharper disable once CheckNamespace
 namespace dotNetMVCLeagueApp {
+    /// <summary>
+    /// Druha cast tridy Startup, zde je prehledneji videt co se bude davat do dependency containeru
+    /// </summary>
     public partial class Startup {
         private void ConfigureUserServices(IServiceCollection services) {
             services.AddSingleton(_ => RiotApi.NewInstance(

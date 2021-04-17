@@ -1,9 +1,6 @@
-﻿using MingweiSamuel.Camille.MatchV4;
-using MingweiSamuel.Camille.ValMatchV1;
-
-namespace dotNetMVCLeagueApp.Data.Models.Match {
+﻿namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
-    /// 
+    /// Obsahuje statistiky pro daneho hrace (tato trida nema vsechny, pouze ty, ktere by se mohli pouzit)
     /// </summary>
     public class PlayerStatsModel {
         public int Id { get; set; }
@@ -43,7 +40,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public int NeutralMinionsKilled { get; set; }
 
         public int Deaths { get; set; }
-        
         
         public int NeutralMinionsKilledTeamJungle { get; set; }
         

@@ -1,4 +1,7 @@
 ﻿namespace dotNetMVCLeagueApp.Const {
+    /// <summary>
+    /// Obsahuje konstanty pro League entires z Riot API
+    /// </summary>
     public class LeagueEntryConst {
 
         public const string RankedFlex = "RANKED_FLEX_SR";

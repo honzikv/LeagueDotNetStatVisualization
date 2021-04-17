@@ -8,6 +8,9 @@ using dotNetMVCLeagueApp.Services;
 using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Controllers {
+    /// <summary>
+    /// Controller pro domovsou stranku
+    /// </summary>
     public class HomeController : Controller {
         private readonly ILogger<HomeController> logger;
         private readonly SummonerInfoService summonerInfoService;

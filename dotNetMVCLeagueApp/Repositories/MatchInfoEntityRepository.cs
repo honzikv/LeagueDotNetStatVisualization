@@ -29,12 +29,12 @@ namespace dotNetMVCLeagueApp.Repositories {
                 matchSummoner.SummonerInfoModelId == summonerInfoId).FirstOrDefaultAsync();
 
         /// <summary>
-        /// Get last N matches descending by date played for a specific summoner
+        /// Ziska poslednich N zapasu podle nejnovejsiho datumu pro daneho summonera
         /// </summary>
-        /// <param name="summoner">Summoner that played in the matches</param>
-        /// <param name="n">Number of matches</param>
-        /// <param name="start">Start offset</param>
-        /// <returns></returns>
+        /// <param name="summoner">Summoner, ktery se v zapasech vyskytoval</param>
+        /// <param name="n">Pocet zapasu</param>
+        /// <param name="start">Zacatek</param>
+        /// <returns>Seznam s N nebo mene entitami</returns>
         public IEnumerable<MatchInfoModel> GetNLastMatches(SummonerInfoModel summoner, int n, int start = 0) =>
             LeagueDbContext.MatchInfoSummonerInfos
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
@@ -44,7 +44,5 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .ToList()
                 .ConvertAll(matchSummoner => matchSummoner.MatchInfo);
 
-        public async Task<MatchInfoModel> GetMatchInfoWhereId(long id) => await
-            LeagueDbContext.MatchInfoModels.SingleOrDefaultAsync(matchInfo => matchInfo.Id == id);
     }
 }

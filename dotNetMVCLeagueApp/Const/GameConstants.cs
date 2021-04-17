@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace dotNetMVCLeagueApp.Const {
+    /// <summary>
+    /// Obsahuje konstanty z Riot API
+    /// </summary>
     public class GameConstants {
         public static readonly string Win = "Win";
 
