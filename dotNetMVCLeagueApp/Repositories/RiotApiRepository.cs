@@ -14,14 +14,9 @@ using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Repositories {
     /// <summary>
-    /// This repository wraps functionality of RiotApi object for better abstraction
+    /// Tento repozitar slouzi jako wrapper pro komunikaci s API
     /// </summary>
     public class RiotApiRepository {
-        /// <summary>
-        /// This error message shows to user whenever there is some problem with the API
-        /// The real error is logged in debug level
-        /// </summary>
-        private const string ApiErrorMessage = "There was an error while communicating with the Riot API";
 
         private readonly RiotApi riotApi;
         private readonly IMapper mapper;
@@ -34,14 +29,21 @@ namespace dotNetMVCLeagueApp.Repositories {
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Ziska summoner info, pokud dany summoner existuje
+        /// </summary>
+        /// <param name="summonerName">Jmeno summonera</param>
+        /// <param name="region">Server, pro ktery jmeno hledame</param>
+        /// <returns>Vrati summoner info, nebo null, pokud neexistuje</returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
             try {
                 var summoner = await riotApi.SummonerV4.GetBySummonerNameAsync(region, summonerName);
-                if (summoner is null) { // return null, this means that the user does not exist
+                if (summoner is null) { // vratime-li null, znamena to, ze summoner neexistuje
                     return null;
                 }
 
-                // Map to model object
+                // Jinak vratime namapovany objekt
                 return new SummonerInfoModel {
                     SummonerLevel = summoner.SummonerLevel,
                     Name = summoner.Name,
@@ -53,47 +55,51 @@ namespace dotNetMVCLeagueApp.Repositories {
                 };
             }
             catch (Exception ex) {
-                logger.LogCritical(ex.Message);
-                throw new ActionNotSuccessfulException(ApiErrorMessage);
+                logger.LogCritical(ex.Message); // Log chyby
+                throw new ActionNotSuccessfulException(ex.Message);
             }
         }
 
         /// <summary>
-        /// Get list of QueueInfoModels that contain information about flexq and soloq
+        /// 
+        /// Ziska seznam queue info, tzn. informaci o jednotlivych hernich modech, relevantni je pouze ranked flex a
+        /// ranked solo
         /// </summary>
         /// <param name="encryptedSummonerId">Encrypted summoner id</param>
-        /// <param name="region">Region of the user</param>
-        /// <returns>List of QueueInfoModels</returns>
+        /// <param name="region">Server pro ktery hledame</param>
+        /// <returns>Seznam QueueInfoModel objektu</returns>
         public async Task<List<QueueInfoModel>> GetQueueInfoList(string encryptedSummonerId, Region region) {
             try {
                 var leagueEntries =
                     await riotApi.LeagueV4.GetLeagueEntriesForSummonerAsync(region, encryptedSummonerId);
 
-                // Return empty QueueInfo list since there are no league entries in the api
+                // Pokud je null, vratime prazdny seznam
                 if (leagueEntries is null) {
                     return new();
                 }
 
-                // Iterate over all entries, map flex queue and solo queue to the rankedInfoModel object
+                // Jinak iterujeme pres vsechny, vybereme Flex a Solo a vratime
                 return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == LeagueEntryConst.RankedFlex ||
                                                           leagueEntry.QueueType == LeagueEntryConst.RankedSolo)
                     .Select(leagueEntry => mapper.Map<QueueInfoModel>(leagueEntry))
                     .ToList();
             }
             catch (Exception ex) {
-                logger.LogCritical(ex.Message);
-                throw new ActionNotSuccessfulException(ApiErrorMessage);
+                logger.LogCritical(ex.Message); // Log zpravy
+                throw new ActionNotSuccessfulException(ex.Message);
             }
         }
 
         private MatchInfoModel MapToMatchInfo(Match match) {
             var result = mapper.Map<MatchInfoModel>(match); // mapping Match na MatchInfoModel
-            result.Id = match.GameId; // Set Id
+            result.Id = match.GameId; // Nastavime id
+            result.PlayTime = new DateTime(match.GameCreation);
+            result.QueueType = GameConstants.GetQueueNameFromQueueId(match.QueueId);
             logger.LogDebug(result.ToString());
 
             // Mapping vnorenych objektu - tymove statistiky a hraci
             var teams = new List<TeamStatsInfoModel>();
-            // Map TeamStatsInfoModel objects
+            // Map TeamStatsInfoModel objekty
             foreach (var team in match.Teams) {
                 teams.Add(mapper.Map<TeamStatsInfoModel>(team));
             }
@@ -110,6 +116,13 @@ namespace dotNetMVCLeagueApp.Repositories {
             return result;
         }
 
+        /// <summary>
+        /// Namapuje objekt z Riot api na PlayerInfoModel, ktery lze pote ulozit do databaze
+        /// </summary>
+        /// <param name="match">Objekt s informacemi o zapasu (z Camille frameworku)</param>
+        /// <param name="participantIdentity">Informace o ucastnikovi</param>
+        /// <returns>Namapovany objekt</returns>
+        /// <exception cref="RiotApiError">Pokud participant v zapasu neexistuje</exception>
         private PlayerInfoModel MapParticipantToPlayer(Match match, ParticipantIdentity participantIdentity) {
             var participant = match.Participants
                 .FirstOrDefault(x => x.ParticipantId == participantIdentity.ParticipantId);
@@ -122,25 +135,52 @@ namespace dotNetMVCLeagueApp.Repositories {
             var playerStats = mapper.Map<PlayerStatsModel>(participant.Stats);
 
             playerInfo.PlayerStatsModel = playerStats;
+            
+            var player = participantIdentity.Player; // Player obsahuje cast dat, ktere chceme ulozit
+            playerInfo.ProfileIcon = player.ProfileIcon;
+            playerInfo.SummonerId = player.SummonerId;
+            playerInfo.SummonerName = player.SummonerName;
 
-            // Get CsPerMinute, GoldDiffAt10, CsDiffPer10 and role from timeline
+            // Ziskani timeline pro dulezita data
             var timeline = participant.Timeline;
 
-
+            // Mapping role a linky
             playerInfo.Role = timeline.Role;
             playerInfo.Lane = timeline.Lane;
-            // timeline.CsDiffPerMinDeltas.TryGetValue("0-10", out var csDiffAt10);
-            // playerInfo.CsDiffAt10 = csDiffAt10;
-            // timeline.GoldPerMinDeltas.TryGetValue("0-10", out var goldDiffAt10);
-            // playerInfo.GoldDiffAt10 = goldDiffAt10;
-            
+
+            // Ziskani cs diff @ 10 a gold diff @ 10
+            if (timeline.CsDiffPerMinDeltas is not null && timeline.CsDiffPerMinDeltas.ContainsKey("0-10")) {
+                playerInfo.CsDiffAt10 = timeline.CsDiffPerMinDeltas["0-10"];
+            }
+
+            if (timeline.GoldPerMinDeltas is not null && timeline.GoldPerMinDeltas.ContainsKey("0-10")) {
+                playerInfo.GoldDiffAt10 = timeline.GoldPerMinDeltas["0-10"];
+            }
+
             return playerInfo;
         }
 
+        /// <summary>
+        /// Override pro posledni hry
+        /// </summary>
+        /// <param name="encryptedAccountId">encrypted id ziskane z SummonerInfoModel</param>
+        /// <param name="region">server pro ktery hledame</param>
+        /// <param name="numberOfGames">pocet her</param>
+        /// <returns></returns>
         public async Task<List<MatchInfoModel>> GetMatchListFromApi(string encryptedAccountId, Region region,
             int numberOfGames)
             => await GetMatchListFromApi(encryptedAccountId, region, numberOfGames, null, 0);
 
+        /// <summary>
+        /// Ziska numberOfGames zapasu pro dany encryptedAccountId z daneho serveru
+        /// </summary>
+        /// <param name="encryptedAccountId">Ziskano z SummonerModel</param>
+        /// <param name="region">Server</param>
+        /// <param name="numberOfGames"></param>
+        /// <param name="beginIdx">Pocatecni index - 0 znamena od nejnovejsi, 5 - od 5 nejnovejsi...</param>
+        /// <param name="endIdx">Konecny index</param>
+        /// <returns>Seznam s namapovanymy objekty do db</returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<List<MatchInfoModel>>
             GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx, int endIdx) {
             try {
@@ -149,26 +189,31 @@ namespace dotNetMVCLeagueApp.Repositories {
                     region: region,
                     encryptedAccountId: encryptedAccountId,
                     beginIndex: beginIdx,
-                    endIndex: endIdx + numberOfGames
+                    endIndex: endIdx + numberOfGames,
+                    queue: GameConstants.RelevantQueues // Chceme pouze blind pick, flex, draft a soloq
                 );
 
-                // If there are no games returned then simply return an empty list
+                // Pokud zadne hry nejsou, vratime prazdny seznam
                 if (matches is null) {
                     logger.LogDebug("Matches are null");
                     return new();
                 }
                 
-                // List of tasks with each match
+                // List se ziskanim kazdeho zapasu - muzeme prinest kazdy async, protoze to bude rychlejsi
                 var matchTasks = new List<Task<Match>>(matches.TotalGames);
                 foreach (var match in matches.Matches) {
                     matchTasks.Add(riotApi.MatchV4.GetMatchAsync(region, match.GameId));
                 }
 
+                // Pockame na vsechny
+                var awaitedMatches = await Task.WhenAll(matchTasks);
                 var matchList = new List<MatchInfoModel>(matches.TotalGames);
-                foreach (var matchTask in matchTasks) {
-                    matchList.Add(MapToMatchInfo(await matchTask));
+
+                // Namapujeme kazdy zaznam na MatchInfoModel
+                foreach (var match in awaitedMatches) {
+                    matchList.Add(MapToMatchInfo(match));
                 }
-                
+
                 logger.LogDebug("Matchlist mapped");
 
                 return matchList;
@@ -176,7 +221,7 @@ namespace dotNetMVCLeagueApp.Repositories {
 
             catch (Exception ex) {
                 logger.LogCritical(ex.Message);
-                throw new ActionNotSuccessfulException(ApiErrorMessage);
+                throw new ActionNotSuccessfulException(ex.Message);
             }
         }
     }

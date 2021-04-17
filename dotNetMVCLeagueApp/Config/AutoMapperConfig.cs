@@ -13,8 +13,6 @@ namespace dotNetMVCLeagueApp.Config {
     /// </summary>
     public class AutoMapperConfig : Profile {
         public AutoMapperConfig() {
-            // Mapping long na DateTime
-            CreateMap<long, DateTime>().ConvertUsing<TicksToDateTimeConverter>();
                 
             // Mapping from -> to
             CreateMap<LeagueEntry, QueueInfoModel>();
@@ -28,8 +26,4 @@ namespace dotNetMVCLeagueApp.Config {
         }
     }
 
-
-    public class TicksToDateTimeConverter : ITypeConverter<long, DateTime> {
-        public DateTime Convert(long source, DateTime destination, ResolutionContext context) => new(source);
-    }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
@@ -9,6 +10,7 @@ using dotNetMVCLeagueApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
+using MingweiSamuel.Camille.SummonerV4;
 
 namespace dotNetMVCLeagueApp.Controllers {
     public class TestCoreController : Controller {
@@ -27,7 +29,7 @@ namespace dotNetMVCLeagueApp.Controllers {
         }
 
         public IActionResult Index() {
-            return Json(new {message = "No content yet"});
+            return View();
         }
 
         public IActionResult Search(string name, string server) {
@@ -48,7 +50,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             }
 
             ViewBag.SummonerInfo = summonerInfoService.GetSummonerInfoAsync(name, region);
-            return View("Index");
+            return View();
         }
 
 
@@ -74,18 +76,23 @@ namespace dotNetMVCLeagueApp.Controllers {
             // Ziskame match list ze sluzby
             var matchList = matchHistoryService.GetGameMatchList(summoner, 20);
 
+            logger.LogDebug($"Summoner: {summoner}");
             // Vytvorime seznam headeru pro view
             var matchInfoHeaders = 
                 summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchList);
 
             var gameListStats = summonerProfileStatsService.GetGameListStatsViewModel(matchList, summoner);
-
+            
+            logger.LogDebug("Headers: ");
+            matchInfoHeaders.ForAll(x => logger.LogDebug(x.ToString()));
+            
+            ViewBag.SummonerInfo = summoner;
             ViewBag.MatchHeaders = matchInfoHeaders;
             ViewBag.GameListStats = gameListStats;
             return View();
         }
 
-        public IActionResult Refresh(string name, string server) {
+        public IActionResult RefreshSummoner(string name, string server) {
             if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
                 return Redirect("/");
             }
@@ -104,6 +111,26 @@ namespace dotNetMVCLeagueApp.Controllers {
                 // Todo: zatim zobrazime puvodni stranku se summonerem takto
                 // Tohle v praxi samozrejme nedava moc velky smysl a je lepsi ziskat refresh treba pres ajax
                 return RedirectToAction("Search", new {
+                    name = name,
+                    server = server
+                });
+            }
+            catch (Exception ex) {
+                return Error(ex.Message);
+            }
+            
+        }
+
+        public IActionResult RefreshMatchList(string name, string server) {
+            if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
+                return Redirect("/");
+            }
+
+            try {
+                var region = Region.Get(server);
+                var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
+                var update = matchHistoryService.UpdateGameMatchListAsync(summoner, 20);
+                return RedirectToAction("MatchHistory", new {
                     name = name,
                     server = server
                 });

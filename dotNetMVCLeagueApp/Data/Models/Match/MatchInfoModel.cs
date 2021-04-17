@@ -18,7 +18,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         /// Typ hry - blind pick, draft pick, solo queue nebo flex queue
         /// </summary>
-        public string GameType { get; set; }
+        public string QueueType { get; set; }
         
         /// <summary>
         /// Jak dlouho hra trvala v s

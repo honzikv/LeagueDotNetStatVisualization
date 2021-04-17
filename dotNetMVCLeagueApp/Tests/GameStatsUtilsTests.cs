@@ -8,7 +8,7 @@ namespace dotNetMVCLeagueApp.Tests {
     /// <summary>
     /// Obsahuje testy tridy GameStatsUtils, ktera tvori vetsinu vypoctu pro statistiky
     /// </summary>
-    public class StatsCalculationUtilsTests {
+    public class GameStatsUtilsTests {
         [Fact]
         public void GetLargestMultiKill_Penta() {
             var playerStats = new PlayerStatsModel {
@@ -105,13 +105,13 @@ namespace dotNetMVCLeagueApp.Tests {
         public void TestGetTwoMostPlayedRoles_TopMid() {
             var stats = new StatTotals {
                 Roles = {
-                    [GameConstants.TOP] = 10, [GameConstants.MID] = 8, [GameConstants.JG] = 1, [GameConstants.ADC] = 3
+                    [GameConstants.Top] = 10, [GameConstants.Mid] = 8, [GameConstants.Jg] = 1, [GameConstants.Adc] = 3
                 }
             };
 
             var mostPlayedRoles = GameStatsUtils.GetTwoMostPlayedRoles(stats.Roles);
-            Assert.Equal(mostPlayedRoles.Item1, GameConstants.TOP);
-            Assert.Equal(mostPlayedRoles.Item2, GameConstants.MID);
+            Assert.Equal(mostPlayedRoles.Item1, GameConstants.Top);
+            Assert.Equal(mostPlayedRoles.Item2, GameConstants.Mid);
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace dotNetMVCLeagueApp.Const {
     public class GameConstants {
         public static readonly string Win = "WIN";
 
         public static readonly string Loss = "Fail";
-        
+
         public static readonly string DoubleKill = "Double Kill";
 
         public static readonly string TripleKill = "Triple Kill";
@@ -19,21 +21,37 @@ namespace dotNetMVCLeagueApp.Const {
 
         public const string RoleAdc = "DUO_CARRY";
         public const string RoleSup = "DUO_SUPPORT";
-        public static readonly string LANE_BOT = "BOTTOM"; // jak pro support tak pro adc
+        public const string LaneBot = "BOTTOM"; // jak pro support tak pro adc
 
-        public static readonly string ROLE_TOP = "SOLO";
-        public static readonly string LANE_TOP = "TOP";
+        public const string RoleTop = "SOLO";
+        public const string LaneTop = "TOP";
 
-        public static readonly string ROLE_JG = "NONE";
-        public static readonly string LANE_JG = "JUNGLE";
+        public const string RoleJg = "NONE";
+        public const string LaneJg = "JUNGLE";
 
-        public static readonly string ROLE_MID = "SOLO";
-        public static readonly string LANE_MID = "MIDDLE";
+        public const string RoleMid = "SOLO";
+        public const string LaneMid = "MIDDLE";
 
-        public static readonly string TOP = "TOP";
-        public static readonly string MID = "MID";
-        public static readonly string JG = "JG";
-        public static readonly string ADC = "ADC";
-        public static readonly string SUP = "SUP";
-    }
+        public const string Top = "TOP";
+        public const string Mid = "MID";
+        public const string Jg = "JG";
+        public const string Adc = "ADC";
+        public const string Sup = "SUP";
+
+        private static readonly Dictionary<int, string> QueueNames = new() {
+            {430, "Blind pick"}, {400, "Draft pick"},
+            {440, "Flex pick"}, {420, "Solo ranked"}
+        };
+
+        public static readonly int[] RelevantQueues = {400, 420, 430, 440};
+
+        /// <summary>
+        /// Vrati nazev queue z jeho id, pokud je queueId nevalidni, vrati prazdny retezec
+        /// </summary>
+        /// <param name="queueId">QueueId ziskane z Match objektu</param>
+        /// <returns></returns>
+        public static string GetQueueNameFromQueueId(int queueId) => 
+            !QueueNames.ContainsKey(queueId) ? string.Empty : QueueNames[queueId];
+    };
+    
 }

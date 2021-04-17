@@ -3,5 +3,32 @@
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
+<div class="text-center">
+<h2 class="display-4">Match Info for Summoner: @ViewBag.SummonerInfo.Name, server: @ViewBag.SummonerInfo.Region</h2>
 
-<h2>title</h2>
+@if (ViewBag.MatchHeaders is null || ViewBag.MatchHeaders.Capacity == 0) {
+    <h1>There are no matches available, try refreshing</h1>
+}
+</div>
+<div class="container-fluid">
+    
+    @foreach (var matchHeader in ViewBag.MatchHeaders) {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">QueueType: @matchHeader.QueueType</h5>
+                <p>Largest Multikill: @matchHeader.LargestMultiKill</p>
+                <p>Date played: @matchHeader.PlayTime</p>
+                <p>CSPM: @matchHeader.CsPerMinute</p>
+                <p>Total CS: @matchHeader.TotalCs</p>
+                <p>Vision score: @matchHeader.VisionScore</p>
+            </div>
+        </div>
+    }
+    
+    
+    
+    <a href="/TestCore/RefreshMatchList?name=@ViewBag.SummonerInfo.Name&server=@ViewBag.SummonerInfo.Region"
+       class="btn btn-primary float-right">
+        Refresh
+    </a>
+</div>

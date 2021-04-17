@@ -46,7 +46,7 @@ namespace dotNetMVCLeagueApp.Services {
                 ChampionIconId = playerInfo.ChampionId,
                 TeamId = playerInfo.TeamId,
                 Win = matchInfo.Teams.FirstOrDefault(team => team.Id == playerInfo.TeamId)?.Win,
-                QueueType = matchInfo.GameType,
+                QueueType = matchInfo.QueueType,
                 Items = new() {
                     playerStats.Item0, playerStats.Item1, playerStats.Item2, playerStats.Item3, playerStats.Item4,
                     playerStats.Item5, playerStats.Item6

@@ -1,0 +1,30 @@
+﻿@if (ViewBag.SummonerInfo == null) {
+    <h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">No summoner info provided</h2>
+
+    return;
+}
+<div class="text-center">
+    <div class="container-fluid">
+        <h1 class="display-2">User info</h1>
+        <p>Username: @ViewBag.SummonerInfo.Name</p>
+        <p>Level: @ViewBag.SummonerInfo.SummonerLevel</p>
+        <p>Last Update: @ViewBag.SummonerInfo.LastUpdate</p>
+        <p>Encrypted Summoner Id: @ViewBag.SummonerInfo.EncryptedSummonerId</p>
+        <p>Encrypted Account Id: @ViewBag.SummonerInfo.EncryptedAccountId</p>
+        <p>Region: @ViewBag.SummonerInfo.Region</p>
+        <p>Profile icon id: @ViewBag.SummonerInfo.ProfileIconId</p>
+
+        <a href="/" class="btn btn-primary">Home</a>
+        <a href="/TestCore/MatchHistory?name=@ViewBag.SummonerInfo.Name&server=@ViewBag.SummonerInfo.Region"
+           class="btn btn-primary">
+            Show Match List
+        </a>
+        <a href="/TestCore/RefreshSummoner?name=@ViewBag.SummonerInfo.Name&server=@ViewBag.SummonerInfo.Region"
+           class="btn btn-primary">
+            Refresh Profile
+        </a>
+    </div>
+
+
+</div>

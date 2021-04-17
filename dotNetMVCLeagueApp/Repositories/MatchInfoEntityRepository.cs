@@ -12,7 +12,7 @@ namespace dotNetMVCLeagueApp.Repositories {
 
 
         /// <summary>
-        /// Creates a link in join table MatchInfoSummoner info between specified summoner and match
+        /// Vytvori link mezi MatchInfoModel a SummonerInfoModel
         /// </summary>
         /// <param name="matchInfoSummonerInfo"></param>
         /// <returns></returns>

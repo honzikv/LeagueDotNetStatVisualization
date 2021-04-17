@@ -17,7 +17,7 @@ namespace dotNetMVCLeagueApp.Data {
 
         public DbSet<UserModel> Users { get; set; }
 
-        public DbSet<ProfileCardModel> MatchNotes { get; set; }
+        public DbSet<ProfileCardModel> ProfileCardModels { get; set; }
 
         public DbSet<MatchInfoModel> MatchInfoModels { get; set; }
 
@@ -40,11 +40,6 @@ namespace dotNetMVCLeagueApp.Data {
                 .HasOne(matchSummoner => matchSummoner.MatchInfo)
                 .WithMany(matchInfo => matchInfo.SummonerInfoList)
                 .HasForeignKey(matchInfo => matchInfo.MatchInfoModelId);
-
-            // Pouze jeden uzivatel muze mit pripojeny dany ucet
-            modelBuilder.Entity<UserModel>()
-                .HasIndex(user => user.SummonerInfo)
-                .IsUnique();
         }
     }
 }

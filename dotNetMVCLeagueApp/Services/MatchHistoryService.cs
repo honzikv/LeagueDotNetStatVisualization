@@ -6,6 +6,7 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Repositories;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
+using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Services {
     public class MatchHistoryService {
@@ -63,12 +64,21 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         /// <summary>
+        /// Synchronizace funkce UpdateGameMatchList pro controller
+        /// </summary>
+        /// <param name="summonerInfo"></param>
+        /// <param name="numberOfGames"></param>
+        /// <returns></returns>
+        public List<MatchInfoModel> UpdateGameMatchListAsync(SummonerInfoModel summonerInfo, int numberOfGames)
+            => UpdateGameMatchList(summonerInfo, numberOfGames).GetAwaiter().GetResult();
+
+        /// <summary>
         /// Ziska match list z Riot api a prida ho do Db
         /// </summary>
-        /// <param name="summoner">Summoner for which the matches are queried</param>
-        /// <param name="numberOfGames">Number of games to load (from newest)</param>
+        /// <param name="summoner">Summoner, pro ktereho zapasy hledame</param>
+        /// <param name="numberOfGames">Pocet zapasu, ktery se ma nacist</param>
         /// <returns></returns>
-        public async Task<List<MatchInfoModel>> UpdateGameMatchList(SummonerInfoModel summoner, int numberOfGames) {
+        private async Task<List<MatchInfoModel>> UpdateGameMatchList(SummonerInfoModel summoner, int numberOfGames) {
             // Await from api
             logger.LogDebug("Getting games from API");
             var games = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,

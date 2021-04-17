@@ -67,20 +67,20 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             var role = playerInfo.Role;
             var lane = playerInfo.Lane;
 
-            if (role == GameConstants.ROLE_JG && lane == GameConstants.LANE_JG) {
-                roles[GameConstants.JG] += 1;
+            if (role == GameConstants.RoleJg && lane == GameConstants.LaneJg) {
+                roles[GameConstants.Jg] += 1;
             }
-            else if (role == GameConstants.RoleAdc && lane == GameConstants.LANE_BOT) {
+            else if (role == GameConstants.RoleAdc && lane == GameConstants.LaneBot) {
                 roles[GameConstants.RoleAdc] += 1;
             }
-            else if (role == GameConstants.ROLE_MID && lane == GameConstants.LANE_MID) {
-                roles[GameConstants.MID] += 1;
+            else if (role == GameConstants.RoleMid && lane == GameConstants.LaneMid) {
+                roles[GameConstants.Mid] += 1;
             }
-            else if (role == GameConstants.ROLE_TOP && lane == GameConstants.LANE_TOP) {
-                roles[GameConstants.TOP] += 1;
+            else if (role == GameConstants.RoleTop && lane == GameConstants.LaneTop) {
+                roles[GameConstants.Top] += 1;
             }
             else {
-                roles[GameConstants.SUP] += 1; // jedina linka, ktera zbyva
+                roles[GameConstants.Sup] += 1; // jedina linka, ktera zbyva
             }
         }
 
