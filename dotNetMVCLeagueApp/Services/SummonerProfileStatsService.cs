@@ -26,9 +26,16 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="matchInfoList"></param>
         /// <returns></returns>
         public List<MatchInfoHeaderViewModel> GetMatchInfoHeaderList(SummonerInfoModel summonerInfo,
-            List<MatchInfoModel> matchInfoList) =>
+            IEnumerable<MatchInfoModel> matchInfoList) =>
             matchInfoList.Select(matchInfo => GetMatchInfoHeader(summonerInfo, matchInfo)).ToList();
-
+        
+        /// <summary>
+        /// Vytvori match info header pro jednu hru
+        /// </summary>
+        /// <param name="summonerInfo"></param>
+        /// <param name="matchInfo"></param>
+        /// <returns></returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public MatchInfoHeaderViewModel GetMatchInfoHeader(SummonerInfoModel summonerInfo,
             MatchInfoModel matchInfo) {
             var playerInfo = matchInfo.PlayerInfoList
@@ -77,7 +84,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="matchInfoList">Seznam her, pro ktere se vypoctou statistiky</param>
         /// <param name="summonerInfo">Info o hraci v danych hrach - pro nej se statistiky pocitaji</param>
         /// <returns></returns>
-        public GameListStatsViewModel GetGameListStatsViewModel(List<MatchInfoModel> matchInfoList,
+        public GameListStatsViewModel GetGameListStatsViewModel(IEnumerable<MatchInfoModel> matchInfoList,
             SummonerInfoModel summonerInfo) {
             var totals = new GameListStats();
             var result = new GameListStatsViewModel();
@@ -93,11 +100,12 @@ namespace dotNetMVCLeagueApp.Services {
         }
 
         /// <summary>
-        /// Vypocte celkove pocty pro dane metriky a ulozi je do StatsTotals objektu
+        /// Pomocna metoda, ktera vypocte data z kazde hry a ulozi je do objektu "totals", ktery slouzi pro prehlednejsi
+        /// ukladani
         /// </summary>
         /// <param name="summonerInfo">Reference na summoner info</param>
         /// <param name="matchInfo">Reference na match info</param>
-        /// <param name="gameListStats">Statistiky pro seznam her</param>
+        /// <param name="gameListStats">Statistiky pro seznam her, ktery zobrazujeme</param>
         /// <param name="totals">Objekt s celkovymi pocty</param>
         /// <exception cref="ActionNotSuccessfulException">Pokud je hrac null nebo je hracuv team null</exception>
         private void CalculateStatTotals(SummonerInfoModel summonerInfo, MatchInfoModel matchInfo,

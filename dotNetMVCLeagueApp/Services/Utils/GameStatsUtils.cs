@@ -104,7 +104,6 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             stats.Kills.Add(playerStats.Kills);
             stats.Assists.Add(playerStats.Assists);
             stats.Deaths.Add(playerStats.Deaths);
-            
             stats.Gold.Add(playerStats.GoldEarned);
 
             // Pridani CS (creep score) za minutu do seznamu
@@ -117,6 +116,11 @@ namespace dotNetMVCLeagueApp.Services.Utils {
                 stats.GoldDiffsAt10.Add((double) playerInfo.GoldDiffAt10);
             }
         }
+
+        public static double CalculateKda(int kills, int deaths, int assists) =>
+            // Pokud je deaths 0 vratime, jako kdyby bylo deaths 1 tzn (kills + assists) / 1
+            // Jinak klasicky (kills + assists) / deaths
+            deaths is 0 ? kills + assists : ((double) kills + assists) / deaths;
 
         /// <summary>
         /// Vypocte prumery pro dane hodnoty v GameListStatsViewModel
@@ -133,7 +137,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             statsViewModel.AverageDeaths = totals.Deaths.Average();
             statsViewModel.AverageAssists = totals.Assists.Average();
 
-            statsViewModel.AverageKda = ((double) totals.Kills.Sum() + totals.Assists.Sum()) / totals.Deaths.Sum();
+            statsViewModel.AverageKda = CalculateKda(totals.Kills.Sum(), totals.Deaths.Sum(), totals.Assists.Sum());
 
             statsViewModel.AverageKillParticipation = totals.KillParticipations.Average();
             statsViewModel.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();

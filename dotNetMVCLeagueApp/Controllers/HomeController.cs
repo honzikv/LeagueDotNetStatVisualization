@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data.Models;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Data.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotNetMVCLeagueApp.Services;
@@ -9,7 +10,7 @@ using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Controllers {
     /// <summary>
-    /// Controller pro domovsou stranku
+    /// Controller pro domovskou stranku (aktual
     /// </summary>
     public class HomeController : Controller {
         private readonly ILogger<HomeController> logger;
@@ -20,9 +21,11 @@ namespace dotNetMVCLeagueApp.Controllers {
             this.summonerInfoService = summonerInfoService;
         }
 
-        public IActionResult Index() {
-            return View();
-        }
+        public IActionResult Index() => View(
+            new HomePageViewModel {
+                ServerList = summonerInfoService.GetQueryableServers
+            }
+        );
 
         public IActionResult Privacy() {
             return View();

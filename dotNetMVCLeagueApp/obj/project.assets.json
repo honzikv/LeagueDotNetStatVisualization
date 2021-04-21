@@ -134,6 +134,12 @@
           "buildMultiTargeting/Microsoft.AspnetCore.Identity.UI.targets": {}
         }
       },
+      "Microsoft.CodeAnalysis.Metrics/3.3.0": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.CodeAnalysis.Metrics.targets": {}
+        }
+      },
       "Microsoft.CodeCoverage/16.9.4": {
         "type": "package",
         "compile": {
@@ -2912,6 +2918,81 @@
         "staticwebassets/V4/lib/jquery/dist/jquery.js",
         "staticwebassets/V4/lib/jquery/dist/jquery.min.js",
         "staticwebassets/V4/lib/jquery/dist/jquery.min.map"
+      ]
+    },
+    "Microsoft.CodeAnalysis.Metrics/3.3.0": {
+      "sha512": "aiPgJecWPkwTZ18hkkPHPjNhXAoEuIF2MAATXYh1g/JdqH6I8ltyS2+d/n7EHNeL6S45Eu3HIyK6gUqcIncTRQ==",
+      "type": "package",
+      "path": "microsoft.codeanalysis.metrics/3.3.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "EULA.rtf",
+        "Metrics.Legacy/Metrics.Legacy.exe",
+        "Metrics.Legacy/Metrics.Legacy.exe.config",
+        "Metrics.Legacy/Metrics.Legacy.xml",
+        "Metrics.Legacy/Microsoft.Build.Locator.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.CSharp.Features.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.CSharp.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Features.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.FlowAnalysis.Utilities.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.VisualBasic.Features.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Workspaces.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.dll",
+        "Metrics.Legacy/Microsoft.DiaSymReader.dll",
+        "Metrics.Legacy/System.Buffers.dll",
+        "Metrics.Legacy/System.Collections.Immutable.dll",
+        "Metrics.Legacy/System.Composition.AttributedModel.dll",
+        "Metrics.Legacy/System.Composition.Convention.dll",
+        "Metrics.Legacy/System.Composition.Hosting.dll",
+        "Metrics.Legacy/System.Composition.Runtime.dll",
+        "Metrics.Legacy/System.Composition.TypedParts.dll",
+        "Metrics.Legacy/System.Memory.dll",
+        "Metrics.Legacy/System.Numerics.Vectors.dll",
+        "Metrics.Legacy/System.Reflection.Metadata.dll",
+        "Metrics.Legacy/System.Runtime.CompilerServices.Unsafe.dll",
+        "Metrics.Legacy/System.Text.Encoding.CodePages.dll",
+        "Metrics.Legacy/System.Threading.Tasks.Extensions.dll",
+        "Metrics/Metrics.exe",
+        "Metrics/Metrics.exe.config",
+        "Metrics/Metrics.xml",
+        "Metrics/Microsoft.Build.Locator.dll",
+        "Metrics/Microsoft.CodeAnalysis.CSharp.Features.dll",
+        "Metrics/Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+        "Metrics/Microsoft.CodeAnalysis.CSharp.dll",
+        "Metrics/Microsoft.CodeAnalysis.Features.dll",
+        "Metrics/Microsoft.CodeAnalysis.FlowAnalysis.Utilities.dll",
+        "Metrics/Microsoft.CodeAnalysis.VisualBasic.Features.dll",
+        "Metrics/Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll",
+        "Metrics/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "Metrics/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
+        "Metrics/Microsoft.CodeAnalysis.Workspaces.dll",
+        "Metrics/Microsoft.CodeAnalysis.dll",
+        "Metrics/Microsoft.DiaSymReader.dll",
+        "Metrics/System.Buffers.dll",
+        "Metrics/System.Collections.Immutable.dll",
+        "Metrics/System.Composition.AttributedModel.dll",
+        "Metrics/System.Composition.Convention.dll",
+        "Metrics/System.Composition.Hosting.dll",
+        "Metrics/System.Composition.Runtime.dll",
+        "Metrics/System.Composition.TypedParts.dll",
+        "Metrics/System.Memory.dll",
+        "Metrics/System.Numerics.Vectors.dll",
+        "Metrics/System.Reflection.Metadata.dll",
+        "Metrics/System.Runtime.CompilerServices.Unsafe.dll",
+        "Metrics/System.Text.Encoding.CodePages.dll",
+        "Metrics/System.Threading.Tasks.Extensions.dll",
+        "ThirdPartyNotices.rtf",
+        "build/Microsoft.CodeAnalysis.Metrics.targets",
+        "microsoft.codeanalysis.metrics.3.3.0.nupkg.sha512",
+        "microsoft.codeanalysis.metrics.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
       ]
     },
     "Microsoft.CodeCoverage/16.9.4": {
@@ -8834,6 +8915,7 @@
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 5.0.3",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 6.0.0-preview.2.21154.6",
       "Microsoft.AspNetCore.Identity.UI >= 5.0.3",
+      "Microsoft.CodeAnalysis.Metrics >= 3.3.0",
       "Microsoft.EntityFrameworkCore.Proxies >= 6.0.0-preview.2.21154.2",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.0-preview.2.21154.2",
       "Microsoft.EntityFrameworkCore.Sqlite >= 6.0.0-preview.2.21154.2",
@@ -8901,6 +8983,10 @@
           "Microsoft.AspNetCore.Identity.UI": {
             "target": "Package",
             "version": "[5.0.3, )"
+          },
+          "Microsoft.CodeAnalysis.Metrics": {
+            "target": "Package",
+            "version": "[3.3.0, )"
           },
           "Microsoft.EntityFrameworkCore.Proxies": {
             "target": "Package",

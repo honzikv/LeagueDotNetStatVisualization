@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using dotNetMVCLeagueApp.Data.Models.Match;
+using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile;
 using MingweiSamuel.Camille.LeagueV4;
@@ -21,6 +22,8 @@ namespace dotNetMVCLeagueApp.Config {
             CreateMap<Participant, PlayerInfoModel>();
             CreateMap<ParticipantStats, PlayerStatsModel>();
             CreateMap<MatchInfoModel, MatchInfoHeaderViewModel>();
+            CreateMap<MatchParticipantFrame, MatchParticipantFrameModel>();
+            CreateMap<MatchEvent, MatchEventModel>();
         }
     }
 

@@ -5,28 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {
-    public static class DbContextExtensions {
-        // Extension code from:
-        // https://sodocumentation.net/entity-framework-core/topic/9527/updating-a-many-to-many-relationship
-        public static void TryUpdateManyToMany<T, TKey>(this DbContext db, IEnumerable<T> currentItems,
-            IEnumerable<T> newItems, Func<T, TKey> getKey) where T : class {
-            var enumerable = currentItems as T[] ?? currentItems.ToArray();
-            var second = newItems as T[] ?? newItems.ToArray();
-            db.Set<T>().RemoveRange(enumerable.Except(second, getKey));
-            db.Set<T>().AddRange(second.Except(enumerable, getKey));
-        }
 
-        public static IEnumerable<T> Except<T, TKey>(this IEnumerable<T> items, IEnumerable<T> other,
-            Func<T, TKey> getKeyFunc) => items
-            .GroupJoin(other, getKeyFunc, getKeyFunc,
-                (item, tempItems) => new {item, tempItems})
-            .SelectMany(t => t.tempItems.DefaultIfEmpty(),
-                (t, temp) => new {t, temp})
-            .Where(t => ReferenceEquals(null, t.temp) || t.temp.Equals(default(T)))
-            .Select(t => t.t.item);
-    }
-
-    public abstract class EfCoreEntityRepository<TEntity, TContext> : IEntityRepository<TEntity>
+    /// <summary>
+    /// Tato trida reprezentuje entity framework core repozitar - kazdy repozitar, ktery komunikuje s databazi
+    /// musi tuto tridu dedit
+    /// </summary>
+    /// <typeparam name="TEntity">Typ entity - DbSet v DbContextu</typeparam>
+    /// <typeparam name="TContext">Databazovy kontext</typeparam>
+    public abstract class EfCoreEntityRepository<TEntity, TContext>
         where TEntity : class
         where TContext : DbContext {
         /// <summary>
@@ -70,10 +56,10 @@ namespace dotNetMVCLeagueApp.Repositories {
         }
 
         /// <summary>
-        /// Update entity in the database
+        /// Aktualizace entity v databazi
         /// </summary>
-        /// <param name="entity">reference to the entity</param>
-        /// <returns>reference to the updated entity</returns>
+        /// <param name="entity">reference na entitu</param>
+        /// <returns>aktualizovanou entitu</returns>
         public async Task<TEntity> Update(TEntity entity) {
             LeagueDbContext.Entry(entity).State = EntityState.Modified;
             await LeagueDbContext.SaveChangesAsync();

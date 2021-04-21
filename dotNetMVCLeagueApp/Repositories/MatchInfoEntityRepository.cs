@@ -10,24 +10,6 @@ namespace dotNetMVCLeagueApp.Repositories {
     public class MatchInfoEntityRepository : EfCoreEntityRepository<MatchInfoModel, LeagueDbContext> {
         public MatchInfoEntityRepository(LeagueDbContext leagueDbContext) : base(leagueDbContext) { }
 
-
-        /// <summary>
-        /// Vytvori link mezi MatchInfoModel a SummonerInfoModel
-        /// </summary>
-        /// <param name="matchInfoSummonerInfo"></param>
-        /// <returns></returns>
-        public async Task<MatchInfoSummonerInfo> LinkMatchInfoToSummonerInfo(
-            MatchInfoSummonerInfo matchInfoSummonerInfo) {
-            LeagueDbContext.MatchInfoSummonerInfos.Add(matchInfoSummonerInfo);
-            await LeagueDbContext.SaveChangesAsync();
-            return matchInfoSummonerInfo;
-        }
-
-        public async Task<MatchInfoSummonerInfo> FindMatchInfoSummonerInfo(long matchInfoId, int summonerInfoId) =>
-            await LeagueDbContext.MatchInfoSummonerInfos.Where(matchSummoner =>
-                matchSummoner.MatchInfoModelId == matchInfoId &&
-                matchSummoner.SummonerInfoModelId == summonerInfoId).FirstOrDefaultAsync();
-
         /// <summary>
         /// Ziska poslednich N zapasu podle nejnovejsiho datumu pro daneho summonera
         /// </summary>

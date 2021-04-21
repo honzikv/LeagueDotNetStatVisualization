@@ -19,6 +19,11 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         [Required] public virtual PlayerStatsModel PlayerStatsModel { get; set; }
         
         /// <summary>
+        /// Participant id pro referenci na timeline
+        /// </summary>
+        public int ParticipantId { get; set; }
+        
+        /// <summary>
         /// Uzivatelske jmeno
         /// </summary>
         public string SummonerName { get; set; }

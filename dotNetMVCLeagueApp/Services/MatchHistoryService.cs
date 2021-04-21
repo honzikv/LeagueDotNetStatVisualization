@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data.Models.Match;
@@ -9,17 +10,24 @@ using MingweiSamuel.Camille.Enums;
 using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Services {
+    /// <summary>
+    /// Sluzba pro ziskani informaci o hrach
+    /// </summary>
     public class MatchHistoryService {
         private readonly RiotApiRepository riotApiRepository;
         private readonly MatchInfoEntityRepository matchInfoEntityRepository;
+        private readonly MatchInfoSummonerInfoRepository matchSummonerRepository;
 
         private readonly ILogger<MatchHistoryService> logger;
 
-        public MatchHistoryService(RiotApiRepository riotApiRepository, MatchInfoEntityRepository matchInfoEntityRepository,
+        public MatchHistoryService(RiotApiRepository riotApiRepository,
+            MatchInfoEntityRepository matchInfoEntityRepository,
+            MatchInfoSummonerInfoRepository matchSummonerRepository,
             ILogger<MatchHistoryService> logger) {
             this.riotApiRepository = riotApiRepository;
             this.logger = logger;
             this.matchInfoEntityRepository = matchInfoEntityRepository;
+            this.matchSummonerRepository = matchSummonerRepository;
         }
 
         /// <summary>
@@ -46,13 +54,12 @@ namespace dotNetMVCLeagueApp.Services {
             // Zkusime pridat match info do db pokud jeste nebylo pridano a ziskame vysledek
             var matchInfo = await matchInfoEntityRepository.Get(apiMatchInfo.Id) ??
                             await matchInfoEntityRepository.Add(apiMatchInfo);
-            
+
             logger.LogDebug($"Summoner: {summonerInfo}, matchInfo: {matchInfo.Id}");
 
             // Pridame link pokud neexistuje
-            var matchSummoner = await matchInfoEntityRepository.FindMatchInfoSummonerInfo(matchInfo.Id, summonerInfo.Id);
-            if (matchSummoner is null) {
-                await matchInfoEntityRepository.LinkMatchInfoToSummonerInfo(new MatchInfoSummonerInfo {
+            if (!await matchSummonerRepository.AnyJoinBetweenMatchSummoner(matchInfo.Id, summonerInfo.Id)) {
+                await matchSummonerRepository.Add(new MatchInfoSummonerInfo {
                     MatchInfoModelId = matchInfo.Id,
                     SummonerInfoModelId = summonerInfo.Id,
                     MatchInfo = matchInfo,
@@ -84,8 +91,8 @@ namespace dotNetMVCLeagueApp.Services {
             var games = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
                 Region.Get(summoner.Region),
                 numberOfGames);
-            
-            
+
+
             logger.LogDebug("Games from API obtained, updating/adding to db");
             // Nektere zaznamy o hrach uz mohou v databazi existovat, proto misto toho pridame pouze hrace k dane hre
             // aby bylo v DB co nejmene udaju

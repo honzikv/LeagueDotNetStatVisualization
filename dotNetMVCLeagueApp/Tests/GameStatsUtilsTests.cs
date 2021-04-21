@@ -9,6 +9,10 @@ namespace dotNetMVCLeagueApp.Tests {
     /// Obsahuje testy tridy GameStatsUtils, ktera tvori vetsinu vypoctu pro statistiky
     /// </summary>
     public class GameStatsUtilsTests {
+        
+        /// <summary>
+        /// Test funkce pro ziskani nejvetsiho multi killu
+        /// </summary>
         [Fact]
         public void GetLargestMultiKill_Penta() {
             var playerStats = new PlayerStatsModel {
@@ -23,6 +27,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test pro vypocet CS za minutu; pro "perfektni CS v 10. minute - 12.0"
+        /// </summary>
         [Fact]
         public void TestGetCsPerMinute_PerfectCS() {
             var statsModel = new PlayerStatsModel {
@@ -38,6 +45,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test pro vypocet CS za minutu pouze na jungle
+        /// </summary>
         [Fact]
         public void TestGetCsPerMinute_JungleOnly() {
             var statsModel = new PlayerStatsModel {
@@ -52,6 +62,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test pro multi kill pro hrace, ktery zadny nedal
+        /// </summary>
         [Fact]
         public void GetLargestMultiKill_None() {
             var playerStats = new PlayerStatsModel();
@@ -61,8 +74,11 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test pro funkci GetKillParticipation pro tym o trech hracich
+        /// </summary>
         [Fact]
-        public void TestGetKillParticipation_Default() {
+        public void TestGetKillParticipation_3Players() {
             var blueSide = 100;
 
             var playerInfoList = new List<PlayerInfoModel> {
@@ -99,6 +115,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test pro stav, kdy tym nemel zadne zabiti
+        /// </summary>
         [Fact]
         public void TestGetKillParticipation_NoKills() {
             var blueSide = 100;
@@ -133,6 +152,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test pro ziskani dvou nejhranejsich roli
+        /// </summary>
         [Fact]
         public void TestGetTwoMostPlayedRoles_TopMid() {
             var stats = new GameListStats {

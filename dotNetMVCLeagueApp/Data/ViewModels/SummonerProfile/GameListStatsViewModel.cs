@@ -21,6 +21,10 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         /// </summary>
         public int Remakes { get; set; }
 
+        /// <summary>
+        /// Hrane postavy
+        /// TODO: implement
+        /// </summary>
         public Dictionary<int, int> PlayedChampionIds { get; } = new();
 
         /// <summary>

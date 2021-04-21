@@ -58,12 +58,12 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         public double KillParticipation { get; set; }
 
         /// <summary>
-        /// Type of the queue - blind pick, draft pick, ranked solo and ranked flex
+        /// Typ queue - Ranked solo, Ranked duo ...
         /// </summary>
         public string QueueType { get; set; }
 
         /// <summary>
-        /// Items + trinket - this list should always be size of 7
+        /// itemy + trinket
         /// </summary>
         public List<int> Items { get; set; }
 
@@ -98,7 +98,7 @@ namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
         public int SummonerSpell2Id { get; set; }
 
         /// <summary>
-        /// Vision skore - kolik vize hrac poskytl svemu tymu
+        /// Vision score - kolik vize hrac poskytl svemu tymu
         /// </summary>
         public long VisionScore { get; set; }
 

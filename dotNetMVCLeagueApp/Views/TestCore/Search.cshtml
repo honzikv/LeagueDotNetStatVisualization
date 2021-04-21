@@ -6,7 +6,7 @@
 }
 <div class="text-center">
     <div class="container-fluid">
-        <h1 class="display-2">User info</h1>
+        <h1 class="display-3">User info</h1>
         <p>Username: @ViewBag.SummonerInfo.Name</p>
         <p>Level: @ViewBag.SummonerInfo.SummonerLevel</p>
         <p>Last Update: @ViewBag.SummonerInfo.LastUpdate</p>
@@ -24,6 +24,15 @@
            class="btn btn-primary">
             Refresh Profile
         </a>
+
+        <div class="mt-lg-2">
+            <h2 class="display-3 mb-4">Queues</h2>
+            @foreach (var queue in @ViewBag.SummonerInfo.QueueInfo) {
+                <h1 class="display-4">@queue.Tier @queue.Rank @queue.LeaguePoints LP</h1>
+                <p>@queue.QueueType</p>
+                <p class="lead">Wins: @queue.Wins Losses: @queue.Losses</p>
+            }
+        </div>
     </div>
 
 

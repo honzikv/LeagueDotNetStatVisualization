@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace dotNetMVCLeagueApp.Const {
     /// <summary>
     /// Obsahuje konstanty z Riot API
     /// </summary>
     public class GameConstants {
-        public static readonly string Win = "Win";
+        public const string Win = "Win";
 
-        public static readonly string Loss = "Fail";
+        public const string Loss = "Fail";
 
-        public static readonly string DoubleKill = "Double Kill";
+        public const string DoubleKill = "Double Kill";
 
-        public static readonly string TripleKill = "Triple Kill";
+        public const string TripleKill = "Triple Kill";
 
-        public static readonly string QuadraKill = "Quadra Kill";
+        public const string QuadraKill = "Quadra Kill";
 
-        public static readonly string PentaKill = "Penta Kill";
+        public const string PentaKill = "Penta Kill";
 
         public static readonly TimeSpan
             GameDurationForRemake = TimeSpan.FromMinutes(4); // do 4 minut se bere jako remake
@@ -41,11 +40,17 @@ namespace dotNetMVCLeagueApp.Const {
         public const string Adc = "ADC";
         public const string Sup = "SUP";
 
+        /// <summary>
+        /// Slouzi k ziskani jmena queue z jeho id
+        /// </summary>
         private static readonly Dictionary<int, string> QueueNames = new() {
             {430, "Blind pick"}, {400, "Draft pick"},
             {440, "Flex pick"}, {420, "Solo ranked"}
         };
 
+        /// <summary>
+        /// Id relevantnich hernich modu
+        /// </summary>
         public static readonly int[] RelevantQueues = {400, 420, 430, 440};
 
         /// <summary>
@@ -55,6 +60,11 @@ namespace dotNetMVCLeagueApp.Const {
         /// <returns></returns>
         public static string GetQueueNameFromQueueId(int queueId) => 
             !QueueNames.ContainsKey(queueId) ? string.Empty : QueueNames[queueId];
+
+        public static readonly Dictionary<string, string> QueryableServers = new() {
+            {"euw", "EUW"}, {"eune", "EUNE"}, {"na", "NA"}
+        };
+        
     };
     
 }

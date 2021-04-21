@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SAv+w+wts2/fuQSeMtRzWSSYLUsRboM7C6MKEPVOicPydAX81JEDavjJI9fWQPKtwZsoz3NdWykcY7FkB2b3Lg==",
+  "dgSpecHash": "l1EKfHKppGTNuSGgMaA44OckszjuPkxKhiWVj4nVdVMlnIykdO8xQF8FLgS2+6IU89/7xBFRxFE19RRN6CoIwQ==",
   "success": true,
   "projectFilePath": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
   "expectedPackageFiles": [
@@ -13,6 +13,7 @@
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\5.0.3\\microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.0-preview.2.21154.6\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.0-preview.2.21154.6.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\5.0.3\\microsoft.aspnetcore.identity.ui.5.0.3.nupkg.sha512",
+    "C:\\Users\\itznu\\.nuget\\packages\\microsoft.codeanalysis.metrics\\3.3.0\\microsoft.codeanalysis.metrics.3.3.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.1\\microsoft.data.sqlclient.2.1.1.nupkg.sha512",

@@ -3,9 +3,17 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - dotNetMVCLeagueApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <title>@ViewData["Title"] - League Stat Tracker</title>
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/> *@
+
+    <link href="~/mdb/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/mdb/css/mdb.min.css" rel="stylesheet">
+    <link href="~/mdb/css/style.css" rel="stylesheet">
+
     <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous"/>
 </head>
 <body>
 <header>
@@ -36,13 +44,16 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2021 - dotNetMVCLeagueApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<footer class="page-footer font-small blue fixed-bottom">
+    <div class="container-fluid text-center">
+        © 2019 - mdbTutorial - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </div>
 </footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="~/mdb/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="~/mdb/js/popper.min.js"></script>
+<script type="text/javascript" src="~/mdb/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/mdb/js/mdb.min.js"></script>
+
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 

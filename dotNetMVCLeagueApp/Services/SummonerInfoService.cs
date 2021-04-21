@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
+using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Repositories;
@@ -34,6 +35,8 @@ namespace dotNetMVCLeagueApp.Services {
             this.queueInfoRepository = queueInfoRepository;
             this.logger = logger;
         }
+
+        public Dictionary<string, string> GetQueryableServers => GameConstants.QueryableServers;
 
         /// <summary>
         /// Synchronizovana verze metody pro controller aby nemusel volat GetAwaiter a GetResult

@@ -14,7 +14,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public virtual MatchInfoModel MatchInfo { get; set; }
 
         /// <summary>
-        /// 100  - blue side, 200 - red side
+        /// 100 - blue side, 200 - red side
         /// </summary>
         public int TeamId { get; set; }
 

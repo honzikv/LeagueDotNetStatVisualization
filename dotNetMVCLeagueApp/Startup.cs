@@ -46,7 +46,7 @@ namespace dotNetMVCLeagueApp {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
 
-            // Konfigurace uzivatelskeho dependency injection pro rpehlednost
+            // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);
         }
 

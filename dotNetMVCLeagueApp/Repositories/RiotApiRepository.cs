@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.Match;
+using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Utils;
@@ -18,7 +19,6 @@ namespace dotNetMVCLeagueApp.Repositories {
     /// Tento repozitar slouzi jako wrapper pro komunikaci s API
     /// </summary>
     public class RiotApiRepository {
-
         private readonly RiotApi riotApi;
         private readonly IMapper mapper;
 
@@ -94,7 +94,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         private MatchInfoModel MapToMatchInfo(Match match) {
             var result = mapper.Map<MatchInfoModel>(match); // mapping Match na MatchInfoModel
             result.Id = match.GameId; // Nastavime id
-            result.PlayTime = DateTimeUtils.ConvertFromUnixTimestamp(match.GameCreation);
+            result.PlayTime = DateTimeUtils.ConvertFromMillisToDateTime(match.GameCreation);
             result.QueueType = GameConstants.GetQueueNameFromQueueId(match.QueueId);
             logger.LogDebug(result.ToString());
 
@@ -123,24 +123,25 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="match">Objekt s informacemi o zapasu (z Camille frameworku)</param>
         /// <param name="participantIdentity">Informace o ucastnikovi</param>
         /// <returns>Namapovany objekt</returns>
-        /// <exception cref="RiotApiError">Pokud participant v zapasu neexistuje</exception>
+        /// <exception cref="RiotApiException">Pokud participant v zapasu neexistuje</exception>
         private PlayerInfoModel MapParticipantToPlayer(Match match, ParticipantIdentity participantIdentity) {
             var participant = match.Participants
                 .FirstOrDefault(x => x.ParticipantId == participantIdentity.ParticipantId);
 
             if (participant == null) {
-                throw new RiotApiError("Error when mapping participant");
+                throw new RiotApiException("Error when mapping participant");
             }
 
             var playerInfo = mapper.Map<PlayerInfoModel>(participant);
             var playerStats = mapper.Map<PlayerStatsModel>(participant.Stats);
 
             playerInfo.PlayerStatsModel = playerStats;
-            
+
             var player = participantIdentity.Player; // Player obsahuje cast dat, ktere chceme ulozit
             playerInfo.ProfileIcon = player.ProfileIcon;
             playerInfo.SummonerId = player.SummonerId;
             playerInfo.SummonerName = player.SummonerName;
+            playerInfo.ParticipantId = participantIdentity.ParticipantId;
 
             // Ziskani timeline pro dulezita data
             var timeline = participant.Timeline;
@@ -183,7 +184,8 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <returns>Seznam s namapovanymy objekty do db</returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<List<MatchInfoModel>>
-            GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx, int endIdx) {
+            GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx,
+                int endIdx) {
             try {
                 logger.LogDebug($"Geting matches for {region.Key} encrypted acc id: {encryptedAccountId}");
                 var matches = await riotApi.MatchV4.GetMatchlistAsync(
@@ -199,21 +201,20 @@ namespace dotNetMVCLeagueApp.Repositories {
                     logger.LogDebug("Matches are null");
                     return new();
                 }
-                
+
                 // List se ziskanim kazdeho zapasu - muzeme prinest kazdy async, protoze to bude rychlejsi
                 var matchTasks = new List<Task<Match>>(matches.TotalGames);
-                foreach (var match in matches.Matches) {
-                    matchTasks.Add(riotApi.MatchV4.GetMatchAsync(region, match.GameId));
-                }
+                matchTasks.AddRange(
+                    matches.Matches
+                        .Select(match => riotApi.MatchV4.GetMatchAsync(region, match.GameId))
+                );
 
                 // Pockame na vsechny
                 var awaitedMatches = await Task.WhenAll(matchTasks);
                 var matchList = new List<MatchInfoModel>(matches.TotalGames);
+                matchList.AddRange(awaitedMatches.Select(match => MapToMatchInfo(match)));
 
                 // Namapujeme kazdy zaznam na MatchInfoModel
-                foreach (var match in awaitedMatches) {
-                    matchList.Add(MapToMatchInfo(match));
-                }
 
                 logger.LogDebug("Matchlist mapped");
 
@@ -224,6 +225,50 @@ namespace dotNetMVCLeagueApp.Repositories {
                 logger.LogCritical(ex.Message);
                 throw new ActionNotSuccessfulException(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Ziska timeline pro dany zapas z API
+        /// </summary>
+        /// <param name="matchId">Id zapasu (id v MatchInfoModel)</param>
+        /// <returns>Naplneny MatchTimeline model, ktery lze ulozit do db</returns>
+        public async Task<MatchTimelineModel> GetMatchTimelineFromApi(long matchId, Region region) {
+            logger.LogDebug($"Getting match timeline from api for matchId: {matchId}");
+            var matchTimeline = await riotApi.MatchV4.GetMatchTimelineAsync(region, matchId);
+
+            // Pokud api nic nevratilo, vratime null
+            return matchTimeline is null ? null : MapApiTimelineToMatchTimelineModel(matchTimeline);
+        }
+
+        /// <summary>
+        /// Namapuje MatchTimeLine objekt na MatchTimelineModel, ktery lze ulozit do db
+        /// </summary>
+        /// <param name="matchTimeline">Puvodni objekt z api</param>
+        /// <returns>Naplneny MatchTimeline model, ktery lze ulozit do db</returns>
+        private MatchTimelineModel MapApiTimelineToMatchTimelineModel(MatchTimeline matchTimeline) {
+            var result = new MatchTimelineModel {
+                FrameInterval = matchTimeline.FrameInterval
+            };
+
+            // Paralelne projizdime vsechny Frames
+            var matchFrames = matchTimeline.Frames.AsParallel().Select(frame =>
+                new MatchFrameModel {
+                    ParticipantFrames = frame.ParticipantFrames
+                        .Select(participantFrame =>
+                            mapper.Map<MatchParticipantFrameModel>(participantFrame))
+                        .ToList(),
+
+                    MatchEvents = frame.Events
+                        .Select(matchEvent =>
+                            mapper.Map<MatchEventModel>(matchEvent))
+                        .ToList(),
+
+                    Timestamp = frame.Timestamp
+                }
+            ).ToList();
+
+            result.MatchFrames = matchFrames;
+            return result;
         }
     }
 }

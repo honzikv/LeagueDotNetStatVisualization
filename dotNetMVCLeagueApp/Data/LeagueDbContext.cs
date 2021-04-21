@@ -1,7 +1,9 @@
 ﻿using dotNetMVCLeagueApp.Data.Models.Match;
+using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.EntityFrameworkCore;
+using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Data {
     /// <summary>
@@ -11,6 +13,9 @@ namespace dotNetMVCLeagueApp.Data {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
             : base(options) { }
 
+        /// <summary>
+        /// Vsechny tabulky 
+        /// </summary>
         public DbSet<SummonerInfoModel> SummonerInfoModels { get; set; }
 
         public DbSet<QueueInfoModel> QueueInfoModels { get; set; }
@@ -27,8 +32,18 @@ namespace dotNetMVCLeagueApp.Data {
 
         public DbSet<PlayerStatsModel> PlayerStatsModels { get; set; }
         public DbSet<MatchInfoSummonerInfo> MatchInfoSummonerInfos { get; set; }
+        
+        public DbSet<MatchTimelineModel> MatchTimelineModels { get; set; }
+        
+        public DbSet<MapPositionModel> MatchPositionModels { get; set; }
 
-        // Implementace M : N pro summoner a match
+        public DbSet<MatchEventModel> MatchEventModels { get; set; }
+        
+        public DbSet<MatchFrameModel> MatchFrameModels { get; set; }
+        
+        public DbSet<MatchParticipantFrameModel> MatchParticipantFrameModels { get; set; }
+
+        // Implementace M : N pro summoner a match pomoci fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<MatchInfoSummonerInfo>()
                 .HasKey(matchSummoner => new {

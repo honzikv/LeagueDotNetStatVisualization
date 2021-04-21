@@ -29,6 +29,12 @@ namespace dotNetMVCLeagueApp.Controllers {
             return View();
         }
 
+        /// <summary>
+        /// Vyhledani uzivatele
+        /// </summary>
+        /// <param name="name">summoner name - jmeno ve hre</param>
+        /// <param name="server">server, na kterem se nachazi</param>
+        /// <returns>View s informacemi o summoneru</returns>
         public IActionResult Search(string name, string server) {
             if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
                 return Redirect("/");
@@ -126,7 +132,8 @@ namespace dotNetMVCLeagueApp.Controllers {
             try {
                 var region = Region.Get(server);
                 var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
-                var update = matchHistoryService.UpdateGameMatchListAsync(summoner, 20);
+                // zavolame aktualizaci ze sluzby
+                matchHistoryService.UpdateGameMatchListAsync(summoner, 20);
                 return RedirectToAction("MatchHistory", new {
                     name = name,
                     server = server
@@ -137,6 +144,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             }
             
         }
+        
 
         public IActionResult Error(string message) {
             ViewBag.Message = message;

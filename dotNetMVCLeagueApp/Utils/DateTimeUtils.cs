@@ -7,8 +7,10 @@ namespace dotNetMVCLeagueApp.Utils {
         /// </summary>
         /// <param name="timestamp">casove razitko</param>
         /// <returns></returns>
-        public static DateTime ConvertFromUnixTimestamp(double timestamp) =>
+        public static DateTime ConvertFromMillisToDateTime(double timestamp) =>
             new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
-                .AddMilliseconds(timestamp);
+                .AddMilliseconds(timestamp)
+                .ToLocalTime();
+
     }
 }
