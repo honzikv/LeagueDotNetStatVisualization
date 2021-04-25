@@ -245,30 +245,26 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// </summary>
         /// <param name="matchTimeline">Puvodni objekt z api</param>
         /// <returns>Naplneny MatchTimeline model, ktery lze ulozit do db</returns>
-        private MatchTimelineModel MapApiTimelineToMatchTimelineModel(MatchTimeline matchTimeline) {
-            var result = new MatchTimelineModel {
-                FrameInterval = matchTimeline.FrameInterval
+        private MatchTimelineModel MapApiTimelineToMatchTimelineModel(MatchTimeline matchTimeline) =>
+            new() {
+                FrameInterval = matchTimeline.FrameInterval,
+                MatchFrames = matchTimeline.Frames.Select(frame =>
+                    new MatchFrameModel {
+                        Timestamp = frame.Timestamp,
+                        ParticipantFrames = frame.ParticipantFrames.Values.Select(participantFrame => {
+                            
+                            // jeden frame pro ulozeni do db
+                            var frameModel = mapper.Map<MatchParticipantFrameModel>(participantFrame);
+                            frameModel.Position = new MapPositionModel(participantFrame.Position);
+                            return frameModel;
+                        }).ToList(),
+                        MatchEvents = frame.Events.Select(matchEvent => {
+                            // udalosti ve framu
+                            var eventModel = mapper.Map<MatchEventModel>(matchEvent);
+                            eventModel.MapPosition = new MapPositionModel(matchEvent.Position);
+                            return eventModel;
+                        }).ToList()
+                    }).ToList()
             };
-
-            // Paralelne projizdime vsechny Frames
-            var matchFrames = matchTimeline.Frames.AsParallel().Select(frame =>
-                new MatchFrameModel {
-                    ParticipantFrames = frame.ParticipantFrames
-                        .Select(participantFrame =>
-                            mapper.Map<MatchParticipantFrameModel>(participantFrame))
-                        .ToList(),
-
-                    MatchEvents = frame.Events
-                        .Select(matchEvent =>
-                            mapper.Map<MatchEventModel>(matchEvent))
-                        .ToList(),
-
-                    Timestamp = frame.Timestamp
-                }
-            ).ToList();
-
-            result.MatchFrames = matchFrames;
-            return result;
-        }
     }
 }

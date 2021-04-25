@@ -3,8 +3,16 @@
 namespace dotNetMVCLeagueApp.Data.ViewModels.MatchDetail {
     public class MatchTimelineStatsViewModel {
 
-        public Dictionary<int, PlayerTimelineStatsViewModel> PlayerStats { get; set; }
+        public List<PlayerTimelineStatsViewModel> PlayerStats { get; }
         
-        public long FrameTime { get; set; }
+        /// <summary>
+        /// Jak dlouho trval jeden frame
+        /// </summary>
+        public long FrameInterval { get; }
+
+        public MatchTimelineStatsViewModel(int numParticipants, long frameInterval) {
+            PlayerStats = new List<PlayerTimelineStatsViewModel>(numParticipants);
+            FrameInterval = frameInterval;
+        }
     }
 }

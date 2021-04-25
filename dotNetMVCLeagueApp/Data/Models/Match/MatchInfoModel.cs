@@ -38,7 +38,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         /// Reference na hrace
         /// </summary>
-        public virtual IEnumerable<PlayerInfoModel> PlayerInfoList { get; set; }
+        public virtual ICollection<PlayerInfoModel> PlayerInfoList { get; set; }
 
     }
 }
