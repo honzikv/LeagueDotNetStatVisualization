@@ -32,6 +32,11 @@
         <PackageReference Include="xunit" Version="2.4.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Summoner\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\TestCore\Index.cshtml" />
+    </ItemGroup>
+
     
 
 </Project>

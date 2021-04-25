@@ -21,9 +21,8 @@ namespace dotNetMVCLeagueApp.Services {
             this.logger = logger;
         }
 
-        public MatchTimelineStatsViewModel GetMatchTimelineStatsAsync(MatchInfoModel match) {
-            return
-        }
+        public MatchTimelineStatsViewModel GetMatchTimelineStatsAsync(MatchInfoModel match) =>
+            GetMatchTimelineStats(match).GetAwaiter().GetResult();
 
         private async Task<MatchTimelineStatsViewModel> GetMatchTimelineStats(MatchInfoModel match) {
             var matchStats = await matchTimelineRepository.Get(match.Id);

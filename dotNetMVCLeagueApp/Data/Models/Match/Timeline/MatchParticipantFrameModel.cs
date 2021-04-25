@@ -36,10 +36,10 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         public int TotalGold { get; set; }
         
         /// <summary>
-        /// Aktualne zlata - unspent gold
+        /// Aktualni XP
         /// </summary>
-        public int CurrentGold { get; set; }
-        
+        public int Xp { get; set; }
+
         /// <summary>
         /// Uroven postavy
         /// </summary>

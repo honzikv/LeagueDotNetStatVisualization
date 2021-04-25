@@ -12,5 +12,6 @@ namespace dotNetMVCLeagueApp.Utils {
                 .AddMilliseconds(timestamp)
                 .ToLocalTime();
 
+        public static double ConvertFrameTimeToSeconds(long frameTime) => (double) frameTime / 1000;
     }
 }

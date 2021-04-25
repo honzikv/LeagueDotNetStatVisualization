@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
           crossorigin="anonymous"/>
+
 </head>
 <body>
 <header>
@@ -49,6 +50,11 @@
         © 2019 - mdbTutorial - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </div>
 </footer>
+@* CDN link na JS vizualizacni knihovnu pro match detail view - lepsi nez mit lokalne protoze se muze cachovat v
+prohlizeci *@
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.0/dist/chart.min.js"
+        integrity="sha256-ovnFmAOngtHmlhZzPyGrofexz4Kdik4kEobc8B9r1Yk="
+        crossorigin="anonymous"></script>
 <script type="text/javascript" src="~/mdb/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="~/mdb/js/popper.min.js"></script>
 <script type="text/javascript" src="~/mdb/js/bootstrap.min.js"></script>
