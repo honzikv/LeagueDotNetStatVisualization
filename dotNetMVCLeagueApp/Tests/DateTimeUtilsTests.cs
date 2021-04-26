@@ -11,7 +11,7 @@ namespace dotNetMVCLeagueApp.Tests {
         [Fact]
         public void TestConvertFromMillisToDateTime_16April1717CEST() {
             var expected = DateTime.Parse("Friday, April 16, 2021 3:17:11.476 PM").ToLocalTime();
-            var actual = DateTimeUtils.ConvertFromMillisToDateTime(1618586231476);
+            var actual = TimeUtils.ConvertFromMillisToDateTime(1618586231476);
             
             Assert.Equal(expected, actual);
         }

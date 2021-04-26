@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace dotNetMVCLeagueApp.Utils {
-    public class DateTimeUtils {
+    public class TimeUtils {
         /// <summary>
         /// Slouzi pro prevod timestapu ziskaneho z RiotApi
         /// </summary>
@@ -12,6 +12,11 @@ namespace dotNetMVCLeagueApp.Utils {
                 .AddMilliseconds(timestamp)
                 .ToLocalTime();
 
-        public static double ConvertFrameTimeToSeconds(long frameTime) => (double) frameTime / 1000;
+        /// <summary>
+        /// Utilitni funkce pro prevod frameTime udaje z api/db na TimeSpan
+        /// </summary>
+        /// <param name="frameTime">cislo framu * frameDuration</param>
+        /// <returns></returns>
+        public static TimeSpan ConvertFrameTimeToTimeSpan(long frameTime) => TimeSpan.FromMilliseconds(frameTime);
     }
 }

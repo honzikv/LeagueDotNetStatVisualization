@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using dotNetMVCLeagueApp.Data.FrontendModels.Home;
 using dotNetMVCLeagueApp.Data.Models;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Data.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotNetMVCLeagueApp.Services;

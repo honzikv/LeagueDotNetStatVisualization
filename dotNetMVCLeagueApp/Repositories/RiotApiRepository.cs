@@ -80,8 +80,8 @@ namespace dotNetMVCLeagueApp.Repositories {
                 }
 
                 // Jinak iterujeme pres vsechny, vybereme Flex a Solo a vratime
-                return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == LeagueEntryConst.RankedFlex ||
-                                                          leagueEntry.QueueType == LeagueEntryConst.RankedSolo)
+                return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == GameConstants.RankedFlex ||
+                                                          leagueEntry.QueueType == GameConstants.RankedSolo)
                     .Select(leagueEntry => mapper.Map<QueueInfoModel>(leagueEntry))
                     .ToList();
             }
@@ -94,7 +94,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         private MatchInfoModel MapToMatchInfo(Match match) {
             var result = mapper.Map<MatchInfoModel>(match); // mapping Match na MatchInfoModel
             result.Id = match.GameId; // Nastavime id
-            result.PlayTime = DateTimeUtils.ConvertFromMillisToDateTime(match.GameCreation);
+            result.PlayTime = TimeUtils.ConvertFromMillisToDateTime(match.GameCreation);
             result.QueueType = GameConstants.GetQueueNameFromQueueId(match.QueueId);
             logger.LogDebug(result.ToString());
 

@@ -3,7 +3,7 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Data.Models.User {
     /// <summary>
-    /// Model pro registraci uzivatele
+    ///     Model pro registraci uzivatele
     /// </summary>
     public class UserModel {
         public int Id { get; set; }
@@ -25,7 +25,6 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
 
         [Required] public string Email { get; set; }
 
-        [Required]
-        public virtual SummonerInfoModel SummonerInfo { get; set; }
+        [Required] public virtual SummonerInfoModel SummonerInfo { get; set; }
     }
 }

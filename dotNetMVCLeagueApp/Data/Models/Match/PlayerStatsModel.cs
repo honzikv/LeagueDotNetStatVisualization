@@ -1,12 +1,12 @@
 ﻿namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
-    /// Obsahuje statistiky pro daneho hrace (tato trida nema vsechny, pouze ty, ktere by se mohli pouzit)
+    ///     Obsahuje statistiky pro daneho hrace (tato trida nema vsechny, pouze ty, ktere by se mohli pouzit)
     /// </summary>
     public class PlayerStatsModel {
         public int Id { get; set; }
-        
+
         public bool Win { get; set; }
-        
+
         public int TotalUnitsHealed { get; set; }
 
         public int Item0 { get; set; }
@@ -40,9 +40,9 @@
         public int NeutralMinionsKilled { get; set; }
 
         public int Deaths { get; set; }
-        
+
         public int NeutralMinionsKilledTeamJungle { get; set; }
-        
+
         public int NeutralMinionsKilledEnemyJungle { get; set; }
 
         public int TripleKills { get; set; }

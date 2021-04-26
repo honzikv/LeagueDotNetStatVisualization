@@ -39,6 +39,10 @@ namespace dotNetMVCLeagueApp.Const {
         public const string Jg = "JG";
         public const string Adc = "ADC";
         public const string Sup = "SUP";
+        
+        
+        public const string RankedFlex = "RANKED_FLEX_SR";
+        public const string RankedSolo = "RANKED_SOLO_5x5";
 
         /// <summary>
         /// Slouzi k ziskani jmena queue z jeho id

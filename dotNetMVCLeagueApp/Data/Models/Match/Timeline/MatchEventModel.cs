@@ -1,63 +1,61 @@
 ﻿namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     /// <summary>
-    /// Udalost v zapase
+    ///     Udalost v zapase
     /// </summary>
     public class MatchEventModel {
-        
         /// <summary>
-        /// Id v db
+        ///     Id v db
         /// </summary>
         public long Id { get; set; }
-        
+
         /// <summary>
-        /// Id ucastnika
+        ///     Id ucastnika
         /// </summary>
         public int ParticipantId { get; set; }
-        
+
         /// <summary>
-        /// Id predmetu (pokud existuje)
+        ///     Id predmetu (pokud existuje)
         /// </summary>
         public int? ItemId { get; set; }
-        
+
         /// <summary>
-        /// Typ linky
+        ///     Typ linky
         /// </summary>
         public string LaneType { get; set; }
-        
+
         /// <summary>
-        /// Typ eventu
+        ///     Typ eventu
         /// </summary>
         public string Type { get; set; }
-        
+
         /// <summary>
-        /// Cas, kdy se event stal
+        ///     Cas, kdy se event stal
         /// </summary>
         public long Timestamp { get; set; }
-        
+
         /// <summary>
-        /// Ten kdo event vytvoril (napr. placing a ward)
+        ///     Ten kdo event vytvoril (napr. placing a ward)
         /// </summary>
         public int CreatorId { get; set; }
-        
+
         /// <summary>
-        /// Typ wardy
+        ///     Typ wardy
         /// </summary>
         public int WardType { get; set; }
-        
+
         /// <summary>
-        /// Typ monstra - DRAGON, BARON ...
+        ///     Typ monstra - DRAGON, BARON ...
         /// </summary>
         public string MonsterType { get; set; }
-        
+
         /// <summary>
-        /// Podtyp monstra - WATER_DRAGON, etc.
+        ///     Podtyp monstra - WATER_DRAGON, etc.
         /// </summary>
         public string MonsterSubType { get; set; }
 
         /// <summary>
-        /// X, Y coords
+        ///     X, Y coords
         /// </summary>
         public virtual MapPositionModel MapPosition { get; set; }
-
     }
 }

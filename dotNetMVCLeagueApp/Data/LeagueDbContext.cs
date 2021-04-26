@@ -3,18 +3,17 @@ using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.EntityFrameworkCore;
-using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Data {
     /// <summary>
-    /// Kontext pro pripojeni k databazi
+    ///     Kontext pro pripojeni k databazi
     /// </summary>
     public class LeagueDbContext : DbContext {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
             : base(options) { }
 
         /// <summary>
-        /// Vsechny tabulky 
+        ///     Vsechny tabulky
         /// </summary>
         public DbSet<SummonerInfoModel> SummonerInfoModels { get; set; }
 
@@ -32,15 +31,15 @@ namespace dotNetMVCLeagueApp.Data {
 
         public DbSet<PlayerStatsModel> PlayerStatsModels { get; set; }
         public DbSet<MatchInfoSummonerInfo> MatchInfoSummonerInfos { get; set; }
-        
+
         public DbSet<MatchTimelineModel> MatchTimelineModels { get; set; }
-        
+
         public DbSet<MapPositionModel> MatchPositionModels { get; set; }
 
         public DbSet<MatchEventModel> MatchEventModels { get; set; }
-        
+
         public DbSet<MatchFrameModel> MatchFrameModels { get; set; }
-        
+
         public DbSet<MatchParticipantFrameModel> MatchParticipantFrameModels { get; set; }
 
         // Implementace M : N pro summoner a match pomoci fluent API
