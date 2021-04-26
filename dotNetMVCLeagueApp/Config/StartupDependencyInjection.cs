@@ -25,11 +25,13 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<SummonerInfoEntityRepository>();
             services.AddScoped<MatchInfoEntityRepository>();
             services.AddScoped<QueueInfoRepository>();
+            services.AddScoped<MatchInfoSummonerInfoRepository>();
             
             // Services - wrapper nad repozitari, ktery se vola z controlleru
             services.AddScoped<SummonerInfoService>(); // Pro info o hracich
             services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
+            services.AddScoped<MatchTimelineService>();
         }
     }
 }

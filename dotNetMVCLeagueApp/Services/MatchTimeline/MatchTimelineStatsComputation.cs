@@ -15,17 +15,35 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
     /// predavat nejakym zpusobem ve MatchTimelineStatsService
     /// </summary>
     public class MatchTimelineStatsComputation {
-        private PlayerDetailDto playerDetailDto;
+        /// <summary>
+        /// Objekt, kam se ukladaji data pro detail o hraci
+        /// </summary>
+        private readonly PlayerDetailDto playerDetailDto;
 
-        private MatchTimelineDto matchTimelineDto;
+        /// <summary>
+        /// Objekt, kam se ukladaji timelines pro zapas
+        /// </summary>
+        private readonly MatchTimelineDto matchTimelineDto;
 
+        /// <summary>
+        /// MatchTimelineModel z db
+        /// </summary>
         private readonly MatchTimelineModel matchTimeline;
 
-        private long frameDuration;
+        /// <summary>
+        /// Jak dlouho (ms) trva jeden frame
+        /// </summary>
+        private readonly long frameDuration;
 
+        /// <summary>
+        /// Id vsech ucastniku
+        /// </summary>
+        private readonly List<int> participantIds;
+
+        /// <summary>
+        /// Zda-li byl MatchTimelineModel zpracovany
+        /// </summary>
         private bool processed;
-
-        private List<int> participantIds;
 
         public MatchTimelineStatsComputation(List<int> participantIds, int participantId,
             int laneOpponentParticipantId, MatchTimelineModel matchTimeline) {
@@ -56,7 +74,6 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
             processed = true;
         }
 
-
         public (PlayerDetailDto, MatchTimelineDto) GetResult => !processed
             ? throw new ActionNotSuccessfulException("Error, timeline was not processed")
             : (playerDetailDto, matchTimelineDto);
@@ -73,35 +90,125 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
             }
         }
 
+        private int GetClosestFrameIndex(TimeSpan duration) =>
+            (int) Math.Round(duration.TotalMilliseconds / frameDuration);
+
         private void ComputePlayerDetail() {
             var playerParticipantId = playerDetailDto.ParticipantId;
 
-            foreach (var participantId in participantIds) {
-                if (participantId == playerParticipantId) {
-                    continue;
-                }
-
+            foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
                 ComputePlayerDetailForParticipant(participantId, matchTimelineDto.PlayerTimelines[participantId]);
             }
+
+            var frameCount = matchTimelineDto.PlayerTimelines[participantIds[0]].CsOverTime.Count;
+            var frameAt10 = GetClosestFrameIndex(TimeSpan.FromMinutes(10));
+            if (frameAt10 >= frameCount) {
+                return;
+            }
+
+            foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
+                ComputeDiffAt10(participantId, matchTimelineDto.PlayerTimelines[participantId], frameAt10);
+            }
+
+            var frameAt15 = GetClosestFrameIndex(TimeSpan.FromMinutes(15));
+            if (frameAt15 >= frameCount) {
+                return;
+            }
+
+            foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
+                ComputeDiffAt15(participantId, matchTimelineDto.PlayerTimelines[participantId], frameAt15);
+            }
         }
+
+        private void ComputeDiffAt10(int participantId, PlayerTimelineDto playerTimeline, int frameAt10) {
+            // Timeline hrace, vuci kteremu porovnavame
+            var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
+
+            playerDetailDto.CsDiffAt10[participantId] =
+                playerTimeline.CsOverTime[frameAt10] - comparedPlayerTimeline.CsOverTime[frameAt10];
+
+            playerDetailDto.GoldDiffAt10[participantId] =
+                playerTimeline.GoldOverTime[frameAt10] - comparedPlayerTimeline.GoldOverTime[frameAt10];
+
+            playerDetailDto.LevelDiffAt10[participantId] =
+                playerTimeline.LevelOverTime[frameAt10] - comparedPlayerTimeline.LevelOverTime[frameAt10];
+
+            playerDetailDto.XpDiffAt10[participantId] =
+                playerTimeline.XpOverTime[frameAt10] - comparedPlayerTimeline.XpOverTime[frameAt10];
+        }
+
+        private void ComputeDiffAt15(int participantId, PlayerTimelineDto playerTimeline, int frameAt15) {
+            // Timeline hrace, vuci kteremu porovnavame
+            var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
+
+            playerDetailDto.CsDiffAt15[participantId] =
+                playerTimeline.CsOverTime[frameAt15] - comparedPlayerTimeline.CsOverTime[frameAt15];
+
+            playerDetailDto.GoldDiffAt15[participantId] =
+                playerTimeline.GoldOverTime[frameAt15] - comparedPlayerTimeline.GoldOverTime[frameAt15];
+
+            playerDetailDto.LevelDiffAt15[participantId] =
+                playerTimeline.LevelOverTime[frameAt15] - comparedPlayerTimeline.LevelOverTime[frameAt15];
+
+            playerDetailDto.XpDiffAt15[participantId] =
+                playerTimeline.XpOverTime[frameAt15] - comparedPlayerTimeline.XpOverTime[frameAt15];
+        }
+
+
+        private TimeSpan FrameIndexToTimeSpan(int frameIdx) =>
+            TimeUtils.ConvertFrameTimeToTimeSpan(frameDuration * (frameIdx + 1));
 
         private void ComputePlayerDetailForParticipant(int participantId, PlayerTimelineDto playerTimeline) {
             // Timeline hrace, vuci kteremu porovnavame
             var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
 
-            var xpDiffList = playerTimeline.XpOverTime.Zip(comparedPlayerTimeline.XpOverTime, 
-                (first, second) => first - second);
-            
+            var xpDiffList = playerTimeline.XpOverTime.Zip(comparedPlayerTimeline.XpOverTime,
+                (first, second) => first - second).ToList();
+
             var goldDiffList = playerTimeline.GoldOverTime.Zip(comparedPlayerTimeline.GoldOverTime,
-                (first, second) => first - second);
+                (first, second) => first - second).ToList();
 
             var csDiffList = playerTimeline.CsOverTime.Zip(comparedPlayerTimeline.CsOverTime,
-                (first, second) => first - second);
+                (first, second) => first - second).ToList();
 
             var levelDiffList = playerTimeline.LevelOverTime.Zip(comparedPlayerTimeline.LevelOverTime,
-                (first, second) => first - second);
-            
-            playerDetailDto.MaxXpDiff[participantId] = 
+                (first, second) => first - second).ToList();
+
+            var (maxXpDiff, maxXpDiffIdx) = xpDiffList.MaxWithIndex();
+            var (minXpDiff, minXpDiffIdx) = xpDiffList.MinWithIndex();
+
+            playerDetailDto.MaxXpDiff[participantId] =
+                new TimeValue<int>(maxXpDiff, FrameIndexToTimeSpan(maxXpDiffIdx));
+
+            playerDetailDto.MinXpDiff[participantId] =
+                new TimeValue<int>(minXpDiff, FrameIndexToTimeSpan(minXpDiffIdx));
+
+            var (maxGoldDiff, maxGoldDiffIdx) = goldDiffList.MaxWithIndex();
+            var (minGoldDiff, minGoldDiffIdx) = goldDiffList.MinWithIndex();
+
+            playerDetailDto.MaxGoldDiff[participantId] =
+                new TimeValue<int>(maxGoldDiff, FrameIndexToTimeSpan(maxGoldDiffIdx));
+
+            playerDetailDto.MinGoldDiff[participantId] =
+                new TimeValue<int>(minGoldDiff, FrameIndexToTimeSpan(minGoldDiffIdx));
+
+            var (maxCsDiff, maxCsDiffIdx) = csDiffList.MaxWithIndex();
+            var (minCsDiff, minCsDiffIdx) = csDiffList.MinWithIndex();
+
+            playerDetailDto.MaxCsDiff[participantId] =
+                new TimeValue<int>(maxCsDiff, FrameIndexToTimeSpan(maxCsDiffIdx));
+
+            playerDetailDto.MinCsDiff[participantId] =
+                new TimeValue<int>(minCsDiff, FrameIndexToTimeSpan(minCsDiffIdx));
+
+            var (maxLevelDiff, maxLevelDiffIdx) = levelDiffList.MaxWithIndex();
+            var (minLevelDiff, minLevelDiffIdx) = levelDiffList.MinWithIndex();
+
+            playerDetailDto.MaxLevelDiff[participantId] =
+                new TimeValue<int>(maxLevelDiff, FrameIndexToTimeSpan(maxLevelDiffIdx));
+
+            playerDetailDto.MinLevelDiff[participantId] =
+                new TimeValue<int>(minLevelDiff, FrameIndexToTimeSpan(minLevelDiffIdx));
         }
     }
 }
