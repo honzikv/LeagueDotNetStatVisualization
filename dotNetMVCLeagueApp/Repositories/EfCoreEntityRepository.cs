@@ -50,7 +50,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="entity">Reference na entitu</param>
         /// <returns>Entitu z databaze</returns>
         public async Task<TEntity> Add(TEntity entity) {
-            LeagueDbContext.Set<TEntity>().Add(entity);
+            await LeagueDbContext.Set<TEntity>().AddAsync(entity);
             await LeagueDbContext.SaveChangesAsync();
             return entity;
         }

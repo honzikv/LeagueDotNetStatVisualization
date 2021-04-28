@@ -22,7 +22,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
                 .OrderByDescending(match => match.Match.PlayTime)
                 .Skip(start)
-                .Take(n) // Take maximum of N elements
+                .Take(n) // max N prvku
                 .ToList()
                 .ConvertAll(matchSummoner => matchSummoner.Match);
 

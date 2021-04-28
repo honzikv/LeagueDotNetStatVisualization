@@ -1,21 +1,36 @@
-﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.SummonerOverviewDto
+﻿@using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner
+@model SummonerOverviewDto
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
+    
+    void GetRank(string tier, string rank) {
+        switch (tier) {
+            case "IRON":
+                 RenderRank("iron",);       
+        }
+    }
+
+    void RenderRank(string cssClass, string rank) {
+        
+    }
 }
+
 
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 p-md-1" id="summonerInfo">
-            <div class="card bg-warning">
-                <p>@Model.Summoner.Name</p>
+        <div class="col-md-4 p-md-1 m-4" id="summonerInfo">
+            <div class="profile-card">
+                <div class="profile-card-body">
+                    <p class="profile-card-text text-center">@Model.Summoner.Name</p>
+                </div>
             </div>
         </div>
 
         <div class="col-lg">
-            Mid
+           
         </div>
 
     </div>
