@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
     /// <summary>
     ///     Tato trida obsahuje statistiky vypoctene pro dany seznam her - tzn. napr. z 20 zobrazenych her na uzivatelskem
     ///     profilu
     /// </summary>
-    public class GameListStatsViewModel {
+    public class MatchListStatsDto {
         /// <summary>
         ///     Pocet vyhranych her
         /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.ViewModels.MatchDetail.Overview {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
     /// <summary>
     ///     Informace o hraci pro zobrazeni do overview zapasu
     /// </summary>

@@ -15,7 +15,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="summonerInfoId">Id uzivatele v zapasu</param>
         /// <returns>True pokud ano, jinak false</returns>
         public async Task<bool> AnyJoinBetweenMatchSummoner(long matchInfoId, int summonerInfoId) =>
-            await LeagueDbContext.MatchInfoSummonerInfos.AnyAsync(matchSummoner =>
+            await LeagueDbContext.MatchToSummonerModels.AnyAsync(matchSummoner =>
                 matchSummoner.MatchInfoModelId == matchInfoId &&
                 matchSummoner.SummonerInfoModelId == summonerInfoId);
     }

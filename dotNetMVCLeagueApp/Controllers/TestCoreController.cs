@@ -85,7 +85,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             var matchInfoHeaders = 
                 summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchList);
 
-            var gameListStats = summonerProfileStatsService.GetGameListStatsViewModel(matchList, summoner);
+            var gameListStats = summonerProfileStatsService.GetMatchListStats(summoner, matchList);
             
             logger.LogDebug("Headers: ");
             matchInfoHeaders.ForAll(x => logger.LogDebug(x.ToString()));

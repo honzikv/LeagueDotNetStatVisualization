@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using dotNetMVCLeagueApp.Data.FrontendModels.Home;
+using dotNetMVCLeagueApp.Data.FrontendDtos.Home;
 using dotNetMVCLeagueApp.Data.Models;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +22,10 @@ namespace dotNetMVCLeagueApp.Controllers {
         }
 
         public IActionResult Index() => View(
-            new HomePageViewModel {
+            new HomePageDto {
                 ServerList = summonerInfoService.GetQueryableServers
             }
         );
-
-        public IActionResult Privacy() {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {

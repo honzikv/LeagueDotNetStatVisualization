@@ -52,7 +52,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                     EncryptedSummonerId = summoner.Id,
                     EncryptedAccountId = summoner.AccountId,
                     Region = region.Key,
-                    LastUpdate = DateTime.Now
+                    LastUpdate = DateTime.MinValue
                 };
             }
             catch (Exception ex) {
@@ -99,18 +99,11 @@ namespace dotNetMVCLeagueApp.Repositories {
             logger.LogDebug(result.ToString());
 
             // Mapping vnorenych objektu - tymove statistiky a hraci
-            var teams = new List<TeamStatsModel>();
-            // Map TeamStatsInfoModel objekty
-            foreach (var team in match.Teams) {
-                teams.Add(mapper.Map<TeamStatsModel>(team));
-            }
+            var teams = match.Teams.Select(team => mapper.Map<TeamStatsModel>(team)).ToList();
 
             // Mapping participant objektu na PlayeryInfoModel objekty
-            var players = new List<PlayerModel>();
-            foreach (var participantIdentity in match.ParticipantIdentities) {
-                var playerInfo = MapParticipantToPlayer(match, participantIdentity);
-                players.Add(playerInfo);
-            }
+            var players = match.ParticipantIdentities.Select(participantIdentity => 
+                MapParticipantToPlayer(match, participantIdentity)).ToList();
 
             result.Teams = teams;
             result.PlayerInfoList = players;
@@ -183,7 +176,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="endIdx">Konecny index</param>
         /// <returns>Seznam s namapovanymy objekty do db</returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public async Task<List<MatchModel>>
+        private async Task<List<MatchModel>>
             GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx,
                 int endIdx) {
             try {
@@ -212,7 +205,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 // Pockame na vsechny
                 var awaitedMatches = await Task.WhenAll(matchTasks);
                 var matchList = new List<MatchModel>(matches.TotalGames);
-                matchList.AddRange(awaitedMatches.Select(match => MapToMatchInfo(match)));
+                matchList.AddRange(awaitedMatches.Select(MapToMatchInfo));
 
                 // Namapujeme kazdy zaznam na MatchInfoModel
 
@@ -251,18 +244,10 @@ namespace dotNetMVCLeagueApp.Repositories {
                 MatchFrames = matchTimeline.Frames.Select(frame =>
                     new MatchFrameModel {
                         Timestamp = frame.Timestamp,
-                        ParticipantFrames = frame.ParticipantFrames.Values.Select(participantFrame => {
-                            
-                            //todo: check automapper
-                            // jeden frame pro ulozeni do db
-                            var frameModel = mapper.Map<MatchParticipantFrameModel>(participantFrame);
-                            return frameModel;
-                        }).ToList(),
-                        MatchEvents = frame.Events.Select(matchEvent => {
-                            // udalosti ve framu
-                            var eventModel = mapper.Map<MatchEventModel>(matchEvent);
-                            return eventModel;
-                        }).ToList()
+                        ParticipantFrames = frame.ParticipantFrames.Values.Select(participantFrame => 
+                            mapper.Map<MatchParticipantFrameModel>(participantFrame)).ToList(),
+                        MatchEvents = frame.Events.Select(matchEvent => 
+                            mapper.Map<MatchEventModel>(matchEvent)).ToList()
                     }).ToList()
             };
     }

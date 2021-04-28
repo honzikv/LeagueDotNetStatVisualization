@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail;
-using dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail.PlayerDetail;
+using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail;
+using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.PlayerDetail;
+using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
-using dotNetMVCLeagueApp.Data.ViewModels.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Utils;
 

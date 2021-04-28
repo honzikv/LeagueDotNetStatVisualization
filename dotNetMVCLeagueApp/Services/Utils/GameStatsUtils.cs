@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
-using dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile;
 
 namespace dotNetMVCLeagueApp.Services.Utils {
     public static class GameStatsUtils {
@@ -125,27 +125,27 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <summary>
         /// Vypocte prumery pro dane hodnoty v GameListStatsViewModel
         /// </summary>
-        /// <param name="statsViewModel">ViewModel objekt</param>
+        /// <param name="statsDto">ViewModel objekt</param>
         /// <param name="totals">Objekt s celkovym poctem pro dany seznam her</param>
-        public static void CalculateAverages(GameListStatsViewModel statsViewModel, GameListStats totals) {
-            var realGamesPlayed = statsViewModel.GamesWon + statsViewModel.GamesLost; // Nepocitame remake hry
+        public static void CalculateAverages(MatchListStatsDto statsDto, GameListStats totals) {
+            var realGamesPlayed = statsDto.GamesWon + statsDto.GamesLost; // Nepocitame remake hry
             if (realGamesPlayed == 0) { // Pokud se nehraly zadne hry vratime se
                 return;
             }
 
-            statsViewModel.AverageKills = totals.Kills.Average();
-            statsViewModel.AverageDeaths = totals.Deaths.Average();
-            statsViewModel.AverageAssists = totals.Assists.Average();
+            statsDto.AverageKills = totals.Kills.Average();
+            statsDto.AverageDeaths = totals.Deaths.Average();
+            statsDto.AverageAssists = totals.Assists.Average();
 
-            statsViewModel.AverageKda = CalculateKda(totals.Kills.Sum(), totals.Deaths.Sum(), totals.Assists.Sum());
+            statsDto.AverageKda = CalculateKda(totals.Kills.Sum(), totals.Deaths.Sum(), totals.Assists.Sum());
 
-            statsViewModel.AverageKillParticipation = totals.KillParticipations.Average();
-            statsViewModel.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();
-            statsViewModel.AverageCsPerMinute = totals.CsPerMinuteList.Average();
+            statsDto.AverageKillParticipation = totals.KillParticipations.Average();
+            statsDto.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();
+            statsDto.AverageCsPerMinute = totals.CsPerMinuteList.Average();
 
             var mostPlayedRoles = GetTwoMostPlayedRoles(totals.Roles);
-            statsViewModel.MostPlayedRole = mostPlayedRoles.Item1;
-            statsViewModel.SecondMostPlayedRole = mostPlayedRoles.Item2;
+            statsDto.MostPlayedRole = mostPlayedRoles.Item1;
+            statsDto.SecondMostPlayedRole = mostPlayedRoles.Item2;
         }
 
 

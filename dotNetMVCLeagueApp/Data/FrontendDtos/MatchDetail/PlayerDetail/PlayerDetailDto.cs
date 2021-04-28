@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using dotNetMVCLeagueApp.Data.ViewModels.MatchDetail;
 
-namespace dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail.PlayerDetail {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.PlayerDetail {
     /// <summary>
     ///     Data, ktera jsou spojena s hracem pro ktereho detail zobrazujeme - tzn. z jehoz stranky jsme se na detail dostali
     ///     Klice pro vsechny slovniky jsou ParticipantId

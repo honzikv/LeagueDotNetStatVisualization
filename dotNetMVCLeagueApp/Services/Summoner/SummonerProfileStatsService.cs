@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services.Utils;
 using Microsoft.Extensions.Logging;
@@ -25,7 +25,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="summoner"></param>
         /// <param name="matchInfoList"></param>
         /// <returns></returns>
-        public List<MatchInfoHeaderViewModel> GetMatchInfoHeaderList(SummonerModel summoner,
+        public List<MatchHeaderDto> GetMatchInfoHeaderList(SummonerModel summoner,
             IEnumerable<MatchModel> matchInfoList) =>
             matchInfoList.Select(matchInfo => GetMatchInfoHeader(summoner, matchInfo)).ToList();
         
@@ -36,7 +36,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="match"></param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public MatchInfoHeaderViewModel GetMatchInfoHeader(SummonerModel summoner,
+        public MatchHeaderDto GetMatchInfoHeader(SummonerModel summoner,
             MatchModel match) {
             var playerInfo = match.PlayerInfoList
                 .FirstOrDefault(player => player.SummonerId == summoner.EncryptedSummonerId);
@@ -49,7 +49,7 @@ namespace dotNetMVCLeagueApp.Services {
             var playerStats = playerInfo.PlayerStatsModel;
 
             // Mapping do jednoho objektu
-            return new MatchInfoHeaderViewModel {
+            return new MatchHeaderDto {
                 PlayTime = match.PlayTime,
                 ChampionIconId = playerInfo.ChampionId,
                 TeamId = playerInfo.TeamId,
@@ -84,10 +84,9 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="matchInfoList">Seznam her, pro ktere se vypoctou statistiky</param>
         /// <param name="summoner">Info o hraci v danych hrach - pro nej se statistiky pocitaji</param>
         /// <returns></returns>
-        public GameListStatsViewModel GetGameListStatsViewModel(IEnumerable<MatchModel> matchInfoList,
-            SummonerModel summoner) {
+        public MatchListStatsDto GetMatchListStats(SummonerModel summoner, IEnumerable<MatchModel> matchInfoList) {
             var totals = new GameListStats();
-            var result = new GameListStatsViewModel();
+            var result = new MatchListStatsDto();
 
             foreach (var matchInfo in matchInfoList) {
                 CalculateStatTotals(summoner, matchInfo, result, totals); // vypocet statistik
@@ -105,11 +104,11 @@ namespace dotNetMVCLeagueApp.Services {
         /// </summary>
         /// <param name="summoner">Reference na summoner info</param>
         /// <param name="match">Reference na match info</param>
-        /// <param name="gameListStats">Statistiky pro seznam her, ktery zobrazujeme</param>
+        /// <param name="matchListStats">Statistiky pro seznam her, ktery zobrazujeme</param>
         /// <param name="totals">Objekt s celkovymi pocty</param>
         /// <exception cref="ActionNotSuccessfulException">Pokud je hrac null nebo je hracuv team null</exception>
         private void CalculateStatTotals(SummonerModel summoner, MatchModel match,
-            GameListStatsViewModel gameListStats, GameListStats totals) {
+            MatchListStatsDto matchListStats, GameListStats totals) {
             var playerInfo = match.PlayerInfoList
                 .FirstOrDefault(player => player.SummonerId == summoner.EncryptedSummonerId);
 
@@ -126,18 +125,18 @@ namespace dotNetMVCLeagueApp.Services {
 
             if (GameStatsUtils.IsRemake(match.GameDuration)) {
                 logger.LogDebug("Found a remake game, increasing number of remakes");
-                gameListStats.Remakes += 1;
+                matchListStats.Remakes += 1;
                 return;
             }
 
             // Jinak pricteme win / loss podle stringu
             if (playerTeam.Win == GameConstants.Win) {
                 logger.LogDebug("Found win");
-                gameListStats.GamesWon += 1;
+                matchListStats.GamesWon += 1;
             }
             else {
                 logger.LogDebug("Found loss");
-                gameListStats.GamesLost += 1;
+                matchListStats.GamesLost += 1;
             }
 
             // Aktualizace stat totals - pricteme celkove smrti, zabiti, asistence ...

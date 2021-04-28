@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.ViewModels.MatchDetail.Timeline {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Timeline {
     public class MatchTimelineDto {
         public Dictionary<int, PlayerTimelineDto> PlayerTimelines { get; } = new();
 

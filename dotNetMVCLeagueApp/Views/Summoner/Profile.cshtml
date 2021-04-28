@@ -1,0 +1,23 @@
+﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.SummonerOverviewDto
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 p-md-1" id="summonerInfo">
+            <div class="card bg-warning">
+                <p>@Model.Summoner.Name</p>
+            </div>
+        </div>
+
+        <div class="col-lg">
+            Mid
+        </div>
+
+    </div>
+
+</div>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail {
     /// <summary>
     ///     Par cas a hodnota
     /// </summary>

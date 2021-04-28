@@ -24,8 +24,8 @@ namespace dotNetMVCLeagueApp {
 
             // Repozitare
             services.AddScoped<RiotApiRepository>(); // Komunikace s Riot Api
-            services.AddScoped<SummonerInfoEntityRepository>();
-            services.AddScoped<MatchInfoEntityRepository>();
+            services.AddScoped<SummonerRepository>();
+            services.AddScoped<MatchRepository>();
             services.AddScoped<QueueInfoRepository>();
             services.AddScoped<MatchInfoSummonerInfoRepository>();
             services.AddScoped<MatchTimelineRepository>();

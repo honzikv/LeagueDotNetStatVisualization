@@ -21,6 +21,8 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
+        private bool useLiveReload = false;
+
         public IConfiguration Configuration { get; }
 
         public RiotApiUpdateConfig RiotApiUpdateConfig { get; private set; }
@@ -32,6 +34,7 @@ namespace dotNetMVCLeagueApp {
                 options.UseSqlite(Configuration.GetConnectionString("LeagueStatsDbSqliteConnString"));
                 options.UseLazyLoadingProxies();
             });
+            services.AddLiveReload();
 
             // Puvodni SQL Express server
             // services.AddDbContext<LeagueDbContext>(options => {
@@ -48,7 +51,6 @@ namespace dotNetMVCLeagueApp {
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
 
-            services.AddLiveReload();
 
             // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
             services.AddControllersWithViews().AddJsonOptions(config => {
@@ -72,8 +74,11 @@ namespace dotNetMVCLeagueApp {
                 // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            if (useLiveReload) {
+                app.UseLiveReload();
+            }
             
-            app.UseLiveReload(); // pouziti hot reloadu
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();

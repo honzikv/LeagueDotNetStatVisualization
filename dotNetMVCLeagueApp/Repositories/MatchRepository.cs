@@ -7,8 +7,8 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {
-    public class MatchInfoEntityRepository : EfCoreEntityRepository<MatchModel, LeagueDbContext> {
-        public MatchInfoEntityRepository(LeagueDbContext leagueDbContext) : base(leagueDbContext) { }
+    public class MatchRepository : EfCoreEntityRepository<MatchModel, LeagueDbContext> {
+        public MatchRepository(LeagueDbContext leagueDbContext) : base(leagueDbContext) { }
 
         /// <summary>
         /// Ziska poslednich N zapasu podle nejnovejsiho datumu pro daneho summonera
@@ -18,7 +18,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="start">Zacatek</param>
         /// <returns>Seznam s N nebo mene entitami</returns>
         public IEnumerable<MatchModel> GetNLastMatches(SummonerModel summoner, int n, int start = 0) =>
-            LeagueDbContext.MatchInfoSummonerInfos
+            LeagueDbContext.MatchToSummonerModels
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
                 .OrderByDescending(match => match.Match.PlayTime)
                 .Skip(start)

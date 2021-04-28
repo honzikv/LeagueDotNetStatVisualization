@@ -15,26 +15,26 @@ namespace dotNetMVCLeagueApp.Data {
         /// <summary>
         ///     Vsechny tabulky
         /// </summary>
-        public DbSet<SummonerModel> SummonerInfoModels { get; set; }
+        public DbSet<SummonerModel> SummonerModels { get; set; }
 
         public DbSet<QueueInfoModel> QueueInfoModels { get; set; }
 
-        public DbSet<UserModel> Users { get; set; }
+        public DbSet<UserModel> UserModels { get; set; }
 
         public DbSet<ProfileCardModel> ProfileCardModels { get; set; }
 
-        public DbSet<MatchModel> MatchInfoModels { get; set; }
+        public DbSet<MatchModel> MatchModels { get; set; }
 
-        public DbSet<PlayerModel> PlayerInfoModels { get; set; }
+        public DbSet<PlayerModel> PlayerModels { get; set; }
 
-        public DbSet<TeamStatsModel> TeamStatsInfoModels { get; set; }
+        public DbSet<TeamStatsModel> TeamStatsModels { get; set; }
 
         public DbSet<PlayerStatsModel> PlayerStatsModels { get; set; }
-        public DbSet<MatchToSummonerModel> MatchInfoSummonerInfos { get; set; }
+        public DbSet<MatchToSummonerModel> MatchToSummonerModels { get; set; }
 
         public DbSet<MatchTimelineModel> MatchTimelineModels { get; set; }
 
-        public DbSet<MapPositionModel> MatchPositionModels { get; set; }
+        public DbSet<MapPositionModel> MapPositionModels { get; set; }
 
         public DbSet<MatchEventModel> MatchEventModels { get; set; }
 

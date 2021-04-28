@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.ViewModels.SummonerProfile {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
     /// <summary>
     ///     Trida, ktera obsahuje informace pro hlavicku pro dany zapas
     /// </summary>
-    public class MatchInfoHeaderViewModel {
+    public class MatchHeaderDto {
         /// <summary>
         ///     Id tymu - blue 100, red 200
         /// </summary>

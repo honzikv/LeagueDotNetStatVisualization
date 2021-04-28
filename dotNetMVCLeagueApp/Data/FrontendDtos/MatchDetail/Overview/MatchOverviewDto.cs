@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.ViewModels.MatchDetail.Overview {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
     public class MatchOverviewDto {
         /// <summary>
         ///     Hraci ve hre - klic je participant id (1 - 10) a hodnota

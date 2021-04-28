@@ -17,10 +17,5 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         ///     jednotliveho ucastnika a eventy
         /// </summary>
         public virtual IEnumerable<MatchFrameModel> MatchFrames { get; set; }
-        
-        /// <summary>
-        /// Zapas, ke kteremu dany Timeline patri
-        /// </summary>
-        public virtual MatchModel MatchModel { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail {
+﻿namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail {
     /// <summary>
     ///     Objekt, ktery obsahuje dulezite informace oproti oponentovi
     ///     Tento objekt muze byt null, pokud nejsou k dispozici informace o lince.

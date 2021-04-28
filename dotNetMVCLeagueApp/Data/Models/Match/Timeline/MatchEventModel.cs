@@ -41,7 +41,7 @@
         /// <summary>
         ///     Typ wardy
         /// </summary>
-        public int WardType { get; set; }
+        public string WardType { get; set; }
 
         /// <summary>
         ///     Typ monstra - DRAGON, BARON ...

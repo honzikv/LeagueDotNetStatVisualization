@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.FrontendModels.Home {
-    public class HomePageViewModel {
+namespace dotNetMVCLeagueApp.Data.FrontendDtos.Home {
+    public class HomePageDto {
         public Dictionary<string, string> ServerList { get; set; }
     }
 }

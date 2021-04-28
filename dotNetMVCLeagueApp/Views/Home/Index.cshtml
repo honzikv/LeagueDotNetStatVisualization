@@ -1,4 +1,4 @@
-﻿@model dotNetMVCLeagueApp.Data.FrontendModels.Home.HomePageViewModel
+﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Home.HomePageDto
 @{
     ViewData["Title"] = "Search";
 }
@@ -9,15 +9,15 @@
 
             <div class="mt-4 p-4 card-search">
 
-                <h1 class="heading-search text-center">Search2</h1>
-                <form asp-controller="Summoner" asp-action="SummonerInfo">
-                    <select class="form-control mb-1" name="server">
+                <h1 class="heading-search text-center">Search</h1>
+                <form asp-controller="Summoner" asp-action="Profile">
+                    <select class="form-select mb-1" id="server" name="server">
                         @foreach (var (queryKey, serverName) in Model.ServerList) {
                             <option name="@queryKey">@serverName</option>
                         }
                     </select>
 
-                    <input type="text" class="form-control mb-1" id="name" placeholder="Caps" name="name"/>
+                    <input type="text" class="form-control mb-1 text-center" id="name" placeholder="Summoner name" name="name"/>
 
                     <button type="submit" class="btn btn-primary float-end">
                         <i class="fa fa-search"></i>
