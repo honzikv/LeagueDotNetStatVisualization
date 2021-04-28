@@ -3,7 +3,7 @@ using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace dotNetMVCLeagueApp.Services {
+namespace dotNetMVCLeagueApp.Services.MatchTimeline {
     /// <summary>
     /// Sluzba, ktera slouzi pro ziskani timeline pro dany zapas
     /// </summary>

@@ -44,7 +44,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="summonerName">Uzivatelske jmeno</param>
         /// <param name="region">Server, pro ktery hledame uzivatele</param>
         /// <returns></returns>
-        public SummonerInfoModel GetSummonerInfoAsync(string summonerName, Region region) =>
+        public SummonerModel GetSummonerInfoAsync(string summonerName, Region region) =>
             GetSummonerInfo(summonerName, region).GetAwaiter().GetResult();
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="region">Server, pro ktery hledame uzivatele</param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        private async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
+        private async Task<SummonerModel> GetSummonerInfo(string summonerName, Region region) {
             logger.LogDebug($"Fetching summoner info for {region.Key} {summonerName}");
             // Nejprve provedeme query do db zda-li jsme summonera uz nekdy predtim nenacitali
             var summonerInfo = await summonerInfoEntityRepository.GetSummonerByUsernameAndRegion(summonerName, region);
@@ -84,7 +84,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// </summary>
         /// <param name="summonerId"></param>
         /// <returns></returns>
-        public SummonerInfoModel UpdateSummonerInfoAsync(int summonerId) =>
+        public SummonerModel UpdateSummonerInfoAsync(int summonerId) =>
             UpdateSummonerInfo(summonerId).GetAwaiter().GetResult();
         
         /// <summary>
@@ -93,7 +93,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="summonerId"></param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        private async Task<SummonerInfoModel> UpdateSummonerInfo(int summonerId) {
+        private async Task<SummonerModel> UpdateSummonerInfo(int summonerId) {
             // Tracked entita z db, ktera se bude updatovat
             var dbSummonerInfo = await summonerInfoEntityRepository.Get(summonerId);
             if (dbSummonerInfo == null) {
@@ -132,7 +132,7 @@ namespace dotNetMVCLeagueApp.Services {
             }
 
             foreach (var queueInfo in updatedQueueInfo) {
-                queueInfo.SummonerInfo = dbSummonerInfo;
+                queueInfo.Summoner = dbSummonerInfo;
             }
 
             dbSummonerInfo.QueueInfo = updatedQueueInfo;

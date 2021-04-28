@@ -17,11 +17,12 @@ namespace dotNetMVCLeagueApp.Config {
                 
             // Mapping from -> to
             CreateMap<LeagueEntry, QueueInfoModel>();
-            CreateMap<Match, MatchInfoModel>();
-            CreateMap<TeamStats, TeamStatsInfoModel>();
-            CreateMap<Participant, PlayerInfoModel>();
+            CreateMap<Match, MatchModel>();
+            CreateMap<TeamStats, TeamStatsModel>();
+            CreateMap<Participant, PlayerModel>();
+            CreateMap<MatchPosition, MapPositionModel>();
             CreateMap<ParticipantStats, PlayerStatsModel>();
-            CreateMap<MatchInfoModel, MatchInfoHeaderViewModel>();
+            CreateMap<MatchModel, MatchInfoHeaderViewModel>();
             CreateMap<MatchParticipantFrame, MatchParticipantFrameModel>();
             CreateMap<MatchEvent, MatchEventModel>();
         }

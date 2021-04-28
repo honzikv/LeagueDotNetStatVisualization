@@ -35,6 +35,6 @@
         /// <summary>
         ///     Reference na summoner info
         /// </summary>
-        public virtual SummonerInfoModel SummonerInfo { get; set; }
+        public virtual SummonerModel Summoner { get; set; }
     }
 }

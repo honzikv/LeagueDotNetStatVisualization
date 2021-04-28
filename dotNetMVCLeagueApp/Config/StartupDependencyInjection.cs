@@ -3,6 +3,8 @@ using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Services;
+using dotNetMVCLeagueApp.Services.MatchHistory;
+using dotNetMVCLeagueApp.Services.MatchTimeline;
 using Microsoft.Extensions.DependencyInjection;
 using MingweiSamuel.Camille;
 
@@ -26,6 +28,7 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<MatchInfoEntityRepository>();
             services.AddScoped<QueueInfoRepository>();
             services.AddScoped<MatchInfoSummonerInfoRepository>();
+            services.AddScoped<MatchTimelineRepository>();
             
             // Services - wrapper nad repozitari, ktery se vola z controlleru
             services.AddScoped<SummonerInfoService>(); // Pro info o hracich

@@ -37,7 +37,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="region">Server, pro ktery jmeno hledame</param>
         /// <returns>Vrati summoner info, nebo null, pokud neexistuje</returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public async Task<SummonerInfoModel> GetSummonerInfo(string summonerName, Region region) {
+        public async Task<SummonerModel> GetSummonerInfo(string summonerName, Region region) {
             try {
                 var summoner = await riotApi.SummonerV4.GetBySummonerNameAsync(region, summonerName);
                 if (summoner is null) { // vratime-li null, znamena to, ze summoner neexistuje
@@ -45,7 +45,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 }
 
                 // Jinak vratime namapovany objekt
-                return new SummonerInfoModel {
+                return new SummonerModel {
                     SummonerLevel = summoner.SummonerLevel,
                     Name = summoner.Name,
                     ProfileIconId = summoner.ProfileIconId,
@@ -91,22 +91,22 @@ namespace dotNetMVCLeagueApp.Repositories {
             }
         }
 
-        private MatchInfoModel MapToMatchInfo(Match match) {
-            var result = mapper.Map<MatchInfoModel>(match); // mapping Match na MatchInfoModel
+        private MatchModel MapToMatchInfo(Match match) {
+            var result = mapper.Map<MatchModel>(match); // mapping Match na MatchInfoModel
             result.Id = match.GameId; // Nastavime id
             result.PlayTime = TimeUtils.ConvertFromMillisToDateTime(match.GameCreation);
             result.QueueType = GameConstants.GetQueueNameFromQueueId(match.QueueId);
             logger.LogDebug(result.ToString());
 
             // Mapping vnorenych objektu - tymove statistiky a hraci
-            var teams = new List<TeamStatsInfoModel>();
+            var teams = new List<TeamStatsModel>();
             // Map TeamStatsInfoModel objekty
             foreach (var team in match.Teams) {
-                teams.Add(mapper.Map<TeamStatsInfoModel>(team));
+                teams.Add(mapper.Map<TeamStatsModel>(team));
             }
 
             // Mapping participant objektu na PlayeryInfoModel objekty
-            var players = new List<PlayerInfoModel>();
+            var players = new List<PlayerModel>();
             foreach (var participantIdentity in match.ParticipantIdentities) {
                 var playerInfo = MapParticipantToPlayer(match, participantIdentity);
                 players.Add(playerInfo);
@@ -124,7 +124,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="participantIdentity">Informace o ucastnikovi</param>
         /// <returns>Namapovany objekt</returns>
         /// <exception cref="RiotApiException">Pokud participant v zapasu neexistuje</exception>
-        private PlayerInfoModel MapParticipantToPlayer(Match match, ParticipantIdentity participantIdentity) {
+        private PlayerModel MapParticipantToPlayer(Match match, ParticipantIdentity participantIdentity) {
             var participant = match.Participants
                 .FirstOrDefault(x => x.ParticipantId == participantIdentity.ParticipantId);
 
@@ -132,7 +132,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 throw new RiotApiException("Error when mapping participant");
             }
 
-            var playerInfo = mapper.Map<PlayerInfoModel>(participant);
+            var playerInfo = mapper.Map<PlayerModel>(participant);
             var playerStats = mapper.Map<PlayerStatsModel>(participant.Stats);
 
             playerInfo.PlayerStatsModel = playerStats;
@@ -169,7 +169,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="region">server pro ktery hledame</param>
         /// <param name="numberOfGames">pocet her</param>
         /// <returns></returns>
-        public async Task<List<MatchInfoModel>> GetMatchListFromApi(string encryptedAccountId, Region region,
+        public async Task<List<MatchModel>> GetMatchListFromApi(string encryptedAccountId, Region region,
             int numberOfGames)
             => await GetMatchListFromApi(encryptedAccountId, region, numberOfGames, null, 0);
 
@@ -183,7 +183,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="endIdx">Konecny index</param>
         /// <returns>Seznam s namapovanymy objekty do db</returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public async Task<List<MatchInfoModel>>
+        public async Task<List<MatchModel>>
             GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx,
                 int endIdx) {
             try {
@@ -211,7 +211,7 @@ namespace dotNetMVCLeagueApp.Repositories {
 
                 // Pockame na vsechny
                 var awaitedMatches = await Task.WhenAll(matchTasks);
-                var matchList = new List<MatchInfoModel>(matches.TotalGames);
+                var matchList = new List<MatchModel>(matches.TotalGames);
                 matchList.AddRange(awaitedMatches.Select(match => MapToMatchInfo(match)));
 
                 // Namapujeme kazdy zaznam na MatchInfoModel
@@ -253,15 +253,14 @@ namespace dotNetMVCLeagueApp.Repositories {
                         Timestamp = frame.Timestamp,
                         ParticipantFrames = frame.ParticipantFrames.Values.Select(participantFrame => {
                             
+                            //todo: check automapper
                             // jeden frame pro ulozeni do db
                             var frameModel = mapper.Map<MatchParticipantFrameModel>(participantFrame);
-                            frameModel.Position = new MapPositionModel(participantFrame.Position);
                             return frameModel;
                         }).ToList(),
                         MatchEvents = frame.Events.Select(matchEvent => {
                             // udalosti ve framu
                             var eventModel = mapper.Map<MatchEventModel>(matchEvent);
-                            eventModel.MapPosition = new MapPositionModel(matchEvent.Position);
                             return eventModel;
                         }).ToList()
                     }).ToList()

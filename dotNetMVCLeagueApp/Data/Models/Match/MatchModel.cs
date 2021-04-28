@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match {
-    public class MatchInfoModel {
+    public class MatchModel {
         /// <summary>
         ///     Toto Id je ziskano z Riot API a neni automaticky inkrementovano
         /// </summary>
@@ -11,7 +12,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         ///     Reference na summonery - M : N
         /// </summary>
-        public virtual ICollection<MatchInfoSummonerInfo> SummonerInfoList { get; set; }
+        public virtual ICollection<MatchToSummonerModel> SummonerInfoList { get; set; }
 
         /// <summary>
         ///     Typ hry - blind pick, draft pick, solo queue nebo flex queue
@@ -26,7 +27,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         ///     Seznam vsech banu postav
         /// </summary>
-        public virtual IEnumerable<TeamStatsInfoModel> Teams { get; set; }
+        public virtual IEnumerable<TeamStatsModel> Teams { get; set; }
 
         /// <summary>
         ///     Cas, kdy se hra hrala
@@ -36,6 +37,8 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         ///     Reference na hrace
         /// </summary>
-        public virtual ICollection<PlayerInfoModel> PlayerInfoList { get; set; }
+        public virtual ICollection<PlayerModel> PlayerInfoList { get; set; }
+        
+        public virtual MatchTimelineModel MatchTimelineModel { get; set; }
     }
 }

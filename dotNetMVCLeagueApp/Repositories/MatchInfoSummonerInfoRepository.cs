@@ -5,7 +5,7 @@ using dotNetMVCLeagueApp.Data.Models.Match;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {
-    public class MatchInfoSummonerInfoRepository : EfCoreEntityRepository<MatchInfoSummonerInfo, LeagueDbContext> {
+    public class MatchInfoSummonerInfoRepository : EfCoreEntityRepository<MatchToSummonerModel, LeagueDbContext> {
         public MatchInfoSummonerInfoRepository(LeagueDbContext leagueDbContext) : base(leagueDbContext) { }
 
         /// <summary>

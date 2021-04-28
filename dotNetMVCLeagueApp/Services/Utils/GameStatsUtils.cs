@@ -45,13 +45,13 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// Ziska podil na celkovemu poctu zabiti - kill participation
         /// </summary>
         /// <param name="playerStats"></param>
-        /// <param name="matchInfoModel"></param>
+        /// <param name="matchModel"></param>
         /// <param name="teamId"></param>
         /// <returns>Kill participaci pro daneho hrace</returns>
-        public static double GetKillParticipation(PlayerStatsModel playerStats, MatchInfoModel matchInfoModel,
+        public static double GetKillParticipation(PlayerStatsModel playerStats, MatchModel matchModel,
             int teamId) {
             var totalKills = 0; // celkovy pocet zabiti
-            foreach (var player in matchInfoModel.PlayerInfoList) {
+            foreach (var player in matchModel.PlayerInfoList) {
                 if (player.TeamId == teamId) {
                     totalKills += player.PlayerStatsModel.Kills;
                 }
@@ -64,11 +64,11 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <summary>
         /// Aktualizuje slovnik s frekvencemi roli - pricte 1 pro spravnou roli
         /// </summary>
-        /// <param name="playerInfo">Info o hraci</param>
+        /// <param name="player">Info o hraci</param>
         /// <param name="roles"></param>
-        public static void UpdateRoleFrequency(PlayerInfoModel playerInfo, Dictionary<string, int> roles) {
-            var role = playerInfo.Role;
-            var lane = playerInfo.Lane;
+        public static void UpdateRoleFrequency(PlayerModel player, Dictionary<string, int> roles) {
+            var role = player.Role;
+            var lane = player.Lane;
 
             roles[GetRole(role, lane)] += 1;
         }
@@ -97,9 +97,9 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         public static bool IsRemake(long matchInfoGameDuration) =>
             TimeSpan.FromSeconds(matchInfoGameDuration) <= GameConstants.GameDurationForRemake;
 
-        public static void UpdateStatTotals(GameListStats stats, MatchInfoModel matchInfo, PlayerInfoModel playerInfo,
-            TeamStatsInfoModel playerTeam) {
-            var playerStats = playerInfo.PlayerStatsModel;
+        public static void UpdateStatTotals(GameListStats stats, MatchModel match, PlayerModel player,
+            TeamStatsModel playerTeam) {
+            var playerStats = player.PlayerStatsModel;
             // Celkovy pocet pro zabiti, smrti a asistence
             stats.Kills.Add(playerStats.Kills);
             stats.Assists.Add(playerStats.Assists);
@@ -107,13 +107,13 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             stats.Gold.Add(playerStats.GoldEarned);
 
             // Pridani CS (creep score) za minutu do seznamu
-            stats.CsPerMinuteList.Add(GetCsPerMinute(playerStats, matchInfo.GameDuration));
+            stats.CsPerMinuteList.Add(GetCsPerMinute(playerStats, match.GameDuration));
 
             // Pridani kill participaci do seznamu
-            stats.KillParticipations.Add(GetKillParticipation(playerStats, matchInfo, playerTeam.TeamId));
+            stats.KillParticipations.Add(GetKillParticipation(playerStats, match, playerTeam.TeamId));
 
-            if (playerInfo.GoldDiffAt10 is not null) {
-                stats.GoldDiffsAt10.Add((double) playerInfo.GoldDiffAt10);
+            if (player.GoldDiffAt10 is not null) {
+                stats.GoldDiffsAt10.Add((double) player.GoldDiffAt10);
             }
         }
 

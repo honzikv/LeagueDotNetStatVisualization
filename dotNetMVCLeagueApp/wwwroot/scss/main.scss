@@ -1,0 +1,14 @@
+﻿
+$main-color-heading: #131313;
+
+@font-face {
+  font-family: AirbnbCereal;
+  src: url("../fonts/AirbnbCereal.ttf");
+}
+
+
+.heading-search {
+  font-family: AirbnbCereal, sans-serif;
+  font-size: 80px;
+  fill: $main-color-heading;
+}

@@ -19,6 +19,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.Metrics" Version="3.3.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.0-preview.2.21154.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.2.21154.2" />
@@ -29,6 +30,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="MingweiSamuel.Camille" Version="2.7.3-nightly-2021-01-17-519ad84617" />
+        <PackageReference Include="Westwind.AspNetCore.LiveReload" Version="0.3.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
     </ItemGroup>
 

@@ -4,7 +4,6 @@ using System.Linq;
 using dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail;
 using dotNetMVCLeagueApp.Data.FrontendModels.MatchDetail.PlayerDetail;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
-using dotNetMVCLeagueApp.Data.ViewModels.MatchDetail;
 using dotNetMVCLeagueApp.Data.ViewModels.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Utils;
@@ -93,12 +92,18 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
         private int GetClosestFrameIndex(TimeSpan duration) =>
             (int) Math.Round(duration.TotalMilliseconds / frameDuration);
 
+        /// <summary>
+        /// Vypocte data pro PlayerDetailDto objekt
+        /// </summary>
         private void ComputePlayerDetail() {
             var playerParticipantId = playerDetailDto.ParticipantId;
 
+            // Vypocteme min max rozdili s kazdym jinym ucastnikem
             foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
                 ComputePlayerDetailForParticipant(participantId, matchTimelineDto.PlayerTimelines[participantId]);
             }
+            
+            // Vypocteme rozdil v 10 a 15 minute
 
             var frameCount = matchTimelineDto.PlayerTimelines[participantIds[0]].CsOverTime.Count;
             var frameAt10 = GetClosestFrameIndex(TimeSpan.FromMinutes(10));
@@ -120,6 +125,12 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
             }
         }
 
+        /// <summary>
+        /// Vypocte rozdily hrace, ktereho sledujeme a ostatnich
+        /// </summary>
+        /// <param name="participantId">Id hrace, se kterym porovnavame</param>
+        /// <param name="playerTimeline">Timeline hrace, pro ktereho sestavujeme statistiku</param>
+        /// <param name="frameAt10">Index framu v 10 minute</param>
         private void ComputeDiffAt10(int participantId, PlayerTimelineDto playerTimeline, int frameAt10) {
             // Timeline hrace, vuci kteremu porovnavame
             var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
@@ -137,6 +148,12 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
                 playerTimeline.XpOverTime[frameAt10] - comparedPlayerTimeline.XpOverTime[frameAt10];
         }
 
+        /// <summary>
+        /// Vypocte rozdily hrace, ktereho sledujeme a ostatnich
+        /// </summary>
+        /// <param name="participantId">Id hrace, se kterym porovnavame</param>
+        /// <param name="playerTimeline">Timeline hrace, pro ktereho sestavujeme statistiku</param>
+        /// <param name="frameAt15">Index framu v 15 minute</param>
         private void ComputeDiffAt15(int participantId, PlayerTimelineDto playerTimeline, int frameAt15) {
             // Timeline hrace, vuci kteremu porovnavame
             var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
@@ -154,13 +171,21 @@ namespace dotNetMVCLeagueApp.Services.MatchTimeline {
                 playerTimeline.XpOverTime[frameAt15] - comparedPlayerTimeline.XpOverTime[frameAt15];
         }
 
-
+        /// <summary>
+        /// Prevede frameIdx (zacinajici od 0) na TimeSpan
+        /// </summary>
+        /// <param name="frameIdx"></param>
+        /// <returns>Timespan korespondujici pro dany frame a frameDuration</returns>
         private TimeSpan FrameIndexToTimeSpan(int frameIdx) =>
             TimeUtils.ConvertFrameTimeToTimeSpan(frameDuration * (frameIdx + 1));
 
         private void ComputePlayerDetailForParticipant(int participantId, PlayerTimelineDto playerTimeline) {
             // Timeline hrace, vuci kteremu porovnavame
             var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
+
+            // Nejmene bolestivy zpusob bez pouziti reflection je odecist kazdy prvek v seznamu naseho hrace a 
+            // hrace, vuci kteremu porovnavame - tzn dostaneme seznam L_diff = [L1[0] - L2[0], L1[1] - L2[1], ...]
+            // Toto provedeme pro kazdou property a z vysledku zjistime minima a maxima, ktera ulozime
 
             var xpDiffList = playerTimeline.XpOverTime.Zip(comparedPlayerTimeline.XpOverTime,
                 (first, second) => first - second).ToList();

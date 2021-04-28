@@ -1,6 +1,6 @@
 ﻿namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
-    ///     Obsahuje statistiky pro daneho hrace (tato trida nema vsechny, pouze ty, ktere by se mohli pouzit)
+    ///     Obsahuje statistiky pro daneho hrace (tato trida nema vsechny, pouze ty, ktere by se mohly pouzit)
     /// </summary>
     public class PlayerStatsModel {
         public int Id { get; set; }

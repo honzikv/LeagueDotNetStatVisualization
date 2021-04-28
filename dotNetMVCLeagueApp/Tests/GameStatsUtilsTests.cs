@@ -81,7 +81,7 @@ namespace dotNetMVCLeagueApp.Tests {
         public void TestGetKillParticipation_3Players() {
             var blueSide = 100;
 
-            var playerInfoList = new List<PlayerInfoModel> {
+            var playerInfoList = new List<PlayerModel> {
                 new() {
                     TeamId = blueSide,
                     PlayerStatsModel = new() {
@@ -105,7 +105,7 @@ namespace dotNetMVCLeagueApp.Tests {
                 }
             };
 
-            var matchInfo = new MatchInfoModel {
+            var matchInfo = new MatchModel {
                 PlayerInfoList = playerInfoList
             };
 
@@ -122,7 +122,7 @@ namespace dotNetMVCLeagueApp.Tests {
         public void TestGetKillParticipation_NoKills() {
             var blueSide = 100;
 
-            var playerInfoList = new List<PlayerInfoModel> {
+            var playerInfoList = new List<PlayerModel> {
                 new() {
                     TeamId = blueSide,
                     PlayerStatsModel = new() {
@@ -145,7 +145,7 @@ namespace dotNetMVCLeagueApp.Tests {
 
             var player = playerInfoList[0]; // Hrac, pro ktereho pocitame kill participation
             var expected = 1.0;
-            var matchInfo = new MatchInfoModel {
+            var matchInfo = new MatchModel {
                 PlayerInfoList = playerInfoList
             };
             var actual = GameStatsUtils.GetKillParticipation(player.PlayerStatsModel, matchInfo, blueSide);

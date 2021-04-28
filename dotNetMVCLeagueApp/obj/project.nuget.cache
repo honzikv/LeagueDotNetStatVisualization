@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "l1EKfHKppGTNuSGgMaA44OckszjuPkxKhiWVj4nVdVMlnIykdO8xQF8FLgS2+6IU89/7xBFRxFE19RRN6CoIwQ==",
+  "dgSpecHash": "W+N7ZTXk+Mb0MI17Wij6dqB68uAsX4nAN4HfYwUM3Y9Usm3Yx6JlFarIREqLOZ60nGrSnYOlzFeZ0GJD9CAnPA==",
   "success": true,
   "projectFilePath": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
   "expectedPackageFiles": [
@@ -11,8 +11,11 @@
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.0-preview.2.21154.6\\microsoft.aspnetcore.cryptography.internal.6.0.0-preview.2.21154.6.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.0-preview.2.21154.6\\microsoft.aspnetcore.cryptography.keyderivation.6.0.0-preview.2.21154.6.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\5.0.3\\microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512",
+    "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.0-preview.2.21154.6\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.0-preview.2.21154.6.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\5.0.3\\microsoft.aspnetcore.identity.ui.5.0.3.nupkg.sha512",
+    "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
+    "C:\\Users\\itznu\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.codeanalysis.metrics\\3.3.0\\microsoft.codeanalysis.metrics.3.3.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -160,6 +163,7 @@
     "C:\\Users\\itznu\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\itznu\\.nuget\\packages\\westwind.aspnetcore.livereload\\0.3.1\\westwind.aspnetcore.livereload.0.3.1.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\xunit\\2.4.1\\xunit.2.4.1.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\xunit.abstractions\\2.0.3\\xunit.abstractions.2.0.3.nupkg.sha512",
     "C:\\Users\\itznu\\.nuget\\packages\\xunit.analyzers\\0.10.0\\xunit.analyzers.0.10.0.nupkg.sha512",

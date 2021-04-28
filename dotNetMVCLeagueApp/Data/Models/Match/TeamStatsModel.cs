@@ -4,14 +4,14 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
     ///     Statistiky tymu
     /// </summary>
-    public class TeamStatsInfoModel {
+    public class TeamStatsModel {
         public int Id { get; set; }
 
         /// <summary>
         ///     Reference na zapas
         /// </summary>
         [Required]
-        public virtual MatchInfoModel MatchInfo { get; set; }
+        public virtual MatchModel Match { get; set; }
 
         /// <summary>
         ///     100 - blue side, 200 - red side

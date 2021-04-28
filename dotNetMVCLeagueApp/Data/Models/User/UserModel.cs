@@ -25,6 +25,6 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
 
         [Required] public string Email { get; set; }
 
-        [Required] public virtual SummonerInfoModel SummonerInfo { get; set; }
+        [Required] public virtual SummonerModel Summoner { get; set; }
     }
 }

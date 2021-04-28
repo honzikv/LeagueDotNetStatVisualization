@@ -1,3 +1,6 @@
+using System;
+using System.Globalization;
+using System.IO;
 using System.Text.Json.Serialization;
 using dotNetMVCLeagueApp.Config;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +11,9 @@ using dotNetMVCLeagueApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Westwind.AspNetCore.LiveReload;
+
 
 namespace dotNetMVCLeagueApp {
     public partial class Startup {
@@ -40,11 +46,15 @@ namespace dotNetMVCLeagueApp {
 
             // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews();
+
+            services.AddLiveReload();
 
             // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
             services.AddControllersWithViews().AddJsonOptions(config => {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
+            
 
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);
@@ -62,7 +72,9 @@ namespace dotNetMVCLeagueApp {
                 // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
+            app.UseLiveReload(); // pouziti hot reloadu
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

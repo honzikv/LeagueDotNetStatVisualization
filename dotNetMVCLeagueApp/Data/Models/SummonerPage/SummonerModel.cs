@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
-    public class SummonerInfoModel {
+    public class SummonerModel {
         public int Id { get; set; }
 
         /// <summary>
@@ -27,6 +27,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
 
         /// <summary>
         ///     Region hrace - EUW, NA, ...
+        /// Kompatibilni s Region.Get 
         /// </summary>
         public string Region { get; set; }
 
@@ -60,7 +61,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         ///     Provede update z novejsiho objektu ziskaneho z api
         /// </summary>
         /// <param name="apiModel">Objekt z api</param>
-        public void UpdateFromApi(SummonerInfoModel apiModel) {
+        public void UpdateFromApi(SummonerModel apiModel) {
             Name = apiModel.Name;
             LastUpdate = DateTime.Now;
             EncryptedSummonerId = apiModel.EncryptedSummonerId;

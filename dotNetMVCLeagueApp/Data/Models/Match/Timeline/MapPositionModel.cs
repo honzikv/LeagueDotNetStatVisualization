@@ -5,11 +5,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     ///     2D pozice na mape - int X a int Y
     /// </summary>
     public class MapPositionModel {
-        public MapPositionModel(MatchPosition position) {
-            X = position.X;
-            Y = position.Y;
-        }
-
+        
+        public int Id { get; set; }
+        
         /// <summary>
         ///     X-ova pozice na mape
         /// </summary>

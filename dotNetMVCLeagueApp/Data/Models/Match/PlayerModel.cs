@@ -4,14 +4,14 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
     ///     Informace o hraci v danem zapasu
     /// </summary>
-    public class PlayerInfoModel {
+    public class PlayerModel {
         public int Id { get; set; }
 
         /// <summary>
         ///     Reference na zapas
         /// </summary>
         [Required]
-        public virtual MatchInfoModel MatchInfoModel { get; set; }
+        public virtual MatchModel MatchModel { get; set; }
 
         /// <summary>
         ///     Reference na statistiku
