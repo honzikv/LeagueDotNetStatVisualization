@@ -1,0 +1,35 @@
+﻿@import "fonts.scss";
+@import "colors.scss";
+
+@mixin hoverFade {
+    transition: 0.5s;
+    opacity: 60%;
+    color: $primary-white;
+}
+
+.navbar-header-text {
+    font-family: NexaBold, sans-serif;
+    font-size: 36px;
+    color: $primary-white;
+    text-transform: uppercase;
+    
+    &:hover {
+        @include hoverFade;
+    }
+}
+
+.navbar-background {
+    background-color: adjust-color($primary-gray, $alpha: -0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar-menu-item {
+    font-family: NexaLight, sans-serif;
+    font-size: 18px;
+    color: $primary-white;
+    
+    &:hover {
+        @include hoverFade;
+    }
+}

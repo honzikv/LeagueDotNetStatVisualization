@@ -4,19 +4,21 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
-    
-    void GetRank(string tier, string rank) {
-        switch (tier) {
-            case "IRON":
-                 RenderRank("iron",);       
-        }
-    }
 
-    void RenderRank(string cssClass, string rank) {
-        
-    }
+    string GetRankClass(string tier, string rank) => tier switch {
+        "IRON" => "iron-rank",
+        "SILVER" => "silver-rank",
+        "BRONZE" => "bronze-rank",
+        "GOLD" => "gold-rank",
+        "PLATINUM" => "platinum-rank",
+        "DIAMOND" => "diamond-rank",
+        "MASTER" => "master-rank",
+        "GRANDMASTER" => "grandmaster-rank",
+        "CHALLENGER" => "challenger-rank",
+        _ => ""
+        };
+
 }
-
 
 
 <div class="container-fluid">
@@ -25,12 +27,15 @@
             <div class="profile-card">
                 <div class="profile-card-body">
                     <p class="profile-card-text text-center">@Model.Summoner.Name</p>
+                    <div id="rank-info">
+                        <p class="profile-card-text"></p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-lg">
-           
+
         </div>
 
     </div>

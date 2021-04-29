@@ -39,6 +39,10 @@
       <_ContentIncludedByDefault Remove="Pages\TestCore\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\bgwall" />
+    </ItemGroup>
+
     
 
 </Project>

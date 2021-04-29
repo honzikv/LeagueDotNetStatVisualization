@@ -1,91 +1,72 @@
-﻿$main-color-heading: #e6f4f1;
-$primary-black: #100f0f;
-$primary-white: #F4FAFF;
-
-
-$card-dark-background: $primary-white;
-$card-dark-background: #3D4756;
-$card-lighter-dark-background: #A1ACBD;
+﻿@import "fonts.scss";
+@import "colors.scss";
 
 $default-border-radius: 20px;
 
-@font-face {
-  font-family: AirbnbCereal;
-  src: url("../fonts/AirbnbCereal.ttf");
-}
-
-
 .heading-search {
-  font-family: AirbnbCereal, sans-serif;
-  font-size: 80px;
-  color: $main-color-heading;
+    font-family: AirbnbCereal, sans-serif;
+    font-size: 80px;
+    color: $primary-white;
 }
 
+.league {
+    font-family: AirbnbCereal, sans-serif;
 
-.card, .profile-card {
-  color: $card-dark-background;
+    .text-h1 {
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .color-primary {
+        color: $primary-white;
+    }
+
+    .color-secondary {
+        color: $secondary-white;
+    }
 }
 
-.card-body, .profile-card-body {
-  color: $card-dark-background;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-  border-radius: $default-border-radius;
-}
-
-.profile-card-text {
-  font-family: AirbnbCereal, sans-serif;
-  font-size: 20px;
-  color: $primary-white;
-}
 
 .btn-hover {
-  width: 100px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
-  height: 35px;
-  text-align:center;
-  border: none;
-  background-size: 300% 100%;
-
-  border-radius: $default-border-radius;
-  moz-transition: all .4s ease-in-out;
-  -o-transition: all .4s ease-in-out;
-  -webkit-transition: all .4s ease-in-out;
-  transition: all .4s ease-in-out;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    height: 35px;
+    text-align: center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: $default-border-radius;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
 }
 
 .btn-hover:hover {
-  background-position: 100% 0;
-  moz-transition: all .4s ease-in-out;
-  -o-transition: all .4s ease-in-out;
-  -webkit-transition: all .4s ease-in-out;
-  transition: all .4s ease-in-out;
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
 }
 
 .btn-hover:focus {
-  outline: none;
+    outline: none;
 }
 
 .btn-hover.blue {
-  background-image: linear-gradient(to left, #1db3ff, #0f87f6, #646464, #565656);
-  box-shadow: 0 4px 15px 0 rgba(28, 27, 27, 0.75);
-}
-
-.profile-h1 {
-  font-family: AirbnbCereal, sans-serif;
-  font-weight: bold;
-  font-size: 42px;
-  color: $main-color-heading;
-}
-
-.text-main {
-  font-family: AirbnbCereal, sans-serif;
-  font-size: 18px;
-  fill: $primary-white;
+    background-image: linear-gradient(to left, #1db3ff, #0f87f6, #646464, #565656);
+    box-shadow: 0 4px 15px 0 rgba(28, 27, 27, 0.75);
 }
 
 body {
-  background: radial-gradient(#111111, #0e0e10) !important;
+    background: radial-gradient(circle at center, adjust-color($primary-black, $alpha: -.25),
+            adjust-color($secondary-black, $alpha: -.25)), url("../bgwall/default.jpg") no-repeat center fixed
+    !important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
