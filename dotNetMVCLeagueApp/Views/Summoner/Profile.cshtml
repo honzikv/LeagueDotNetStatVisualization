@@ -4,20 +4,6 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
-
-    string GetRankClass(string tier, string rank) => tier switch {
-        "IRON" => "iron-rank",
-        "SILVER" => "silver-rank",
-        "BRONZE" => "bronze-rank",
-        "GOLD" => "gold-rank",
-        "PLATINUM" => "platinum-rank",
-        "DIAMOND" => "diamond-rank",
-        "MASTER" => "master-rank",
-        "GRANDMASTER" => "grandmaster-rank",
-        "CHALLENGER" => "challenger-rank",
-        _ => ""
-        };
-
 }
 
 

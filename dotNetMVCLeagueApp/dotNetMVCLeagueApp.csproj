@@ -40,7 +40,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\asset" />
       <Folder Include="wwwroot\bgwall" />
     </ItemGroup>
 

@@ -38,6 +38,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Profile(string name, string server) {
             if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
                 return Json("Error");
