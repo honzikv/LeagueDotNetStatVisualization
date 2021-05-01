@@ -1,18 +1,19 @@
-using System;
-using System.Globalization;
 using System.IO;
 using System.Text.Json.Serialization;
+using Castle.Core.Logging;
 using dotNetMVCLeagueApp.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using dotNetMVCLeagueApp.Data;
+using dotNetMVCLeagueApp.Services.AssetResolver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Logging;
 using Westwind.AspNetCore.LiveReload;
+using ILogger = Castle.Core.Logging.ILogger;
 
 
 namespace dotNetMVCLeagueApp {
@@ -21,11 +22,9 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private bool useLiveReload = true;
+        private const bool UseLiveReload = false;
 
         public IConfiguration Configuration { get; }
-
-        public RiotApiUpdateConfig RiotApiUpdateConfig { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
@@ -51,6 +50,9 @@ namespace dotNetMVCLeagueApp {
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
 
+            Configuration["Assets:Root"] =
+                Path.Combine(Configuration.GetValue<string>(WebHostDefaults.ContentRootKey), "wwwroot", "assets");
+
 
             // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
             services.AddControllersWithViews().AddJsonOptions(config => {
@@ -67,6 +69,10 @@ namespace dotNetMVCLeagueApp {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
+                
+                if (UseLiveReload) {
+                    app.UseLiveReload();
+                }
             }
             else {
                 app.UseExceptionHandler("/Home/Error");
@@ -74,11 +80,10 @@ namespace dotNetMVCLeagueApp {
                 // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            if (useLiveReload) {
-                app.UseLiveReload();
-            }
             
+            // Protoze tato sluzba cte json je rozumne ji vytvorit primo pri startupu aby se pri prvnim
+            // requestu, ktery ji potrebuje zbytecne necekalo
+            app.ApplicationServices.GetService<AssetResolverService>();
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();

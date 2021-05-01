@@ -1,12 +1,15 @@
 ﻿using System;
+using System.IO;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Services;
+using dotNetMVCLeagueApp.Services.AssetResolver;
 using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.MatchTimeline;
 using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille;
 
 // ReSharper disable once CheckNamespace
@@ -15,11 +18,24 @@ namespace dotNetMVCLeagueApp {
     /// Druha cast tridy Startup, zde je prehledneji videt co se bude davat do dependency containeru
     /// </summary>
     public partial class Startup {
+        private string GetAssetJsonPath(string assetFileName) =>
+            Path.Combine(Configuration["Assets:Root"], Configuration["Assets:JsonFiles"], assetFileName);
+
         private void ConfigureUserServices(IServiceCollection services) {
             services.AddSingleton(_ => RiotApi.NewInstance(
                 apiKey: Configuration["RiotApiKey"]
             ));
-            
+
+            // Konfigurace pro nacitani assetu
+            services.AddSingleton(_ => new AssetResolverConfig {
+                AssetPath = Configuration["Assets:Root"],
+                ChampionsFolderName = Configuration["Assets:Champions"],
+                ItemsFolderName = Configuration["Assets:Items"],
+                EmptyAssetFileName = Configuration["Assets:EmptyAsset"],
+                ProfileIconsFolderName = Configuration["Assets:ProfileIcons"],
+                SummonerSpellsFolderName = Configuration["Assets:SummonerSpells"]
+            });
+
             // TODO: momentalne je na 0, nasledne bude jeste zmeneno
             services.AddSingleton(_ => new RiotApiUpdateConfig(TimeSpan.FromMinutes(0)));
 
@@ -30,12 +46,21 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<QueueInfoRepository>();
             services.AddScoped<MatchInfoSummonerInfoRepository>();
             services.AddScoped<MatchTimelineRepository>();
-            
+
             // Services - wrapper nad repozitari, ktery se vola z controlleru
             services.AddScoped<SummonerInfoService>(); // Pro info o hracich
             services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchTimelineService>();
+            
+
+            // Asset resolver musi byt jako singleton, protoze nechceme vytvaret objekt pro kazdy request
+            services.AddSingleton(serviceProvider => new AssetResolverService(
+                serviceProvider.GetRequiredService<AssetResolverConfig>(),
+                GetAssetJsonPath(Configuration["Assets:ChampionsJson"]),
+                GetAssetJsonPath(Configuration["Assets:SummonerSpellsJson"]),
+                GetAssetJsonPath(Configuration["Assets:RunesJson"])
+            ));
         }
     }
 }
