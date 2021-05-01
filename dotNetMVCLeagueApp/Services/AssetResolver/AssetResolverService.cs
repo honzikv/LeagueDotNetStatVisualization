@@ -80,6 +80,20 @@ namespace dotNetMVCLeagueApp.Services.AssetResolver {
         }
 
         /// <summary>
+        /// Override pro JToken
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="childPropertyName"></param>
+        /// <returns></returns>
+        private static JArray GetChildJArrayOrThrowException(JToken token, string childPropertyName) {
+            if (token.Type != JTokenType.Object) {
+                throw new AssetException(ErrorFormatGeneric);
+            }
+
+            return GetChildJArrayOrThrowException((JObject) token, childPropertyName);
+        }
+
+        /// <summary>
         /// Ziska key-value z dane property, ktera musi byt JObject
         /// </summary>
         /// <param name="property">JProperty, ze ktere klic a hodnotu ziskavame</param>
@@ -182,36 +196,35 @@ namespace dotNetMVCLeagueApp.Services.AssetResolver {
             var runesJson = JArray.Parse(File.ReadAllText(runesJsonFilePath));
 
             // Ve hre jsou runy umistene do "trees" - stromu, ze kterych si hrac runy vybira, tech je nekolik
-            // a v json objektu jsou ulozene v poli
+            // a kazda runa ma navic pozici
             // Tzn. - budeme iterovat pres pole a pro kazdy strom namapujeme vsechny runy do slovniku
-            foreach (var runeTree in runesJson) {
+            foreach (var runeTree in runesJson.Children()) {
                 var slots = GetChildJArrayOrThrowException(runeTree, "slots");
-                var runesArray = GetChildJArrayOrThrowException(slots, "runes");
+                foreach (var slot in slots.Children()) {
+                    // Nyni konecne dostaneme array, kde jsou jednotlive runy pro danou pozici
+                    var runesJArray = GetChildJArrayOrThrowException(slot, "runes");
+                    foreach (var runeToken in runesJArray.Children()) {
+                        var rune = runeToken.Type == JTokenType.Object
+                            ? (JObject) runeToken
+                            : throw new AssetException("Error, runes json file has incorrect format");
 
-                // Nyni iterujeme pres kazdou runu a ukladame do dictionary
-                foreach (var runeToken in runesArray.Children()) {
-                    if (runeToken.Type != JTokenType.Object) {
-                        throw new AssetException("Error, runes json file has incorrect format");
+                        // Ziskame id a cestu k souboru
+                        var (keyProp, pathProp) =
+                            GetKeyValueJPropertiesOrThrowException(rune, "id", "icon");
+
+                        var key = keyProp.Value.Type == JTokenType.Integer
+                            ? (int) keyProp.Value
+                            : throw new AssetException("Error, runes json file has incorrect format");
+
+                        var relativePath = pathProp.Value.Type == JTokenType.String
+                            ? (string) pathProp.Value
+                            : throw new AssetException("Error, runes json file has incorrect format");
+
+                        // Pokud by bylo null, pak take vyhodime exception (nicmene to nikdy nenastane pri spravnem
+                        // formatu souboru
+                        runes[key] = Path.Combine(config.AssetPath,
+                            relativePath ?? throw new AssetException("Error, runes json file has incorrect format"));
                     }
-
-                    // Pretypujeme na JObject a ziskame id spolu s cestou
-                    var rune = (JObject) runeToken;
-                    var properties = rune.Properties();
-                    var (keyProp, pathProp) =
-                        GetKeyValueJPropertiesOrThrowException(rune, "id", "icon");
-
-                    var key = keyProp.Value.Type == JTokenType.Integer
-                        ? (int) keyProp.Value
-                        : throw new AssetException("Error, runes json file has incorrect format");
-
-                    var relativePath = pathProp.Value.Type == JTokenType.String
-                        ? (string) pathProp.Value
-                        : throw new AssetException("Error, runes json file has incorrect format");
-
-                    // Pokud by bylo null, pak take vyhodime exception (nicmene to nikdy nenastane pri spravnem
-                    // formatu souboru
-                    runes[key] = Path.Combine(config.AssetPath,
-                        relativePath ?? throw new AssetException("Error, runes json file has incorrect format"));
                 }
             }
         }
