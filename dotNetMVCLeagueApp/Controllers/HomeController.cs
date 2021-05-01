@@ -6,6 +6,7 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotNetMVCLeagueApp.Services;
+using dotNetMVCLeagueApp.Services.Summoner;
 using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Controllers {

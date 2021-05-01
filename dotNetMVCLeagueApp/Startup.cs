@@ -21,7 +21,7 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private bool useLiveReload = false;
+        private bool useLiveReload = true;
 
         public IConfiguration Configuration { get; }
 

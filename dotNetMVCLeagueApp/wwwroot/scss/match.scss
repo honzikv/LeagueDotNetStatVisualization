@@ -1,0 +1,55 @@
+﻿@import "fonts";
+@import "colors";
+@import "utils";
+
+.match-card {
+    min-width: 760px;
+}
+
+.hr-header {
+    margin: 3px;
+}
+
+.champion-icon {
+    width: 55px;
+    height: 55px;
+    @extend .rounded;
+}
+
+.summoner-icon {
+    width: 28px;
+    height: 28px;
+    @extend .rounded;
+}
+
+.icons {
+    max-width: 28px;
+}
+
+.items {
+    max-width: 100px;
+}
+
+.rune {
+    width: 32px;
+}
+
+.rune-secondary {
+    width: 28px;
+}
+
+.text-small {
+    font-size: small;
+}
+
+.header-text-h1 {
+    font-family: ProximaNova, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.header-text-h2 {
+    font-family: ProximaNova, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+}

@@ -1,26 +1,42 @@
 ﻿@using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner
+@using dotNetMVCLeagueApp.Const
 @model SummonerOverviewDto
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
+
+    var soloq = Model.Summoner.QueueInfo.FirstOrDefault(x => x.QueueType == GameConstants.RankedSolo);
 }
 
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 p-md-1 m-4" id="summonerInfo">
-            <div class="card">
-                <div class="card-body ">
-                    
+        <div class="col m-4" id="summonerInfo">
+            <div class="dark-acrylic">
+                <div class="league-text h1 text-center">@Model.Summoner.Name</div>
+                <div class="text-center">
+                    @if (soloq is null) {
+                        <text>Unranked</text>
+                    }
+                    else {
+                        <text>@{@soloq.Wins}W : @{@soloq.Losses}L</text>
+                    }
                 </div>
             </div>
         </div>
 
-        <div class="col-lg">
 
+        <div class="col-6">
+            <div class="m-4 league-text h1">Matches</div>
+            @foreach (var match in Model.MatchHeaders) {
+                await Html.RenderPartialAsync("Fragments/MatchHeaderFragment", match);
+            }
         </div>
 
+        <div class="col">
+
+        </div>
     </div>
 
 </div>

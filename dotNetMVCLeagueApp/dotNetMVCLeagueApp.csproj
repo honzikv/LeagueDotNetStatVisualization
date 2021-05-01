@@ -30,6 +30,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="MingweiSamuel.Camille" Version="2.7.3-nightly-2021-01-17-519ad84617" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Westwind.AspNetCore.LiveReload" Version="0.3.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
     </ItemGroup>
@@ -37,10 +38,95 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Summoner\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\TestCore\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\scss\$fileParentDir$\css\main.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\scss\$fileParentDir$\css\main.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\scss\$fileParentDir$\css\navbar.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\scss\$fileParentDir$\css\navbar.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\7200_Domination.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\7201_Precision.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\7202_Sorcery.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\7203_Whimsy.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\7204_Resolve.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\DarkHarvest.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\CheapShot\CheapShot.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\DarkHarvest\DarkHarvest.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\Electrocute\Electrocute.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\EyeballCollection\EyeballCollection.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\GhostPoro\GhostPoro.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\HailOfBlades\HailOfBlades.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\IngeniousHunter\IngeniousHunter.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\Predator\Predator.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\RavenousHunter\RavenousHunter.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\RelentlessHunter\RelentlessHunter.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\SuddenImpact\SuddenImpact.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\TasteOfBlood\GreenTerror_TasteOfBlood.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\UltimateHunter\UltimateHunter.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Domination\ZombieWard\ZombieWard.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Electrocute.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\HailOfBlades.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\BiscuitDelivery\BiscuitDelivery.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\CelestialBody\CelestialBody.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\CosmicInsight\CosmicInsight.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\FuturesMarket\FuturesMarket.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\GlacialAugment\GlacialAugment.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\HextechFlashtraption\HextechFlashtraption.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\Kleptomancy\Kleptomancy.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\MagicalFootwear\MagicalFootwear.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\MasterKey\MasterKey.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\MinionDematerializer\MinionDematerializer.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\PerfectTiming\PerfectTiming.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\TimeWarpTonic\TimeWarpTonic.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Inspiration\UnsealedSpellbook\UnsealedSpellbook.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\Conqueror\Conqueror.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\CoupDeGrace\CoupDeGrace.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\CutDown\CutDown.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\FleetFootwork\FleetFootwork.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\LegendAlacrity\LegendAlacrity.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\LegendBloodline\LegendBloodline.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\LegendTenacity\LegendTenacity.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\LethalTempo\LethalTempoTemp.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\Overheal.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\PresenceOfMind\PresenceOfMind.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\PressTheAttack\PressTheAttack.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Precision\Triumph.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Predator.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\ApproachVelocity\ApproachVelocity.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\BonePlating\BonePlating.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\Chrysalis\Chrysalis.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\Conditioning\Conditioning.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\Demolish\Demolish.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\FontOfLife\FontOfLife.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\GraspOfTheUndying\GraspOfTheUndying.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\Guardian\Guardian.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\IronSkin\IronSkin.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\MirrorShell\MirrorShell.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\Overgrowth\Overgrowth.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\Revitalize\Revitalize.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\SecondWind\SecondWind.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Resolve\VeteranAftershock\VeteranAftershock.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\RunesIcon.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\AbsoluteFocus\AbsoluteFocus.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\ArcaneComet\ArcaneComet.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Celerity\CelerityTemp.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\GatheringStorm\GatheringStorm.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\LastStand\LastStand.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\ManaflowBand\ManaflowBand.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\NimbusCloak\6361.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\NullifyingOrb\Pokeshield.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\PhaseRush\PhaseRush.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Scorch\Scorch.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\SummonAery\SummonAery.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Transcendence\Transcendence.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Unflinching\Unflinching.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Waterwalking\Waterwalking.png" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="wwwroot\bgwall" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\fonts\ProximaNova-Regular.otf" />
     </ItemGroup>
 
     

@@ -1,7 +1,7 @@
 ﻿@import "fonts.scss";
 @import "colors.scss";
-
-$default-border-radius: 20px;
+@import "cards.scss";
+@import "utils";
 
 .heading-search {
     font-family: AirbnbCereal, sans-serif;
@@ -12,21 +12,20 @@ $default-border-radius: 20px;
 .league-text {
     font-family: AirbnbCereal, sans-serif;
 
-    .text-h1 {
+    .h1 {
         font-size: 40px;
         font-weight: bold;
     }
 
-    .color-primary {
-        color: $primary-white;
-    }
-
-    .color-secondary {
-        color: $secondary-white;
-    }
-    
 }
 
+.color-primary {
+    color: $primary-white;
+}
+
+.color-secondary {
+    color: $secondary-white;
+}
 
 .btn-hover {
     width: 100px;
@@ -38,7 +37,7 @@ $default-border-radius: 20px;
     text-align: center;
     border: none;
     background-size: 300% 100%;
-    border-radius: $default-border-radius;
+    border-radius: $small-border-radius;
     moz-transition: all .4s ease-in-out;
     -o-transition: all .4s ease-in-out;
     -webkit-transition: all .4s ease-in-out;
@@ -63,9 +62,8 @@ $default-border-radius: 20px;
 }
 
 body {
-    background: radial-gradient(circle at center, adjust-color($primary-black, $alpha: -.25),
-            adjust-color($secondary-black, $alpha: -.25)), url("../bgwall/default.jpg") no-repeat center fixed
-    !important;
+    background: radial-gradient(adjust-color($background-color1, $alpha: -.25), adjust-color($background-color2, $alpha: -.25)),
+    url("../bgwall/default.jpg") no-repeat center fixed !important;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Const;
@@ -10,7 +9,7 @@ using dotNetMVCLeagueApp.Repositories;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 
-namespace dotNetMVCLeagueApp.Services {
+namespace dotNetMVCLeagueApp.Services.Summoner {
     /// <summary>
     /// Tato sluzba poskytuje informace o specifickem hraci (summoner) bud zavolani Riot Api nebo ziskanim dat z db
     /// </summary>

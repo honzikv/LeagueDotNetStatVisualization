@@ -9,6 +9,7 @@ using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Services.MatchHistory;
+using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;

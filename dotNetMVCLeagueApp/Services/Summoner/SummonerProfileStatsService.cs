@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
@@ -8,7 +9,7 @@ using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace dotNetMVCLeagueApp.Services {
+namespace dotNetMVCLeagueApp.Services.Summoner {
     /// <summary>
     /// Sluzba pro vypocty statistik pro zobrazeni na strance
     /// </summary>
@@ -36,7 +37,7 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="match"></param>
         /// <returns></returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
-        public MatchHeaderDto GetMatchInfoHeader(SummonerModel summoner,
+        public static MatchHeaderDto GetMatchInfoHeader(SummonerModel summoner,
             MatchModel match) {
             var playerInfo = match.PlayerInfoList
                 .FirstOrDefault(player => player.SummonerId == summoner.EncryptedSummonerId);
@@ -52,6 +53,7 @@ namespace dotNetMVCLeagueApp.Services {
             return new MatchHeaderDto {
                 PlayTime = match.PlayTime,
                 ChampionIconId = playerInfo.ChampionId,
+                Duration = TimeSpan.FromSeconds(match.GameDuration),
                 TeamId = playerInfo.TeamId,
                 Kills = playerStats.Kills,
                 Deaths = playerStats.Deaths,

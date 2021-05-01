@@ -1,0 +1,20 @@
+﻿$small-border-radius: 20px;
+$medium-border-radius: 40px;
+$rounded-radius: 100%;
+
+.no-spacing {
+    margin: 0;
+    padding: 0;
+}
+
+.rounded-corners-small {
+    border-radius: $small-border-radius;
+}
+
+.rounded-corners-medium {
+    border-radius: $medium-border-radius;
+}
+
+.rounded {
+    border-radius: $rounded-radius;
+}

@@ -10,6 +10,11 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         ///     Id tymu - blue 100, red 200
         /// </summary>
         public int TeamId { get; set; }
+        
+        /// <summary>
+        /// Jak dlouho hra trvala
+        /// </summary>
+        public TimeSpan Duration { get; set; }
 
         /// <summary>
         ///     Datum hry

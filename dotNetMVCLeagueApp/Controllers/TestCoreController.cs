@@ -3,6 +3,7 @@ using AutoMapper.Internal;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Services.MatchHistory;
+using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;

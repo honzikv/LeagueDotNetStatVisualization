@@ -1,0 +1,112 @@
+﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.MatchHeaderDto
+
+@{
+    string GetChampion() {
+        return null;
+    }
+}
+
+
+<div class="row match-card m-4">
+    <div class="col-auto">
+
+        <div class="card rounded-corners-small">
+            <div class="card-header mt-1">
+                <div class="row">
+                    <div class="col-auto d-flex align-items-center text-center">
+                        <p class="header-text-h1 mr-4 text-primary">
+                            @if (Model.Win) {
+                                @:Victory
+                            }
+                            else {
+                                @:Loss
+                            }
+                        </p>
+                        <p class="header-text-h2">@Model.Role</p>
+                    </div>
+                    <div class="col d-flex align-items-baseline align-self-center
+                             flex-row-reverse">
+                        <button class="btn btn-primary rounded-corners-small">Show</button>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="row no-gutters mt-1">
+                    <div class="col-auto d-flex align-self-center align-items-baseline">
+                        <div class="text-center ">
+                            <p class="font-weight-bold no-spacing">Ranked solo</p>
+                            <p class="no-spacing">12 Hours Ago</p>
+                            <hr class="hr-header">
+                            <p class="no-spacing">35:29</p>
+                        </div>
+                    </div>
+
+                    <div class="col-auto ml-4 d-flex align-self-center">
+                        <div>
+                            <img src="Fiora.png" class="champion-icon">
+                            <p class="text-default text-center font-weight-bold">@Model.ChampionIconId</p>
+                        </div>
+
+                        <div class="icons ml-1">
+                            <img src="SummonerTeleport.png" class="summoner-icon">
+                            <img src="SummonerFlash.png" class="summoner-icon mt-1">
+                        </div>
+
+                        <div class="icons ml-1 text-center">
+                            <img src="HailOfBlades.png" class="rune">
+                            <img src="7201_Precision.png" class="rune-secondary">
+                        </div>
+                    </div>
+
+                    <div class="col-auto ml-4 d-flex align-self-center">
+                        <div class="text-center">
+                            <p class="no-spacing">
+                                <span class="blue">5.83</span> KDA
+                            </p>
+                            <div>
+                                <span>13 / </span>
+                                <span class="red">6</span>
+                                <span> / 22 </span>
+                            </div>
+                            <p class="no-spacing">60% KPA</p>
+
+                            <p class="no-spacing text-small">
+                                32,000 DMG
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-auto ml-4 d-flex align-self-center">
+                        <div class="text-center">
+                            <p class="no-spacing"><span class="font-weight-bold">320</span> CS</p>
+                            <p class="no-spacing">8.12 CS/min</p>
+                            <p class="no-spacing">12,000 Gold</p>
+                            <p class="no-spacing">12 Vision Score</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-auto ml-4 d-flex align-self-center">
+                        <div class="items">
+                            <img class="summoner-icon" src="1001.png">
+                            <img class="summoner-icon" src="1004.png">
+                            <img class="summoner-icon" src="1006.png">
+                            <img class="summoner-icon mt-1" src="1011.png">
+                            <img class="summoner-icon mt-1" src="1018.png">
+                            <img class="summoner-icon mt-1" src="1018.png">
+                        </div>
+                        <img class="summoner-icon mt-3" src="3340.png">
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

@@ -5,6 +5,7 @@ using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.MatchTimeline;
+using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.Extensions.DependencyInjection;
 using MingweiSamuel.Camille;
 

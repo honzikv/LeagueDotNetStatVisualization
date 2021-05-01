@@ -94,6 +94,10 @@
               "target": "Package",
               "version": "[2.7.3-nightly-2021-01-17-519ad84617, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
             "Westwind.AspNetCore.LiveReload": {
               "target": "Package",
               "version": "[0.3.1, )"
