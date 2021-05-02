@@ -1,0 +1,78 @@
+@import "fonts";
+@import "colors";
+@import "glassmorphism";
+@import "utils";
+
+
+.card-dark {
+    @include glass-strongest($card-background-dark);
+    overflow: hidden;
+    font-size: 16px;
+    font-family: Sora, sans-serif;
+}
+
+.card-light {
+    @extend .card-dark;
+    @include glass-strongest($color-text-primary-white);
+    color: $color-primary-black;
+}
+
+.dot {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    margin-right: 8px !important;
+}
+
+.color-loss {
+    color: $color-loss;
+}
+
+.color-win {
+    color: $color-win;
+}
+
+.dot-loss {
+    background-color: $color-loss;
+}
+
+.dot-win {
+    background-color: $color-win;
+}
+
+.card-dark-header {
+    padding: 8px 24px;
+    border-bottom: solid $border-color-header 2px;
+}
+
+.button-dark {
+    font-family: ProximaNova, sans-serif;
+    font-weight: bold;
+    color: $color-primary-black !important;
+}
+
+.button-dark-primary {
+    background: $color-text-primary-white !important;
+}
+
+.button-light-primary {
+    background: $color-primary-black !important;
+}
+
+.button-light {
+    @extend .button-dark;
+    color: $color-text-primary-white !important;
+}
+
+.card-dark-text {
+    color: $color-text-card-default;
+}
+
+.card-dark-text-header {
+    color: $color-text-primary-white;
+}
+
+.card-text-primary-blue {
+    color: $color-blue-primary;
+}
+

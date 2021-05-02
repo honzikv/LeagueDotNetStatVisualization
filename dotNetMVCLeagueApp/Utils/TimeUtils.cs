@@ -18,5 +18,7 @@ namespace dotNetMVCLeagueApp.Utils {
         /// <param name="frameTime">cislo framu * frameDuration</param>
         /// <returns></returns>
         public static TimeSpan ConvertFrameTimeToTimeSpan(long frameTime) => TimeSpan.FromMilliseconds(frameTime);
+
+        public static TimeSpan GetTimeFromToday(DateTime playTime) => DateTime.Now - playTime;
     }
 }

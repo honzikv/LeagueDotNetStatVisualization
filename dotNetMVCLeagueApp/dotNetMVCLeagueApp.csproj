@@ -119,6 +119,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Transcendence\Transcendence.png" />
       <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Unflinching\Unflinching.png" />
       <_ContentIncludedByDefault Remove="wwwroot\assets\Styles\Sorcery\Waterwalking\Waterwalking.png" />
+      <_ContentIncludedByDefault Remove="Content\Champions.json" />
     </ItemGroup>
 
     <ItemGroup>

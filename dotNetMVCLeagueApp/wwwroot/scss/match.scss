@@ -2,6 +2,8 @@
 @import "colors";
 @import "utils";
 
+$color-text-deaths: #d8082e;
+
 .match-card {
     min-width: 760px;
 }
@@ -35,7 +37,7 @@
 }
 
 .rune-secondary {
-    width: 28px;
+    width: 23px;
 }
 
 .text-small {
@@ -43,13 +45,34 @@
 }
 
 .header-text-h1 {
+    @extend .no-spacing;
+    font-family: ProximaNova, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.header-text-h2 {
+    @extend .no-spacing;
     font-family: ProximaNova, sans-serif;
     font-size: 32px;
     font-weight: bold;
 }
 
-.header-text-h2 {
-    font-family: ProximaNova, sans-serif;
-    font-size: 32px;
-    font-weight: bold;
+.kda {
+    .poor {
+        color: $color-kda-poor;
+    }
+    
+    .average {
+        color: $color-kda-average;
+    }
+    
+    .good {
+        color: $color-kda-good;
+    }
+}
+
+.deaths {
+    color: $color-red-primary;
 }

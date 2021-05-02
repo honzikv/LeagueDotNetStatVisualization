@@ -3,8 +3,8 @@ using System.IO;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
+using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services;
-using dotNetMVCLeagueApp.Services.AssetResolver;
 using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.MatchTimeline;
 using dotNetMVCLeagueApp.Services.Summoner;
@@ -27,8 +27,7 @@ namespace dotNetMVCLeagueApp {
             ));
 
             // Konfigurace pro nacitani assetu
-            services.AddSingleton(_ => new AssetResolverConfig {
-                AssetPath = Configuration["Assets:Root"],
+            services.AddSingleton(_ => new AssetLocationConfig {
                 ChampionsFolderName = Configuration["Assets:Champions"],
                 ItemsFolderName = Configuration["Assets:Items"],
                 EmptyAssetFileName = Configuration["Assets:EmptyAsset"],
@@ -47,6 +46,15 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<MatchInfoSummonerInfoRepository>();
             services.AddScoped<MatchTimelineRepository>();
 
+            // Asset resolver musi byt jako singleton, protoze nechceme vytvaret objekt pro kazdy request
+            services.AddSingleton(serviceProvider => new AssetRepository(
+                serviceProvider.GetRequiredService<AssetLocationConfig>(),
+                GetAssetJsonPath(Configuration["Assets:ChampionsJson"]),
+                GetAssetJsonPath(Configuration["Assets:SummonerSpellsJson"]),
+                GetAssetJsonPath(Configuration["Assets:RunesJson"]),
+                GetAssetJsonPath(Configuration["Assets:ItemsJson"])
+            ));
+
             // Services - wrapper nad repozitari, ktery se vola z controlleru
             services.AddScoped<SummonerInfoService>(); // Pro info o hracich
             services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
@@ -54,13 +62,6 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<MatchTimelineService>();
             
 
-            // Asset resolver musi byt jako singleton, protoze nechceme vytvaret objekt pro kazdy request
-            services.AddSingleton(serviceProvider => new AssetResolverService(
-                serviceProvider.GetRequiredService<AssetResolverConfig>(),
-                GetAssetJsonPath(Configuration["Assets:ChampionsJson"]),
-                GetAssetJsonPath(Configuration["Assets:SummonerSpellsJson"]),
-                GetAssetJsonPath(Configuration["Assets:RunesJson"])
-            ));
         }
     }
 }

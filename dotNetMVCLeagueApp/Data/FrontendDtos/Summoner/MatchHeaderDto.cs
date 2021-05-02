@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.JsonMappings;
 
 namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
     /// <summary>
@@ -19,7 +20,7 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         /// <summary>
         ///     Datum hry
         /// </summary>
-        public DateTime PlayTime { get; set; }
+        public TimeSpan PlayTime { get; set; }
 
         /// <summary>
         ///     Zdali hrac vyhral, prohral popr. remake
@@ -69,7 +70,7 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         /// <summary>
         ///     itemy + trinket
         /// </summary>
-        public List<int> Items { get; set; }
+        public List<ItemAsset> Items { get; set; }
 
         /// <summary>
         ///     Nejvetsi multi kill
@@ -89,17 +90,17 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         /// <summary>
         ///     Ikonka postavy, kterou hrac hral
         /// </summary>
-        public int ChampionIconId { get; set; }
+        public ChampionAsset ChampionAsset { get; set; }
 
         /// <summary>
         ///     Prvni summoner spell
         /// </summary>
-        public int SummonerSpell1Id { get; set; }
+        public SummonerSpellAsset SummonerSpell1 { get; set; }
 
         /// <summary>
         ///     Druhy summoner spell
         /// </summary>
-        public int SummonerSpell2Id { get; set; }
+        public SummonerSpellAsset SummonerSpell2 { get; set; }
 
         /// <summary>
         ///     Vision score - kolik vize hrac poskytl svemu tymu
@@ -109,24 +110,14 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         /// <summary>
         ///     Primary rune Id
         /// </summary>
-        public int PrimaryRuneId { get; set; }
+        public RuneAsset PrimaryRune{ get; set; }
 
         /// <summary>
         ///     Secondary rune Id
         /// </summary>
-        public int SecondaryRuneId { get; set; }
+        public RuneAsset SecondaryRune { get; set; }
+        
+        public int Gold { get; set; }
 
-        /// <summary>
-        ///     Override pro debug
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString() {
-            return $"{nameof(TeamId)}: {TeamId}, {nameof(PlayTime)}: {PlayTime}, {nameof(Win)}: {Win}, " +
-                   $"{nameof(QueueType)}: {QueueType}, {nameof(Items)}: {Items}, {nameof(LargestMultiKill)}: " +
-                   $"{LargestMultiKill}, {nameof(CsPerMinute)}: {CsPerMinute}, {nameof(TotalCs)}: {TotalCs}, " +
-                   $"{nameof(ChampionIconId)}: {ChampionIconId}, {nameof(SummonerSpell1Id)}: {SummonerSpell1Id}, " +
-                   $"{nameof(SummonerSpell2Id)}: {SummonerSpell2Id}, {nameof(VisionScore)}: {VisionScore}, " +
-                   $"{nameof(PrimaryRuneId)}: {PrimaryRuneId}, {nameof(SecondaryRuneId)}: {SecondaryRuneId}";
-        }
     }
 }

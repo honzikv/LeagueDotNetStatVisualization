@@ -1,6 +1,6 @@
 ﻿@import "fonts.scss";
 @import "colors.scss";
-@import "cards.scss";
+@import "components.scss";
 @import "utils";
 
 .heading-search {
@@ -62,8 +62,10 @@
 }
 
 body {
-    background: radial-gradient(adjust-color($background-color1, $alpha: -.25), adjust-color($background-color2, $alpha: -.25)),
-    url("../bgwall/default.jpg") no-repeat center fixed !important;
+    background: radial-gradient(adjust-color($background-color1, $alpha: -.00), adjust-color($background-color2, $alpha: -.00)),
+    //url("../bgwall/default.jpg") 
+    no-repeat center !important;
+    background-attachment: fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

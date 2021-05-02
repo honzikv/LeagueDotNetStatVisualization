@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using dotNetMVCLeagueApp.Data;
-using dotNetMVCLeagueApp.Services.AssetResolver;
+using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +22,7 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private const bool UseLiveReload = false;
+        private const bool UseLiveReload = true;
 
         public IConfiguration Configuration { get; }
 
@@ -50,9 +50,10 @@ namespace dotNetMVCLeagueApp {
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
 
+            // Ziskani rootu pro projekt, abychom mohli nacist json soubory pro konfiguraci
             Configuration["Assets:Root"] =
                 Path.Combine(Configuration.GetValue<string>(WebHostDefaults.ContentRootKey), "wwwroot", "assets");
-
+            
 
             // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
             services.AddControllersWithViews().AddJsonOptions(config => {
@@ -83,7 +84,7 @@ namespace dotNetMVCLeagueApp {
             
             // Protoze tato sluzba cte json je rozumne ji vytvorit primo pri startupu aby se pri prvnim
             // requestu, ktery ji potrebuje zbytecne necekalo
-            app.ApplicationServices.GetService<AssetResolverService>();
+            app.ApplicationServices.GetService<AssetRepository>();
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();

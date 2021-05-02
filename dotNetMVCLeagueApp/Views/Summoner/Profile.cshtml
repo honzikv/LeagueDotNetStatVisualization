@@ -12,26 +12,19 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col m-4" id="summonerInfo">
-            <div class="dark-acrylic">
-                <div class="league-text h1 text-center">@Model.Summoner.Name</div>
-                <div class="text-center">
-                    @if (soloq is null) {
-                        <text>Unranked</text>
-                    }
-                    else {
-                        <text>@{@soloq.Wins}W : @{@soloq.Losses}L</text>
-                    }
-                </div>
-            </div>
+        <div class="col" id="summonerInfo">
+
         </div>
 
-
-        <div class="col-6">
-            <div class="m-4 league-text h1">Matches</div>
-            @foreach (var match in Model.MatchHeaders) {
-                await Html.RenderPartialAsync("Fragments/MatchHeaderFragment", match);
-            }
+        <div class="col-auto m-4">
+            <div id="matchOverview">
+                @{ await Html.RenderPartialAsync("Fragments/MatchlistOverview", Model.MatchListStatsDto); }
+            </div>
+            <div id="matches">
+                @foreach (var match in Model.MatchHeaders) {
+                    await Html.RenderPartialAsync("Fragments/MatchHeaderFragment", match);
+                }
+            </div>
         </div>
 
         <div class="col">

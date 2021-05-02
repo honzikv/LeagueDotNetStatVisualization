@@ -6,8 +6,11 @@ using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exceptions;
+using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services.Utils;
+using dotNetMVCLeagueApp.Utils;
 using Microsoft.Extensions.Logging;
+using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Services.Summoner {
     /// <summary>
@@ -15,9 +18,12 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
     /// </summary>
     public class SummonerProfileStatsService {
         private readonly ILogger<SummonerProfileStatsService> logger;
+        private readonly AssetRepository assetRepository;
 
-        public SummonerProfileStatsService(ILogger<SummonerProfileStatsService> logger) {
+        public SummonerProfileStatsService(ILogger<SummonerProfileStatsService> logger,
+            AssetRepository assetRepository) {
             this.logger = logger;
+            this.assetRepository = assetRepository;
         }
 
         /// <summary>
@@ -29,15 +35,15 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         public List<MatchHeaderDto> GetMatchInfoHeaderList(SummonerModel summoner,
             IEnumerable<MatchModel> matchInfoList) =>
             matchInfoList.Select(matchInfo => GetMatchInfoHeader(summoner, matchInfo)).ToList();
-        
+
         /// <summary>
         /// Vytvori match info header pro jednu hru
         /// </summary>
-        /// <param name="summoner"></param>
-        /// <param name="match"></param>
+        /// <param name="summoner">hrac, pro ktereho header vytvarime</param>
+        /// <param name="match">reference na zapas, pro ktery header vytvarime</param>
         /// <returns></returns>
-        /// <exception cref="ActionNotSuccessfulException"></exception>
-        public static MatchHeaderDto GetMatchInfoHeader(SummonerModel summoner,
+        /// <exception cref="ActionNotSuccessfulException">Pokud neexistuje info o hraci</exception>
+        public MatchHeaderDto GetMatchInfoHeader(SummonerModel summoner,
             MatchModel match) {
             var playerInfo = match.PlayerInfoList
                 .FirstOrDefault(player => player.SummonerId == summoner.EncryptedSummonerId);
@@ -49,34 +55,41 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             // Statistika hrace
             var playerStats = playerInfo.PlayerStatsModel;
 
-            // Mapping do jednoho objektu
+            // Nyni objekt muzeme rovnou inicializovat pomoci {}
             return new MatchHeaderDto {
-                PlayTime = match.PlayTime,
-                ChampionIconId = playerInfo.ChampionId,
                 Duration = TimeSpan.FromSeconds(match.GameDuration),
+                QueueType = match.QueueType,
                 TeamId = playerInfo.TeamId,
                 Kills = playerStats.Kills,
                 Deaths = playerStats.Deaths,
                 Assists = playerStats.Assists,
-                KillParticipation = GameStatsUtils.GetKillParticipation(playerStats, match, playerInfo.TeamId),
-                Kda = ((double) playerStats.Kills + playerStats.Assists) / playerStats.Deaths,
+                Gold = playerStats.GoldEarned,
                 DamageDealt = playerStats.TotalDamageDealtToChampions,
-                Role = GameStatsUtils.GetRole(playerInfo.Role, playerInfo.Lane),
-                Win = match.Teams.FirstOrDefault(
-                    team => team.TeamId == playerInfo.TeamId)?.Win == GameConstants.Win,
-                QueueType = match.QueueType,
-                Items = new() {
-                    playerStats.Item0, playerStats.Item1, playerStats.Item2, playerStats.Item3, playerStats.Item4,
-                    playerStats.Item5, playerStats.Item6
-                },
+                VisionScore = playerStats.VisionScore,
                 LargestMultiKill = GameStatsUtils.GetLargestMultiKill(playerStats),
                 CsPerMinute = GameStatsUtils.GetCsPerMinute(playerStats, match.GameDuration),
                 TotalCs = GameStatsUtils.GetTotalCs(playerStats),
-                SummonerSpell1Id = playerInfo.Spell1Id,
-                SummonerSpell2Id = playerInfo.Spell2Id,
-                VisionScore = playerStats.VisionScore,
-                PrimaryRuneId = playerStats.Perk0,
-                SecondaryRuneId = playerStats.Perk3,
+                KillParticipation =
+                    GameStatsUtils.GetKillParticipationPercentage(playerStats, match, playerInfo.TeamId),
+                Kda = GameStatsUtils.CalculateKda(playerStats.Kills, playerStats.Deaths, playerStats.Assists),
+                PlayTime = TimeUtils.GetTimeFromToday(match.PlayTime),
+                Win = match.Teams.FirstOrDefault(
+                    team => team.TeamId == playerInfo.TeamId)?.Win == GameConstants.Win,
+                Role = GameStatsUtils.GetRole(playerInfo.Role, playerInfo.Lane),
+                ChampionAsset = assetRepository.GetChampionAsset(playerInfo.ChampionId),
+                Items = new() {
+                    assetRepository.GetItemAsset(playerStats.Item0),
+                    assetRepository.GetItemAsset(playerStats.Item1),
+                    assetRepository.GetItemAsset(playerStats.Item2),
+                    assetRepository.GetItemAsset(playerStats.Item3),
+                    assetRepository.GetItemAsset(playerStats.Item4),
+                    assetRepository.GetItemAsset(playerStats.Item5),
+                    assetRepository.GetItemAsset(playerStats.Item6),
+                },
+                SummonerSpell1 = assetRepository.GetSummonerSpellAsset(playerInfo.Spell1Id),
+                SummonerSpell2 = assetRepository.GetSummonerSpellAsset(playerInfo.Spell2Id),
+                PrimaryRune = assetRepository.GetRuneAsset(playerStats.Perk0),
+                SecondaryRune = assetRepository.GetRuneAsset(playerStats.PerkSubStyle)
             };
         }
 

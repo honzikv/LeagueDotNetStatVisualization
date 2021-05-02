@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace dotNetMVCLeagueApp.Services.AssetResolver {
+﻿namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
     /// <summary>
     /// Jednoduchy objekt, ktery v sobe uklada cesty pro dane soubory.
     /// Pro strukturu predpokladame, ze dane assety jsou ulozene v jedne slozce, ktera obsahuje dalsi slozky
@@ -11,13 +9,8 @@ namespace dotNetMVCLeagueApp.Services.AssetResolver {
     /// Pozn. nelze nastavit cestu pro runy, kde je brana jako vychozi perk-images/..., protoze je struktura
     /// run relativne slozita. Soubory ve slozkach se museji jmenovat stejne jako assety ziskane z Data Dragon
     /// </summary>
-    public class AssetResolverConfig {
-        
-        /// <summary>
-        /// Cesta k assetum (absolutni)
-        /// </summary>
-        public string AssetPath { get; init; }
-        
+    public class AssetLocationConfig {
+
         /// <summary>
         /// Jmeno slozky s ikonami postav
         /// </summary>

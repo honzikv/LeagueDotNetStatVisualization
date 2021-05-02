@@ -61,6 +61,10 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             return totalKills == 0 ? 1.0 : (double) (playerStats.Kills + playerStats.Assists) / totalKills;
         }
 
+        public static double GetKillParticipationPercentage(PlayerStatsModel playerStatsModel, MatchModel matchModel,
+            int teamId)
+            => GetKillParticipation(playerStatsModel, matchModel, teamId) * 100;
+
         /// <summary>
         /// Aktualizuje slovnik s frekvencemi roli - pricte 1 pro spravnou roli
         /// </summary>
