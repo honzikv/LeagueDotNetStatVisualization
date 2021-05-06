@@ -2,25 +2,96 @@
 <div class="rounded-corners-small card-light match-card mt-4">
     <div class="card-dark-header">
         <div class="row d-flex">
-            <div class="col d-flex align-items-center align-self-center">
-                <p class="header-text-h1">Overview</p>
+            <div class="col-auto d-flex align-items-center align-self-center">
+                <div>
+                    <p class="header-text-game-status">Overview</p>
+                    <p class="no-spacing mt-n3">Average of @(Model.Remakes + Model.TotalStats.Wins + Model.TotalStats.Losses) Games</p>
+
+                </div>
             </div>
             <div class="col d-flex align-items-baseline align-self-center
                                                      flex-row-reverse">
                 <button class="btn rounded-corners-small button-light button-light-primary ">Refresh</button>
             </div>
+
         </div>
-        
+
     </div>
-    <div class="card-body d-flex justify-content-around card-light-text">
-        
-    <div class="row no-gutters mt-1">
-                <div class="col-auto">
-                    <p class="header-text-h1">
-                        <span class="color-win-light">@(Model.TotalStats.Wins + "W")</span> : <span class="color-loss-light">@(Model.TotalStats.Losses + "L")</span>
+    <div class="card-body card-light-text">
+
+        <div class="row d-flex justify-content-around no-gutters mt-1">
+
+            <div class="col-auto align-self-center text-center">
+                <p class="overview-text-games">
+                    <span class="color-win-light">@(Model.TotalStats.Wins + "W")</span> : <span class="color-loss-light">@(Model.TotalStats.Losses + "L")</span>
+                </p>
+                <div class="progress match-progress-bar mt-n1">
+                    <div class="progress-bar progress-bar-win" style="width:@Model.TotalStats.Winrate.ToString("N0")%"></div>
+                    <div class="progress-bar bg-danger" style="width:@((100 - Model.TotalStats.Winrate).ToString("N0"))%"></div>
+                </div>
+                <p class="no-spacing text-center">@(Model.TotalStats.Winrate.ToString("N1") + "%") WR</p>
+            </div>
+
+            <div class="col-auto align-self-center text-center">
+                <p class="no-spacing">@Model.TotalStats.AverageKda.ToString("N1") KDA</p>
+                <div class="font-weight-bold">
+                    <span>@Model.TotalStats.AverageKills.ToString("N1") /</span>
+                    <span class="deaths">@Model.TotalStats.AverageDeaths.ToString("N1")</span>
+                    <span> / @Model.TotalStats.AverageAssists.ToString("N1")</span>
+                </div>
+                <p class="no-spacing">@Model.TotalStats.AverageKillParticipation.ToString("N1")% KPA</p>
+                <p data-toggle="tooltip" data-popper-placement="top" title="Damage percentage in team"
+                   class="no-spacing">
+                    @(Model.TotalStats.AverageDamageShare.ToString("N1") + "%") DMG
+                </p>
+            </div>
+
+            <div class="col-auto align-self-center text-center">
+                <p class="no-spacing">
+                    <span class="font-weight-bold">@Model.TotalStats.AverageCs.ToString("N1") CS</span>
+                </p>
+                <p class="no-spacing">@Model.TotalStats.AverageCsPerMinute.ToString("N1") CS/min</p>
+                <p data-toggle="tooltip" data-popper-placement="top" title="How much gold did the player have compared to their team"
+                   class="no-spacing">
+                    @(Model.TotalStats.AverageGoldShare.ToString("N1") + "%") Gold
+                </p>
+                <p data-toggle="tooltip" data-popper-placement="top" title="How much percentage of total vision the player provided to team"
+                   class="no-spacing">
+                    @(Model.TotalStats.AverageVisionShare.ToString("N1") + "%") Vision
+                </p>
+            </div>
+
+            <div class="col-auto align-self-center text-center">
+                <div>
+                    <p class="font-weight-bold no-spacing">Most played</p>
+                    <p class="no-spacing">
+                        @Model.TotalStats.PrimaryRole
+                        (@(Model.TotalStats.PrimaryRoleFrequency.ToString("N0") + "%") GMS)
                     </p>
-                    <p>70% WR</p>
+                    @if (Model.TotalStats.SecondaryRole is not null) {
+                        <p class="font-weight-bold no-spacing">Second most played</p>
+                        <p class="no-spacing">@Model.TotalStats.SecondaryRole (@(Model.TotalStats.SecondaryRoleFrequency.ToString("N0") + "%") GMS)</p>
+                    }
+
                 </div>
             </div>
+
+        </div>
+
     </div>
+    <hr class="hr-header">
+    <div class="d-flex justify-content-center mb-2 mt-2">
+        <button type="button" class="btn rounded-corners-small button-light button-light-primary"
+                id="">
+            <span class="m-4">Toggle Champion Stats</span>
+        </button>
+    </div>
+
+    <div id="championStats">
+        ChampionStats
+    </div>
+
+
 </div>
+
+<script src="js/Summoner/Fragments/MatchHeaderFragment.js"></script>

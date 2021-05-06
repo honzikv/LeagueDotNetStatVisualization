@@ -185,5 +185,12 @@ namespace dotNetMVCLeagueApp.Services.Utils {
 
         public static double GetWinrate(int wins, int losses) => 
             losses == 0 ? 1.0 : (double) wins / (wins + losses);
+
+        public static double GetWinratePercentage(int wins, int losses) => GetWinrate(wins, losses) * 100;
+
+        public static double GetVisionShare(PlayerStatsModel playerStats, List<PlayerStatsModel> playerTeamStats) {
+            var totalVision = playerTeamStats.Sum(player => player.VisionScore);
+            return totalVision == 0.0 ? 1.0 : (double) playerStats.VisionScore / totalVision;
+        }
     }
 }

@@ -44,7 +44,7 @@ $color-text-deaths: #d8082e;
     font-size: small;
 }
 
-.header-text-h1 {
+.header-text-game-status {
     @extend .no-spacing;
     font-family: ProximaNova, sans-serif;
     font-size: 32px;
@@ -52,22 +52,28 @@ $color-text-deaths: #d8082e;
     margin-right: 8px;
 }
 
-.header-text-h2 {
+.header-text-role {
     @extend .no-spacing;
     font-family: ProximaNova, sans-serif;
     font-size: 32px;
     font-weight: bold;
 }
 
+.overview-text-games {
+    font-weight: bold;
+    @extend .no-spacing;
+    font-size: 24px;
+}
+
 .kda {
     .poor {
         color: $color-kda-poor;
     }
-    
+
     .average {
         color: $color-kda-average;
     }
-    
+
     .good {
         color: $color-kda-good;
     }

@@ -1,12 +1,9 @@
 ﻿@using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner
-@using dotNetMVCLeagueApp.Const
 @model SummonerOverviewDto
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
-
-    var soloq = Model.Summoner.QueueInfoList.FirstOrDefault(x => x.QueueType == GameConstants.RankedSolo);
 }
 
 
@@ -17,6 +14,7 @@
         </div>
 
         <div class="col-auto m-4">
+
             <div id="matchOverview">
                 @{ await Html.RenderPartialAsync("Fragments/MatchlistOverview", Model.MatchListOverviewDto); }
             </div>
@@ -36,8 +34,14 @@
             </div>
         </div>
 
-        <div class="col">
-
+        <div class="col-auto">
+            <div class="d-flex justify-content-center">
+                <select class="browser-default custom-select mb-1 select-dark rounded-corners-small" id="queueFilter">
+                    <option name="allGames">All games</option>
+                    <option name="rankedSolo">Ranked Solo</option>
+                    <option name="rankedFlex">Ranked Flex</option>
+                </select>
+            </div>
         </div>
     </div>
 

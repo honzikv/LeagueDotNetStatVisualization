@@ -1,25 +1,25 @@
 ﻿@using dotNetMVCLeagueApp.Utils
 @model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.MatchHeaderDto
 
-    
+
 <div class="rounded-corners-small card-dark match-card mt-4 animate__animated animate__zoomIn">
     <div class="card-dark-header">
         <div class="row d-flex ">
             <div class="col d-flex align-items-center align-self-center">
 
                 @if (Model.Win) {
-                        <span class="dot dot-win"></span>
-                        <p class="header-text-h1 color-win">Victory</p>
-                    }
-                    else {
-                        <span class="dot dot-loss"></span>
-                        <p class="header-text-h1 color-loss">Defeat</p>
-                    }
-                <p class="header-text-h2 card-dark-text-header">@Model.Role</p>
+                    <span class="dot dot-win"></span>
+                    <p class="header-text-game-status color-win">Victory</p>
+                }
+                else {
+                    <span class="dot dot-loss"></span>
+                    <p class="header-text-game-status color-loss">Defeat</p>
+                }
+                <p class="header-text-role card-dark-text-header">@Model.Role</p>
             </div>
             <div class="col d-flex align-items-baseline align-self-center
                              flex-row-reverse">
-                <button class="btn rounded-corners-small button-dark button-dark-primary ">Show</button>
+                <button class="btn rounded-corners-small button-dark button-dark-primary">Show</button>
 
             </div>
         </div>
@@ -69,7 +69,7 @@
                         <span>@Model.Kda.ToString("N1")</span> KDA
                     </p>
                     <div>
-                        <span >@Model.Kills / </span>
+                        <span> @Model.Kills / </span>
                         <span class="deaths">@Model.Deaths</span>
                         <span> / @Model.Assists </span>
                     </div>

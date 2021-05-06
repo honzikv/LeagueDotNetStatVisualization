@@ -9,11 +9,26 @@
     overflow: hidden;
     font-size: 16px;
     font-family: Sora, sans-serif;
+    
+}
+
+.select-dark {
+    background-color: $color-primary-black;
+    color: $color-text-primary-white;
+    border: solid $border-color-header 2px;
+    font-family: ProximaNova, sans-serif;
+
+    &:focus {
+        box-shadow: none;
+        border: solid $border-color-header 2px;
+    }
 }
 
 .card-light {
-    @extend .card-dark;
-    @include glass-strongest($color-text-primary-white);
+    @include glass-strongest($card-background-light);
+    overflow: hidden;
+    font-size: 16px;
+    font-family: Sora, sans-serif;
     color: $color-primary-black;
 }
 
@@ -32,13 +47,31 @@
     color: $color-win;
 }
 
+$color-win-light: darken($color-win, 30%);
+$color-loss-light: darken($color-loss, 10%);
+
 .color-win-light {
-    color: darken($color-win, 30%);
+    color: $color-win-light;
 }
 
 .color-loss-light {
-    color: darken($color-loss, 10%);
+    color: $color-loss-light
 }
+
+
+.match-progress-bar {
+    height: 16px;
+    border-radius: 8px;
+}
+
+.progress-bar-win {
+    background-color: $color-win-light;
+}
+
+.progress-bar-loss {
+    background-color: $color-loss-light;
+}
+
 
 .dot-loss {
     background-color: $color-loss;

@@ -38,6 +38,12 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         public double AverageGoldShare { get; set; }
 
         public double AverageDamageShare { get; set; }
+        
+        public double AverageCs { get; set; }
+        
+        public double AverageCsPerMinute { get; set; }
+        
+        public double AverageVisionShare { get; set; }
     }
 
     public class ChampionCumulativeStatsDto : CumulativeStatsDto {
@@ -72,5 +78,7 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         public Dictionary<string, int> Roles { get; } = new();
         
         public List<double> GoldDiffsAt10 { get; } = new();
+
+        public List<double> VisionShare { get; } = new();
     }
 }

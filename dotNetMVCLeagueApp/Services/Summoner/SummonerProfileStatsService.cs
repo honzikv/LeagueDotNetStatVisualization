@@ -161,7 +161,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
 
             result.Wins = statsCounter.Wins;
             result.Losses = statsCounter.Losses;
-            result.Winrate = GameStatsUtils.GetWinrate(result.Wins, result.Losses);
+            result.Winrate = GameStatsUtils.GetWinratePercentage(result.Wins, result.Losses);
             result.AverageKills = statsCounter.Kills.Average();
             result.AverageDeaths = statsCounter.Deaths.Average();
             result.AverageAssists = statsCounter.Assists.Average();
@@ -170,9 +170,12 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             // Kda nechceme pocitat jako prumer vsech kda ale jako sumu zabiti, smrti a asistenci
             result.AverageKda = GameStatsUtils.GetKda(
                 statsCounter.Kills.Sum(), statsCounter.Deaths.Sum(), statsCounter.Assists.Sum());
-            result.AverageDamageShare = statsCounter.DamageShares.Average();
-            result.AverageGoldShare = statsCounter.TeamGoldShares.Average();
-            result.AverageKillParticipation = statsCounter.KillParticipations.Average();
+            result.AverageDamageShare = statsCounter.DamageShares.Average() * 100;
+            result.AverageGoldShare = statsCounter.TeamGoldShares.Average() * 100;
+            result.AverageKillParticipation = statsCounter.KillParticipations.Average() * 100;
+            result.AverageCsPerMinute = statsCounter.CsPerMinute.Average();
+            result.AverageCs = statsCounter.Cs.Average();
+            result.AverageVisionShare = statsCounter.VisionShare.Average() * 100;
 
             // Chceme serazeny seznam sestupne ze slovniku obsahujici string : cetnost
             // tzn prevedeme na list KeyValuePair objektu a seradime podle hodnoty cetnosti
@@ -183,11 +186,11 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             if (rolesByFrequency.Count > 1) {
                 result.SecondaryRole = rolesByFrequency[1].Key;
                 result.SecondaryRoleFrequency =
-                    (double) rolesByFrequency[1].Value / totalGames;
+                    (double) rolesByFrequency[1].Value / totalGames * 100;
             }
 
             result.PrimaryRole = rolesByFrequency[0].Key;
-            result.PrimaryRoleFrequency = (double) rolesByFrequency[0].Value / totalGames;
+            result.PrimaryRoleFrequency = (double) rolesByFrequency[0].Value / totalGames * 100;
 
             return result;
         }
@@ -213,7 +216,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             counter.CsPerMinute.Add(GameStatsUtils.GetCsPerMinute(playerStats, match.GameDuration));
             counter.DamageShares.Add(GameStatsUtils.GetDamageShare(playerStats, playerTeamStats));
             counter.KillParticipations.Add(GameStatsUtils.GetKillParticipation(playerStats, playerTeamStats));
-
+            counter.VisionShare.Add(GameStatsUtils.GetVisionShare(playerStats, playerTeamStats));
             var role = GameStatsUtils.GetRole(player.Role, player.Lane);
             if (!counter.Roles.ContainsKey(role)) {
                 counter.Roles[role] = 0;
