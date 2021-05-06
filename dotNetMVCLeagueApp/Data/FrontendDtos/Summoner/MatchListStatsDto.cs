@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.JsonMappings;
 
 namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
     /// <summary>
@@ -15,6 +16,8 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         ///     Pocet prohranych her
         /// </summary>
         public int GamesLost { get; set; }
+        
+        public double WinRatio { get; set; }
 
         /// <summary>
         ///     Pocet nedohranych her
@@ -23,9 +26,8 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
 
         /// <summary>
         ///     Hrane postavy
-        ///     TODO: implement
         /// </summary>
-        public Dictionary<int, int> PlayedChampionIds { get; } = new();
+        public Dictionary<int, ChampionAsset> PlayedChampionIds { get; } = new();
 
         /// <summary>
         ///     Prumerne zabiti

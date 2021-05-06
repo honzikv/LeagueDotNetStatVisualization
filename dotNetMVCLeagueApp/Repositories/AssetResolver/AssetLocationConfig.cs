@@ -16,7 +16,15 @@
         /// </summary>
         public string ChampionsFolderName { get; init; }
         
+        /// <summary>
+        /// Jmeno slozky s ikonami predmetu
+        /// </summary>
         public string ItemsFolderName { get; init; }
+        
+        /// <summary>
+        /// Jmeno slozky s ikonami pro hodnocene hry
+        /// </summary>
+        public string RankedIconsFolderName { get; init; }
         
         /// <summary>
         /// Jmeno slozky pro summoner spells

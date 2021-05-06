@@ -34,7 +34,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             this.logger = logger;
         }
 
-        // GET
+        [HttpGet]
         public IActionResult Index() {
             return View();
         }
@@ -47,6 +47,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             // todo exception handling
             var region = Region.Get(server); // server, na kterem hledame
             var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
+            var summonerProfileDto = summonerProfileStatsService.GetSummonerProfileDto(summoner);
 
             logger.LogDebug($"summoner: {summoner}, region: {region.Key}");
 
@@ -58,7 +59,8 @@ namespace dotNetMVCLeagueApp.Controllers {
                 : matchHistoryService.GetGameMatchList(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
 
             var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
-            var matchListStats = summonerProfileStatsService.GetMatchListStats(summoner, matchHistory);
+            var matchListStats = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
+            
 
             return View(new SummonerOverviewDto(summoner, matchListStats, matchHeaders));
         }

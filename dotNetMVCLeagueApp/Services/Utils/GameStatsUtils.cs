@@ -50,15 +50,19 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <returns>Kill participaci pro daneho hrace</returns>
         public static double GetKillParticipation(PlayerStatsModel playerStats, MatchModel matchModel,
             int teamId) {
-            var totalKills = 0; // celkovy pocet zabiti
-            foreach (var player in matchModel.PlayerInfoList) {
-                if (player.TeamId == teamId) {
-                    totalKills += player.PlayerStatsModel.Kills;
-                }
-            }
+            var totalKills = matchModel.PlayerInfoList.Where(player => player.TeamId == teamId)
+                .Sum(player => player.PlayerStats.Kills); // celkovy pocet zabiti
 
             // Pokud je total 0 tak vratime 1.0, jinak vratime kills + assists / total kills
             return totalKills == 0 ? 1.0 : (double) (playerStats.Kills + playerStats.Assists) / totalKills;
+        }
+
+        public static double GetKillParticipation(PlayerStatsModel player, IEnumerable<PlayerStatsModel> team) {
+            var playerKillsAssists =  player.Kills + player.Assists;
+            var totalKills = team.Sum(playerStats => playerStats.Kills);
+
+            // Pokud je celkove 0 tak vratime 1.0, jinak vratime (pocet zabiti a asistenci) / celkovym poctem
+            return totalKills == 0 ? 1.0 : (double) playerKillsAssists / totalKills;
         }
 
         public static double GetKillParticipationPercentage(PlayerStatsModel playerStatsModel, MatchModel matchModel,
@@ -103,7 +107,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
 
         public static void UpdateStatTotals(GameListStats stats, MatchModel match, PlayerModel player,
             TeamStatsModel playerTeam) {
-            var playerStats = player.PlayerStatsModel;
+            var playerStats = player.PlayerStats;
             // Celkovy pocet pro zabiti, smrti a asistence
             stats.Kills.Add(playerStats.Kills);
             stats.Assists.Add(playerStats.Assists);
@@ -121,7 +125,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             }
         }
 
-        public static double CalculateKda(int kills, int deaths, int assists) =>
+        public static double GetKda(int kills, int deaths, int assists) =>
             // Pokud je deaths 0 vratime, jako kdyby bylo deaths 1 tzn (kills + assists) / 1
             // Jinak klasicky (kills + assists) / deaths
             deaths is 0 ? kills + assists : ((double) kills + assists) / deaths;
@@ -141,7 +145,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             statsDto.AverageDeaths = totals.Deaths.Average();
             statsDto.AverageAssists = totals.Assists.Average();
 
-            statsDto.AverageKda = CalculateKda(totals.Kills.Sum(), totals.Deaths.Sum(), totals.Assists.Sum());
+            statsDto.AverageKda = GetKda(totals.Kills.Sum(), totals.Deaths.Sum(), totals.Assists.Sum());
 
             statsDto.AverageKillParticipation = totals.KillParticipations.Average();
             statsDto.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();
@@ -164,5 +168,22 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             rolesFrequenciesList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
             return (rolesFrequenciesList[0].Key, rolesFrequenciesList[1].Key);
         }
+
+        public static void UpdateChampionFrequency(PlayerModel playerInfo, Dictionary<int, int> totalsChampions) {
+            if (!totalsChampions.ContainsKey(playerInfo.ChampionId)) { }
+        }
+
+        public static double GetGoldShare(PlayerStatsModel playerStats, List<PlayerStatsModel> playerTeamStats) {
+            var totalGold = playerTeamStats.Sum(player => player.GoldEarned);
+            return totalGold == 0.0 ? 1.0 : (double) playerStats.GoldEarned / totalGold;
+        }
+
+        public static double GetDamageShare(PlayerStatsModel playerStats, IEnumerable<PlayerStatsModel> playerTeamStats) {
+            var totalDamageDealt = playerTeamStats.Sum(player => player.TotalDamageDealtToChampions);
+            return totalDamageDealt == 0.0 ? 1.0 : (double) playerStats.TotalDamageDealtToChampions / totalDamageDealt;
+        }
+
+        public static double GetWinrate(int wins, int losses) => 
+            losses == 0 ? 1.0 : (double) wins / (wins + losses);
     }
 }

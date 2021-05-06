@@ -39,6 +39,8 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             {GameConstants.Jg, 0}
         };
 
+        public Dictionary<int, int> Champions { get; } = new();
+
         /// <summary>
         /// Rozdil zlata v 10 minute
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
@@ -7,7 +8,7 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         [JsonProperty("data")] public Dictionary<string, ChampionAsset> ChampionDict { get; set; }
     }
 
-    public class ChampionAsset {
+    public class ChampionAsset : MemberwiseCloneable<ChampionAsset> {
         [JsonProperty("id")] public string Id { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
@@ -21,5 +22,6 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
             Name = "N/A",
             Key = "N/A"
         };
+
     }
 }

@@ -43,6 +43,8 @@ namespace dotNetMVCLeagueApp.Const {
         
         public const string RankedFlex = "RANKED_FLEX_SR";
         public const string RankedSolo = "RANKED_SOLO_5x5";
+        public const string RankedSoloName = "Ranked Solo";
+        public const string RankedFlexName = "Ranked Flex";
 
         /// <summary>
         /// Slouzi k ziskani jmena queue z jeho id

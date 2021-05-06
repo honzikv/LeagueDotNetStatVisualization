@@ -128,7 +128,7 @@ namespace dotNetMVCLeagueApp.Repositories {
             var playerInfo = mapper.Map<PlayerModel>(participant);
             var playerStats = mapper.Map<PlayerStatsModel>(participant.Stats);
 
-            playerInfo.PlayerStatsModel = playerStats;
+            playerInfo.PlayerStats = playerStats;
 
             var player = participantIdentity.Player; // Player obsahuje cast dat, ktere chceme ulozit
             playerInfo.ProfileIcon = player.ProfileIcon;

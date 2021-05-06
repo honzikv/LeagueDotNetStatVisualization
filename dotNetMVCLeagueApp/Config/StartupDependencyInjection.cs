@@ -18,8 +18,8 @@ namespace dotNetMVCLeagueApp {
     /// Druha cast tridy Startup, zde je prehledneji videt co se bude davat do dependency containeru
     /// </summary>
     public partial class Startup {
-        private string GetAssetJsonPath(string assetFileName) =>
-            Path.Combine(Configuration["Assets:Root"], Configuration["Assets:JsonFiles"], assetFileName);
+        private string GetAssetJsonPath(string assetJsonFileName) =>
+            Path.Combine(Configuration["Assets:JsonRoot"], assetJsonFileName);
 
         private void ConfigureUserServices(IServiceCollection services) {
             services.AddSingleton(_ => RiotApi.NewInstance(
@@ -32,11 +32,15 @@ namespace dotNetMVCLeagueApp {
                 ItemsFolderName = Configuration["Assets:Items"],
                 EmptyAssetFileName = Configuration["Assets:EmptyAsset"],
                 ProfileIconsFolderName = Configuration["Assets:ProfileIcons"],
-                SummonerSpellsFolderName = Configuration["Assets:SummonerSpells"]
+                SummonerSpellsFolderName = Configuration["Assets:SummonerSpells"],
+                RankedIconsFolderName = Configuration["Assets:RankedIcons"]
             });
 
             // TODO: momentalne je na 0, nasledne bude jeste zmeneno
-            services.AddSingleton(_ => new RiotApiUpdateConfig(TimeSpan.FromMinutes(0)));
+            services.AddSingleton(_ => new RiotApiUpdateConfig(
+                TimeSpan.FromMinutes(1), 
+                TimeSpan.FromDays(30))
+            );
 
             // Repozitare
             services.AddScoped<RiotApiRepository>(); // Komunikace s Riot Api
@@ -52,7 +56,8 @@ namespace dotNetMVCLeagueApp {
                 GetAssetJsonPath(Configuration["Assets:ChampionsJson"]),
                 GetAssetJsonPath(Configuration["Assets:SummonerSpellsJson"]),
                 GetAssetJsonPath(Configuration["Assets:RunesJson"]),
-                GetAssetJsonPath(Configuration["Assets:ItemsJson"])
+                GetAssetJsonPath(Configuration["Assets:ItemsJson"]),
+                GetAssetJsonPath(Configuration["Assets:RankedIconsJson"])
             ));
 
             // Services - wrapper nad repozitari, ktery se vola z controlleru
@@ -60,8 +65,6 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchTimelineService>();
-            
-
         }
     }
 }

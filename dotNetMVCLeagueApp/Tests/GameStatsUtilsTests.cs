@@ -84,21 +84,21 @@ namespace dotNetMVCLeagueApp.Tests {
             var playerInfoList = new List<PlayerModel> {
                 new() {
                     TeamId = blueSide,
-                    PlayerStatsModel = new() {
+                    PlayerStats = new() {
                         Kills = 12,
                         Assists = 8
                     }
                 },
                 new() {
                     TeamId = blueSide,
-                    PlayerStatsModel = new() {
+                    PlayerStats = new() {
                         Kills = 5,
                         Assists = 2
                     }
                 },
                 new() {
                     TeamId = blueSide,
-                    PlayerStatsModel = new() {
+                    PlayerStats = new() {
                         Kills = 3,
                         Assists = 4
                     }
@@ -111,7 +111,7 @@ namespace dotNetMVCLeagueApp.Tests {
 
             var player = playerInfoList[2]; // hrac, pro ktereho pocitame kill participation - posledni ze seznamu
             var expected = 0.35;
-            var actual = GameStatsUtils.GetKillParticipation(player.PlayerStatsModel, matchInfo, blueSide);
+            var actual = GameStatsUtils.GetKillParticipation(player.PlayerStats, matchInfo, blueSide);
             Assert.Equal(expected, actual);
         }
 
@@ -125,19 +125,19 @@ namespace dotNetMVCLeagueApp.Tests {
             var playerInfoList = new List<PlayerModel> {
                 new() {
                     TeamId = blueSide,
-                    PlayerStatsModel = new() {
+                    PlayerStats = new() {
                         Kills = 0
                     }
                 },
                 new() {
                     TeamId = blueSide,
-                    PlayerStatsModel = new() {
+                    PlayerStats = new() {
                         Kills = 0
                     }
                 },
                 new() {
                     TeamId = blueSide,
-                    PlayerStatsModel = new() {
+                    PlayerStats = new() {
                         Kills = 0
                     }
                 }
@@ -148,7 +148,7 @@ namespace dotNetMVCLeagueApp.Tests {
             var matchInfo = new MatchModel {
                 PlayerInfoList = playerInfoList
             };
-            var actual = GameStatsUtils.GetKillParticipation(player.PlayerStatsModel, matchInfo, blueSide);
+            var actual = GameStatsUtils.GetKillParticipation(player.PlayerStats, matchInfo, blueSide);
             Assert.Equal(expected, actual);
         }
 

@@ -72,7 +72,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
 
             logger.LogDebug($"Fetched: {summonerInfo}");
             // Pokud summoner neni null tak zavolame api pro ranked statistiky 
-            summonerInfo.QueueInfo =
+            summonerInfo.QueueInfoList =
                 await riotApiRepository.GetQueueInfoList(summonerInfo.EncryptedSummonerId, region);
 
             return await summonerRepository.Add(summonerInfo); // ulozime do db a vratime
@@ -126,7 +126,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             logger.LogDebug("Updated queue info from api, updating in db");
 
             dbSummonerInfo.UpdateFromApi(updatedSummonerInfo);
-            foreach (var queueInfo in dbSummonerInfo.QueueInfo) {
+            foreach (var queueInfo in dbSummonerInfo.QueueInfoList) {
                 await queueInfoRepository.Delete(queueInfo.Id);
             }
 
@@ -134,7 +134,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                 queueInfo.Summoner = dbSummonerInfo;
             }
 
-            dbSummonerInfo.QueueInfo = updatedQueueInfo;
+            dbSummonerInfo.QueueInfoList = updatedQueueInfo;
             return await summonerRepository.Update(dbSummonerInfo);
         }
         

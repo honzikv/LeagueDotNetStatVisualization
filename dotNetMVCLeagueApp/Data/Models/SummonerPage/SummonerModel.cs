@@ -44,7 +44,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         /// <summary>
         ///     Reference na queue info - pro jednotlive herni mody
         /// </summary>
-        public virtual ICollection<QueueInfoModel> QueueInfo { get; set; }
+        public virtual ICollection<QueueInfoModel> QueueInfoList { get; set; }
 
         /// <summary>
         ///     Pro debug
@@ -54,7 +54,7 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
             return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(LastUpdate)}: {LastUpdate}, " +
                    $"{nameof(EncryptedSummonerId)}: {EncryptedSummonerId}, {nameof(EncryptedAccountId)}: " +
                    $"{EncryptedAccountId}, {nameof(Region)}: {Region}, {nameof(SummonerLevel)}: {SummonerLevel}, " +
-                   $"{nameof(ProfileIconId)}: {ProfileIconId}, {nameof(QueueInfo)}: {QueueInfo}";
+                   $"{nameof(ProfileIconId)}: {ProfileIconId}, {nameof(QueueInfoList)}: {QueueInfoList}";
         }
 
         /// <summary>

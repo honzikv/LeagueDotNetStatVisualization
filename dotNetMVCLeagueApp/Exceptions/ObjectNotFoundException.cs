@@ -2,8 +2,6 @@
 
 namespace dotNetMVCLeagueApp.Exceptions {
     public class ObjectNotFoundException : ApplicationException {
-        public ObjectNotFoundException(string message) : base(message) {
-            
-        }
+        public ObjectNotFoundException(string message) : base(message) { }
     }
 }

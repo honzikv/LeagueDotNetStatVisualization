@@ -32,6 +32,14 @@
     color: $color-win;
 }
 
+.color-win-light {
+    color: darken($color-win, 30%);
+}
+
+.color-loss-light {
+    color: darken($color-loss, 10%);
+}
+
 .dot-loss {
     background-color: $color-loss;
 }
@@ -66,6 +74,10 @@
 
 .card-dark-text {
     color: $color-text-card-default;
+}
+
+.card-light-text {
+    color: $color-primary-black;
 }
 
 .card-dark-text-header {

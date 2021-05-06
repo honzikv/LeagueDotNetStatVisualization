@@ -6,7 +6,7 @@
     Layout = "_Layout";
     ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
 
-    var soloq = Model.Summoner.QueueInfo.FirstOrDefault(x => x.QueueType == GameConstants.RankedSolo);
+    var soloq = Model.Summoner.QueueInfoList.FirstOrDefault(x => x.QueueType == GameConstants.RankedSolo);
 }
 
 
@@ -18,12 +18,21 @@
 
         <div class="col-auto m-4">
             <div id="matchOverview">
-                @{ await Html.RenderPartialAsync("Fragments/MatchlistOverview", Model.MatchListStatsDto); }
+                @{ await Html.RenderPartialAsync("Fragments/MatchlistOverview", Model.MatchListOverviewDto); }
             </div>
             <div id="matches">
-                @foreach (var match in Model.MatchHeaders) {
-                    await Html.RenderPartialAsync("Fragments/MatchHeaderFragment", match);
+                @{
+                    var renders = new List<Task>(Model.MatchHeaders.Count);
+                    renders.AddRange(Model.MatchHeaders.Select(match => Html.RenderPartialAsync("Fragments/MatchHeaderFragment", match)));
+                    await Task.WhenAll(renders);
                 }
+
+            </div>
+
+            <div class="mt-4 d-flex justify-content-around" id="show-more">
+                <button class="btn rounded-corners-small button-dark button-dark-primary">
+                    <span class="m-4">Show More</span>
+                </button>
             </div>
         </div>
 

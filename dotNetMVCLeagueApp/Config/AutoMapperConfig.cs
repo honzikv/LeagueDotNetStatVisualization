@@ -25,6 +25,8 @@ namespace dotNetMVCLeagueApp.Config {
             CreateMap<MatchModel, MatchHeaderDto>();
             CreateMap<MatchParticipantFrame, MatchParticipantFrameModel>();
             CreateMap<MatchEvent, MatchEventModel>();
+            CreateMap<QueueInfoModel, QueueInfoDto>();
+            CreateMap<SummonerModel, SummonerProfileDto>();
         }
     }
 

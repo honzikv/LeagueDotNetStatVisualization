@@ -49,10 +49,10 @@ namespace dotNetMVCLeagueApp {
             // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
-
-            // Ziskani rootu pro projekt, abychom mohli nacist json soubory pro konfiguraci
-            Configuration["Assets:Root"] =
-                Path.Combine(Configuration.GetValue<string>(WebHostDefaults.ContentRootKey), "wwwroot", "assets");
+            
+            // Nastaveni rootu pro json soubory s konfiguraci assetu
+            Configuration["Assets:JsonRoot"] =
+                Path.Combine(Configuration.GetValue<string>(WebHostDefaults.ContentRootKey), "AssetJson");
             
 
             // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
@@ -60,7 +60,6 @@ namespace dotNetMVCLeagueApp {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             
-
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);
         }

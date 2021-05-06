@@ -52,7 +52,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         /// <returns></returns>
         public List<MatchModel> GetGameMatchList(SummonerModel summoner, int numberOfGames) {
             logger.LogDebug($"Getting games for {summoner}");
-            var games = matchRepository.GetNLastMatches(summoner, numberOfGames).ToList();
+            var games = matchRepository.GetNMatches(summoner, numberOfGames).ToList();
             return games; // return list
         }
 

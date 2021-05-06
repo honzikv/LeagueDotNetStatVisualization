@@ -23,7 +23,7 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         public List<RuneAsset> Runes { get; set; }
     }
 
-    public class RuneAsset {
+    public class RuneAsset : MemberwiseCloneable<RuneAsset> {
         
         [JsonProperty("key")]
         public string Id { get; set; }
@@ -53,5 +53,7 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
             Icon = configEmptyAssetFileName,
             RelativeAssetPath = configEmptyAssetFileName
         };
+        
+
     }
 }

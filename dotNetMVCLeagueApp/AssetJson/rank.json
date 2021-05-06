@@ -1,0 +1,47 @@
+﻿[
+    {
+        "Tier": "BRONZE",
+        "FileName": "Emblem_Bronze",
+        "Name": "Bronze"
+    },
+    {
+        "Tier": "IRON",
+        "FileName": "Emblem_Iron",
+        "Name": "Iron"
+    },
+    {
+        "Tier": "SILVER",
+        "FileName": "Emblem_Silver",
+        "Name": "Silver"
+    },
+    {
+        "Tier": "GOLD",
+        "FileName": "Emblem_Gold",
+        "Name": "Gold"
+    },
+    {
+        "Tier": "PLATINUM",
+        "FileName": "Emblem_Platinum",
+        "Name": "Platinum"
+    },
+    {
+        "Tier": "DIAMOND",
+        "FileName": "Emblem_Diamond",
+        "Name": "Diamond"
+    },
+    {
+        "Tier": "MASTER",
+        "FileName": "Emblem_Master",
+        "Name": "Master"
+    },
+    {
+        "Tier": "GRANDMASTER",
+        "FileName": "Emblem_Grandmaster",
+        "Name": "Grandmaster"
+    },
+    {
+        "Tier": "CHALLENGER",
+        "FileName": "Emblem_Challenger",
+        "Name": "Challenger"
+    }
+]

@@ -32,6 +32,8 @@ namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
         /// </summary>
         private readonly Dictionary<int, ItemAsset> items = new();
 
+        private readonly Dictionary<string, RankAsset> ranks = new();
+
         /// <summary>
         /// Config objekt s informacemi o umisteni assetu
         /// </summary>
@@ -49,7 +51,8 @@ namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
             string championsJsonFilePath,
             string summonerSpellsJsonFilePath,
             string runesJsonFilePath,
-            string itemsJsonFilePath) {
+            string itemsJsonFilePath,
+            string rankedIconsJsonFilePath) {
             this.config = config;
 
             // Inicializace repozitare
@@ -58,6 +61,7 @@ namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
                 MapSummonerSpells(summonerSpellsJsonFilePath);
                 MapRunes(runesJsonFilePath);
                 MapItems(itemsJsonFilePath);
+                MapRankedIcons(rankedIconsJsonFilePath);
             }
             catch (Exception ex) {
                 if (ex is AssetException) {
@@ -172,15 +176,22 @@ namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
         private void MapItems(string itemsJsonFilePath) {
             var jsonObj = ParseJsonObject<Items>(itemsJsonFilePath, "item");
 
-            foreach (var keyValue in jsonObj.ItemDict) {
-                var parsed = int.TryParse(keyValue.Key, out var itemId);
+            foreach (var (key, item) in jsonObj.ItemDict) {
+                var parsed = int.TryParse(key, out var itemId);
                 if (!parsed) {
                     throw new AssetException(ErrorForJsonFile("item"));
                 }
 
-                var item = keyValue.Value;
                 item.RelativeAssetPath = Path.Combine(config.ItemsFolderName, $"{itemId}.png");
                 items[itemId] = item;
+            }
+        }
+
+        private void MapRankedIcons(string rankedIconsJsonFilePath) {
+            var jsonObj = ParseJsonObject<List<RankAsset>>(rankedIconsJsonFilePath, "rank");
+
+            foreach (var rankAsset in jsonObj) {
+                ranks[rankAsset.Tier] = rankAsset;
             }
         }
 
@@ -233,5 +244,11 @@ namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
         public string GetProfileIcon(int id) => id == default
             ? config.EmptyAssetFileName
             : Path.Combine(config.ProfileIconsFolderName, $"{id}.png");
+
+        public RankAsset GetRankedIcon(string tier) {
+            var exists = ranks.TryGetValue(tier, out var rankAsset);
+            return exists ? rankAsset : RankAsset.Empty(config.EmptyAssetFileName);
+        }
     }
+
 }
