@@ -311,8 +311,8 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             var flexqModel = summoner.QueueInfoList.FirstOrDefault(queue =>
                 queue.QueueType == GameConstants.RankedFlex);
 
-            result.SoloQueue = GetQueueInfoDto(soloqModel, GameConstants.RankedSoloName);
-            result.FlexQueue = GetQueueInfoDto(flexqModel, GameConstants.RankedFlexName);
+            result.SoloQueue = GetQueueInfoDto(soloqModel, GameConstants.RankedSoloDbValue);
+            result.FlexQueue = GetQueueInfoDto(flexqModel, GameConstants.RankedFlexDbValue);
             return result;
         }
 

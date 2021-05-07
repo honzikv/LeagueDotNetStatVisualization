@@ -92,9 +92,12 @@
             var champsByFrequency = Model.ChampionCumulativeStatsDict.Values.ToList();
             champsByFrequency.Sort((champ1, champ2)
                 => (champ2.Wins + champ2.Losses).CompareTo(champ1.Wins + champ1.Losses));
+
+            champsByFrequency = champsByFrequency.GetRange(0, champsByFrequency.Count >= 3 ? 3 : champsByFrequency.Count);
         }
+
         @* Pro logiku aplikace budeme zobrazovat pouze 3 nejlepsi postavy *@
-        @foreach (var champ in champsByFrequency.GetRange(0, 3)) {
+        @foreach (var champ in champsByFrequency) {
             <div class="row mt-3 d-flex justify-content-around no-gutters mt-1">
                 <div class="col-auto">
                     <div>

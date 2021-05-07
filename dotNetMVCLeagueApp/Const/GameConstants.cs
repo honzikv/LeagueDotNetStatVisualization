@@ -41,11 +41,15 @@ namespace dotNetMVCLeagueApp.Const {
         public const string Sup = "SUP";
 
         public const string AllGames = "ALL_GAMES";
-        public const string AllGamesName = "All Games";
         public const string RankedFlex = "RANKED_FLEX_SR";
         public const string RankedSolo = "RANKED_SOLO_5x5";
-        public const string RankedSoloName = "Ranked Solo";
-        public const string RankedFlexName = "Ranked Flex";
+        
+        public const string AllGamesDbValue = "All Games";
+        public const string RankedSoloDbValue = "Solo Ranked";
+        public const string RankedFlexDbValue = "Flex pick";
+        public const string AllGamesText = "All Games";
+        public const string RankedSoloText = "Ranked Solo";
+        public const string RankedFlexText = "Ranked Flex";
 
         /// <summary>
         /// Slouzi k ziskani jmena queue z jeho id
@@ -59,6 +63,7 @@ namespace dotNetMVCLeagueApp.Const {
         /// Id relevantnich hernich modu
         /// </summary>
         public static readonly int[] RelevantQueues = {400, 420, 430, 440};
+
 
         /// <summary>
         /// Vrati nazev queue z jeho id, pokud je queueId nevalidni, vrati prazdny retezec

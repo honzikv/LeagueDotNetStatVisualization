@@ -4,39 +4,6 @@
 
 
 
-<button class="btn" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter">
-    Filters
-</button>
-<div class="collapse" id="filter">
-    <form method="post" id="formFilter" asp-controller="Summoner" asp-action="MatchList">
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <label class="" for="numberOfGames">Number of Games</label>
-                <select class="browser-default custom-select mb-1 select-dark rounded-corners-small"
-                        name="numberOfGames"
-                        id="numberOfGames">
-                    @foreach (var numberOfGames in SummonerController.NumberOfGames) {
-                        <option name="@numberOfGames">@numberOfGames</option>
-                    }
-                </select>
-
-                <label class="" for="queueFilter">Queue Type</label>
-                <select
-                    class="browser-default custom-select mb-1 select-dark rounded-corners-small" id="queueFilter">
-                    @foreach (var queuePair in SummonerController.Queues) {
-                        <option name="@queuePair.First">@queuePair.Second</option>
-                    }
-                </select>
-
-                <button type="submit" class="btn align-self-center float-right rounded-corners-small button-dark button-dark-primary"
-                        onclick="SubmitFilterForm()">Show</button>
-            </div>
-        </div>
-        <hr class="hr-header">
-
-    </form>
-</div>
-
 <div id="matchOverview">
     @{ await Html.RenderPartialAsync("./Partial/_MatchListOverviewPartial", Model.MatchListOverview); }
 </div>

@@ -38,9 +38,6 @@ namespace dotNetMVCLeagueApp.Repositories {
             int start = 0)
             => LeagueDbContext.MatchToSummonerModels
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id &&
-                                        // Pro jistotu prevedeme obe queue na lowercase, pro realnou aplikaci
-                                        // by asi davalo vetsi smysl udelat nejaky list of values v DB,
-                                        // nicmene zde nam staci toto
                                         matchSummoner.Match.QueueType.ToLower() == queueType.ToLower())
                 .OrderByDescending(match => match.Match.PlayTime)
                 .Skip(start) // Preskocime start prvku

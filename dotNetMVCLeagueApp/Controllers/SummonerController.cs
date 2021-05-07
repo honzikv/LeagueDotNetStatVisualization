@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Castle.Core;
 using Castle.Core.Internal;
-using Castle.Core.Logging;
-using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Controllers.Forms;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
-using dotNetMVCLeagueApp.Data.Models.Match;
-using dotNetMVCLeagueApp.Exceptions;
-using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
-using MingweiSamuel.Camille;
 using MingweiSamuel.Camille.Enums;
-using Xunit;
 
 namespace dotNetMVCLeagueApp.Controllers {
     public class SummonerController : Controller {
@@ -30,9 +22,9 @@ namespace dotNetMVCLeagueApp.Controllers {
         /// Vsechny typy her, ktere lze filtrovat
         /// </summary>
         public static readonly List<Pair<string, string>> Queues = new() {
-            new Pair<string, string>(GameConstants.AllGames, GameConstants.AllGamesName),
-            new Pair<string, string>(GameConstants.RankedSolo, GameConstants.RankedSoloName),
-            new Pair<string, string>(GameConstants.RankedFlex, GameConstants.RankedFlexName)
+            new Pair<string, string>(GameConstants.AllGamesDbValue, GameConstants.AllGamesText),
+            new Pair<string, string>(GameConstants.RankedSoloDbValue, GameConstants.RankedSoloText),
+            new Pair<string, string>(GameConstants.RankedFlexDbValue, GameConstants.RankedFlexText)
         };
 
         public static readonly int[] NumberOfGames = {10, 20, 30};
@@ -49,29 +41,27 @@ namespace dotNetMVCLeagueApp.Controllers {
         }
 
         [HttpPost]
-        public IActionResult MatchList(
-            [FromBody] string name, 
-            [FromBody] string server, 
-            [FromBody] int numberOfGames,
-            [FromBody] string queue) {
-            if (name.IsNullOrEmpty() || server.IsNullOrEmpty() || numberOfGames == 0 || queue.IsNullOrEmpty()) {
-                return BadRequest("Name or server is empty");
+        public IActionResult MatchList([FromForm] MatchListFilterForm form) {
+            if (form.Name.IsNullOrEmpty() || form.Server.IsNullOrEmpty()
+                                          || form.NumberOfGames == 0
+                                          || form.Queue.IsNullOrEmpty()) {
+                return BadRequest(form.ToString());
             }
 
-            if (!NumberOfGames.Contains(numberOfGames)) {
+            if (!NumberOfGames.Contains(form.NumberOfGames)) {
                 return BadRequest("Illegal number of games to update");
             }
 
-            if (!Queues.Exists(item => item.First == queue)) {
+            if (!Queues.Exists(item => item.First == form.Queue)) {
                 return BadRequest("Illegal queue");
             }
 
             try {
-                var region = Region.Get(server);
-                var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
-                var matchHistory = queue == GameConstants.AllGames
-                    ? matchHistoryService.GetGameMatchList(summoner, numberOfGames)
-                    : matchHistoryService.GetGameMatchList(summoner, numberOfGames, queue);
+                var region = Region.Get(form.Server);
+                var summoner = summonerInfoService.GetSummonerInfoAsync(form.Name, region);
+                var matchHistory = form.Queue == GameConstants.AllGamesDbValue
+                    ? matchHistoryService.GetGameMatchList(summoner, form.NumberOfGames)
+                    : matchHistoryService.GetGameMatchList(summoner, form.NumberOfGames, form.Queue);
 
                 var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
                 var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
@@ -122,5 +112,4 @@ namespace dotNetMVCLeagueApp.Controllers {
             }
         }
     }
-
 }
