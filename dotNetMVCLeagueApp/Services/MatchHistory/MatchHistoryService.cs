@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
+using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
@@ -52,9 +53,23 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         /// <returns></returns>
         public List<MatchModel> GetGameMatchList(SummonerModel summoner, int numberOfGames) {
             logger.LogDebug($"Getting games for {summoner}");
-            var games = matchRepository.GetNMatches(summoner, numberOfGames).ToList();
-            return games; // return list
+
+            // Pokud byl v DateTime.MinValue tak to indikuje, ze je summoner prave ziskany z api,
+            // takze muzeme zapasy aktualizovat, jinak pouze prineseme posledni z db
+            return summoner.LastUpdate == DateTime.MinValue
+                ? UpdateGameMatchListAsync(summoner, numberOfGames)
+                : GetNMatches(summoner, numberOfGames);
         }
+
+        public List<MatchModel> GetGameMatchList(SummonerModel summoner, int numberOfGames, string queueType) {
+            return GetNMatches(summoner, numberOfGames, queueType);
+        }
+
+        private List<MatchModel> GetNMatches(SummonerModel summoner, int numberOfGames)
+            => matchRepository.GetNMatches(summoner, numberOfGames).ToList();
+
+        private List<MatchModel> GetNMatches(SummonerModel summoner, int numberOfGames, string queueType)
+            => matchRepository.GetNMatchesByQueueType(summoner, queueType, numberOfGames).ToList();
 
         /// <summary>
         /// Pridani nebo update MatchInfo
@@ -146,12 +161,11 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
             foreach (var match in matchList) {
                 result.Add(await AddOrUpdateMatch(summoner, match));
             }
-            
+
             summoner.LastUpdate = DateTime.Now;
             await summonerRepository.Update(summoner);
 
             return result;
         }
-        
     }
 }

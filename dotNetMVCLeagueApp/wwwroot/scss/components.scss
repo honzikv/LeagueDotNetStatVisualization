@@ -3,13 +3,17 @@
 @import "glassmorphism";
 @import "utils";
 
+@mixin card-body($color) {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background-color: $color;
+}
 
 .card-dark {
-    @include glass-strongest($card-background-dark);
+    @include card-body($card-background-dark);
     overflow: hidden;
     font-size: 16px;
     font-family: Sora, sans-serif;
-    
+
 }
 
 .select-dark {
@@ -22,10 +26,28 @@
         box-shadow: none;
         border: solid $border-color-header 2px;
     }
+
+}
+
+.input-text-dark, input {
+    background-color: $color-primary-black;
+    color: $color-text-primary-white;
+    border: solid $border-color-header 2px;
+    font-family: ProximaNova, sans-serif;
+
+
+    &:focus, &:active {
+        color: $color-text-primary-white;
+        font-family: ProximaNova, sans-serif;
+        background-color: inherit;
+        box-shadow: none;
+        border: solid $border-color-header 2px;
+    }
+
 }
 
 .card-light {
-    @include glass-strongest($card-background-light);
+    @include card-body($card-background-light);
     overflow: hidden;
     font-size: 16px;
     font-family: Sora, sans-serif;

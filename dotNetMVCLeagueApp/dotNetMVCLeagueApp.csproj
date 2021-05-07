@@ -420,10 +420,12 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\mdb\src\js\vendor\free\velocity.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\mdb\src\js\vendor\free\waves.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\mdb\Useful_Resources.pdf" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Views\Shared\Fragments" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\Summoner\Fragments\MatchHeaderFragment.js" />
+      <_ContentIncludedByDefault Remove="Pages\Summoner\Summoner.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Partial\_MatchHeaderPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Partial\_MatchListOverviewPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Partial\_MatchListPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Partial\_SummonerInfoPartial.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

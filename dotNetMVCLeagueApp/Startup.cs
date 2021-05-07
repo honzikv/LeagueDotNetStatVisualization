@@ -22,7 +22,7 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private const bool UseLiveReload = true;
+        private const bool UseLiveReload = false;
 
         public IConfiguration Configuration { get; }
 
@@ -59,6 +59,7 @@ namespace dotNetMVCLeagueApp {
             services.AddControllersWithViews().AddJsonOptions(config => {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
+            services.AddRazorPages();
             
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);

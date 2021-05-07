@@ -81,17 +81,72 @@
     </div>
     <hr class="hr-header">
     <div class="d-flex justify-content-center mb-2 mt-2">
-        <button type="button" class="btn rounded-corners-small button-light button-light-primary"
-                id="">
-            <span class="m-4">Toggle Champion Stats</span>
+        <button class="btn rounded-corners-small button-light button-light-primary"
+                type="button" data-toggle="collapse" data-target="#championStats" aria-expanded="false" aria-controls="championStats">
+            <span class="m-4">Show Top 3 Champions</span>
         </button>
     </div>
 
-    <div id="championStats">
-        ChampionStats
+    <div class="collapse" id="championStats">
+        @{
+            var champsByFrequency = Model.ChampionCumulativeStatsDict.Values.ToList();
+            champsByFrequency.Sort((champ1, champ2)
+                => (champ2.Wins + champ2.Losses).CompareTo(champ1.Wins + champ1.Losses));
+        }
+        @* Pro logiku aplikace budeme zobrazovat pouze 3 nejlepsi postavy *@
+        @foreach (var champ in champsByFrequency.GetRange(0, 3)) {
+            <div class="row mt-3 d-flex justify-content-around no-gutters mt-1">
+                <div class="col-auto">
+                    <div>
+                        <img alt="N/A"
+                             data-toggle="tooltip" data-placement="top" title="@champ.ChampionAsset.Name"
+                             src="@Url.Content($"/assets/{champ.ChampionAsset.RelativeAssetPath}")" class="champion-icon">
+                        <p class="text-default text-center font-weight-bold font-italic text-small">@champ.ChampionAsset.Name</p>
+                    </div>
+                </div>
+
+                <div class="col-auto align-self-center text-center">
+                    <p class="overview-text-games">
+                        <span class="color-win-light">@(champ.Wins + "W")</span> : <span class="color-loss-light">@(champ.Losses + "L")</span>
+                    </p>
+                    <div class="progress match-progress-bar mt-n1">
+                        <div class="progress-bar progress-bar-win" style="width:@Model.TotalStats.Winrate.ToString("N0")%"></div>
+                        <div class="progress-bar bg-danger" style="width:@((100 - Model.TotalStats.Winrate).ToString("N0"))%"></div>
+                    </div>
+                    <p class="no-spacing text-center">@(champ.Winrate.ToString("N1") + "%") WR</p>
+                </div>
+
+                <div class="col-auto align-self-center text-center">
+                    <p class="no-spacing">@champ.AverageKda.ToString("N1") KDA</p>
+                    <div class="font-weight-bold">
+                        <span>@champ.AverageKills.ToString("N1") /</span>
+                        <span class="deaths">@champ.AverageDeaths.ToString("N1")</span>
+                        <span> / @champ.AverageAssists.ToString("N1")</span>
+                    </div>
+                    <p class="no-spacing">@champ.AverageKillParticipation.ToString("N1")% KPA</p>
+                    <p data-toggle="tooltip" data-popper-placement="top" title="Damage percentage in team"
+                       class="no-spacing">
+                        @(champ.AverageDamageShare.ToString("N1") + "%") DMG
+                    </p>
+                </div>
+
+                <div class="col-auto align-self-center text-center">
+                    <p class="no-spacing">
+                        <span class="font-weight-bold">@champ.AverageCs.ToString("N1") CS</span>
+                    </p>
+                    <p class="no-spacing">@champ.AverageCsPerMinute.ToString("N1") CS/min</p>
+                    <p data-toggle="tooltip" data-popper-placement="top" title="How much gold did the player have compared to their team"
+                       class="no-spacing">
+                        @(champ.AverageGoldShare.ToString("N1") + "%") Gold
+                    </p>
+                    <p data-toggle="tooltip" data-popper-placement="top" title="How much percentage of total vision the player provided to team"
+                       class="no-spacing">
+                        @(champ.AverageVisionShare.ToString("N1") + "%") Vision
+                    </p>
+                </div>
+            </div>
+        }
     </div>
 
 
 </div>
-
-<script src="js/Summoner/Fragments/MatchHeaderFragment.js"></script>

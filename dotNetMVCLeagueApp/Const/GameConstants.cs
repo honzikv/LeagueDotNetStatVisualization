@@ -39,8 +39,9 @@ namespace dotNetMVCLeagueApp.Const {
         public const string Jg = "JG";
         public const string Adc = "ADC";
         public const string Sup = "SUP";
-        
-        
+
+        public const string AllGames = "ALL_GAMES";
+        public const string AllGamesName = "All Games";
         public const string RankedFlex = "RANKED_FLEX_SR";
         public const string RankedSolo = "RANKED_SOLO_5x5";
         public const string RankedSoloName = "Ranked Solo";

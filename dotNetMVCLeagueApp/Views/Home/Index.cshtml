@@ -2,27 +2,27 @@
 @{
     ViewData["Title"] = "Search";
 }
-
-<div class="container-fluid">
-    <div class="row vh-100">
-        <div class="col-4 mx-auto mt-4">
+<form method="get" asp-controller="Summoner" asp-action="Index">
+    <div class="row justify-content-center">
+        <div class="col-4 mt-4">
             <h1 class="heading-search  justify-content-center text-center ">Search</h1>
-            <form method="get" asp-controller="Summoner" asp-action="Profile">
-                <select class="form-select mb-1" id="server" name="server">
-                    @foreach (var (queryKey, serverName) in Model.ServerList) {
-                        <option name="@queryKey">@serverName</option>
-                    }
-                </select>
 
-                <input type="text" class="form-control mb-1 text-center" id="name" placeholder="Summoner name" name="name"/>
+            <select class="browser-default mb-1 custom-select select-dark rounded-corners-small"
+                    id="server" name="server">
+                @foreach (var (queryKey, serverName) in Model.ServerList) {
+                    <option name="@queryKey">@serverName</option>
+                }
+            </select>
 
-                <button type="submit" class="btn-hover mt-2 blue float-end">
-                    <i class="fa fa-search"></i>
-                </button>
+            <input type="text"
+                   class="form-control input-text-dark rounded-corners-small mb-2 text-center" id="name"
+                   placeholder="Summoner name" name="name"/>
 
-            </form>
+            <button type="submit" class="btn  float-right">
+                <i class="fa fa-search"></i>
+            </button>
+
 
         </div>
     </div>
-
-</div>
+</form>

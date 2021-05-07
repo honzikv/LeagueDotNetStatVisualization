@@ -3,6 +3,12 @@
 @import "components.scss";
 @import "utils";
 
+// Override pro vychozi Bootstrap container aby byl vice siroky, protoze jinak je stranka zbytecne
+// uzka
+.container-main {
+    padding: 0 10px;
+}
+
 .heading-search {
     font-family: AirbnbCereal, sans-serif;
     font-size: 80px;
@@ -62,13 +68,12 @@
 }
 
 body {
-    //background: radial-gradient(adjust-color($background-color1, $alpha: -0.0), adjust-color($background-color2, $alpha: -0.0)),
-    //url("../bgwall/msi_2021_wall.jpg") no-repeat center center !important;
+    background: radial-gradient(adjust-color($background-color1, $alpha: -0.0), adjust-color($background-color2, $alpha: -0.0)),
+    url("../bgwall/msi_2021_wall.jpg") no-repeat center center !important;
     //-webkit-background-size: cover;
     //-moz-background-size: cover;
     //-o-background-size: cover;
     //background-size: cover;
-    background-image: url(http://bit.ly/2gPLxZ4); //add "" if you want
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;

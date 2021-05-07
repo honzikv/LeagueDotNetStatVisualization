@@ -1,5 +1,53 @@
-﻿
+﻿@using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner
+@model SummonerOverviewDto
+
+
 @{
     Layout = "_Layout";
+    ViewData["Title"] = $"Stats - {Model.Summoner.Name}";
 }
 
+@section Scripts {
+    <script>
+        const summoner = '@Model.Summoner.Name';
+        const server = '@Model.Summoner.Region';
+        
+        function SubmitFilterForm() {
+                let url = $('#formFilter').attr('action'); // ziskame url
+                let formData = new FormData(); // form data objekt pro ajax
+                console.log(url);
+            
+                let queueType = $('#queueFilter').val();
+                let numberOfGames = $('#numberOfGames').val();
+            
+                formData.append('name', summoner);
+                formData.append('server', server);
+                formData.append('queue', queueType);
+                formData.append('numberOfGames', numberOfGames);
+            
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    processData: false,
+                    success: (updatedMatchListPartial) => {
+                        $('#matchListPartial').replaceWith(updatedMatchListPartial)
+                    }
+                });
+            }
+    </script>
+}
+
+<div class="row">
+    <div class="col-3" id="summonerInfoPartial">
+        @{ await Html.RenderPartialAsync("./Partial/_SummonerInfoPartial", Model.Summoner); }
+    </div>
+
+    <div class="col-auto m-4" id="matchListPartial">
+        @{ await Html.RenderPartialAsync("./Partial/_MatchListPartial", Model.MatchList); }
+    </div>
+
+    <div class="col-4">
+
+    </div>
+</div>

@@ -4,23 +4,18 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
     public class SummonerOverviewDto {
-
-        public SummonerModel Summoner { get; }
         
-        /// <summary>
-        /// Statistiky pro seznam s MatchHeaders
-        /// </summary>
-        public MatchListOverviewDto MatchListOverviewDto { get; }
+        public string QueueType { get; }
 
-        /// <summary>
-        /// Seznam zapasu serazeny podle datumu
-        /// </summary>
-        public List<MatchHeaderDto> MatchHeaders { get; }
+        public SummonerProfileDto Summoner { get; }
+        
+        public MatchListDto MatchList { get; }
 
-        public SummonerOverviewDto(SummonerModel summoner, MatchListOverviewDto matchListOverview, List<MatchHeaderDto> matchHeaders) {
+        public SummonerOverviewDto(SummonerProfileDto summoner, string queueType, MatchListOverviewDto matchListOverview, List<MatchHeaderDto> matchHeaders) {
+            MatchList = new MatchListDto(matchHeaders, matchListOverview);
+            QueueType = queueType;
             Summoner = summoner;
-            MatchListOverviewDto = matchListOverview;
-            MatchHeaders = matchHeaders;
         }
     }
+
 }
