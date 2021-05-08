@@ -35,30 +35,52 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// </summary>
         /// <param name="summonerName">Jmeno summonera</param>
         /// <param name="region">Server, pro ktery jmeno hledame</param>
-        /// <returns>Vrati summoner info, nebo null, pokud neexistuje</returns>
-        /// <exception cref="ActionNotSuccessfulException"></exception>
+        /// <returns>Vrati summoner info</returns>
+        /// <exception cref="RiotApiException">exception, pokud summoner neexistuje</exception>
         public async Task<SummonerModel> GetSummonerInfo(string summonerName, Region region) {
-            try {
-                var summoner = await riotApi.SummonerV4.GetBySummonerNameAsync(region, summonerName);
-                if (summoner is null) { // vratime-li null, znamena to, ze summoner neexistuje
-                    return null;
-                }
+            var summoner = await riotApi.SummonerV4.GetBySummonerNameAsync(region, summonerName);
+            if (summoner is null) { // vratime-li null, znamena to, ze summoner neexistuje
+                throw new RiotApiException("Error, summoner does not exist");
+            }
 
-                // Jinak vratime namapovany objekt
-                return new SummonerModel {
-                    SummonerLevel = summoner.SummonerLevel,
-                    Name = summoner.Name,
-                    ProfileIconId = summoner.ProfileIconId,
-                    EncryptedSummonerId = summoner.Id,
-                    EncryptedAccountId = summoner.AccountId,
-                    Region = region.Key,
-                    LastUpdate = DateTime.MinValue
-                };
+            // Jinak vratime namapovany objekt
+            return new SummonerModel {
+                SummonerLevel = summoner.SummonerLevel,
+                Name = summoner.Name,
+                ProfileIconId = summoner.ProfileIconId,
+                EncryptedSummonerId = summoner.Id,
+                EncryptedAccountId = summoner.AccountId,
+                Region = region.Key,
+                LastUpdate = DateTime.MinValue
+            };
+        }
+
+        /// <summary>
+        /// Ziska summoner info, pokud dany summoner existuje. Tato metoda je pouzitelna pouze tehdy,
+        /// pokud uz mame daneho summonera z databaze, protoze potrebujeme jeho encrypted summoner id
+        /// tim navic zajistime, ze kdyz se uzivatel prejmenuje, tak se zmeni i data v databazi
+        /// </summary>
+        /// <param name="encryptedSummonerId">zasifrovane id pro nas api klic</param>
+        /// <param name="region">region, pro ktery hledame</param>
+        /// <returns>aktualizovane summoner info</returns>
+        /// <exception cref="RiotApiException">exception, pokud summoner neexistuje</exception>
+        public async Task<SummonerModel> GetSummonerInfoFromEncryptedSummonerId(string encryptedSummonerId,
+            Region region) {
+            var summoner = await riotApi.SummonerV4.GetBySummonerIdAsync(region, encryptedSummonerId);
+            if (summoner is null) {
+                throw new RiotApiException("Error, summoner does not exist");
             }
-            catch (Exception ex) {
-                logger.LogCritical(ex.Message); // Log chyby
-                throw new ActionNotSuccessfulException(ex.Message);
-            }
+
+            // Jinak vratime namapovany objekt
+            return new SummonerModel {
+                SummonerLevel = summoner.SummonerLevel,
+                Name = summoner.Name,
+                ProfileIconId = summoner.ProfileIconId,
+                EncryptedSummonerId = summoner.Id,
+                EncryptedAccountId = summoner.AccountId,
+                Region = region.Key,
+                LastUpdate = DateTime.MinValue
+            };
         }
 
         /// <summary>
@@ -102,7 +124,7 @@ namespace dotNetMVCLeagueApp.Repositories {
             var teams = match.Teams.Select(team => mapper.Map<TeamStatsModel>(team)).ToList();
 
             // Mapping participant objektu na PlayeryInfoModel objekty
-            var players = match.ParticipantIdentities.Select(participantIdentity => 
+            var players = match.ParticipantIdentities.Select(participantIdentity =>
                 MapParticipantToPlayer(match, participantIdentity)).ToList();
 
             result.Teams = teams;
@@ -244,9 +266,9 @@ namespace dotNetMVCLeagueApp.Repositories {
                 MatchFrames = matchTimeline.Frames.Select(frame =>
                     new MatchFrameModel {
                         Timestamp = frame.Timestamp,
-                        ParticipantFrames = frame.ParticipantFrames.Values.Select(participantFrame => 
+                        ParticipantFrames = frame.ParticipantFrames.Values.Select(participantFrame =>
                             mapper.Map<MatchParticipantFrameModel>(participantFrame)).ToList(),
-                        MatchEvents = frame.Events.Select(matchEvent => 
+                        MatchEvents = frame.Events.Select(matchEvent =>
                             mapper.Map<MatchEventModel>(matchEvent)).ToList()
                     }).ToList()
             };

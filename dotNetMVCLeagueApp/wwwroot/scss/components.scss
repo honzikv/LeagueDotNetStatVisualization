@@ -127,7 +127,7 @@ $color-loss-light: darken($color-loss, 10%);
 }
 
 .button-dark-blue {
-    background: $color-blue-primary;
+    background: $color-primary-blue;
 }
 
 .button-light-primary {
@@ -137,6 +137,10 @@ $color-loss-light: darken($color-loss, 10%);
 .button-light {
     @extend .button-dark;
     color: $color-text-primary-white !important;
+}
+
+.button-red {
+    background: $color-primary-red;
 }
 
 .card-dark-text {
@@ -152,6 +156,6 @@ $color-loss-light: darken($color-loss, 10%);
 }
 
 .card-text-primary-blue {
-    color: $color-blue-primary;
+    color: $color-primary-blue;
 }
 

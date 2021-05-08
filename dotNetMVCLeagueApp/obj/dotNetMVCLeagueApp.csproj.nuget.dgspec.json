@@ -90,6 +90,10 @@
               "target": "Package",
               "version": "[16.9.4, )"
             },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
             "MingweiSamuel.Camille": {
               "target": "Package",
               "version": "[2.7.3-nightly-2021-01-17-519ad84617, )"

@@ -67,20 +67,6 @@ $color-text-deaths: #d8082e;
     font-size: 24px;
 }
 
-.kda {
-    .poor {
-        color: $color-kda-poor;
-    }
-
-    .average {
-        color: $color-kda-average;
-    }
-
-    .good {
-        color: $color-kda-good;
-    }
-}
-
 .deaths {
-    color: $color-red-primary;
+    color: $color-primary-red;
 }

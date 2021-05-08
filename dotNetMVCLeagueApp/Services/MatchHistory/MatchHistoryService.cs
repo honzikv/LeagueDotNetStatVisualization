@@ -147,13 +147,6 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         // }
 
         private async Task<List<MatchModel>> UpdateMatchList(SummonerModel summoner, int numberOfGames) {
-            // Vyhodime exception pokud uzivatel aktualizuje profil, ktery byl nedavno aktualizovany
-            if (!apiUpdateConfig.IsSummonerUpdateable(summoner)) {
-                throw new ActionNotSuccessfulException(
-                    "Error, summoner cannot be updated, " +
-                    $"try again in: {apiUpdateConfig.GetNextUpdateTime(summoner).TotalSeconds} seconds.");
-            }
-
             var matchList = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
                 Region.Get(summoner.Region), numberOfGames);
 

@@ -12,17 +12,8 @@
 .heading-search {
     font-family: AirbnbCereal, sans-serif;
     font-size: 80px;
-    color: $primary-white;
-}
-
-.league-text {
-    font-family: AirbnbCereal, sans-serif;
-
-    .h1 {
-        font-size: 40px;
-        font-weight: bold;
-    }
-
+    font-weight: bolder;
+    color: $color-primary-grey;
 }
 
 .color-primary {
@@ -33,47 +24,13 @@
     color: $secondary-white;
 }
 
-.btn-hover {
-    width: 100px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
-    height: 35px;
-    text-align: center;
-    border: none;
-    background-size: 300% 100%;
-    border-radius: $small-border-radius;
-    moz-transition: all .4s ease-in-out;
-    -o-transition: all .4s ease-in-out;
-    -webkit-transition: all .4s ease-in-out;
-    transition: all .4s ease-in-out;
-}
-
-.btn-hover:hover {
-    background-position: 100% 0;
-    moz-transition: all .4s ease-in-out;
-    -o-transition: all .4s ease-in-out;
-    -webkit-transition: all .4s ease-in-out;
-    transition: all .4s ease-in-out;
-}
-
-.btn-hover:focus {
-    outline: none;
-}
-
-.btn-hover.blue {
-    background-image: linear-gradient(to left, #1db3ff, #0f87f6, #646464, #565656);
-    box-shadow: 0 4px 15px 0 rgba(28, 27, 27, 0.75);
-}
-
 body {
     background: radial-gradient(adjust-color($background-color1, $alpha: -0.0), adjust-color($background-color2, $alpha: -0.0)),
     url("../bgwall/msi_2021_wall.jpg") no-repeat center center !important;
-    //-webkit-background-size: cover;
-    //-moz-background-size: cover;
-    //-o-background-size: cover;
-    //background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;

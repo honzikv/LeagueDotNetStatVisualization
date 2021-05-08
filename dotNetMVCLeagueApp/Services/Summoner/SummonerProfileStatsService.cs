@@ -116,7 +116,9 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                 var player =
                     match.PlayerInfoList.FirstOrDefault(playerModel =>
                         playerModel.SummonerId == summoner.EncryptedSummonerId) ??
-                    throw new ObjectNotFoundException($"Player participant is missing for {summoner}");
+                    throw new RedirectToHomePageException(
+                        $"There was an error with the database. Data for summoner: {summoner.Name} is " +
+                        $"corrupt. We are sorry for the inconvenience.");
 
                 if (!championCounters.ContainsKey(player.ChampionId)) {
                     championCounters[player.ChampionId] = new();

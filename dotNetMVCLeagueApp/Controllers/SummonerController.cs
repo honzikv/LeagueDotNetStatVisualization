@@ -6,7 +6,6 @@ using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Controllers.Forms;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
-using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.Summoner;
@@ -30,6 +29,13 @@ namespace dotNetMVCLeagueApp.Controllers {
             new Pair<string, string>(GameConstants.RankedFlexDbValue, GameConstants.RankedFlexText)
         };
 
+        public class MatchListFilterForm {
+            public string Name { get; set; }
+            public string Server { get; set; }
+            public int NumberOfGames { get; set; }
+            public string Queue { get; set; }
+        }
+
         public static readonly int[] NumberOfGames = {10, 20, 30};
 
         private const string SummonerNotFound = "Error, summoner does not exist";
@@ -51,15 +57,15 @@ namespace dotNetMVCLeagueApp.Controllers {
             if (form.Name.IsNullOrEmpty() || form.Server.IsNullOrEmpty()
                                           || form.NumberOfGames == 0
                                           || form.Queue.IsNullOrEmpty()) {
-                return BadRequest(form.ToString());
+                return Redirect("/");
             }
 
             if (!NumberOfGames.Contains(form.NumberOfGames)) {
-                return BadRequest("Illegal number of games to update");
+                return Redirect("/");
             }
 
             if (!Queues.Exists(item => item.First == form.Queue)) {
-                return BadRequest("Illegal queue");
+                return Redirect("/");
             }
 
             try {
@@ -77,16 +83,40 @@ namespace dotNetMVCLeagueApp.Controllers {
                 ));
             }
             catch {
-                return BadRequest("Illegal request");
+                return Redirect("/");
             }
         }
 
+        [HttpGet]
         public IActionResult Refresh(string name, string server) {
-            if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
-                return Redirect("/");
+            if (name.IsNullOrEmpty() || server.IsNullOrEmpty() ||
+                !GameConstants.QueryableServers.ContainsKey(server.ToLower())) {
+                TempData["ErrorMessage"] = ServerOrSummonerNull;
+                return RedirectToAction("Index", "Home");
             }
 
-            return null;
+            try {
+                var region = Region.Get(server);
+                var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
+                summonerInfoService.UpdateSummonerInfoAsync(summoner.Id);
+                matchHistoryService.UpdateGameMatchListAsync(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
+                return RedirectToAction("Index", "Summoner", new {name = summoner.Name, server = server});
+            }
+            catch (Exception ex) {
+                TempData["ErrorMessage"] = ex.Message;
+                switch (ex) {
+                    case ActionNotSuccessfulException: {
+                        return RedirectToAction("Index", "Summoner", new {name = name, server = server});
+                    }
+                    case RedirectToHomePageException: {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    default: {
+                        TempData["ErrorMessage"] = null;
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+            }
         }
 
 
@@ -123,7 +153,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             // Odchytime exception a pokud to jsou "nase" tak vratime uzivatele s upozornenim, jinak
             // presmerujeme na Index bez zpravy
             catch (Exception exception) {
-                if (exception is ActionNotSuccessfulException || exception is RiotApiException) {
+                if (exception is ActionNotSuccessfulException or RiotApiException) {
                     TempData["ErrorMessage"] = exception.Message;
                     return RedirectToAction("Index", "Home");
                 }

@@ -2,13 +2,14 @@
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.Models.User;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Data {
     /// <summary>
     ///     Kontext pro pripojeni k databazi
     /// </summary>
-    public class LeagueDbContext : DbContext {
+    public class LeagueDbContext : IdentityDbContext {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
             : base(options) { }
 
@@ -44,6 +45,7 @@ namespace dotNetMVCLeagueApp.Data {
 
         // Implementace M : N pro summoner a match pomoci fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MatchToSummonerModel>()
                 .HasKey(matchSummoner => new {
                     matchSummoner.MatchInfoModelId,
