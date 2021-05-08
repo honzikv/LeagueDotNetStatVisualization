@@ -17,58 +17,53 @@
     <script src="~/js/Summoner/SummonerControllerAjax.js"></script>
 }
 
-<div class="row">
-    <div class="col-4"></div>
+<div class="row d-flex justify-content-around">
 
-</div>
-
-<div class="row">
-
-    <div class="col-lg-3 col-sm-auto order-1 order-lg-0" id="summonerInfoPartial">
+    <div class="col-lg-3 col-xs-12 order-xs-1 order-lg-0" id="summonerInfoPartial">
         @{ await Html.RenderPartialAsync("./Partial/_SummonerInfoPartial", Model.Summoner); }
     </div>
 
 
-    <div class="col-lg-auto col-sm-6 order-2 order-lg-1 m-4">
+    <div class="col-lg-auto col-xs-12 order-xs-2 order-lg-1">
         <div id="matchListPartial">
             @{ await Html.RenderPartialAsync("./Partial/_MatchListPartial", Model.MatchList); }
         </div>
     </div>
 
-    <div class="col-lg-3 col-sm-4 order-0 order-lg-2 card-dark-text">
-        <div class="row d-flex ">
-            <button class="btn ml-auto " type="button" data-toggle="collapse" data-target="#filter"
-                    aria-expanded="false" aria-controls="filter">
-                Filters
-            </button>
-        </div>
-        <div class="collapse" id="filter">
-            <form method="post" id="formFilter" asp-controller="Summoner" asp-action="MatchList">
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        <label class="" for="numberOfGames">Number of Games</label>
-                        <select class="browser-default custom-select mb-1 select-dark rounded-corners-small"
-                                name="numberOfGames"
-                                id="numberOfGames">
-                            @foreach (var numberOfGames in SummonerController.NumberOfGames) {
-                                <option value="@numberOfGames">@numberOfGames</option>
-                            }
-                        </select>
+    <div class="col-lg-3 col-xs-12 order-xs-0 order-lg-2 card-dark-text">
+        <div class="sticky pr-5">
+            <div class="row d-flex">
+                <button class="btn rounded-corners-small button-dark button-dark-secondary float-right ml-auto" type="button" data-toggle="collapse" data-target="#filter"
+                        aria-expanded="false" aria-controls="filter">
+                    Filter
+                </button>
+            </div>
+            <div class="collapse" id="filter">
+                <form method="post" id="formFilter" asp-controller="Summoner" asp-action="MatchList">
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <label class="" for="numberOfGames">Number of Games</label>
+                            <select class="browser-default custom-select mb-1 select-dark rounded-corners-small"
+                                    name="numberOfGames"
+                                    id="numberOfGames">
+                                @foreach (var numberOfGames in SummonerController.NumberOfGames) {
+                                    <option value="@numberOfGames">@numberOfGames</option>
+                                }
+                            </select>
 
-                        <label class="" for="queueFilter">Queue Type</label>
-                        <select
-                            class="browser-default custom-select mb-1 select-dark rounded-corners-small" id="queueFilter">
-                            @foreach (var queue in SummonerController.Queues) {
-                                <option value="@queue.First">@queue.Second</option>
-                            }
-                        </select>
+                            <label class="mt-1" for="queueFilter">Queue Type</label>
+                            <select
+                                class="browser-default custom-select mb-1 select-dark rounded-corners-small" id="queueFilter">
+                                @foreach (var queue in SummonerController.Queues) {
+                                    <option value="@queue.First">@queue.Second</option>
+                                }
+                            </select>
 
-                        <button type="submit" class="btn align-self-center float-right rounded-corners-small button-dark button-dark-primary">Show</button>
+                            <button type="submit" class="btn align-self-center float-right rounded-corners-small button-dark button-dark-primary">Show</button>
+                        </div>
                     </div>
-                </div>
-                <hr class="hr-header">
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-
 </div>

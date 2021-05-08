@@ -2,9 +2,16 @@
 @{
     ViewData["Title"] = "Search";
 }
+
+@section Scripts {
+    <script>
+        $('#ErrorMessage').delay(10000).fadeOut();
+    </script>
+}
+
 <form method="get" asp-controller="Summoner" asp-action="Index">
     <div class="row justify-content-center">
-        <div class="col-4 mt-4">
+        <div class="col-12 col-md-4 mt-4">
             <h1 class="heading-search  justify-content-center text-center ">Search</h1>
 
             <select class="browser-default mb-1 custom-select select-dark rounded-corners-small"
@@ -14,11 +21,11 @@
                 }
             </select>
 
-            <input type="text"
+            <input type="text" minlength="1" required
                    class="form-control input-text-dark rounded-corners-small mb-2 text-center" id="name"
                    placeholder="Summoner name" name="name"/>
 
-            <button type="submit" class="btn  float-right">
+            <button type="submit" class="btn rounded-corners-small button-dark button-dark-primary float-right">
                 <i class="fa fa-search"></i>
             </button>
 
@@ -26,3 +33,15 @@
         </div>
     </div>
 </form>
+
+
+@if (Model.ErrorMessage is not null) {
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div id="ErrorMessage" class="alert alert-danger alert-error text-center m-4 w-25" role="alert">
+                @Model.ErrorMessage
+            </div>
+        </div>
+
+    </div>
+}

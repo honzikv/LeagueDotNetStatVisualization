@@ -1,7 +1,26 @@
 ﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.SummonerProfileDto
 
-<div class="justify-content-center">
-    <div class="card">
-        Hello
+<div class="sticky">
+    <div class="rounded-corners-small card-dark mt-4 animate__animated animate__fadeIn">
+        <div class="row card-body no-gutters d-flex">
+            <div class="col-auto">
+                <img class="summoner-icon-large"
+                     alt="N/A" src="@Url.Content($"/assets/{Model.ProfileIconRelativeAssetPath}")">
+            </div>
+            <div class="col align-items-center align-self-center">
+                <p class="summoner-name-header no-spacing text-center">@Model.Name</p>
+                <p class="no-spacing mt-n2 text-white-color text-center">Level @Model.SummonerLevel</p>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        @if (Model.SoloQueue is not null) {
+            await Html.RenderPartialAsync("./Partial/_RankCardPartial", Model.SoloQueue);
+        }
+        @if (Model.FlexQueue is not null) {
+            await Html.RenderPartialAsync("./Partial/_RankCardPartial", Model.FlexQueue);
+        }
     </div>
 </div>
+

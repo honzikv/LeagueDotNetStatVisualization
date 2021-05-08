@@ -22,7 +22,7 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private const bool UseLiveReload = false;
+        private const bool UseLiveReload = true;
 
         public IConfiguration Configuration { get; }
 
@@ -93,8 +93,9 @@ namespace dotNetMVCLeagueApp {
             app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}"
+                    );
                 endpoints.MapRazorPages();
             });
         }

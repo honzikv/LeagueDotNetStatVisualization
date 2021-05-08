@@ -22,11 +22,14 @@ namespace dotNetMVCLeagueApp.Controllers {
             this.summonerInfoService = summonerInfoService;
         }
 
-        public IActionResult Index() => View(
-            new HomePageDto {
-                ServerList = summonerInfoService.GetQueryableServers
-            }
-        );
+
+        public IActionResult Index() {
+            return View(
+                new HomePageDto {
+                    ServerList = summonerInfoService.GetQueryableServers,
+                    ErrorMessage = (string) TempData["ErrorMessage"]
+                });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {

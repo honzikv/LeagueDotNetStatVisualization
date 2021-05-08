@@ -1,5 +1,5 @@
 ﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview.MatchListOverviewDto
-<div class="rounded-corners-small card-light match-card mt-4">
+<div class="rounded-corners-small card-light match-card mt-4 animate__animated animate__fadeIn">
     <div class="card-dark-header">
         <div class="row d-flex">
             <div class="col-auto d-flex align-items-center align-self-center">
@@ -9,10 +9,10 @@
 
                 </div>
             </div>
-            <div class="col d-flex align-items-baseline align-self-center
-                                                     flex-row-reverse">
-                <button class="btn rounded-corners-small button-light button-light-primary ">Refresh</button>
-            </div>
+@*             <div class="col d-flex align-items-baseline align-self-center *@
+@*                                                      flex-row-reverse"> *@
+@*                 <button class="btn rounded-corners-small button-light button-light-primary ">Refresh</button> *@
+@*             </div> *@
 
         </div>
 
@@ -79,11 +79,10 @@
         </div>
 
     </div>
-    <hr class="hr-header">
     <div class="d-flex justify-content-center mb-2 mt-2">
-        <button class="btn rounded-corners-small button-light button-light-primary"
+        <button class="btn rounded-corners-small button-light button-dark-blue"
                 type="button" data-toggle="collapse" data-target="#championStats" aria-expanded="false" aria-controls="championStats">
-            <span class="m-4">Show Top 3 Champions</span>
+            <span class="m-4">Frequent Champions</span>
         </button>
     </div>
 
@@ -98,23 +97,24 @@
 
         @* Pro logiku aplikace budeme zobrazovat pouze 3 nejlepsi postavy *@
         @foreach (var champ in champsByFrequency) {
-            <div class="row mt-3 d-flex justify-content-around no-gutters mt-1">
-                <div class="col-auto">
+            <div class="row mt-3 mb-3 d-flex justify-content-around no-gutters mt-1">
+                <div class="col-auto align-self-center">
                     <div>
                         <img alt="N/A"
                              data-toggle="tooltip" data-placement="top" title="@champ.ChampionAsset.Name"
                              src="@Url.Content($"/assets/{champ.ChampionAsset.RelativeAssetPath}")" class="champion-icon">
-                        <p class="text-default text-center font-weight-bold font-italic text-small">@champ.ChampionAsset.Name</p>
+                        <p class="text-center font-weight-bold font-italic text-small">@champ.ChampionAsset.Name</p>
                     </div>
                 </div>
 
-                <div class="col-auto align-self-center text-center">
+                <div class="col-auto text-center">
                     <p class="overview-text-games">
                         <span class="color-win-light">@(champ.Wins + "W")</span> : <span class="color-loss-light">@(champ.Losses + "L")</span>
                     </p>
                     <div class="progress match-progress-bar mt-n1">
-                        <div class="progress-bar progress-bar-win" style="width:@Model.TotalStats.Winrate.ToString("N0")%"></div>
-                        <div class="progress-bar bg-danger" style="width:@((100 - Model.TotalStats.Winrate).ToString("N0"))%"></div>
+                        
+                        <div class="progress-bar progress-bar-win" style="width:@champ.Winrate.ToString("N0")%"></div>
+                        <div class="progress-bar bg-danger" style="width:@((100 - champ.Winrate).ToString("N0"))%"></div>
                     </div>
                     <p class="no-spacing text-center">@(champ.Winrate.ToString("N1") + "%") WR</p>
                 </div>

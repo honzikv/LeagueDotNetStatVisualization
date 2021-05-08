@@ -1,0 +1,29 @@
+﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.QueueInfoDto
+
+<div class="rounded-corners-small card-dark mt-2 animate__animated animate__fadeIn">
+    <div class="card-body card-dark-text">
+
+        <div class="row d-flex justify-content-around no-gutters">
+            <div class="col-auto align-self-center justify-content-center">
+                <div class="d-flex justify-content-center align-content-center">
+                    <img alt="N/A"
+                         data-toggle="tooltip" data-placement="top" title="@Model.Name"
+                         src="@Url.Content($"/assets/{Model.RankAsset.RelativeAssetPath}")"
+                         class="rank-icon-large"/>
+                </div>
+                
+            </div>
+
+            <div class="col-auto align-self-center align-content-center">
+                <p class="no-spacing text-center font-weight-bold">@Model.Tier @Model.Rank</p>
+                                <p class="no-spacing text-center">@Model.Name</p>
+                <p class="no-spacing text-center">
+                    <span class="color-win">@(Model.Wins + "W") </span>:
+                    <span class="color-loss">@(Model.Losses + "L")</span>
+                </p>
+                <p class="no-spacing text-center ">@Model.Winrate.ToString("N1")% WR</p>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,4 +1,6 @@
-﻿@font-face {
+﻿@import "colors";
+
+@font-face {
     font-family: AirbnbCereal;
     src: url("../fonts/AirbnbCereal.ttf");
 }
@@ -21,4 +23,25 @@
 @font-face {
     font-family: ProximaNova;
     src: url("../fonts/ProximaNova-Regular.otf");
+}
+
+
+@mixin text-white() {
+    color: $color-text-primary-white;
+    font-family: ProximaNova, sans-serif;
+}
+
+.alert-error {
+    font-family: ProximaNova, sans-serif !important;
+}
+
+
+.text-white-color {
+    @include text-white();
+}
+
+.summoner-name-header {
+    @extend .text-white-color;
+    font-size: 26px;
+    font-weight: bold;
 }

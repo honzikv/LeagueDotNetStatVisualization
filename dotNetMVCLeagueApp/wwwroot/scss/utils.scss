@@ -1,5 +1,6 @@
-﻿$small-border-radius: 20px;
-$medium-border-radius: 40px;
+﻿@import "colors";
+$small-border-radius: 16px;
+$medium-border-radius: 30px;
 $rounded-radius: 100%;
 
 .no-spacing {
@@ -17,4 +18,15 @@ $rounded-radius: 100%;
 
 .rounded {
     border-radius: $rounded-radius;
+}
+
+.toggler-white {
+    color: $color-primary-light-gray;
+    font-size: 1.5em;
+}
+
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px;
 }

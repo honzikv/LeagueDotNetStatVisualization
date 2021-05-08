@@ -313,6 +313,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
 
             result.SoloQueue = GetQueueInfoDto(soloqModel, GameConstants.RankedSoloDbValue);
             result.FlexQueue = GetQueueInfoDto(flexqModel, GameConstants.RankedFlexDbValue);
+            result.ProfileIconRelativeAssetPath = assetRepository.GetProfileIcon(summoner.ProfileIconId);
             return result;
         }
 
@@ -323,7 +324,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
 
             var queueDto = mapper.Map<QueueInfoDto>(queueInfoModel);
             queueDto.Name = name;
-            queueDto.Winrate = GameStatsUtils.GetWinrate(queueInfoModel.Wins, queueInfoModel.Losses);
+            queueDto.Winrate = GameStatsUtils.GetWinratePercentage(queueInfoModel.Wins, queueInfoModel.Losses);
             queueDto.RankAsset = assetRepository.GetRankedIcon(queueInfoModel.Tier);
             return queueDto;
         }

@@ -19,6 +19,8 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         /// </summary>
         [JsonProperty("Name")]
         public string Name { get; set; }
+        
+        public string RelativeAssetPath { get; set; }
 
         public static RankAsset Empty(string configEmptyAssetFileName) => new() {
             Name = "N/A",

@@ -1,5 +1,5 @@
-﻿@import "fonts.scss";
-@import "colors.scss";
+﻿@import "typography";
+@import "colors";
 
 @mixin hoverFade {
     transition: 0.5s;
@@ -19,7 +19,7 @@
 }
 
 .navbar-background {
-    background-color: adjust-color($primary-gray, $alpha: -0.75);
+    background-color: $color-blue-primary;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }

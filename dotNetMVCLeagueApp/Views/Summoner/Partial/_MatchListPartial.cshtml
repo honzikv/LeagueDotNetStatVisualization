@@ -13,6 +13,9 @@
         renders.AddRange(Model.MatchHeaders.Select(match => Html.RenderPartialAsync("./Partial/_MatchHeaderPartial", match)));
         await Task.WhenAll(renders);
     }
+    <div id="tail">
+        
+    </div>
 </div>
 
 <div class="mt-4 d-flex justify-content-around" id="show-more">

@@ -191,6 +191,7 @@ namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
             var jsonObj = ParseJsonObject<List<RankAsset>>(rankedIconsJsonFilePath, "rank");
 
             foreach (var rankAsset in jsonObj) {
+                rankAsset.RelativeAssetPath = Path.Combine(config.RankedIconsFolderName, $"{rankAsset.FileName}.png");
                 ranks[rankAsset.Tier] = rankAsset;
             }
         }

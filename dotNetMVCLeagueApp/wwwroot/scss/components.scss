@@ -1,6 +1,5 @@
-@import "fonts";
+@import "typography";
 @import "colors";
-@import "glassmorphism";
 @import "utils";
 
 @mixin card-body($color) {
@@ -11,7 +10,7 @@
 .card-dark {
     @include card-body($card-background-dark);
     overflow: hidden;
-    font-size: 16px;
+    font-size: 14px;
     font-family: Sora, sans-serif;
 
 }
@@ -27,6 +26,15 @@
         border: solid $border-color-header 2px;
     }
 
+}
+
+.summoner-icon-large {
+    width: 60px;
+    @extend .rounded;
+}
+
+.rank-icon-large {
+    width: 80px;
 }
 
 .input-text-dark, input {
@@ -116,6 +124,10 @@ $color-loss-light: darken($color-loss, 10%);
 
 .button-dark-primary {
     background: $color-text-primary-white !important;
+}
+
+.button-dark-blue {
+    background: $color-blue-primary;
 }
 
 .button-light-primary {

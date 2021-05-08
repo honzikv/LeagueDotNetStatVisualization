@@ -1,11 +1,11 @@
-﻿@import "fonts";
+﻿@import "typography";
 @import "colors";
 @import "utils";
 
 $color-text-deaths: #d8082e;
 
 .match-card {
-    min-width: 760px;
+    min-width: 680px;
 }
 
 .hr-header {

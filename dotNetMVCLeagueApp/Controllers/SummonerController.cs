@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Castle.Core;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Controllers.Forms;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +31,9 @@ namespace dotNetMVCLeagueApp.Controllers {
         };
 
         public static readonly int[] NumberOfGames = {10, 20, 30};
+
+        private const string SummonerNotFound = "Error, summoner does not exist";
+        private const string ServerOrSummonerNull = "Error, either summoner does not exist or the server is invalid";
 
         public SummonerController(
             SummonerInfoService summonerInfoService,
@@ -70,10 +76,17 @@ namespace dotNetMVCLeagueApp.Controllers {
                     matchHeaders, matchListOverview
                 ));
             }
-            // todo: redirect
             catch {
-                throw;
+                return BadRequest("Illegal request");
             }
+        }
+
+        public IActionResult Refresh(string name, string server) {
+            if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
+                return Redirect("/");
+            }
+
+            return null;
         }
 
 
@@ -85,16 +98,16 @@ namespace dotNetMVCLeagueApp.Controllers {
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index(string name, string server) {
-            if (name.IsNullOrEmpty() || server.IsNullOrEmpty()) {
-                return BadRequest("Name or server is empty");
+            if (name.IsNullOrEmpty() || server.IsNullOrEmpty() ||
+                !GameConstants.QueryableServers.ContainsKey(server.ToLower())) {
+                TempData["ErrorMessage"] = ServerOrSummonerNull;
+                return RedirectToAction("Index", "Home");
             }
 
             try {
-                var region = Region.Get(server); // server, na kterem hledame
+                var region = Region.Get(server);
                 var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
                 var summonerProfileDto = summonerProfileStatsService.GetSummonerProfileDto(summoner);
-
-                logger.LogDebug($"summoner: {summoner}, region: {region.Key}");
 
                 var matchHistory =
                     matchHistoryService.GetGameMatchList(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
@@ -102,12 +115,20 @@ namespace dotNetMVCLeagueApp.Controllers {
                 var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
                 var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
 
-                return View(new SummonerOverviewDto(summonerProfileDto, GameConstants.AllGames, matchListOverview,
-                    matchHeaders));
+                return View(
+                    new SummonerOverviewDto(summonerProfileDto, GameConstants.AllGames, matchListOverview,
+                        matchHeaders)
+                );
             }
+            // Odchytime exception a pokud to jsou "nase" tak vratime uzivatele s upozornenim, jinak
+            // presmerujeme na Index bez zpravy
+            catch (Exception exception) {
+                if (exception is ActionNotSuccessfulException || exception is RiotApiException) {
+                    TempData["ErrorMessage"] = exception.Message;
+                    return RedirectToAction("Index", "Home");
+                }
 
-            catch {
-                throw; // todo odstranit
+                logger.LogCritical(exception.Message);
                 return Redirect("/");
             }
         }

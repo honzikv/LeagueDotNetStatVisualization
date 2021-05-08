@@ -432,6 +432,10 @@
       <None Include="wwwroot\fonts\ProximaNova-Regular.otf" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="AdobeXd" />
+    </ItemGroup>
+
     
 
 </Project>
