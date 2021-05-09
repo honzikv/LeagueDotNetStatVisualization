@@ -28,6 +28,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0-preview.3.21201.13" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="MingweiSamuel.Camille" Version="2.7.3-nightly-2021-01-17-519ad84617" />
@@ -435,6 +436,7 @@
 
     <ItemGroup>
       <Folder Include="AdobeXd" />
+      <Folder Include="Migrations" />
     </ItemGroup>
 
     

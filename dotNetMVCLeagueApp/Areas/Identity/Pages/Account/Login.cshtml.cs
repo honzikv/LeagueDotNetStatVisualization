@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -15,13 +16,13 @@ using Microsoft.Extensions.Logging;
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
     [AllowAnonymous]
     public class LoginModel : PageModel {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager,
+        public LoginModel(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager) {
+            UserManager<ApplicationUser> userManager) {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;

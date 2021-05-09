@@ -86,6 +86,10 @@
               "target": "Package",
               "version": "[6.0.0-preview.2.21154.2, )"
             },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[6.0.0-preview.3.21201.13, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[16.9.4, )"

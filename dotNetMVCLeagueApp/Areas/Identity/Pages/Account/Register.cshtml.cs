@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,14 +18,14 @@ using Microsoft.Extensions.Logging;
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
     [AllowAnonymous]
     public class RegisterModel : PageModel {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender) {
             this.userManager = userManager;
@@ -70,7 +71,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 return Page();
             }
 
-            var user = new IdentityUser {UserName = Input.Email, Email = Input.Email};
+            var user = new ApplicationUser {
+                UserName = Input.Email, 
+                Email = Input.Email
+            };
             var result = await userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded) {
                 logger.LogInformation("User created a new account with password.");

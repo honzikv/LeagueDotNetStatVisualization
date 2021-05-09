@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Json.Serialization;
 using Castle.Core.Logging;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -42,25 +43,25 @@ namespace dotNetMVCLeagueApp {
             // });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDefaultIdentity<IdentityUser>(options =>
-                    options.SignIn.RequireConfirmedAccount = true)
+
+            services.AddDefaultIdentity<ApplicationUser>(
+                    options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<LeagueDbContext>();
 
             // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
-            
+
             // Nastaveni rootu pro json soubory s konfiguraci assetu
             Configuration["Assets:JsonRoot"] =
                 Path.Combine(Configuration.GetValue<string>(WebHostDefaults.ContentRootKey), "AssetJson");
-            
 
             // Pridani MVC a nastaveni ReferenceHandler na Preserve pro test controlleru
             services.AddControllersWithViews().AddJsonOptions(config => {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddRazorPages();
-            
+
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);
         }
@@ -70,7 +71,7 @@ namespace dotNetMVCLeagueApp {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-                
+
                 if (UseLiveReload) {
                     app.UseLiveReload();
                 }
@@ -81,27 +82,26 @@ namespace dotNetMVCLeagueApp {
                 // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             // Protoze tato sluzba cte json je rozumne ji vytvorit primo pri startupu aby se pri prvnim
             // requestu, ktery ji potrebuje zbytecne necekalo
             app.ApplicationServices.GetService<AssetRepository>();
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            
+
             // Identity
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            
+
+
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}"
-                    );
+                );
                 endpoints.MapRazorPages();
-                
             });
         }
     }

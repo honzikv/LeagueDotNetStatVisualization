@@ -5,14 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account
-{
+namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
     [AllowAnonymous]
-    public class LockoutModel : PageModel
-    {
-        public void OnGet()
-        {
-
-        }
+    public class LockoutModel : PageModel {
+        public void OnGet() { }
     }
 }

@@ -19,12 +19,6 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
         public bool SocialMedia { get; set; }
 
         /// <summary>
-        ///     Reference na uzivatele
-        /// </summary>
-        [Required]
-        public virtual UserModel UserModel { get; set; }
-
-        /// <summary>
         ///     Pozice na profilu
         /// </summary>
         public int Position { get; set; }

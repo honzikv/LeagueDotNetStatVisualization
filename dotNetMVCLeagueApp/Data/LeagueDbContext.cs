@@ -1,7 +1,10 @@
-﻿using dotNetMVCLeagueApp.Data.Models.Match;
+﻿using System;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
+using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.Models.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +12,7 @@ namespace dotNetMVCLeagueApp.Data {
     /// <summary>
     ///     Kontext pro pripojeni k databazi
     /// </summary>
-    public class LeagueDbContext : IdentityDbContext {
+    public class LeagueDbContext : IdentityDbContext<ApplicationUser> {
         public LeagueDbContext(DbContextOptions<LeagueDbContext> options)
             : base(options) { }
 
@@ -19,8 +22,6 @@ namespace dotNetMVCLeagueApp.Data {
         public DbSet<SummonerModel> SummonerModels { get; set; }
 
         public DbSet<QueueInfoModel> QueueInfoModels { get; set; }
-
-        public DbSet<UserModel> UserModels { get; set; }
 
         public DbSet<ProfileCardModel> ProfileCardModels { get; set; }
 
