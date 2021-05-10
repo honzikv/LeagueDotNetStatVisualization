@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Areas.Identity.Data;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Exceptions;
+using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
     [AllowAnonymous]
@@ -22,17 +27,23 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
+        private readonly SummonerInfoService summonerInfoService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
+            SummonerInfoService summonerInfoService,
             IEmailSender emailSender) {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.summonerInfoService = summonerInfoService;
             this.emailSender = emailSender;
+            QueryableServers = summonerInfoService.GetQueryableServers;
         }
+
+        public Dictionary<string, string> QueryableServers { get; }
 
         [BindProperty] public InputModel Input { get; set; }
 
@@ -40,7 +51,17 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        /// <summary>
+        /// Objekt pro formular
+        /// </summary>
         public class InputModel {
+            [Required]
+            [Display(Name = "Username")]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 4)]
+            [DataType(DataType.Text)]
+            public string Username { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -57,6 +78,12 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Server")] public string Server { get; set; }
+
+            [Display(Name = "Summoner name")]
+            [DataType(DataType.Text)]
+            public string SummonerName { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null) {
@@ -72,13 +99,30 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             }
 
             var user = new ApplicationUser {
-                UserName = Input.Email, 
+                UserName = Input.Username,
                 Email = Input.Email
             };
+
+            try {
+                if (Input.SummonerName is not null) {
+                    var region = Region.Get(Input.Server);
+                    var summoner = summonerInfoService.GetSummonerInfoAsync(Input.SummonerName, region);
+
+                    if (await summonerInfoService.IsSummonerTaken(summoner)) {
+                        ModelState.AddModelError("SummonerName", "This summoner is already taken");
+                    }
+
+                    user.Summoner = summoner;
+                }
+            }
+            catch (RedirectToHomePageException) {
+                ModelState.AddModelError("SummonerName", "Summoner does not exist on the specified server");
+                return Page();
+            }
+
             var result = await userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded) {
-                logger.LogInformation("User created a new account with password.");
-
+                // Pro potvrzeni emailu
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(

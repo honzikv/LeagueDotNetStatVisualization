@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 
@@ -18,6 +20,8 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         private readonly RiotApiRepository riotApiRepository;
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
         private readonly QueueInfoRepository queueInfoRepository;
+        private readonly ApplicationUserRepository applicationUserRepository;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<SummonerInfoService> logger;
 
         public SummonerInfoService(
@@ -25,12 +29,15 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             RiotApiRepository riotApiRepository,
             RiotApiUpdateConfig riotApiUpdateConfig,
             QueueInfoRepository queueInfoRepository,
+            ApplicationUserRepository applicationUserRepository,
+            UserManager<ApplicationUser> userManager,
             ILogger<SummonerInfoService> logger
         ) {
             this.summonerRepository = summonerRepository;
             this.riotApiRepository = riotApiRepository;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
             this.queueInfoRepository = queueInfoRepository;
+            this.applicationUserRepository = applicationUserRepository;
             this.logger = logger;
         }
 
@@ -134,5 +141,9 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             return await summonerRepository.Update(dbSummonerInfo);
         }
 
+        public async Task<bool> IsSummonerTaken(SummonerModel summoner) 
+            => await applicationUserRepository.IsSummonerTaken(summoner);
+
+        public bool IsSummonerTakenAsync(SummonerModel summoner) => IsSummonerTaken(summoner).GetAwaiter().GetResult();
     }
 }

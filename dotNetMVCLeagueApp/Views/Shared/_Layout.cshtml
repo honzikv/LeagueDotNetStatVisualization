@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using dotNetMVCLeagueApp.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -36,16 +41,15 @@
                     <li class="nav-item">
                         <a class="nav-link navbar-menu-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link navbar-menu-item" asp-area="" asp-controller="TestCore" asp-action="Index">Debug Core</a>
-                    </li>
+                    @* Partial s loginem a odhlasenim *@
+                    <partial name="_LoginPartial"/>
                 </ul>
-                <partial name="_LoginPartial"/>
+
             </div>
         </div>
     </nav>
 </header>
-<div class="container-fluid p-4 animate__animated animate__fadeIn">
+<div class="container-fluid p-4">
     <main role="main">
         @RenderBody()
     </main>

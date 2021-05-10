@@ -25,6 +25,7 @@
 }
 
 body {
+    font-family: OpenSans, "Roboto", sans-serif;
     background: radial-gradient(adjust-color($background-color1, $alpha: -0.0), adjust-color($background-color2, $alpha: -0.0)),
     url("../bgwall/msi_2021_wall.jpg") no-repeat center center !important;
     -webkit-background-size: cover;

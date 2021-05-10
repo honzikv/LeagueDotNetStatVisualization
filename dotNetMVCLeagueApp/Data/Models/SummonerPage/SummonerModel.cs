@@ -14,6 +14,12 @@ namespace dotNetMVCLeagueApp.Data.Models.SummonerPage {
         ///     Posledni aktualizace entity
         /// </summary>
         public DateTime LastUpdate { get; set; }
+        
+        /// <summary>
+        /// Tento udaj se hodi abychom nemuseli zbytecne volat api, kdyz bude chtit uzivatel
+        /// pro profil zobrazit predchozi hry (napr. poslednich 20)
+        /// </summary>
+        public DateTime OldestRecordedMatch { get; set; }
 
         /// <summary>
         ///     Encrypted summoner id pro query dat

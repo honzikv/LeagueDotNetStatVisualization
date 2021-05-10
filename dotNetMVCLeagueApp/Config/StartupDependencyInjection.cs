@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
@@ -49,6 +50,7 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<QueueInfoRepository>();
             services.AddScoped<MatchInfoSummonerInfoRepository>();
             services.AddScoped<MatchTimelineRepository>();
+            services.AddScoped<ApplicationUserRepository>();
 
             // Asset resolver musi byt jako singleton, protoze nechceme vytvaret objekt pro kazdy request
             services.AddSingleton(serviceProvider => new AssetRepository(

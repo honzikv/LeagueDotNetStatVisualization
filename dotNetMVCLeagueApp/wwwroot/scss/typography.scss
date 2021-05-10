@@ -25,6 +25,11 @@
     src: url("../fonts/ProximaNova-Regular.otf");
 }
 
+@font-face {
+    font-family: OpenSans;
+    src: url("../fonts/OpenSans-Regular.ttf");
+}
+
 
 @mixin text-white() {
     color: $color-text-primary-white;
@@ -43,5 +48,15 @@
 .summoner-name-header {
     @extend .text-white-color;
     font-size: 26px;
+    font-weight: bold;
+}
+
+.heading1 {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.heading2 {
+    font-size: 32px;
     font-weight: bold;
 }

@@ -20,6 +20,8 @@ namespace dotNetMVCLeagueApp.Data {
         ///     Vsechny tabulky
         /// </summary>
         public DbSet<SummonerModel> SummonerModels { get; set; }
+        
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public DbSet<QueueInfoModel> QueueInfoModels { get; set; }
 

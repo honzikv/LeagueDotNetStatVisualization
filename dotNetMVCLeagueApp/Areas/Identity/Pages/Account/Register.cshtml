@@ -4,14 +4,20 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<div class="row">
+
+<div class="row d-flex justify-content-center">
     <div class="col-md-4">
+    <h1 class="heading1">@ViewData["Title"]</h1>
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
-            <hr />
+            <hr/>
             <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Username"></label>
+                <input asp-for="Input.Username" class="form-control"/>
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
@@ -27,7 +33,28 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            
+            
+            <h2 class="heading2 mt-4">Bind your in-game account</h2>
+            <h4 class="no-spacing">This can also be changed later.</h4>
+            <hr>
+            <div class="form-group">
+                <label asp-for="Input.SummonerName"></label>
+                <input asp-for="Input.SummonerName" class="form-control"/>
+                <span asp-validation-for="Input.SummonerName"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Input.Server"></label>
+                <select class="browser-default custom-select rounded-corners-small" asp-for="Input.Server">
+                    @foreach (var (_, server) in Model.QueryableServers) {
+                        <option value="@server">@server</option>
+                    }
+                </select>
+            </div>
+            
+            
+            <button type="submit" class="btn btn-primary rounded-corners-small button-light button-dark-blue float-right">Register</button>
         </form>
     </div>
 </div>

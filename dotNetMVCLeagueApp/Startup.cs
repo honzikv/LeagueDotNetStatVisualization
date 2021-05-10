@@ -44,9 +44,15 @@ namespace dotNetMVCLeagueApp {
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(
-                    options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<LeagueDbContext>();
+            // services.AddDefaultIdentity<ApplicationUser>(
+            //         options => options.SignIn.RequireConfirmedAccount = true)
+            //     .AddEntityFrameworkStores<LeagueDbContext>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                    options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<LeagueDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
 
             // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
@@ -61,6 +67,16 @@ namespace dotNetMVCLeagueApp {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddRazorPages();
+
+            // Nastaveni restrikci, protoze Microsoft veri tomu, ze nekdo bude realne vyzadovat po uzivateli
+            // nenumericky znak v heslu
+            services.Configure<IdentityOptions>(options => {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+                
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+            });
 
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);
@@ -94,8 +110,7 @@ namespace dotNetMVCLeagueApp {
             // Identity
             app.UseAuthentication();
             app.UseAuthorization();
-
-
+            
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     "default",
