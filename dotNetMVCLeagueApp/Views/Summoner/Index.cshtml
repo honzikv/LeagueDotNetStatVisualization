@@ -46,7 +46,7 @@
                             <select class="browser-default custom-select mb-1 select-dark rounded-corners-small"
                                     name="numberOfGames"
                                     id="numberOfGames">
-                                @foreach (var numberOfGames in SummonerController.NumberOfGames) {
+                                @foreach (var numberOfGames in SummonerController.PageSize) {
                                     <option value="@numberOfGames">@numberOfGames</option>
                                 }
                             </select>

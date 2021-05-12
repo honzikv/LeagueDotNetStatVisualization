@@ -21,7 +21,6 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         public int Losses { get; set; }
 
         public double AverageKills { get; set; }
-        
 
         public double AverageDeaths { get; set; }
 

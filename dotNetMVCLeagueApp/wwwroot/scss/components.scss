@@ -3,7 +3,7 @@
 @import "utils";
 
 @mixin card-body($color) {
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(98, 98, 98, 0.2);
     background-color: $color;
 }
 
@@ -62,6 +62,14 @@
     color: $color-primary-black;
 }
 
+.card-match-header-light {
+    @include card-body($color-text-primary-white);
+    overflow: hidden;
+    font-size: 14px;
+    font-family: Sora, sans-serif;
+    color: $color-primary-black;
+}
+
 .dot {
     height: 24px;
     width: 24px;
@@ -77,7 +85,7 @@
     color: $color-win;
 }
 
-$color-win-light: darken($color-win, 30%);
+$color-win-light: darken($color-win, 20%);
 $color-loss-light: darken($color-loss, 10%);
 
 .color-win-light {
@@ -111,7 +119,7 @@ $color-loss-light: darken($color-loss, 10%);
     background-color: $color-win;
 }
 
-.card-dark-header {
+.card-header-default {
     padding: 8px 24px;
     border-bottom: solid $border-color-header 2px;
 }

@@ -36,7 +36,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             public string Queue { get; set; }
         }
 
-        public static readonly int[] NumberOfGames = {10, 20, 30};
+        public static readonly int[] PageSize = {10, 20, 30};
 
         private const string SummonerNotFound = "Error, summoner does not exist";
         private const string ServerOrSummonerNull = "Error, either summoner does not exist or the server is invalid";
@@ -60,7 +60,7 @@ namespace dotNetMVCLeagueApp.Controllers {
                 return Redirect("/");
             }
 
-            if (!NumberOfGames.Contains(form.NumberOfGames)) {
+            if (!PageSize.Contains(form.NumberOfGames)) {
                 return Redirect("/");
             }
 
@@ -72,8 +72,8 @@ namespace dotNetMVCLeagueApp.Controllers {
                 var region = Region.Get(form.Server);
                 var summoner = summonerInfoService.GetSummonerInfoAsync(form.Name, region);
                 var matchHistory = form.Queue == GameConstants.AllGamesDbValue
-                    ? matchHistoryService.GetGameMatchList(summoner, form.NumberOfGames)
-                    : matchHistoryService.GetGameMatchList(summoner, form.NumberOfGames, form.Queue);
+                    ? matchHistoryService.GetMatchlist(summoner, form.NumberOfGames)
+                    : matchHistoryService.GetMatchlist(summoner, form.NumberOfGames, form.Queue);
 
                 var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
                 var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
@@ -140,7 +140,7 @@ namespace dotNetMVCLeagueApp.Controllers {
                 var summonerProfileDto = summonerProfileStatsService.GetSummonerProfileDto(summoner);
 
                 var matchHistory =
-                    matchHistoryService.GetGameMatchList(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
+                    matchHistoryService.GetMatchlist(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
 
                 var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
                 var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);

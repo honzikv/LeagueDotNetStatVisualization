@@ -20,10 +20,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         private readonly RiotApiRepository riotApiRepository;
         private readonly MatchRepository matchRepository;
         private readonly MatchInfoSummonerInfoRepository matchSummonerRepository;
-        private readonly MatchTimelineRepository matchTimelineRepository;
         private readonly SummonerRepository summonerRepository;
-
-        private readonly RiotApiUpdateConfig apiUpdateConfig;
 
         private readonly ILogger<MatchHistoryService> logger;
 
@@ -31,18 +28,14 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
             RiotApiRepository riotApiRepository,
             MatchRepository matchRepository,
             MatchInfoSummonerInfoRepository matchSummonerRepository,
-            MatchTimelineRepository matchTimelineRepository,
             SummonerRepository summonerRepository,
-            RiotApiUpdateConfig apiUpdateConfig,
             ILogger<MatchHistoryService> logger
         ) {
             this.riotApiRepository = riotApiRepository;
             this.logger = logger;
-            this.matchTimelineRepository = matchTimelineRepository;
             this.matchRepository = matchRepository;
             this.matchSummonerRepository = matchSummonerRepository;
             this.summonerRepository = summonerRepository;
-            this.apiUpdateConfig = apiUpdateConfig;
         }
 
         /// <summary>
@@ -51,7 +44,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         /// <param name="summoner">summoner, pro ktereho match list hledame</param>
         /// <param name="numberOfGames">pocet her</param>
         /// <returns></returns>
-        public List<MatchModel> GetGameMatchList(SummonerModel summoner, int numberOfGames) {
+        public List<MatchModel> GetMatchlist(SummonerModel summoner, int numberOfGames) {
             logger.LogDebug($"Getting games for {summoner}");
 
             // Pokud byl v DateTime.MinValue tak to indikuje, ze je summoner prave ziskany z api,
@@ -61,15 +54,15 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
                 : GetNMatches(summoner, numberOfGames);
         }
 
-        public List<MatchModel> GetGameMatchList(SummonerModel summoner, int numberOfGames, string queueType) {
+        public List<MatchModel> GetMatchlist(SummonerModel summoner, int numberOfGames, string queueType) {
             return GetNMatches(summoner, numberOfGames, queueType);
         }
 
         private List<MatchModel> GetNMatches(SummonerModel summoner, int numberOfGames)
-            => matchRepository.GetNMatches(summoner, numberOfGames).ToList();
+            => matchRepository.GetNMatchByDateTimeDescending(summoner, numberOfGames);
 
         private List<MatchModel> GetNMatches(SummonerModel summoner, int numberOfGames, string queueType)
-            => matchRepository.GetNMatchesByQueueType(summoner, queueType, numberOfGames).ToList();
+            => matchRepository.GetNMatchesByQueueType(summoner, queueType, numberOfGames);
 
         /// <summary>
         /// Pridani nebo update MatchInfo
@@ -113,39 +106,6 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         public List<MatchModel> UpdateGameMatchListAsync(SummonerModel summoner, int numberOfGames)
             => UpdateMatchList(summoner, numberOfGames).GetAwaiter().GetResult();
 
-        // /// <summary>
-        // /// Ziska match list z Riot api a prida ho do Db
-        // /// </summary>
-        // /// <param name="summoner">Summoner, pro ktereho zapasy hledame</param>
-        // /// <param name="numberOfGames">Pocet zapasu, ktery se ma nacist</param>
-        // /// <returns></returns>
-        // private async Task<List<MatchModel>> UpdateMatchList1(SummonerModel summoner, int numberOfGames) {
-        //     if (!apiUpdateConfig.IsSummonerUpdateable(summoner)) {
-        //         throw new ActionNotSuccessfulException(
-        //             "Error, summoner cannot be updated, " +
-        //             $"try again in: {apiUpdateConfig.GetNextUpdateTime(summoner).TotalSeconds} seconds.");
-        //     }
-        //
-        //     // Await from api
-        //     logger.LogDebug("Getting games from API");
-        //     var games = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
-        //         Region.Get(summoner.Region),
-        //         numberOfGames);
-        //
-        //     logger.LogDebug("Games from API obtained, updating/adding to db");
-        //     // Nektere zaznamy o hrach uz mohou v databazi existovat, proto misto toho pridame pouze hrace k dane hre
-        //     // aby bylo v DB co nejmene udaju
-        //     var tasks = new List<Task<MatchModel>>(games.Count);
-        //     tasks.AddRange(games.Select(match => AddOrUpdateMatch(summoner, match)));
-        //
-        //     var result = await Task.WhenAll(tasks); // Pockame dokud nebudou vsechny akce hotove
-        //     logger.LogDebug("All tasks were awaited, match list is updated and ready to be sent");
-        //
-        //     await summonerRepository.Update(summoner);
-        //
-        //     return result.ToList();
-        // }
-
         private async Task<List<MatchModel>> UpdateMatchList(SummonerModel summoner, int numberOfGames) {
             var matchList = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
                 Region.Get(summoner.Region), numberOfGames);
@@ -157,6 +117,28 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
 
             summoner.LastUpdate = DateTime.Now;
             await summonerRepository.Update(summoner);
+
+            return result;
+        }
+
+        private async Task<List<MatchModel>> GetMatchlist(SummonerModel summoner, int numberOfGames, int skip) {
+            var matchList = matchRepository.GetNMatchByDateTimeDescending(summoner, numberOfGames, skip);
+            
+            if (matchList.Count == numberOfGames) {
+                return matchList;
+            }
+
+            var oldestDateMatch = matchList[~1]; // nejstarsi datum je posledni, to pouzijeme k ziskani
+            // her z api, protoze muze byt pouzito jako parametr
+
+            var matchesFromApi = await riotApiRepository.GetMatchListFromApiByDateTimeDescending(
+                summoner.EncryptedAccountId, Region.Get(summoner.Region), numberOfGames, oldestDateMatch.PlayTime);
+            
+            // Zde "aktualizaci" nepocitame
+            var result = new List<MatchModel>();
+            foreach (var match in matchList) {
+                result.Add(await AddOrUpdateMatch(summoner, match));
+            }
 
             return result;
         }

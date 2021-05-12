@@ -23,7 +23,7 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private const bool UseLiveReload = false;
+        private const bool UseLiveReload = true;
 
         public IConfiguration Configuration { get; }
 
@@ -34,7 +34,7 @@ namespace dotNetMVCLeagueApp {
                 options.UseSqlite(Configuration.GetConnectionString("LeagueStatsDbSqliteConnString"));
                 options.UseLazyLoadingProxies();
             });
-            services.AddLiveReload();
+            
 
             // Puvodni SQL Express server
             // services.AddDbContext<LeagueDbContext>(options => {
@@ -53,10 +53,21 @@ namespace dotNetMVCLeagueApp {
                 .AddEntityFrameworkStores<LeagueDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
+            
+            // Nastaveni restrikci, protoze Microsoft veri tomu, ze nekdo bude realne vyzadovat po uzivateli
+            // nenumericky znak v heslu
+            services.Configure<IdentityOptions>(options => {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+                
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+            });
 
+            services.AddLiveReload();
+            
             // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllersWithViews();
 
             // Nastaveni rootu pro json soubory s konfiguraci assetu
             Configuration["Assets:JsonRoot"] =
@@ -68,15 +79,7 @@ namespace dotNetMVCLeagueApp {
             });
             services.AddRazorPages();
 
-            // Nastaveni restrikci, protoze Microsoft veri tomu, ze nekdo bude realne vyzadovat po uzivateli
-            // nenumericky znak v heslu
-            services.Configure<IdentityOptions>(options => {
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 8;
-                
-                options.Password.RequireDigit = true;
-                options.Password.RequireUppercase = true;
-            });
+            
 
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);

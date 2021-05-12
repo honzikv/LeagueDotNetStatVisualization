@@ -5,6 +5,7 @@ using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
     public class SummonerOverviewDto {
         
+        
         public string QueueType { get; }
 
         public SummonerProfileDto Summoner { get; }

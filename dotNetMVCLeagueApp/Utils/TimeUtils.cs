@@ -20,5 +20,11 @@ namespace dotNetMVCLeagueApp.Utils {
         public static TimeSpan ConvertFrameTimeToTimeSpan(long frameTime) => TimeSpan.FromMilliseconds(frameTime);
 
         public static TimeSpan GetTimeFromToday(DateTime playTime) => DateTime.Now - playTime;
+
+        public static long ConvertDateTimeToMillis(DateTime dateTime) {
+            var universalTime = dateTime.ToUniversalTime();
+            var dateTimeOffset = new DateTimeOffset(universalTime);
+            return dateTimeOffset.ToUnixTimeMilliseconds();
+        }
     }
 }

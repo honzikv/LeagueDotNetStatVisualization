@@ -79,7 +79,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
 
             // Ziskame match list ze sluzby
-            var matchList = matchHistoryService.GetGameMatchList(summoner, 20);
+            var matchList = matchHistoryService.GetMatchlist(summoner, 20);
 
             logger.LogDebug($"Summoner: {summoner}");
             // Vytvorime seznam headeru pro view
