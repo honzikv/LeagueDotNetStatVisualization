@@ -63,10 +63,11 @@ namespace dotNetMVCLeagueApp {
             ));
 
             // Services - wrapper nad repozitari, ktery se vola z controlleru
-            services.AddScoped<SummonerInfoService>(); // Pro info o hracich
+            services.AddScoped<SummonerService>(); // Pro info o hracich
             services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchTimelineService>();
+            services.AddScoped<MatchService>();
         }
     }
 }

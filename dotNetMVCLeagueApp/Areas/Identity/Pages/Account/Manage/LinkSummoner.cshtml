@@ -2,6 +2,34 @@
 @model dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage.LinkSummoner
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Link Summoner";
+    ViewData["ActivePage"] = ManageNavPages.LinkSummoner;
 }
 
+<h4>@ViewData["Title"]</h4>
+<partial name="_StatusMessage" model="Model.StatusMessage"/>
+<div class="row">
+    <div class="col-md-6">
+        <form id="link-summoner" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.SummonerName"></label>
+                <input asp-for="Input.SummonerName" class="form-control"/>
+                <span asp-validation-for="Input.SummonerName"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Server"></label>
+                <select class="browser-default custom-select rounded-corners-small" asp-for="Input.Server">
+                    @foreach (var (_, server) in Model.QueryableServers) {
+                        <option value="@server">@server</option>
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

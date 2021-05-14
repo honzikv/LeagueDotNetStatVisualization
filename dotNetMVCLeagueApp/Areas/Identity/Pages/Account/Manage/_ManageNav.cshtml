@@ -1,9 +1,6 @@
 @using dotNetMVCLeagueApp.Areas.Identity.Data
 @inject SignInManager<ApplicationUser> signInManager
-@{
-    var hasExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).Any();
-}
-<ul class="nav nav-pills flex-column">
+<ul class="nav nav-pills nav-pills-blue flex-column">
     <li class="nav-item">
         <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a>
     </li>
@@ -14,6 +11,6 @@
         <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"> </a>
+        <a class="nav-link @ManageNavPages.SummonerLinkNavClass(ViewContext)" id="change-summoner" asp-page="./LinkSummoner">Link Summoner</a>
     </li>
 </ul>

@@ -17,7 +17,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="n">Pocet zapasu</param>
         /// <param name="start">Zacatek</param>
         /// <returns>Seznam s N nebo mene entitami</returns>
-        public List<MatchModel> GetNMatchByDateTimeDescending(SummonerModel summoner, int n, int start = 0) =>
+        public List<MatchModel> GetNMatchesByDateTimeDesc(SummonerModel summoner, int n, int start = 0) =>
             LeagueDbContext.MatchToSummonerModels
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
                 .OrderByDescending(match => match.Match.PlayTime)
@@ -34,7 +34,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="n">Pocet zapasu</param>
         /// <param name="start">Zacatek - kolik zapasu se preskoci</param>
         /// <returns></returns>
-        public List<MatchModel> GetNMatchesByQueueType(SummonerModel summoner, string queueType, int n,
+        public List<MatchModel> GetNMatchesByQueueTypeAndDateTimeDesc(SummonerModel summoner, string queueType, int n,
             int start = 0)
             => LeagueDbContext.MatchToSummonerModels
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id &&
@@ -44,5 +44,6 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .Take(n) // Max N prvku
                 .ToList() // Chceme list (nebo cokoliv co je enumerable)
                 .ConvertAll(matchSummoner => matchSummoner.Match); // Mapping na MatchModel
+        
     }
 }

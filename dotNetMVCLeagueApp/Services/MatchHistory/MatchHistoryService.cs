@@ -37,6 +37,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
             this.matchSummonerRepository = matchSummonerRepository;
             this.summonerRepository = summonerRepository;
         }
+        
 
         /// <summary>
         /// Ziska seznam zapasu pro daneho uzivatele
@@ -59,10 +60,10 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         }
 
         private List<MatchModel> GetNMatches(SummonerModel summoner, int numberOfGames)
-            => matchRepository.GetNMatchByDateTimeDescending(summoner, numberOfGames);
+            => matchRepository.GetNMatchesByDateTimeDesc(summoner, numberOfGames);
 
         private List<MatchModel> GetNMatches(SummonerModel summoner, int numberOfGames, string queueType)
-            => matchRepository.GetNMatchesByQueueType(summoner, queueType, numberOfGames);
+            => matchRepository.GetNMatchesByQueueTypeAndDateTimeDesc(summoner, queueType, numberOfGames);
 
         /// <summary>
         /// Pridani nebo update MatchInfo
@@ -122,7 +123,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
         }
 
         private async Task<List<MatchModel>> GetMatchlist(SummonerModel summoner, int numberOfGames, int skip) {
-            var matchList = matchRepository.GetNMatchByDateTimeDescending(summoner, numberOfGames, skip);
+            var matchList = matchRepository.GetNMatchesByDateTimeDesc(summoner, numberOfGames, skip);
             
             if (matchList.Count == numberOfGames) {
                 return matchList;
@@ -130,6 +131,8 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
 
             var oldestDateMatch = matchList[~1]; // nejstarsi datum je posledni, to pouzijeme k ziskani
             // her z api, protoze muze byt pouzito jako parametr
+
+            var count = numberOfGames - matchList.Count;
 
             var matchesFromApi = await riotApiRepository.GetMatchListFromApiByDateTimeDescending(
                 summoner.EncryptedAccountId, Region.Get(summoner.Region), numberOfGames, oldestDateMatch.PlayTime);
@@ -142,5 +145,6 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
 
             return result;
         }
+        
     }
 }

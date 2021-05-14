@@ -27,20 +27,20 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
-        private readonly SummonerInfoService summonerInfoService;
+        private readonly SummonerService summonerService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            SummonerInfoService summonerInfoService,
+            SummonerService summonerService,
             IEmailSender emailSender) {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
-            this.summonerInfoService = summonerInfoService;
+            this.summonerService = summonerService;
             this.emailSender = emailSender;
-            QueryableServers = summonerInfoService.GetQueryableServers;
+            QueryableServers = summonerService.GetQueryableServers;
         }
 
         public Dictionary<string, string> QueryableServers { get; }
@@ -106,9 +106,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             try {
                 if (Input.SummonerName is not null) {
                     var region = Region.Get(Input.Server);
-                    var summoner = summonerInfoService.GetSummonerInfoAsync(Input.SummonerName, region);
+                    var summoner = summonerService.GetSummonerAsync(Input.SummonerName, region);
 
-                    if (await summonerInfoService.IsSummonerTaken(summoner)) {
+                    if (await summonerService.IsSummonerTaken(summoner)) {
                         ModelState.AddModelError("SummonerName", "This summoner is already taken");
                     }
 

@@ -14,18 +14,18 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <returns></returns>
         public static string GetLargestMultiKill(PlayerStatsModel playerStats) {
             if (playerStats.PentaKills > 0) {
-                return GameConstants.PentaKill;
+                return ServerConstants.PentaKill;
             }
 
             if (playerStats.QuadraKills > 0) {
-                return GameConstants.QuadraKill;
+                return ServerConstants.QuadraKill;
             }
 
             if (playerStats.TripleKills > 0) {
-                return GameConstants.TripleKill;
+                return ServerConstants.TripleKill;
             }
 
-            return playerStats.DoubleKills > 0 ? GameConstants.DoubleKill : null; // Pokud zadny streak tak null
+            return playerStats.DoubleKills > 0 ? ServerConstants.DoubleKill : null; // Pokud zadny streak tak null
         }
 
         /// <summary>
@@ -90,11 +90,11 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <returns></returns>
         public static string GetRole(string role, string lane) =>
             role switch {
-                GameConstants.RoleJg when lane == GameConstants.LaneJg => GameConstants.Jg,
-                GameConstants.RoleAdc when lane == GameConstants.LaneBot => GameConstants.Adc,
-                GameConstants.RoleMid when lane == GameConstants.LaneMid => GameConstants.Mid,
-                GameConstants.RoleTop when lane == GameConstants.LaneTop => GameConstants.Top,
-                _ => GameConstants.Sup
+                ServerConstants.RoleJg when lane == ServerConstants.LaneJg => ServerConstants.Jg,
+                ServerConstants.RoleAdc when lane == ServerConstants.LaneBot => ServerConstants.Adc,
+                ServerConstants.RoleMid when lane == ServerConstants.LaneMid => ServerConstants.Mid,
+                ServerConstants.RoleTop when lane == ServerConstants.LaneTop => ServerConstants.Top,
+                _ => ServerConstants.Sup
             };
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <param name="matchInfoGameDuration">Doba trvani hry v sekundach - z Riot Api</param>
         /// <returns></returns>
         public static bool IsRemake(long matchInfoGameDuration) =>
-            TimeSpan.FromSeconds(matchInfoGameDuration) <= GameConstants.GameDurationForRemake;
+            TimeSpan.FromSeconds(matchInfoGameDuration) <= ServerConstants.GameDurationForRemake;
 
         public static void UpdateStatTotals(GameListStats stats, MatchModel match, PlayerModel player,
             TeamStatsModel playerTeam) {

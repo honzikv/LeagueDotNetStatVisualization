@@ -1,0 +1,25 @@
+﻿@using dotNetMVCLeagueApp.Controllers
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.MatchListDto
+
+
+
+<div id="matchOverview">
+    @{ await Html.RenderPartialAsync("./Partial/_MatchListOverviewPartial", Model.MatchListOverview); }
+</div>
+<div id="matches">
+    @{
+        var renders = new List<Task>(Model.MatchHeaders.Count);
+        renders.AddRange(Model.MatchHeaders.Select(match => Html.RenderPartialAsync("./Partial/_MatchHeaderPartial", match)));
+        await Task.WhenAll(renders);
+    }
+    <div id="tail">
+        
+    </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-around" id="show-more">
+    <button class="btn rounded-corners-small button-dark button-dark-primary">
+        <span class="m-4">Show More</span>
+    </button>
+</div>

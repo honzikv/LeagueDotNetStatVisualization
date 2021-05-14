@@ -428,6 +428,10 @@
       <_ContentIncludedByDefault Remove="Views\Shared\Partial\_MatchListOverviewPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Shared\Partial\_MatchListPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Shared\Partial\_SummonerInfoPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TestCore\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TestCore\MatchHistory.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TestCore\Search.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TestCore\Summoner.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -436,6 +440,7 @@
 
     <ItemGroup>
       <Folder Include="AdobeXd" />
+      <Folder Include="Data\FrontendDtos\Summoner" />
       <Folder Include="Migrations" />
     </ItemGroup>
 

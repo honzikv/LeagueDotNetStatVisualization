@@ -102,8 +102,8 @@ namespace dotNetMVCLeagueApp.Repositories {
                 }
 
                 // Jinak iterujeme pres vsechny, vybereme Flex a Solo a vratime
-                return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == GameConstants.RankedFlex ||
-                                                          leagueEntry.QueueType == GameConstants.RankedSolo)
+                return leagueEntries.Where(leagueEntry => leagueEntry.QueueType == ServerConstants.RankedFlex ||
+                                                          leagueEntry.QueueType == ServerConstants.RankedSolo)
                     .Select(leagueEntry => mapper.Map<QueueInfoModel>(leagueEntry))
                     .ToList();
             }
@@ -122,7 +122,7 @@ namespace dotNetMVCLeagueApp.Repositories {
             var result = mapper.Map<MatchModel>(match); // mapping Match na MatchInfoModel (pomoci automapperu)
             result.Id = match.GameId; // Nastavime id
             result.PlayTime = TimeUtils.ConvertFromMillisToDateTime(match.GameCreation);
-            result.QueueType = GameConstants.GetQueueNameFromQueueId(match.QueueId);
+            result.QueueType = ServerConstants.GetQueueNameFromQueueId(match.QueueId);
             logger.LogDebug(result.ToString());
 
             // Mapping vnorenych objektu - tymove statistiky a hraci
@@ -211,6 +211,20 @@ namespace dotNetMVCLeagueApp.Repositories {
             }
         }
 
+        public async Task<List<MatchModel>> GetMatchHistoryFromDateTimeDesc(SummonerModel summoner, Region region,
+            int numberOfGames, DateTime start, int? queueType = null) {
+            logger.LogDebug($"Getting match history for {summoner.Name} @ {region.Key}");
+
+            var matchHistory = await riotApi.MatchV4.GetMatchlistAsync(
+                region,
+                summoner.EncryptedAccountId,
+                endIndex: numberOfGames,
+                endTime: TimeUtils.ConvertDateTimeToMillis(start),
+                queue: queueType is not null ? new[] {(int) queueType} : ServerConstants.RelevantQueues
+            );
+            return await MapApiMatchlist(matchHistory, region);
+        }
+
         /// <summary>
         /// Ziska numberOfGames zapasu pro dany encryptedAccountId z daneho serveru
         /// </summary>
@@ -231,7 +245,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                     encryptedAccountId: encryptedAccountId,
                     beginIndex: beginIdx,
                     endIndex: endIdx + numberOfGames,
-                    queue: GameConstants.RelevantQueues // Chceme pouze blind pick, flex, draft a soloq
+                    queue: ServerConstants.RelevantQueues // Chceme pouze blind pick, flex, draft a soloq
                 );
                 // Pokud zadne hry nejsou, vratime prazdny seznam
                 return await MapApiMatchlist(matchlist, region);

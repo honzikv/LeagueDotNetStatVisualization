@@ -1,0 +1,42 @@
+﻿@page
+@model dotNetMVCLeagueApp.Pages.Home
+
+@{
+    Layout = "_Layout";
+    
+}
+<form method="get" action="/Profile">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-4 mt-4">
+            <h1 class="heading-search  justify-content-center text-center ">Search</h1>
+
+            <select class="browser-default mb-1 custom-select rounded-corners-small"
+                    id="server" name="server">
+                @foreach (var (queryKey, serverName) in Model.ServerList) {
+                    <option name="@queryKey">@serverName</option>
+                }
+            </select>
+
+            <input type="text" minlength="1" required
+                   class="form-control rounded-corners-small mb-2 text-center" id="name"
+                   placeholder="Summoner name" name="name"/>
+
+            <button type="submit" class="btn rounded-corners-small button-dark button-dark-primary float-right">
+                <i class="fa fa-search"></i>
+            </button>
+
+        </div>
+    </div>
+</form>
+
+
+@if (Model.ErrorMessage is not null) {
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div id="ErrorMessage" class="alert alert-danger alert-error text-center m-4 w-25" role="alert">
+                @Model.ErrorMessage
+            </div>
+        </div>
+
+    </div>
+}

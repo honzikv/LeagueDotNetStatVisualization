@@ -4,7 +4,6 @@ using System.Linq;
 using Castle.Core;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Const;
-using dotNetMVCLeagueApp.Controllers.Forms;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services.MatchHistory;
@@ -15,7 +14,7 @@ using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Controllers {
     public class SummonerController : Controller {
-        private readonly SummonerInfoService summonerInfoService;
+        private readonly SummonerService summonerService;
         private readonly MatchHistoryService matchHistoryService;
         private readonly SummonerProfileStatsService summonerProfileStatsService;
         private readonly ILogger<SummonerController> logger;
@@ -24,9 +23,9 @@ namespace dotNetMVCLeagueApp.Controllers {
         /// Vsechny typy her, ktere lze filtrovat
         /// </summary>
         public static readonly List<Pair<string, string>> Queues = new() {
-            new Pair<string, string>(GameConstants.AllGamesDbValue, GameConstants.AllGamesText),
-            new Pair<string, string>(GameConstants.RankedSoloDbValue, GameConstants.RankedSoloText),
-            new Pair<string, string>(GameConstants.RankedFlexDbValue, GameConstants.RankedFlexText)
+            new Pair<string, string>(ServerConstants.AllGamesDbValue, ServerConstants.AllGamesText),
+            new Pair<string, string>(ServerConstants.RankedSoloDbValue, ServerConstants.RankedSoloText),
+            new Pair<string, string>(ServerConstants.RankedFlexDbValue, ServerConstants.RankedFlexText)
         };
 
         public class MatchListFilterForm {
@@ -42,12 +41,12 @@ namespace dotNetMVCLeagueApp.Controllers {
         private const string ServerOrSummonerNull = "Error, either summoner does not exist or the server is invalid";
 
         public SummonerController(
-            SummonerInfoService summonerInfoService,
+            SummonerService summonerService,
             MatchHistoryService matchHistoryService,
             SummonerProfileStatsService summonerProfileStatsService,
             ILogger<SummonerController> logger) {
             this.summonerProfileStatsService = summonerProfileStatsService;
-            this.summonerInfoService = summonerInfoService;
+            this.summonerService = summonerService;
             this.matchHistoryService = matchHistoryService;
             this.logger = logger;
         }
@@ -70,8 +69,8 @@ namespace dotNetMVCLeagueApp.Controllers {
 
             try {
                 var region = Region.Get(form.Server);
-                var summoner = summonerInfoService.GetSummonerInfoAsync(form.Name, region);
-                var matchHistory = form.Queue == GameConstants.AllGamesDbValue
+                var summoner = summonerService.GetSummonerAsync(form.Name, region);
+                var matchHistory = form.Queue == ServerConstants.AllGamesDbValue
                     ? matchHistoryService.GetMatchlist(summoner, form.NumberOfGames)
                     : matchHistoryService.GetMatchlist(summoner, form.NumberOfGames, form.Queue);
 
@@ -87,37 +86,37 @@ namespace dotNetMVCLeagueApp.Controllers {
             }
         }
 
-        [HttpGet]
-        public IActionResult Refresh(string name, string server) {
-            if (name.IsNullOrEmpty() || server.IsNullOrEmpty() ||
-                !GameConstants.QueryableServers.ContainsKey(server.ToLower())) {
-                TempData["ErrorMessage"] = ServerOrSummonerNull;
-                return RedirectToAction("Index", "Home");
-            }
-
-            try {
-                var region = Region.Get(server);
-                var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
-                summonerInfoService.UpdateSummonerInfoAsync(summoner.Id);
-                matchHistoryService.UpdateGameMatchListAsync(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
-                return RedirectToAction("Index", "Summoner", new {name = summoner.Name, server = server});
-            }
-            catch (Exception ex) {
-                TempData["ErrorMessage"] = ex.Message;
-                switch (ex) {
-                    case ActionNotSuccessfulException: {
-                        return RedirectToAction("Index", "Summoner", new {name = name, server = server});
-                    }
-                    case RedirectToHomePageException: {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    default: {
-                        TempData["ErrorMessage"] = null;
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-            }
-        }
+        // [HttpGet]
+        // public IActionResult Refresh(string name, string server) {
+        //     if (name.IsNullOrEmpty() || server.IsNullOrEmpty() ||
+        //         !ServerConstants.QueryableServers.ContainsKey(server.ToLower())) {
+        //         TempData["ErrorMessage"] = ServerOrSummonerNull;
+        //         return RedirectToAction("Index", "Root");
+        //     }
+        //
+        //     try {
+        //         var region = Region.Get(server);
+        //         var summoner = summonerService.GetSummonerAsync(name, region);
+        //         summonerService.UpdateSummonerInfoAsync(summoner.Id);
+        //         matchHistoryService.UpdateGameMatchListAsync(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
+        //         return RedirectToAction("Index", "Summoner", new {name = summoner.Name, server = server});
+        //     }
+        //     catch (Exception ex) {
+        //         TempData["ErrorMessage"] = ex.Message;
+        //         switch (ex) {
+        //             case ActionNotSuccessfulException: {
+        //                 return RedirectToAction("Index", "Summoner", new {name = name, server = server});
+        //             }
+        //             case RedirectToHomePageException: {
+        //                 return RedirectToAction("Index", "Root");
+        //             }
+        //             default: {
+        //                 TempData["ErrorMessage"] = null;
+        //                 return RedirectToAction("Index", "Root");
+        //             }
+        //         }
+        //     }
+        // }
 
 
         /// <summary>
@@ -129,14 +128,14 @@ namespace dotNetMVCLeagueApp.Controllers {
         [HttpGet]
         public IActionResult Index(string name, string server) {
             if (name.IsNullOrEmpty() || server.IsNullOrEmpty() ||
-                !GameConstants.QueryableServers.ContainsKey(server.ToLower())) {
+                !ServerConstants.QueryableServers.ContainsKey(server.ToLower())) {
                 TempData["ErrorMessage"] = ServerOrSummonerNull;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Root");
             }
 
             try {
                 var region = Region.Get(server);
-                var summoner = summonerInfoService.GetSummonerInfoAsync(name, region);
+                var summoner = summonerService.GetSummonerAsync(name, region);
                 var summonerProfileDto = summonerProfileStatsService.GetSummonerProfileDto(summoner);
 
                 var matchHistory =
@@ -146,7 +145,7 @@ namespace dotNetMVCLeagueApp.Controllers {
                 var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
 
                 return View(
-                    new SummonerOverviewDto(summonerProfileDto, GameConstants.AllGames, matchListOverview,
+                    new SummonerOverviewDto(summonerProfileDto, ServerConstants.AllGames, matchListOverview,
                         matchHeaders)
                 );
             }
@@ -155,7 +154,7 @@ namespace dotNetMVCLeagueApp.Controllers {
             catch (Exception exception) {
                 if (exception is ActionNotSuccessfulException or RiotApiException) {
                     TempData["ErrorMessage"] = exception.Message;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Root");
                 }
 
                 logger.LogCritical(exception.Message);

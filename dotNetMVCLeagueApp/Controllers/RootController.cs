@@ -13,20 +13,18 @@ namespace dotNetMVCLeagueApp.Controllers {
     /// <summary>
     /// Controller pro domovskou stranku (aktual
     /// </summary>
-    public class HomeController : Controller {
-        private readonly ILogger<HomeController> logger;
-        private readonly SummonerInfoService summonerInfoService;
+    public class RootController : Controller {
+        private readonly SummonerService summonerService;
 
-        public HomeController(ILogger<HomeController> logger, SummonerInfoService summonerInfoService) {
-            this.logger = logger;
-            this.summonerInfoService = summonerInfoService;
+        public RootController(ILogger<RootController> logger, SummonerService summonerService) {
+            this.summonerService = summonerService;
         }
 
 
         public IActionResult Index() {
             return View(
                 new HomePageDto {
-                    ServerList = summonerInfoService.GetQueryableServers,
+                    ServerList = summonerService.GetQueryableServers,
                     ErrorMessage = (string) TempData["ErrorMessage"]
                 });
         }

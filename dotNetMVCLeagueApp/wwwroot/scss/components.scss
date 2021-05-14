@@ -115,6 +115,20 @@ $color-loss-light: darken($color-loss, 10%);
     background-color: $color-loss;
 }
 
+.btn-primary-blue {
+    color: $color-text-primary-white !important;
+    background: $color-primary-blue !important;
+}
+
+.nav-pills {
+    font-family: OpenSans, "Roboto", sans-serif;
+}
+
+.nav-pills-blue .active a,
+.nav-pills-blue .active a:hover {
+    background-color: $color-primary-blue;
+}
+
 .dot-win {
     background-color: $color-win;
 }

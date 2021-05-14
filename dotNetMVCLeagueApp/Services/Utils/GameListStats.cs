@@ -32,11 +32,11 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// Roli sledujeme pomoci slovniku
         /// </summary>
         public Dictionary<string, int> Roles { get; } = new() {
-            {GameConstants.Top, 0},
-            {GameConstants.Mid, 0},
-            {GameConstants.Adc, 0},
-            {GameConstants.Sup, 0},
-            {GameConstants.Jg, 0}
+            {ServerConstants.Top, 0},
+            {ServerConstants.Mid, 0},
+            {ServerConstants.Adc, 0},
+            {ServerConstants.Sup, 0},
+            {ServerConstants.Jg, 0}
         };
 
         public Dictionary<int, int> Champions { get; } = new();

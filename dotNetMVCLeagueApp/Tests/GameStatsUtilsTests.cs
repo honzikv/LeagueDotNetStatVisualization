@@ -21,7 +21,7 @@ namespace dotNetMVCLeagueApp.Tests {
                 DoubleKills = 1
             };
 
-            var expected = GameConstants.PentaKill;
+            var expected = ServerConstants.PentaKill;
             var actual = GameStatsUtils.GetLargestMultiKill(playerStats);
 
             Assert.Equal(expected, actual);
@@ -159,13 +159,13 @@ namespace dotNetMVCLeagueApp.Tests {
         public void TestGetTwoMostPlayedRoles_TopMid() {
             var stats = new GameListStats {
                 Roles = {
-                    [GameConstants.Top] = 10, [GameConstants.Mid] = 8, [GameConstants.Jg] = 1, [GameConstants.Adc] = 3
+                    [ServerConstants.Top] = 10, [ServerConstants.Mid] = 8, [ServerConstants.Jg] = 1, [ServerConstants.Adc] = 3
                 }
             };
 
             var mostPlayedRoles = GameStatsUtils.GetTwoMostPlayedRoles(stats.Roles);
-            Assert.Equal(mostPlayedRoles.Item1, GameConstants.Top);
-            Assert.Equal(mostPlayedRoles.Item2, GameConstants.Mid);
+            Assert.Equal(mostPlayedRoles.Item1, ServerConstants.Top);
+            Assert.Equal(mostPlayedRoles.Item2, ServerConstants.Mid);
         }
     }
 }

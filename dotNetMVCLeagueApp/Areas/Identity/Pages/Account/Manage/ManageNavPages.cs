@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
@@ -10,18 +7,21 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
 
         public static string Email => "Email";
 
-        public static string SummonerLink = "Link Summoner";
+        public static string LinkSummoner => "LinkSummoner";
 
         public static string ChangePassword => "ChangePassword";
-        
 
-        public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
+        public static string IndexNavClass(ViewContext viewContext) =>
+            PageNavClass(viewContext, Index);
 
-        public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
+        public static string EmailNavClass(ViewContext viewContext) =>
+            PageNavClass(viewContext, Email);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) =>
             PageNavClass(viewContext, ChangePassword);
 
+        public static string SummonerLinkNavClass(ViewContext viewContext) =>
+            PageNavClass(viewContext, LinkSummoner);
 
         private static string PageNavClass(ViewContext viewContext, string page) {
             var activePage = viewContext.ViewData["ActivePage"] as string

@@ -1,0 +1,67 @@
+﻿@page
+@model dotNetMVCLeagueApp.Pages.Profile
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Stats - {Model.SummonerData.Summoner.Name}";
+}
+
+@section Scripts {
+    <script>
+        const summoner = '@Model.SummonerData.Summoner.Name';
+        const server = '@Model.SummonerData.Summoner.Region';
+    </script>
+
+    <script src="~/js/Summoner/SummonerControllerAjax.js"></script>
+}
+
+<div class="row d-flex justify-content-around animate__animated animate__fadeIn">
+
+    <div class="col-lg-3 col-xs-12 order-xs-1 order-lg-0" id="summonerInfoPartial">
+        @{ await Html.RenderPartialAsync("./Partial/_SummonerInfoPartial", Model.SummonerData.Summoner); }
+    </div>
+
+
+    <div class="col-lg-auto col-xs-12 order-xs-2 order-lg-1">
+        <div id="matchListPartial">
+            @{ await Html.RenderPartialAsync("./Partial/_MatchListPartial", Model.SummonerData.MatchList); }
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-12 order-xs-0 order-lg-2 card-dark-text">
+        <div class="sticky pr-5">
+            <div class="row d-flex">
+                <button class="btn rounded-corners-small button-dark button-dark-secondary float-right ml-auto" type="button" data-toggle="collapse" data-target="#filter"
+                        aria-expanded="false" aria-controls="filter">
+                    Filter
+                </button>
+            </div>
+            <div class="collapse" id="filter">
+                <form method="post" id="formFilter" asp-controller="Summoner" asp-action="MatchList">
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <label class="" for="numberOfGames">Number of Games</label>
+                            <select class="browser-default custom-select mb-1 select-dark rounded-corners-small"
+                                    name="numberOfGames"
+                                    id="numberOfGames">
+                                @foreach (var numberOfGames in Model.NumberOfGames) {
+                                    <option value="@numberOfGames">@numberOfGames</option>
+                                }
+                            </select>
+
+                            <label class="mt-1" for="queueFilter">Queue Type</label>
+                            <select
+                                class="browser-default custom-select mb-1 select-dark rounded-corners-small" id="queueFilter">
+                                @foreach (var queue in Model.QueueFilters) {
+                                    <option value="@queue.Key">@queue.Value</option>
+                                }
+                            </select>
+
+                            <button type="submit" class="btn align-self-center float-right rounded-corners-small button-dark button-dark-primary">Show</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

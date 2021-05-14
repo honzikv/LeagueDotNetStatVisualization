@@ -7,6 +7,7 @@ using dotNetMVCLeagueApp.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MingweiSamuel.Camille.SummonerV4;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
     public partial class IndexModel : PageModel {
@@ -19,33 +20,43 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
+        
 
-        public string Username { get; set; }
 
         [TempData] public string StatusMessage { get; set; }
 
-        [BindProperty] public InputModel Input { get; set; }
+        public ProfileData UserData { get; set; }
 
-        public class InputModel {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+        public class ProfileData {
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+
+            [Display(Name = "Summoner Name")]
+            public string SummonerName { get; set; }
+
+            [Display(Name = "Server")]
+            public string Server { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user) {
             var userName = await userManager.GetUserNameAsync(user);
-            var phoneNumber = await userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
-
-            Input = new InputModel {
-                PhoneNumber = phoneNumber
-            };
+            UserData = user.Summoner is not null
+                ? new ProfileData {
+                    Username = userName,
+                    SummonerName = user.Summoner.Name,
+                    Server = user.Summoner.Region
+                }
+                : new ProfileData {
+                    Username = userName,
+                    SummonerName = "LULW",
+                    Server = "EUW"
+                };
         }
 
         public async Task<IActionResult> OnGetAsync() {
             var user = await userManager.GetUserAsync(User);
-            if (user == null) {
+            if (user is null) {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
@@ -53,29 +64,5 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync() {
-            var user = await userManager.GetUserAsync(User);
-            if (user == null) {
-                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-            }
-
-            if (!ModelState.IsValid) {
-                await LoadAsync(user);
-                return Page();
-            }
-
-            var phoneNumber = await userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber) {
-                var setPhoneResult = await userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded) {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
-
-            await signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
-        }
     }
 }

@@ -119,7 +119,8 @@ namespace dotNetMVCLeagueApp {
                     "default",
                     "{controller=Home}/{action=Index}/{id?}"
                 );
-                endpoints.MapRazorPages();
+                endpoints.MapRazorPages(
+                    );
             });
         }
     }

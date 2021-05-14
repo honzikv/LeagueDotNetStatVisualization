@@ -78,7 +78,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                 Kda = GameStatsUtils.GetKda(playerStats.Kills, playerStats.Deaths, playerStats.Assists),
                 PlayTime = TimeUtils.GetTimeFromToday(match.PlayTime),
                 Win = match.Teams.FirstOrDefault(
-                    team => team.TeamId == playerInfo.TeamId)?.Win == GameConstants.Win,
+                    team => team.TeamId == playerInfo.TeamId)?.Win == ServerConstants.Win,
                 Role = GameStatsUtils.GetRole(playerInfo.Role, playerInfo.Lane),
                 ChampionAsset = assetRepository.GetChampionAsset(playerInfo.ChampionId),
                 Items = new() {
@@ -293,7 +293,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             }
 
             // Jinak pricteme win / loss podle stringu
-            if (playerTeam.Win == GameConstants.Win) {
+            if (playerTeam.Win == ServerConstants.Win) {
                 matchListStats.GamesWon += 1;
             }
             else {
@@ -308,13 +308,13 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             var result = mapper.Map<SummonerProfileDto>(summoner);
 
             var soloqModel = summoner.QueueInfoList.FirstOrDefault(queue =>
-                queue.QueueType == GameConstants.RankedSolo);
+                queue.QueueType == ServerConstants.RankedSolo);
 
             var flexqModel = summoner.QueueInfoList.FirstOrDefault(queue =>
-                queue.QueueType == GameConstants.RankedFlex);
+                queue.QueueType == ServerConstants.RankedFlex);
 
-            result.SoloQueue = GetQueueInfoDto(soloqModel, GameConstants.RankedSoloDbValue);
-            result.FlexQueue = GetQueueInfoDto(flexqModel, GameConstants.RankedFlexDbValue);
+            result.SoloQueue = GetQueueInfoDto(soloqModel, ServerConstants.RankedSoloDbValue);
+            result.FlexQueue = GetQueueInfoDto(flexqModel, ServerConstants.RankedFlexDbValue);
             result.ProfileIconRelativeAssetPath = assetRepository.GetProfileIcon(summoner.ProfileIconId);
             return result;
         }
