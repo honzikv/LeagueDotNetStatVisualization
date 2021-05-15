@@ -6,25 +6,16 @@
     ViewData["Title"] = $"Stats - {Model.SummonerData.Summoner.Name}";
 }
 
-@section Scripts {
-    <script>
-        const summoner = '@Model.SummonerData.Summoner.Name';
-        const server = '@Model.SummonerData.Summoner.Region';
-    </script>
-
-    <script src="~/js/Summoner/SummonerControllerAjax.js"></script>
-}
-
 <div class="row d-flex justify-content-around animate__animated animate__fadeIn">
 
     <div class="col-lg-3 col-xs-12 order-xs-1 order-lg-0" id="summonerInfoPartial">
-        @{ await Html.RenderPartialAsync("./Partial/_SummonerInfoPartial", Model.SummonerData.Summoner); }
+        @{ await Html.RenderPartialAsync("Shared/Partial/_SummonerInfoPartial", Model.SummonerData.Summoner); }
     </div>
 
 
     <div class="col-lg-auto col-xs-12 order-xs-2 order-lg-1">
         <div id="matchListPartial">
-            @{ await Html.RenderPartialAsync("./Partial/_MatchListPartial", Model.SummonerData.MatchList); }
+            @{ await Html.RenderPartialAsync("Shared/Partial/_MatchListPartial", Model.SummonerData.MatchList); }
         </div>
     </div>
 

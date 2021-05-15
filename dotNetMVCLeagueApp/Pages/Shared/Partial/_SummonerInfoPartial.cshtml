@@ -16,15 +16,15 @@
     
     <div>
         @if (Model.SoloQueue is not null) {
-            await Html.RenderPartialAsync("./Partial/_RankCardPartial", Model.SoloQueue);
+            await Html.RenderPartialAsync("Shared/Partial/_RankCardPartial", Model.SoloQueue);
         }
         @if (Model.FlexQueue is not null) {
-            await Html.RenderPartialAsync("./Partial/_RankCardPartial", Model.FlexQueue);
+            await Html.RenderPartialAsync("Shared/Partial/_RankCardPartial", Model.FlexQueue);
         }
     </div>
     
     <div class="d-flex">
-        <a asp-controller="Summoner" asp-action="Refresh"
+        <a asp-page-handler="onRefresh"
            asp-route-name="@Model.Name"
            asp-route-server="@Model.Region"
            class="btn rounded-corners-small button-light button-red">Update</a>

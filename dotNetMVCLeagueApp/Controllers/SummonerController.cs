@@ -130,7 +130,8 @@ namespace dotNetMVCLeagueApp.Controllers {
             if (name.IsNullOrEmpty() || server.IsNullOrEmpty() ||
                 !ServerConstants.QueryableServers.ContainsKey(server.ToLower())) {
                 TempData["ErrorMessage"] = ServerOrSummonerNull;
-                return RedirectToAction("Index", "Root");
+                // return RedirectToAction("Index", "Root");
+                return null;
             }
 
             try {
@@ -154,7 +155,8 @@ namespace dotNetMVCLeagueApp.Controllers {
             catch (Exception exception) {
                 if (exception is ActionNotSuccessfulException or RiotApiException) {
                     TempData["ErrorMessage"] = exception.Message;
-                    return RedirectToAction("Index", "Root");
+                    // return RedirectToAction("Index", "Root");
+                    return null;
                 }
 
                 logger.LogCritical(exception.Message);

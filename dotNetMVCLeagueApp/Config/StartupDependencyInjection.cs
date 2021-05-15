@@ -36,8 +36,7 @@ namespace dotNetMVCLeagueApp {
                 SummonerSpellsFolderName = Configuration["Assets:SummonerSpells"],
                 RankedIconsFolderName = Configuration["Assets:RankedIcons"]
             });
-
-            // TODO: momentalne je na 0, nasledne bude jeste zmeneno
+            
             services.AddSingleton(_ => new RiotApiUpdateConfig(
                 TimeSpan.FromMinutes(1), 
                 TimeSpan.FromDays(30))

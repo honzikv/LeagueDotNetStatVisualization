@@ -2,9 +2,10 @@
 @import "colors";
 
 @mixin hoverFade {
-    transition: 0.5s;
+    transition: 0.5s !important;
     opacity: 60%;
     color: $primary-white;
+    text-decoration: none !important;
 }
 
 .navbar-header-text {
@@ -12,11 +13,25 @@
     font-size: 36px;
     color: $primary-white;
     text-transform: uppercase;
-    
+
     &:hover {
         @include hoverFade;
     }
 }
+
+.button-as-link {
+    background: none !important;
+    border: none;
+    margin: 0 !important;
+    text-transform: none !important;
+    cursor: pointer;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    text-decoration: none;
+    min-width: auto !important;
+    color: initial;
+}
+
 
 .navbar-background {
     background-color: $color-primary-blue;
@@ -25,10 +40,10 @@
 }
 
 .navbar-menu-item {
-    font-family: ProximaNova, sans-serif;
+    font-family: ProximaNova, sans-serif !important;
     font-size: 18px;
     color: $primary-white;
-    
+
     &:hover {
         @include hoverFade;
     }

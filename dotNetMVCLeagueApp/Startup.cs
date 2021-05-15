@@ -78,9 +78,7 @@ namespace dotNetMVCLeagueApp {
                 config.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddRazorPages();
-
             
-
             // Konfigurace uzivatelskeho dependency injection pro prehlednost
             ConfigureUserServices(services);
         }
@@ -113,7 +111,6 @@ namespace dotNetMVCLeagueApp {
             // Identity
             app.UseAuthentication();
             app.UseAuthorization();
-            
             app.UseEndpoints(endpoints => {
                 // // Deaktivovano, protoze aplikace controllery nakonec nepouziva
                 // endpoints.MapControllerRoute(
