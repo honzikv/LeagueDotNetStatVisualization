@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Home;
 using dotNetMVCLeagueApp.Data.Models;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Pages.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotNetMVCLeagueApp.Services;
@@ -31,7 +32,7 @@ namespace dotNetMVCLeagueApp.Controllers {
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }
