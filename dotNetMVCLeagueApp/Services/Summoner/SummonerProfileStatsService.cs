@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Castle.Core.Internal;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services.Utils;
 using dotNetMVCLeagueApp.Utils;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.MatchV4;
 

@@ -5,8 +5,8 @@ using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail;
 using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.PlayerDetail;
 using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Utils;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 
 namespace dotNetMVCLeagueApp.Services.MatchTimeline {
     /// <summary>

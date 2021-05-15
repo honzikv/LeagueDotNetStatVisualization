@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace dotNetMVCLeagueApp.Const {
+namespace dotNetMVCLeagueApp.Config {
     /// <summary>
     /// Obsahuje konstanty pro web server
     /// </summary>

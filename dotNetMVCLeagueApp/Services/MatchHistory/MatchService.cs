@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Logging;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Repositories;
@@ -125,7 +124,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
 
         public async Task<List<MatchModel>> UpdateMatchHistory(SummonerModel summoner, int numberOfGames) {
             var result = new List<MatchModel>();
-            var apiGames = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
+            var apiGames = await riotApiRepository.GetMatchHistoryFromApi(summoner.EncryptedAccountId,
                 Region.Get(summoner.Region), numberOfGames);
 
             foreach (var game in apiGames) {

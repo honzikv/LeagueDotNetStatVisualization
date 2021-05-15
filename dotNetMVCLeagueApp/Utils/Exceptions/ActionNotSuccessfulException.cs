@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNetMVCLeagueApp.Exceptions {
+namespace dotNetMVCLeagueApp.Utils.Exceptions {
     /// <summary>
     /// Vyhazuje se vetsinou v Service kdyz dojde k nejake chybe
     /// </summary>

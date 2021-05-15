@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
 

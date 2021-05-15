@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNetMVCLeagueApp.Exceptions {
+namespace dotNetMVCLeagueApp.Utils.Exceptions {
     /// <summary>
     /// Vyhazuje se, pokud se stane chyba pri komunikaci s Riot API
     /// </summary>

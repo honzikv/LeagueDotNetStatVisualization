@@ -8,8 +8,8 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Services.Summoner;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -40,7 +40,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             this.logger = logger;
             this.summonerService = summonerService;
             this.emailSender = emailSender;
-            QueryableServers = summonerService.GetQueryableServers;
+            QueryableServers = summonerService.QueryableServers;
         }
 
         public Dictionary<string, string> QueryableServers { get; }

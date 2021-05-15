@@ -48,9 +48,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                     Server = user.Summoner.Region
                 }
                 : new ProfileData {
-                    Username = userName,
-                    SummonerName = "LULW",
-                    Server = "EUW"
+                    Username = userName
                 };
         }
 

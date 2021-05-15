@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Utils;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille;
 using MingweiSamuel.Camille.Enums;
@@ -189,9 +189,9 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="region">server pro ktery hledame</param>
         /// <param name="numberOfGames">pocet her</param>
         /// <returns></returns>
-        public async Task<List<MatchModel>> GetMatchListFromApi(string encryptedAccountId, Region region,
+        public async Task<List<MatchModel>> GetMatchHistoryFromApi(string encryptedAccountId, Region region,
             int numberOfGames)
-            => await GetMatchListFromApi(encryptedAccountId, region, numberOfGames, null, 0);
+            => await GetMatchHistoryFromApi(encryptedAccountId, region, numberOfGames, null, 0);
 
         public async Task<List<MatchModel>> GetMatchListFromApiByDateTimeDescending(string encryptedAccountId,
             Region region, int numberOfGames, DateTime start) {
@@ -236,7 +236,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <returns>Seznam s namapovanymy objekty do db</returns>
         /// <exception cref="ActionNotSuccessfulException"></exception>
         private async Task<List<MatchModel>>
-            GetMatchListFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx,
+            GetMatchHistoryFromApi(string encryptedAccountId, Region region, int numberOfGames, int? beginIdx,
                 int endIdx) {
             try {
                 logger.LogDebug($"Geting matches for {region.Key} encrypted acc id: {encryptedAccountId}");

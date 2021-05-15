@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 
 namespace dotNetMVCLeagueApp.Services.Utils {
     /// <summary>

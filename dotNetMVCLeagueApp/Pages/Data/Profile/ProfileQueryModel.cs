@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 
 namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     /// <summary>

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Repositories;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
@@ -108,7 +106,7 @@ namespace dotNetMVCLeagueApp.Services.MatchHistory {
             => UpdateMatchList(summoner, numberOfGames).GetAwaiter().GetResult();
 
         private async Task<List<MatchModel>> UpdateMatchList(SummonerModel summoner, int numberOfGames) {
-            var matchList = await riotApiRepository.GetMatchListFromApi(summoner.EncryptedAccountId,
+            var matchList = await riotApiRepository.GetMatchHistoryFromApi(summoner.EncryptedAccountId,
                 Region.Get(summoner.Region), numberOfGames);
 
             var result = new List<MatchModel>();

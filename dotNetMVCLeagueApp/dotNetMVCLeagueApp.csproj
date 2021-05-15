@@ -432,6 +432,16 @@
       <_ContentIncludedByDefault Remove="Views\TestCore\MatchHistory.cshtml" />
       <_ContentIncludedByDefault Remove="Views\TestCore\Search.cshtml" />
       <_ContentIncludedByDefault Remove="Views\TestCore\Summoner.cshtml" />
+      <_ContentIncludedByDefault Remove="ApiSamples\debug.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\Match1.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\Match2.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\MatchList.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\MatchList2.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\MatchNormalGame.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\MorganaJungleInt.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\Timeline.json" />
+      <_ContentIncludedByDefault Remove="ApiSamples\Timeline2.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\Summoner\SummonerControllerAjax.js" />
     </ItemGroup>
 
     <ItemGroup>

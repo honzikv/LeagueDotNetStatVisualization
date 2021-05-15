@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNetMVCLeagueApp.Exceptions {
+namespace dotNetMVCLeagueApp.Utils.Exceptions {
     /// <summary>
     /// Typ vyjimky, kdy musime presmerovat uzivatele na domovskou stranku, protoze se stala chyba,
     /// kterou nelze opravit

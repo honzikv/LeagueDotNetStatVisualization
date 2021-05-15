@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Const;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Exceptions;
 using dotNetMVCLeagueApp.Repositories;
+using dotNetMVCLeagueApp.Utils;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
@@ -21,6 +21,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
         private readonly QueueInfoRepository queueInfoRepository;
         private readonly ApplicationUserRepository applicationUserRepository;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<SummonerService> logger;
 
         public SummonerService(
@@ -29,6 +30,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             RiotApiUpdateConfig riotApiUpdateConfig,
             QueueInfoRepository queueInfoRepository,
             ApplicationUserRepository applicationUserRepository,
+            UserManager<ApplicationUser> userManager,
             ILogger<SummonerService> logger
         ) {
             this.summonerRepository = summonerRepository;
@@ -36,10 +38,11 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             this.riotApiUpdateConfig = riotApiUpdateConfig;
             this.queueInfoRepository = queueInfoRepository;
             this.applicationUserRepository = applicationUserRepository;
+            this.userManager = userManager;
             this.logger = logger;
         }
 
-        public Dictionary<string, string> GetQueryableServers => ServerConstants.QueryableServers;
+        public readonly Dictionary<string, string> QueryableServers = ServerConstants.QueryableServers;
 
         /// <summary>
         /// Synchronizovana verze metody pro controller aby nemusel volat GetAwaiter a GetResult
@@ -111,8 +114,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                                                        $"in {(riotApiUpdateConfig.MinUpdateTimeSpan - diff).Seconds} " +
                                                        "seconds");
             }
-
-
+            
             // Ziskani aktualizovaneho profilu z Riot api
             var updatedSummoner =
                 await riotApiRepository.GetSummonerInfoFromEncryptedSummonerId(dbSummoner.EncryptedSummonerId, Region.Get(dbSummoner.Region));
@@ -143,8 +145,45 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         public async Task<bool> IsSummonerTaken(SummonerModel summoner) 
             => await applicationUserRepository.IsSummonerTaken(summoner);
 
-        public bool IsSummonerTakenAsync(SummonerModel summoner) => 
-            IsSummonerTaken(summoner).GetAwaiter().GetResult();
+        public async Task<OperationResult> LinkSummonerToApplicationUser(ApplicationUser user, string summonerName, string server) {
+            if (!QueryableServers.ContainsKey(server.ToLower())) {
+                return new OperationResult {
+                    Error = true,
+                    Message = "Error, server does not exist."
+                };
+            }
+
+            var summoner = await GetSummoner(summonerName, Region.Get(server.ToUpper()));
+
+            if (user.Summoner is not null && summoner.EncryptedAccountId == user.Summoner.EncryptedAccountId) {
+                return new () {
+                    Error = false,
+                    Message = "You have already linked this summoner."
+                };
+            }
+
+            if (await IsSummonerTaken(summoner)) {
+                return new() {
+                    Error = true,
+                    Message = "Error, this summoner is already taken."
+                };
+            }
+
+            user.Summoner = summoner;
+            var updateResult = await userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded) {
+                return new () {
+                    Error = true,
+                    Message = "Error, data could not be updated. Please try again later."
+                };
+            }
+
+            return new() {
+                Error = false,
+                Message = "Profile sucessfully updated."
+            };
+        }
         
     }
 }

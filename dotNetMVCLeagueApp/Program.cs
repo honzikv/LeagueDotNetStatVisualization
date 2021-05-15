@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotNetMVCLeagueApp.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,10 +17,8 @@ namespace dotNetMVCLeagueApp {
                 .ConfigureLogging((ctx, logging) => {
                     logging.ClearProviders();
                     logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
-                    logging.AddDebug();
                     logging.AddConsole();
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-
     }
 }

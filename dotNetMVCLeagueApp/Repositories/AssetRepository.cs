@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using dotNetMVCLeagueApp.Data.JsonMappings;
-using dotNetMVCLeagueApp.Exceptions;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Newtonsoft.Json;
 
 namespace dotNetMVCLeagueApp.Repositories.AssetResolver {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Services.Utils;
 using Xunit;

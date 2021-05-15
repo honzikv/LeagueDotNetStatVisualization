@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using dotNetMVCLeagueApp.Const;
+using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models;
 using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.AspNetCore.Mvc;
