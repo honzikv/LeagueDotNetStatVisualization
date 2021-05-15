@@ -145,9 +145,9 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         public async Task<bool> IsSummonerTaken(SummonerModel summoner) 
             => await applicationUserRepository.IsSummonerTaken(summoner);
 
-        public async Task<OperationResult> LinkSummonerToApplicationUser(ApplicationUser user, string summonerName, string server) {
+        public async Task<OperationResult<string>> LinkSummonerToApplicationUser(ApplicationUser user, string summonerName, string server) {
             if (!QueryableServers.ContainsKey(server.ToLower())) {
-                return new OperationResult {
+                return new()  {
                     Error = true,
                     Message = "Error, server does not exist."
                 };

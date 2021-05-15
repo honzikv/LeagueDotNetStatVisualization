@@ -104,8 +104,7 @@ namespace dotNetMVCLeagueApp.Pages {
                     return Redirect("/Index");
                 }
 
-                TempData["ErrorMessage"] =
-                    "Summoner does not exist";
+                TempData["ErrorMessage"] = "Summoner does not exist";
                 return Redirect("/Index");
             }
         }
@@ -121,7 +120,7 @@ namespace dotNetMVCLeagueApp.Pages {
 
         public async Task<IActionResult> OnPostRefreshAsync() {
             if (QueryParams is null || !ModelState.IsValid || !Servers.ContainsKey(QueryParams.Server.ToLower())) {
-                TempData["ErrorMessage"] = "Error, summoner could not be updated due to invalid parameters";
+                ErrorMessage = "Error, summoner could not be updated due to invalid parameters";
                 return Page();
             }
             
@@ -146,10 +145,10 @@ namespace dotNetMVCLeagueApp.Pages {
                         TempData["ErrorMessage"] = ex.Message;
                         return Redirect("/Index");
                     case ActionNotSuccessfulException:
-                        TempData["ErrorMessage"] = ex.Message;
+                        ErrorMessage = ex.Message;
                         return await OnGetAsync();
                     default:
-                        TempData["ErrorMessage"] = "Error while refreshing user profile";
+                        ErrorMessage = "Error while refreshing user profile";
                         return Page();
                 }
             }

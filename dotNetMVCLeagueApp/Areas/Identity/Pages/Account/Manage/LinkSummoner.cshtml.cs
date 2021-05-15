@@ -88,7 +88,6 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             if (!operationResult.Error) {
                 await signInManager.RefreshSignInAsync(user); 
             }
-            
             return RedirectToPage();
         }
     }
