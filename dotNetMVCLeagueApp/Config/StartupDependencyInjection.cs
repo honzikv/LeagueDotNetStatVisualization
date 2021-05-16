@@ -6,7 +6,6 @@ using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services;
-using dotNetMVCLeagueApp.Services.MatchHistory;
 using dotNetMVCLeagueApp.Services.MatchTimeline;
 using dotNetMVCLeagueApp.Services.Summoner;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,7 +62,6 @@ namespace dotNetMVCLeagueApp {
 
             // Services - wrapper nad repozitari, ktery se vola z controlleru
             services.AddScoped<SummonerService>(); // Pro info o hracich
-            services.AddScoped<MatchHistoryService>(); // Pro info o zapasech
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchTimelineService>();
             services.AddScoped<MatchService>();

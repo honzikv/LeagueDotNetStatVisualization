@@ -21,10 +21,23 @@ namespace dotNetMVCLeagueApp.Repositories {
             LeagueDbContext.MatchToSummonerModels
                 .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
                 .OrderByDescending(match => match.Match.PlayTime)
-                .Skip(start)// Preskocime prvnich "start" prvku
+                .Skip(start) // Preskocime prvnich "start" prvku
                 .Take(n) // max N prvku
                 .ToList()
                 .ConvertAll(matchSummoner => matchSummoner.Match);
+
+        public MatchModel GetMatchFromPageOrGetLast(SummonerModel summoner, int toSkip) {
+            var matchToSummoner = LeagueDbContext.MatchToSummonerModels
+                .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
+                .OrderByDescending(match => match.Match.PlayTime)
+                .Skip(toSkip)
+                .FirstOrDefault();
+
+            return matchToSummoner is null
+                ? LeagueDbContext.MatchToSummonerModels
+                    .LastOrDefault(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)?.Match
+                : matchToSummoner.Match;
+        }
 
         /// <summary>
         /// Ziska poslednich N zapasu pro dane queue
@@ -44,6 +57,5 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .Take(n) // Max N prvku
                 .ToList() // Chceme list (nebo cokoliv co je enumerable)
                 .ConvertAll(matchSummoner => matchSummoner.Match); // Mapping na MatchModel
-        
     }
 }

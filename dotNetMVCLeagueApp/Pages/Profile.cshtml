@@ -7,7 +7,7 @@
 }
 
 @if (Model.ErrorMessage is not null) {
-    <div class="container-fluid"  id="ErrorMessage">
+    <div class="container-fluid" id="ErrorMessage">
         <div class="row d-flex justify-content-center">
             <div class="alert alert-danger alert-error text-center m-4 w-25" role="alert">
                 @Model.ErrorMessage
@@ -21,7 +21,7 @@
     <script src="~/js/autohide.js"></script>
 }
 
-<div class="row d-flex justify-content-around animate__animated animate__fadeIn">
+<div class="row d-flex justify-content-around">
 
     <div class="col-lg-3 col-xs-12 order-xs-1 order-lg-0" id="summonerInfoPartial">
         @{ await Html.RenderPartialAsync("Shared/Partial/_SummonerInfoPartial", Model.SummonerData.Summoner); }
@@ -29,7 +29,50 @@
 
     <div class="col-lg-auto col-xs-12 order-xs-2 order-lg-1">
         <div id="matchListPartial">
-            @{ await Html.RenderPartialAsync("Shared/Partial/_MatchListPartial", Model.SummonerData.MatchList); }
+
+            <div id="matchOverview">
+                @{
+                    if (Model.SummonerData.MatchListOverview.TotalStats.Wins + Model.SummonerData.MatchListOverview.TotalStats.Losses > 0) {
+                        await Html.RenderPartialAsync("Shared/Partial/_MatchListOverviewPartial", Model.SummonerData.MatchListOverview);
+                    }
+                    else {
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <p class="no-spacing">The account either was not updated or there are no records for the summoner. Try updating the profile</p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div id="pages" class="d-flex row justify-content-end mb-4 pr-4">
+                @if (Model.SummonerData.MatchHeaders.Count > 0) {
+                    
+                    @if (Model.QueryParams.PageNumber > 0) {
+                        <a asp-route-Name="@Model.QueryParams.Name"
+                           asp-route-Server="@Model.QueryParams.Server"
+                           asp-route-PageSize="@Model.QueryParams.PageSize"
+                           asp-route-PageNumber="@(Model.QueryParams.PageNumber - 1)" class="btn btn-primary-blue rounded-corners-small">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    }
+                    <a asp-route-Name="@Model.QueryParams.Name"
+                           asp-route-Server="@Model.QueryParams.Server"
+                           asp-route-PageSize="@Model.QueryParams.PageSize"
+                           asp-route-PageNumber="@(Model.QueryParams.PageNumber + 1)" class="btn btn-primary-blue rounded-corners-small">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    }
+            </div>
+
+            <div id="matches">
+                @{
+                    var headerRenders = new List<Task>(Model.SummonerData.MatchHeaders.Count);
+                    headerRenders.AddRange(Model.SummonerData.MatchHeaders.Select(match => Html.RenderPartialAsync("Shared/Partial/_MatchHeaderPartial", match)));
+                    await Task.WhenAll(headerRenders);
+                }
+            </div>
+
         </div>
     </div>
 
@@ -42,7 +85,7 @@
                 </button>
             </div>
             <div class="collapse" id="filter">
-                <form method="post" id="formFilter" asp-controller="Summoner" asp-action="MatchList">
+                <form method="post" id="formFilter">
                     <div class="row justify-content-center">
                         <div class="col-auto">
                             <label class="" for="numberOfGames">Number of Games</label>

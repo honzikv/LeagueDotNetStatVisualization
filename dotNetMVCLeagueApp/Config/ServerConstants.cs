@@ -93,8 +93,6 @@ namespace dotNetMVCLeagueApp.Config {
             {"euw", "EUW"}, {"eune", "EUNE"}, {"na", "NA"}
         };
 
-        public static int GetQueueId(string queueType) {
-            throw new NotImplementedException();
-        }
+        public static int GetQueueId(string queueType) => QueueIdToQueueNames[queueType];
     };
 }

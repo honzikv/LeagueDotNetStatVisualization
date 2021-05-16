@@ -1,5 +1,5 @@
 ﻿@model dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview.MatchListOverviewDto
-<div class="rounded-corners-small card-light match-card mt-4 animate__animated animate__fadeIn">
+<div class="rounded-corners-small card-light match-card mt-4">
     <div class="card-header-default">
         <div class="row d-flex">
             <div class="col-auto d-flex align-items-center align-self-center">
@@ -9,10 +9,6 @@
 
                 </div>
             </div>
-@*             <div class="col d-flex align-items-baseline align-self-center *@
-@*                                                      flex-row-reverse"> *@
-@*                 <button class="btn rounded-corners-small button-light button-light-primary ">Refresh</button> *@
-@*             </div> *@
 
         </div>
 
@@ -85,9 +81,9 @@
             <span class="m-4">Frequent Champions</span>
         </button>
         <button class="btn rounded-corners-small button-light button-dark-blue"
-                        type="button" data-toggle="collapse" data-target="#championStats" aria-expanded="false" aria-controls="championStats">
-                    <span class="m-4">Detailed Stats</span>
-                </button>
+                type="button" data-toggle="collapse" data-target="#championStats" aria-expanded="false" aria-controls="championStats">
+            <span class="m-4">Detailed Stats</span>
+        </button>
     </div>
 
     <div class="collapse" id="championStats">

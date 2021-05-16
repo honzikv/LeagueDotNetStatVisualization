@@ -16,5 +16,13 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void TestConvertDateTimeToMillis_15May2021221732GMT() {
+            var expected = 1621117052000;
+            var actual = TimeUtils.ConvertDateTimeToMillis(DateTime.Parse("Sat, 15 May 2021 22:17:32 GMT"));
+            
+            Assert.Equal(expected, actual);
+        }
+
     }
 }

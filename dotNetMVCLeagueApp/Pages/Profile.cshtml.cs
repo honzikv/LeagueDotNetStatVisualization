@@ -9,7 +9,7 @@ using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Pages.Data.Profile;
-using dotNetMVCLeagueApp.Services.MatchHistory;
+using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Services.Summoner;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +48,7 @@ namespace dotNetMVCLeagueApp.Pages {
         /// Pocet her na strance - 10, 20 nebo 30. Vetsi pocet by take fungoval, nicmene realne bychom
         /// nechteli pocitat a iterovat pro jakkoliv velka data, takze je to zde omezeno takto
         /// </summary>
-        public readonly HashSet<int> NumberOfGames = new() {ServerConstants.DefaultNumberOfGamesInProfile, 20, 30};
+        public readonly HashSet<int> NumberOfGames = new() {ServerConstants.DefaultNumberOfGamesInProfile, 15, 20};
 
         [BindProperty(SupportsGet = true)] public ProfileQueryModel QueryParams { get; set; }
 
@@ -64,37 +64,34 @@ namespace dotNetMVCLeagueApp.Pages {
                 TempData["ErrorMessage"] = "Invalid search parameters";
                 return Redirect("/Index");
             }
-            
+
             logger.LogDebug("Profile.cshtml -> OnGet");
 
             // Filtr nastavime bud jako vsechny hry, nebo specificky pokud je spravne
-            var queueType = QueueFilters.ContainsKey(QueryParams.Filter ?? "")
+            QueryParams.Filter = QueueFilters.ContainsKey(QueryParams.Filter ?? "")
                 ? QueueFilters[QueryParams.Filter!]
                 : ServerConstants.AllGamesDbValue;
 
             // Pocet her je bud vychozich 10, nebo specificky pokud je spravne
-            var pageSize = NumberOfGames.Contains(QueryParams.PageSize)
+            QueryParams.PageSize = NumberOfGames.Contains(QueryParams.PageSize)
                 ? QueryParams.PageSize
                 : ServerConstants.DefaultNumberOfGamesInProfile;
 
-            var pageNumber = QueryParams.PageNumber > 0 ? QueryParams.PageNumber : 0;
+            // Nicmene toto by mela odchytit uz validace
+            QueryParams.PageNumber = QueryParams.PageNumber > 0 ? QueryParams.PageNumber : 0;
 
             // Region, pro ktery budeme hledat
             var server = Region.Get(QueryParams.Server.ToUpper());
 
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
-                var update = summonerService.IsSummonerUpdateable(summoner) && pageNumber != 0;
-                logger.LogDebug($"Summoner is updateable = {update}");
                 
-                var (matchHistory, updated) = await matchService.GetFilteredMatchHistory(summoner,
-                    pageSize, pageNumber, queueType, update);
+                // Pokud je stranka vetsi nez 0, pak budeme updatovat
+                var update = QueryParams.PageNumber > 0;
 
-                // pokud doslo k aktualizaci, aktualizujeme i profil uzivatele
-                if (updated) {
-                    summoner = await summonerService.UpdateSummoner(summoner.Id, true);
-                }
-
+                var matchHistory = await matchService.GetMatchHistory(summoner,
+                    QueryParams.PageSize, QueryParams.PageNumber, QueryParams.Filter, update);
+                
                 SummonerData = GetSummonerData(summoner, matchHistory);
                 return Page();
             }
@@ -104,6 +101,7 @@ namespace dotNetMVCLeagueApp.Pages {
                     return Redirect("/Index");
                 }
 
+                logger.LogCritical(ex.Message);
                 TempData["ErrorMessage"] = "Summoner does not exist";
                 return Redirect("/Index");
             }
@@ -114,7 +112,7 @@ namespace dotNetMVCLeagueApp.Pages {
             var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
             var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
             var summonerProfileDto = summonerProfileStatsService.GetSummonerProfileDto(summoner);
-            return new SummonerOverviewDto(summonerProfileDto, ServerConstants.AllGames, matchListOverview,
+            return new SummonerOverviewDto(summonerProfileDto, QueryParams, matchListOverview,
                 matchHeaders);
         }
 
@@ -123,17 +121,17 @@ namespace dotNetMVCLeagueApp.Pages {
                 ErrorMessage = "Error, summoner could not be updated due to invalid parameters";
                 return Page();
             }
-            
+
             logger.LogDebug("Profile.cshtml -> onRefresh");
 
             // Ziskame server, pro ktery budeme updatovat
             var server = Region.Get(QueryParams.Server.ToUpper());
-            
+
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
                 summoner = await summonerService.UpdateSummoner(summoner.Id, true);
                 var matchHistory =
-                    await matchService.UpdateMatchHistory(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
+                    await matchService.GetUpdatedMatchHistory(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
                 SummonerData = GetSummonerData(summoner, matchHistory);
                 return Page();
             }

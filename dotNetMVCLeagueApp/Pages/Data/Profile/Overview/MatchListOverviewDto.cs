@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using dotNetMVCLeagueApp.Config;
 
 namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
     public class MatchListOverviewDto {
@@ -10,5 +11,9 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         public int Remakes { get; set; } = 0;
 
         public Dictionary<int, ChampionCumulativeStatsDto> ChampionCumulativeStatsDict { get; } = new();
+        
+        public int Page { get; set; }
+
+        public int PageSize { get; set; } = ServerConstants.DefaultNumberOfGamesInProfile;
     }
 }

@@ -45,18 +45,6 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         public readonly Dictionary<string, string> QueryableServers = ServerConstants.QueryableServers;
 
         /// <summary>
-        /// Synchronizovana verze metody pro controller aby nemusel volat GetAwaiter a GetResult
-        /// </summary>
-        /// <param name="summonerName">Uzivatelske jmeno</param>
-        /// <param name="region">Server, pro ktery hledame uzivatele</param>
-        /// <returns></returns>
-        public SummonerModel GetSummonerAsync(string summonerName, Region region) =>
-            GetSummoner(summonerName, region).GetAwaiter().GetResult();
-
-        public bool IsSummonerUpdateable(SummonerModel summoner) => riotApiUpdateConfig.IsSummonerUpdateable(summoner);
-        
-
-        /// <summary>
         /// Ziska summoner info nebo vyhodi ActionNotSuccessfulException coz znamena ze uzivatel neexistuje
         /// </summary>
         /// <param name="summonerName">Uzivatelske jmeno</param>

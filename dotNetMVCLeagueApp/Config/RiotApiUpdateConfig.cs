@@ -9,11 +9,11 @@ namespace dotNetMVCLeagueApp.Config {
         /// Maximalni doba, do ktere je mozno hledat - napr. 30 dni - hry starsi nez 30 dni se uz hledat
         /// nebudou
         /// </summary>
-        public TimeSpan MaxMatchAgeInDays { get; }
+        public TimeSpan MaxMatchAgeDays { get; }
 
-        public RiotApiUpdateConfig(TimeSpan minUpdateTimeSpan, TimeSpan maxMatchAgeInDays) {
+        public RiotApiUpdateConfig(TimeSpan minUpdateTimeSpan, TimeSpan maxMatchAgeDays) {
             MinUpdateTimeSpan = minUpdateTimeSpan;
-            MaxMatchAgeInDays = maxMatchAgeInDays;
+            MaxMatchAgeDays = maxMatchAgeDays;
         }
 
         public bool IsSummonerUpdateable(SummonerModel summoner) =>

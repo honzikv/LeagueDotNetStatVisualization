@@ -29,6 +29,12 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         public double Winrate { get; set; }
 
         public double AverageGoldDiffAt10 { get; set; }
+        
+        public double AverageGoldDiffAt20 { get; set; }
+        
+        public double AverageCsDiffAt10 { get; set; }
+        
+        public double AverageCsDiffAt20 { get; set; }
 
         public double AverageKda { get; set; }
 
@@ -77,6 +83,12 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         public Dictionary<string, int> Roles { get; } = new();
         
         public List<double> GoldDiffsAt10 { get; } = new();
+
+        public List<double> GoldDiffsAt20 { get; } = new();
+
+        public List<double> CsDiffsAt10 { get; } = new();
+
+        public List<double> CsDiffsAt20 { get; } = new();
 
         public List<double> VisionShare { get; } = new();
     }

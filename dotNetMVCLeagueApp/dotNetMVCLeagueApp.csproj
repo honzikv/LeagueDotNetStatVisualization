@@ -450,8 +450,8 @@
 
     <ItemGroup>
       <Folder Include="AdobeXd" />
-      <Folder Include="Data\FrontendDtos\Summoner" />
       <Folder Include="Migrations" />
+      <Folder Include="Services\MatchHistory" />
     </ItemGroup>
 
     

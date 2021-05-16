@@ -19,6 +19,8 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
 
         public int PageSize { get; set; } = ServerConstants.DefaultNumberOfGamesInProfile;
 
+        [Range(0, int.MaxValue, ErrorMessage = "Invalid page number, must be at least {1}")]
         public int PageNumber { get; set; } = 0;
+        
     }
 }

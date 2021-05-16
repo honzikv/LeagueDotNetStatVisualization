@@ -106,7 +106,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             try {
                 if (Input.SummonerName is not null) {
                     var region = Region.Get(Input.Server);
-                    var summoner = summonerService.GetSummonerAsync(Input.SummonerName, region);
+                    var summoner = await summonerService.GetSummoner(Input.SummonerName, region);
 
                     if (await summonerService.IsSummonerTaken(summoner)) {
                         ModelState.AddModelError("SummonerName", "This summoner is already taken");

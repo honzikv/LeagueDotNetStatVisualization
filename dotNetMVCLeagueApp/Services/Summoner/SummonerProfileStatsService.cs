@@ -113,12 +113,11 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                     continue;
                 }
 
-                var player =
-                    match.PlayerInfoList.FirstOrDefault(playerModel =>
-                        playerModel.SummonerId == summoner.EncryptedSummonerId) ??
-                    throw new RedirectToHomePageException(
-                        $"There was an error with the database. Data for summoner: {summoner.Name} is " +
-                        $"corrupt. We are sorry for the inconvenience.");
+                var player = match.PlayerInfoList.FirstOrDefault(playerModel =>
+                                 playerModel.SummonerId == summoner.EncryptedSummonerId) ??
+                             throw new RedirectToHomePageException(
+                                 $"There was an error with the database. Data for summoner: {summoner.Name} is " 
+                                 + "corrupt. We are sorry for the inconvenience.");
 
                 if (!championCounters.ContainsKey(player.ChampionId)) {
                     championCounters[player.ChampionId] = new();
@@ -167,8 +166,17 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
             result.AverageKills = statsCounter.Kills.Average();
             result.AverageDeaths = statsCounter.Deaths.Average();
             result.AverageAssists = statsCounter.Assists.Average();
+
             result.AverageGoldDiffAt10 =
                 statsCounter.GoldDiffsAt10.IsNullOrEmpty() ? 0.0 : statsCounter.GoldDiffsAt10.Average();
+            result.AverageGoldDiffAt20 =
+                statsCounter.GoldDiffsAt20.IsNullOrEmpty() ? 0.0 : statsCounter.GoldDiffsAt20.Average();
+
+            result.AverageCsDiffAt10 =
+                statsCounter.CsDiffsAt10.IsNullOrEmpty() ? 0.0 : statsCounter.CsDiffsAt10.Average();
+            result.AverageCsDiffAt20 =
+                statsCounter.CsDiffsAt20.IsNullOrEmpty() ? 0.0 : statsCounter.CsDiffsAt20.Average();
+
             // Kda nechceme pocitat jako prumer vsech kda ale jako sumu zabiti, smrti a asistenci
             result.AverageKda = GameStatsUtils.GetKda(
                 statsCounter.Kills.Sum(), statsCounter.Deaths.Sum(), statsCounter.Assists.Sum());
@@ -233,75 +241,24 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                 counter.Losses += 1;
             }
 
-            // GoldDiffAt10 je nullable
+            // Rozdily jsou nullable - hra mohla skoncit drive nebo nebyly pocitane, proto musime udelat
+            // nullcheck
+
             if (player.GoldDiffAt10 is not null) {
-                // Z nejakeho duvodu se to muselo pretypovat na double i kdyz je predtim null check
                 counter.GoldDiffsAt10.Add((double) player.GoldDiffAt10);
             }
-        }
 
-
-        /// <summary>
-        /// Vypocte statistiky pro dany seznam her pro daneho hrace
-        /// </summary>
-        /// <param name="matchInfoList">Seznam her, pro ktere se vypoctou statistiky</param>
-        /// <param name="summoner">Info o hraci v danych hrach - pro nej se statistiky pocitaji</param>
-        /// <returns></returns>
-        public MatchListStatsDto GetMatchListStats(SummonerModel summoner, IEnumerable<MatchModel> matchInfoList) {
-            var totals = new GameListStats();
-            var result = new MatchListStatsDto();
-
-            foreach (var matchInfo in matchInfoList) {
-                CalculateStatTotals(summoner, matchInfo, result, totals); // vypocet statistik
+            if (player.GoldDiffAt20 is not null) {
+                counter.GoldDiffsAt20.Add((double) player.GoldDiffAt20);
             }
 
-            GameStatsUtils.CalculateAverages(result, totals);
-
-            logger.LogDebug($"GameStats calculated, result: {result}");
-            return result;
-        }
-
-        /// <summary>
-        /// Pomocna metoda, ktera vypocte data z kazde hry a ulozi je do objektu "totals", ktery slouzi pro prehlednejsi
-        /// ukladani
-        /// </summary>
-        /// <param name="summoner">Reference na summoner info</param>
-        /// <param name="match">Reference na match info</param>
-        /// <param name="matchListStats">Statistiky pro seznam her, ktery zobrazujeme</param>
-        /// <param name="totals">Objekt s celkovymi pocty</param>
-        /// <exception cref="ActionNotSuccessfulException">Pokud je hrac null nebo je hracuv team null</exception>
-        private void CalculateStatTotals(SummonerModel summoner, MatchModel match,
-            MatchListStatsDto matchListStats, GameListStats totals) {
-            var playerInfo = match.PlayerInfoList
-                .FirstOrDefault(player => player.SummonerId == summoner.EncryptedSummonerId);
-
-            if (playerInfo is null) {
-                throw new ActionNotSuccessfulException("Error player info is null for the given match");
+            if (player.CsDiffAt10 is not null) {
+                counter.CsDiffsAt10.Add((double) player.CsDiffAt10);
             }
 
-            var playerTeam = match.Teams.FirstOrDefault(team => team.TeamId == playerInfo.TeamId);
-            if (playerTeam is null) {
-                throw new ActionNotSuccessfulException("Error player team is null for the given match");
+            if (player.CsDiffAt20 is not null) {
+                counter.CsDiffsAt20.Add((double) player.CsDiffAt20);
             }
-
-            GameStatsUtils.UpdateRoleFrequency(playerInfo, totals.Roles); // Aktualizace role je i pro remake
-            GameStatsUtils.UpdateChampionFrequency(playerInfo, totals.Champions);
-            if (GameStatsUtils.IsRemake(match.GameDuration)) {
-                logger.LogDebug("Found a remake game, increasing number of remakes");
-                matchListStats.Remakes += 1;
-                return;
-            }
-
-            // Jinak pricteme win / loss podle stringu
-            if (playerTeam.Win == ServerConstants.Win) {
-                matchListStats.GamesWon += 1;
-            }
-            else {
-                matchListStats.GamesLost += 1;
-            }
-
-            // Aktualizace stat totals - pricteme celkove smrti, zabiti, asistence ...
-            GameStatsUtils.UpdateStatTotals(totals, match, playerInfo, playerTeam);
         }
 
         public SummonerProfileDto GetSummonerProfileDto(SummonerModel summoner) {
