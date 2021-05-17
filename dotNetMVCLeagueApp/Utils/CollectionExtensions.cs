@@ -6,7 +6,7 @@ namespace dotNetMVCLeagueApp.Utils {
     /// </summary>
     public static class CollectionExtensions {
         public static T[] SubArray<T>(this T[] data, int index, int length) {
-            var result = new T[length];
+            var result = new T[length+1];
             Array.Copy(data, index, result, 0, length);
             return result;
         }

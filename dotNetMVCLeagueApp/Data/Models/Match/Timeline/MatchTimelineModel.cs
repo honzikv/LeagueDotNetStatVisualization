@@ -10,10 +10,11 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         
         public long Id { get; set; }
         
-        public long MatchId { get; set; }
-        //
-        // [Required]
-        // public virtual MatchModel Match { get; set; }
+        [ForeignKey("MatchModel")]
+        public long MatchModelId { get; set; }
+
+        [Required]
+        public virtual MatchModel Match { get; set; }
 
         /// <summary>
         ///     Doba, jak dlouho trva jeden frame

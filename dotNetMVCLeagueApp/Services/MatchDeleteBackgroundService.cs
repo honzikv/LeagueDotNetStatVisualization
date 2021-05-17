@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
@@ -29,7 +30,7 @@ namespace dotNetMVCLeagueApp.Services {
             this.logger = logger;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
             this.frequency = frequency;
-            
+
             logger.LogDebug("MatchDeleteBackground service instantiated");
         }
 
@@ -47,11 +48,17 @@ namespace dotNetMVCLeagueApp.Services {
                     matchRepository.DeleteOldMatches(DateTime.Now.Subtract(riotApiUpdateConfig.MaxMatchAgeDays))
                         .GetAwaiter().GetResult();
 
-                if (deletedGames is not null) {
+                if (deletedGames is null) return;
+
+                if (deletedGames.Count > 0) {
                     var games = string.Join(';',
                         deletedGames.Select(game => $"id - {game.Id}, playTime - {game.PlayTime}"));
                     logger.LogInformation($"Deleted old games ({deletedGames.Count}). Games: {games}");
                 }
+                else {
+                    logger.LogInformation("No old games were found.");
+                }
+
             }
             catch (InvalidOperationException) {
                 logger.LogCritical("Background service (MatchDeleteBackgroundService) could not access database");

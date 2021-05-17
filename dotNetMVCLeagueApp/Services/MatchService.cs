@@ -74,7 +74,6 @@ namespace dotNetMVCLeagueApp.Services {
 
         public async Task<List<MatchModel>> GetSpecificPage(SummonerModel summoner, int offset, int pageSize,
             int[] queues = null) {
-
             var matchReferences = new List<MatchReference>(pageSize);
 
             // Nyni budeme brat od aktualniho datumu az mesic zpet.
@@ -88,7 +87,8 @@ namespace dotNetMVCLeagueApp.Services {
             // maximalni index, ktery ma smysl hledat
             const int maxIdx = ServerConstants.GamesLimit - 1;
 
-            while (fromDate <= maxFromDate) {
+            var stop = false;
+            while (!stop) {
                 // Nyni jeste potrebujeme krome jednoho tydne projizdet hry, ktere jsou take limitovane - max 100.
                 // Tzn budeme projizdet pro fromDate -> toDate a 0 - 99, 100 - 199, 200 - 299 ... dokud nedostaneme
                 // pozadovany pocet her. Nicmene pro nas limit (20 stran) je max. pocet 200
@@ -102,6 +102,9 @@ namespace dotNetMVCLeagueApp.Services {
                 toDate = fromDate;
                 var fromDateMinusWeek = fromDate.SubtractWeek();
                 fromDate = fromDateMinusWeek < maxFromDate ? maxFromDate : fromDateMinusWeek;
+                if (fromDate == maxFromDate) {
+                    stop = true;
+                }
             }
 
             var result = new List<MatchModel>();
@@ -125,11 +128,9 @@ namespace dotNetMVCLeagueApp.Services {
         /// <param name="pageSize">Velikost stranky - pomoci ni vypocteme, kolik prvku zbyva</param>
         /// <returns></returns>
         private async Task<int> GetGamesFromGivenWeek(SummonerModel summoner, int[] queues, int maxIdx,
-            DateTime fromDate,
-            DateTime toDate, List<MatchReference> matchReferences, int toSkip, int pageSize) {
+            DateTime fromDate, DateTime toDate, List<MatchReference> matchReferences, int toSkip, int pageSize) {
             for (var beginIdx = 0; beginIdx < maxIdx; beginIdx += MaxGamesInMatchlist - 1) {
                 var endIdx = beginIdx + MaxGamesInMatchlist - 1;
-
                 var matchHistory = await riotApiRepository.GetMatchHistory(
                     summoner, Region.Get(summoner.Region), fromDate, toDate, beginIdx, endIdx,
                     queues);
@@ -141,12 +142,13 @@ namespace dotNetMVCLeagueApp.Services {
                 var remainingGames = pageSize - matchReferences.Count;
                 var gameCount = matchHistory.Matches.Length;
                 if (gameCount > toSkip && remainingGames > 0) {
-                    var fromIdx = gameCount - toSkip - 1; // index odkud z matchHistory budeme brat reference
-                    var pageSizeIdx = fromIdx + remainingGames; // index pokud k fromIdx pridame zbyvajici pocet her
+                    var pageSizeIdx = toSkip + remainingGames; // index pokud k fromIdx pridame zbyvajici pocet her
 
                     // Index, do ktereho prvky pridavame
                     var toIdx = pageSizeIdx <= gameCount - 1 ? pageSizeIdx : gameCount - 1;
-                    matchReferences.AddRange(matchHistory.Matches.SubArray(fromIdx, toIdx));
+                    for (var i = toSkip; i <= toIdx; i += 1) {
+                        matchReferences.Add(matchHistory.Matches[i]);
+                    }
                 }
                 else {
                     toSkip -= gameCount;

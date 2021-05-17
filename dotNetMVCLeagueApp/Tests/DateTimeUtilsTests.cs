@@ -24,5 +24,13 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void TestSubtractWeekDateTimeExtension() {
+            var date = DateTime.Parse("Sat, 15 May 2021 22:17:32 GMT");
+            var expected = DateTime.Parse("Sat, 8 May 2021 22:17:32 GMT");
+            var actual = date.SubtractWeek();
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
