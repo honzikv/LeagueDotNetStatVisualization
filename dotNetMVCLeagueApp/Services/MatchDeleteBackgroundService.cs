@@ -18,24 +18,26 @@ namespace dotNetMVCLeagueApp.Services {
     public class MatchDeleteBackgroundService : IHostedService, IDisposable {
         private readonly IServiceScopeFactory scopeFactory;
         private readonly ILogger<MatchDeleteBackgroundService> logger;
-        private readonly TimeSpan frequency;
+        private readonly TimeSpan period;
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
         private Timer timer;
 
         public MatchDeleteBackgroundService(IServiceScopeFactory scopeFactory,
             ILogger<MatchDeleteBackgroundService> logger,
             RiotApiUpdateConfig riotApiUpdateConfig,
-            TimeSpan frequency) {
+            TimeSpan period) {
             this.scopeFactory = scopeFactory;
             this.logger = logger;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
-            this.frequency = frequency;
+            this.period = period;
 
             logger.LogDebug("MatchDeleteBackground service instantiated");
         }
 
         public Task StartAsync(CancellationToken cancellationToken) {
-            timer = new Timer(Work, null, TimeSpan.Zero, frequency);
+            // Pri startu sluzby vytvorime timer - vlakno, ktere bude podle nejake periody kontrolovat db a 
+            // smaze irrelevantni zapasy
+            timer = new Timer(Work, null, TimeSpan.Zero, period);
             return Task.CompletedTask;
         }
 

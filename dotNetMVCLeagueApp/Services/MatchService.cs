@@ -72,7 +72,7 @@ namespace dotNetMVCLeagueApp.Services {
         public List<MatchModel> GetFrontPage(SummonerModel summoner)
             => matchRepository.GetNMatchesByDateTimeDesc(summoner, ServerConstants.DefaultPageSize);
 
-        public async Task<List<MatchModel>> GetSpecificPage(SummonerModel summoner, int offset, int pageSize,
+        public async Task<List<MatchModel>> GetMatchHistory(SummonerModel summoner, int offset, int pageSize,
             int[] queues = null) {
             var matchReferences = new List<MatchReference>(pageSize);
 
@@ -158,16 +158,7 @@ namespace dotNetMVCLeagueApp.Services {
             return toSkip;
         }
 
-        public async Task<List<MatchModel>> GetUpdatedMatchHistory(SummonerModel summoner, int numberOfGames) {
-            var matchHistory = await riotApiRepository.GetMatchHistory(summoner, Region.Get(summoner.Region),
-                null, null, null, numberOfGames);
-
-            var result = new List<MatchModel>();
-            foreach (var matchReference in matchHistory.Matches) {
-                result.Add(await AddOrUpdateMatch(summoner, matchReference));
-            }
-
-            return result;
-        }
+        public async Task<List<MatchModel>> GetUpdatedMatchHistory(SummonerModel summoner, int numberOfGames)
+            => await GetMatchHistory(summoner, 0, numberOfGames);
     }
 }

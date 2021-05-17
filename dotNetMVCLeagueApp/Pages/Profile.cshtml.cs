@@ -100,7 +100,7 @@ namespace dotNetMVCLeagueApp.Pages {
                     var queues = QueryParams.Filter == ServerConstants.AllGamesDbValue
                         ? ServerConstants.RelevantQueues
                         : new[] {ServerConstants.GetQueueId(QueryParams.Filter)};
-                    matchHistory = await matchService.GetSpecificPage(summoner, QueryParams.Offset,
+                    matchHistory = await matchService.GetMatchHistory(summoner, QueryParams.Offset,
                         QueryParams.PageSize, queues);
                 }
 
