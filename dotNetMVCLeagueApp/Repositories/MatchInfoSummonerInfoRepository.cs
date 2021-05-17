@@ -16,7 +16,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <returns>True pokud ano, jinak false</returns>
         public async Task<bool> AnyJoinBetweenMatchSummoner(long matchInfoId, int summonerInfoId) =>
             await LeagueDbContext.MatchToSummonerModels.AnyAsync(matchSummoner =>
-                matchSummoner.MatchInfoModelId == matchInfoId &&
-                matchSummoner.SummonerInfoModelId == summonerInfoId);
+                matchSummoner.MatchModelId == matchInfoId &&
+                matchSummoner.SummonerModelId == summonerInfoId);
     }
 }

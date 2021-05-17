@@ -14,6 +14,6 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
         
         public int Page { get; set; }
 
-        public int PageSize { get; set; } = ServerConstants.DefaultNumberOfGamesInProfile;
+        public int PageSize { get; set; } = ServerConstants.DefaultPageSize;
     }
 }

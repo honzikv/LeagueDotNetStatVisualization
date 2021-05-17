@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Utils;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 using MingweiSamuel.Camille.MatchV4;
@@ -18,14 +17,12 @@ namespace dotNetMVCLeagueApp.Services {
         private readonly MatchRepository matchRepository;
         private readonly MatchInfoSummonerInfoRepository matchSummonerRepository;
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
-        private readonly SummonerRepository summonerRepository;
 
         private readonly ILogger<MatchService> logger;
 
         public MatchService(RiotApiRepository riotApiRepository,
             MatchRepository matchRepository,
             MatchInfoSummonerInfoRepository matchSummonerRepository,
-            SummonerRepository summonerRepository,
             RiotApiUpdateConfig riotApiUpdateConfig,
             ILogger<MatchService> logger
         ) {
@@ -34,65 +31,141 @@ namespace dotNetMVCLeagueApp.Services {
             this.matchRepository = matchRepository;
             this.matchSummonerRepository = matchSummonerRepository;
             this.riotApiUpdateConfig = riotApiUpdateConfig;
-            this.summonerRepository = summonerRepository;
         }
 
-        private readonly Dictionary<string, int> queueNameToQueueId = ServerConstants.QueueIdToQueueNames;
+        private const int MaxGamesInMatchlist = 100;
 
-        /// <summary>
-        /// Pridani nebo update MatchInfo
-        /// </summary>
-        /// <param name="summoner">Summoner pro ktereho provadime update</param>
-        /// <param name="apiMatch">Match info z api</param>
-        /// <returns></returns>
-        private async Task<MatchModel> AddOrUpdateMatch(SummonerModel summoner,
-            MatchModel apiMatch) {
-            // Zkusime pridat match info do db pokud jeste nebylo pridano a ziskame vysledek
-            var match = await matchRepository.Get(apiMatch.Id);
+        private async Task<MatchModel> AddOrUpdateMatch(SummonerModel summoner, MatchReference matchReference) {
+            var match = await matchRepository.Get(matchReference.GameId) ?? await riotApiRepository.GetMatch(
+                matchReference.GameId, Region.Get(summoner.Region));
 
-            if (match is null) {
-                var matchTimelineModel =
-                    await riotApiRepository.GetMatchTimelineFromApi(apiMatch.Id, Region.Get(summoner.Region));
-                apiMatch.MatchTimelineModel = matchTimelineModel;
-                match = await matchRepository.Add(apiMatch);
-            }
-
-            logger.LogDebug($"Match id {match.Id}, PlayTime: {match.PlayTime}, queue: {match.QueueType}");
-
-            // Pridame link pokud neexistuje
             if (!await matchSummonerRepository.AnyJoinBetweenMatchSummoner(match.Id, summoner.Id)) {
                 await matchSummonerRepository.Add(new MatchToSummonerModel {
-                    MatchInfoModelId = match.Id,
-                    SummonerInfoModelId = summoner.Id,
+                    MatchModelId = match.Id,
+                    SummonerModelId = summoner.Id,
                     Match = match,
                     Summoner = summoner
                 });
             }
 
-            return await matchRepository.Get(apiMatch.Id);
+            return await matchRepository.Get(match.Id); // refresh entity
+        }
+
+        /// <summary>
+        /// Tato metoda se vola pro detail zapasu, protoze zkontroluje zda-li se zapasu uz nacital
+        /// timeline a pokud ne, nacte ho
+        /// </summary>
+        /// <returns>MatchModel s timeline</returns>
+        public async Task<MatchModel> LoadMatchWithTimeline(long matchId, Region region) {
+            var match = await matchRepository.Get(matchId) ??
+                        throw new ActionNotSuccessfulException("Match does not exist or was deleted.");
+
+            if (!match.MatchTimelineSearched) {
+                var matchTimeline = await riotApiRepository.GetMatchTimeline(matchId, region);
+                match.MatchTimeline = matchTimeline;
+                return await matchRepository.Update(match);
+            }
+
+            return match;
         }
 
         public List<MatchModel> GetFrontPage(SummonerModel summoner)
-            => matchRepository.GetNMatchesByDateTimeDesc(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
+            => matchRepository.GetNMatchesByDateTimeDesc(summoner, ServerConstants.DefaultPageSize);
 
-        public Task<List<MatchModel>> GetSpecificPage(SummonerModel summoner, int pageNumber, int numberOfGames, int[] queues) {
-            var toSkip = pageNumber * numberOfGames; // pocet prvku, ktere preskocime
-            
-            // Nyni budeme brat od aktualniho datumu az mesic zpet
+        public async Task<List<MatchModel>> GetSpecificPage(SummonerModel summoner, int offset, int pageSize,
+            int[] queues = null) {
+
+            var matchReferences = new List<MatchReference>(pageSize);
+
+            // Nyni budeme brat od aktualniho datumu az mesic zpet.
             // Bohuzel, Riot API nedovoluje, abychom udelali query kde je rozsah casu vetsi nez tyden, takze
             // potrebujeme zavolat api az 4x abychom ziskali vsechny hry.
             var toDate = DateTime.Now; // Datum DO ktereho hledame - v riot api jako endTime
             var maxFromDate = toDate.Subtract(riotApiUpdateConfig.MaxMatchAgeDays);
-            var run = true;
-            while (run) {
-                var fromDate = toDate.SubtractWeek(); // datum OD ktereho hledame - v riot api jako startTime
-                if (fromDate < maxFromDate) {
-                    fromDate = maxFromDate;
-                    run = false;
+            var fromDate = toDate.SubtractWeek();
+            var toSkip = offset; // pocet prvku, ktere preskocime
+
+            // maximalni index, ktery ma smysl hledat
+            const int maxIdx = ServerConstants.GamesLimit - 1;
+
+            while (fromDate <= maxFromDate) {
+                // Nyni jeste potrebujeme krome jednoho tydne projizdet hry, ktere jsou take limitovane - max 100.
+                // Tzn budeme projizdet pro fromDate -> toDate a 0 - 99, 100 - 199, 200 - 299 ... dokud nedostaneme
+                // pozadovany pocet her. Nicmene pro nas limit (20 stran) je max. pocet 200
+
+                toSkip = await GetGamesFromGivenWeek(summoner, queues, maxIdx, fromDate, toDate, matchReferences,
+                    toSkip, pageSize);
+                if (matchReferences.Count == pageSize) {
+                    break;
                 }
 
-                
+                toDate = fromDate;
+                var fromDateMinusWeek = fromDate.SubtractWeek();
+                fromDate = fromDateMinusWeek < maxFromDate ? maxFromDate : fromDateMinusWeek;
             }
+
+            var result = new List<MatchModel>();
+            foreach (var matchReference in matchReferences) {
+                result.Add(await AddOrUpdateMatch(summoner, matchReference));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Najde vsechny hry z daneho tydne (tyden je maximimum pro hledani v api)
+        /// </summary>
+        /// <param name="summoner">Uzivatel, pro ktereho hledame</param>
+        /// <param name="queues">Queues, ktere se maji prohledat</param>
+        /// <param name="maxIdx">Maximalni index cisla hry</param>
+        /// <param name="fromDate">Datum zacatku hledani</param>
+        /// <param name="toDate">Datum, do ktereho hledame</param>
+        /// <param name="matchReferences">Seznam, do ktereho se data ulozi (pokud je to mozne)</param>
+        /// <param name="toSkip">Pocet zapasu, ktere chceme preskocit</param>
+        /// <param name="pageSize">Velikost stranky - pomoci ni vypocteme, kolik prvku zbyva</param>
+        /// <returns></returns>
+        private async Task<int> GetGamesFromGivenWeek(SummonerModel summoner, int[] queues, int maxIdx,
+            DateTime fromDate,
+            DateTime toDate, List<MatchReference> matchReferences, int toSkip, int pageSize) {
+            for (var beginIdx = 0; beginIdx < maxIdx; beginIdx += MaxGamesInMatchlist - 1) {
+                var endIdx = beginIdx + MaxGamesInMatchlist - 1;
+
+                var matchHistory = await riotApiRepository.GetMatchHistory(
+                    summoner, Region.Get(summoner.Region), fromDate, toDate, beginIdx, endIdx,
+                    queues);
+
+                if (matchHistory is null) { // Api wrapper vraci null, pokud riot api vrati 404 - zadne hry neexistuji
+                    return toSkip;
+                }
+
+                var remainingGames = pageSize - matchReferences.Count;
+                var gameCount = matchHistory.Matches.Length;
+                if (gameCount > toSkip && remainingGames > 0) {
+                    var fromIdx = gameCount - toSkip - 1; // index odkud z matchHistory budeme brat reference
+                    var pageSizeIdx = fromIdx + remainingGames; // index pokud k fromIdx pridame zbyvajici pocet her
+
+                    // Index, do ktereho prvky pridavame
+                    var toIdx = pageSizeIdx <= gameCount - 1 ? pageSizeIdx : gameCount - 1;
+                    matchReferences.AddRange(matchHistory.Matches.SubArray(fromIdx, toIdx));
+                }
+                else {
+                    toSkip -= gameCount;
+                }
+            }
+
+            return toSkip;
+        }
+
+        public async Task<List<MatchModel>> GetUpdatedMatchHistory(SummonerModel summoner, int numberOfGames) {
+            var matchHistory = await riotApiRepository.GetMatchHistory(summoner, Region.Get(summoner.Region),
+                null, null, null, numberOfGames);
+
+            var result = new List<MatchModel>();
+            foreach (var matchReference in matchHistory.Matches) {
+                result.Add(await AddOrUpdateMatch(summoner, matchReference));
+            }
+
+            return result;
         }
     }
 }

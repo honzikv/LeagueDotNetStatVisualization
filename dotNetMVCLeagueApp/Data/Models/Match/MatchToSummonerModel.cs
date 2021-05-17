@@ -5,9 +5,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
     ///     M : N tabulka pro propojeni summoner info a match info
     /// </summary>
     public class MatchToSummonerModel {
-        public int SummonerInfoModelId { get; set; }
+        public int SummonerModelId { get; set; }
 
-        public long MatchInfoModelId { get; set; }
+        public long MatchModelId { get; set; }
 
         public virtual SummonerModel Summoner { get; set; }
 

@@ -451,7 +451,6 @@
     <ItemGroup>
       <Folder Include="AdobeXd" />
       <Folder Include="Migrations" />
-      <Folder Include="Services\MatchHistory" />
     </ItemGroup>
 
     

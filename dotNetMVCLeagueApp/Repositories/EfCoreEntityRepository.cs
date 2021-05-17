@@ -77,6 +77,12 @@ namespace dotNetMVCLeagueApp.Repositories {
             return entities;
         }
 
+        public async Task<IEnumerable<TEntity>> DeleteAll(ICollection<TEntity> entities) {
+            LeagueDbContext.Set<TEntity>().RemoveRange(entities);
+            await LeagueDbContext.SaveChangesAsync();
+            return entities;
+        }
+
         /// <summary>
         /// Odstrani entitu z databaze
         /// </summary>

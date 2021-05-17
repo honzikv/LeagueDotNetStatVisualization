@@ -35,9 +35,9 @@ namespace dotNetMVCLeagueApp {
                 SummonerSpellsFolderName = Configuration["Assets:SummonerSpells"],
                 RankedIconsFolderName = Configuration["Assets:RankedIcons"]
             });
-            
+
             services.AddSingleton(_ => new RiotApiUpdateConfig(
-                TimeSpan.FromMinutes(1), 
+                TimeSpan.FromMinutes(1),
                 TimeSpan.FromDays(30))
             );
 
@@ -65,6 +65,16 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchTimelineService>();
             services.AddScoped<MatchService>();
+
+            // Sluzba na pozadi, ktera kazdych N (3) minut zkontroluje DB a smaze hry, ktere uz nelze zobrazit
+            // - hry, ktere jsou starsi nez M (30) dni.
+            services.AddHostedService(serviceProvider =>
+                new MatchDeleteBackgroundService(
+                    serviceProvider.GetRequiredService<IServiceScopeFactory>(),
+                    serviceProvider.GetRequiredService<ILogger<MatchDeleteBackgroundService>>(),
+                    serviceProvider.GetService<RiotApiUpdateConfig>(),
+                    TimeSpan.FromMinutes(int.Parse(Configuration["OldGamesCheckFrequencyMinutes"]))
+                ));
         }
     }
 }

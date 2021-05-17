@@ -10,6 +10,7 @@ namespace dotNetMVCLeagueApp.Config {
         /// nebudou
         /// </summary>
         public TimeSpan MaxMatchAgeDays { get; }
+        
 
         public RiotApiUpdateConfig(TimeSpan minUpdateTimeSpan, TimeSpan maxMatchAgeDays) {
             MinUpdateTimeSpan = minUpdateTimeSpan;

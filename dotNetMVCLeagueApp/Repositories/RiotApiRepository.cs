@@ -120,7 +120,7 @@ namespace dotNetMVCLeagueApp.Repositories {
             result.Id = match.GameId; // Nastavime id
             result.PlayTime = TimeUtils.ConvertFromMillisToDateTime(match.GameCreation);
             result.QueueType = ServerConstants.GetQueueNameFromQueueId(match.QueueId);
-            logger.LogDebug(result.ToString());
+            result.MatchTimelineSearched = false;
 
             // Mapping vnorenych objektu - tymove statistiky a hraci
             var teams = match.Teams.Select(team => mapper.Map<TeamStatsModel>(team)).ToList();
@@ -188,13 +188,14 @@ namespace dotNetMVCLeagueApp.Repositories {
         }
 
         public async Task<Matchlist> GetMatchHistory(SummonerModel summoner, Region region,
-            int numberOfGames, DateTime start, DateTime end, int[] queues = null) =>
+            DateTime? start, DateTime? end, int? beginIndex, int? endIndex, int[] queues = null) =>
             await riotApi.MatchV4.GetMatchlistAsync(
                 region: region,
                 encryptedAccountId: summoner.EncryptedAccountId,
-                endIndex: numberOfGames,
-                beginTime: TimeUtils.ConvertDateTimeToMillis(start),
-                endTime: TimeUtils.ConvertDateTimeToMillis(end),
+                beginIndex: beginIndex,
+                endIndex: endIndex,
+                beginTime: start is null ? null : TimeUtils.ConvertDateTimeToMillis((DateTime) start),
+                endTime: end is null ? null : TimeUtils.ConvertDateTimeToMillis((DateTime) end),
                 queue: queues ?? ServerConstants.RelevantQueues
             );
 
@@ -209,7 +210,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// </summary>
         /// <param name="matchId">Id zapasu (id v MatchInfoModel)</param>
         /// <returns>Naplneny MatchTimeline model, ktery lze ulozit do db</returns>
-        public async Task<MatchTimelineModel> GetMatchTimelineFromApi(long matchId, Region region) {
+        public async Task<MatchTimelineModel> GetMatchTimeline(long matchId, Region region) {
             logger.LogDebug($"Getting match timeline from api for matchId: {matchId}");
             var matchTimeline = await riotApi.MatchV4.GetMatchTimelineAsync(region, matchId);
 

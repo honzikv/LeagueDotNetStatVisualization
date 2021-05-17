@@ -46,23 +46,24 @@
             </div>
 
             <div id="pages" class="d-flex row justify-content-end mb-4 pr-4">
-                @if (Model.SummonerData.MatchHeaders.Count > 0) {
-                    
-                    @if (Model.QueryParams.PageNumber > 0) {
-                        <a asp-route-Name="@Model.QueryParams.Name"
-                           asp-route-Server="@Model.QueryParams.Server"
-                           asp-route-PageSize="@Model.QueryParams.PageSize"
-                           asp-route-PageNumber="@(Model.QueryParams.PageNumber - 1)" class="btn btn-primary-blue rounded-corners-small">
-                            <i class="fas fa-angle-left"></i>
-                        </a>
-                    }
-                    <a asp-route-Name="@Model.QueryParams.Name"
-                           asp-route-Server="@Model.QueryParams.Server"
-                           asp-route-PageSize="@Model.QueryParams.PageSize"
-                           asp-route-PageNumber="@(Model.QueryParams.PageNumber + 1)" class="btn btn-primary-blue rounded-corners-small">
-                            <i class="fas fa-angle-right"></i>
-                        </a>
-                    }
+                @* @if (Model.SummonerData.MatchHeaders.Count > 0) { *@
+                @*      *@
+                @*      *@
+                @*     @if (Model.QueryParams.PageNumber > 0) { *@
+                @*         <a asp-route-Name="@Model.QueryParams.Name" *@
+                @*            asp-route-Server="@Model.QueryParams.Server" *@
+                @*            asp-route-PageSize="@Model.QueryParams.PageSize" *@
+                @*            asp-route-PageNumber="@(Model.QueryParams.Offset - Model.QueryParams.PageSize)" class="btn btn-primary-blue rounded-corners-small"> *@
+                @*             <i class="fas fa-angle-left"></i> *@
+                @*         </a> *@
+                @*     } *@
+                @*     <a asp-route-Name="@Model.QueryParams.Name" *@
+                @*            asp-route-Server="@Model.QueryParams.Server" *@
+                @*            asp-route-PageSize="@Model.QueryParams.PageSize" *@
+                @*            asp-route-Offset="@(Model.QueryParams.Offset + Model.QueryParams.PageSize)" class="btn btn-primary-blue rounded-corners-small"> *@
+                @*             <i class="fas fa-angle-right"></i> *@
+                @*         </a> *@
+                @*     } *@
             </div>
 
             <div id="matches">

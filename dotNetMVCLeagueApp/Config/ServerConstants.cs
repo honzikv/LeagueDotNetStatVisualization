@@ -56,7 +56,7 @@ namespace dotNetMVCLeagueApp.Config {
         /// <summary>
         /// Vychozi pocet her, ktery nacteme - at uz z API nebo z DB
         /// </summary>
-        public const int DefaultNumberOfGamesInProfile = 10;
+        public const int DefaultPageSize = 10;
 
         /// <summary>
         /// Slouzi k ziskani jmena queue z jeho id
@@ -80,6 +80,10 @@ namespace dotNetMVCLeagueApp.Config {
         public static readonly Dictionary<string, int> QueueIdToQueueNames =
             QueueNames.ToDictionary(x => x.Value, x => x.Key);
 
+        /// <summary>
+        /// Limit pro pocet her, ktere muzeme hledat
+        /// </summary>
+        public const int GamesLimit = 200;
 
         /// <summary>
         /// Vrati nazev queue z jeho id, pokud je queueId nevalidni, vrati prazdny retezec
@@ -94,5 +98,12 @@ namespace dotNetMVCLeagueApp.Config {
         };
 
         public static int GetQueueId(string queueType) => QueueIdToQueueNames[queueType];
+
+        /// <summary>
+        /// Ziska queue id (cislo) z filtru
+        /// </summary>
+        /// <param name="filter">jmeno filtru v QueueFilters</param>
+        /// <returns></returns>
+        public static int GetQueueIdFromFilter(string filter) => GetQueueId(QueueFilters[filter]);
     };
 }

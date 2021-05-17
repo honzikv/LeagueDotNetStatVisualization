@@ -51,14 +51,13 @@ namespace dotNetMVCLeagueApp.Data {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MatchToSummonerModel>()
                 .HasKey(matchSummoner => new {
-                    matchSummoner.MatchInfoModelId,
-                    matchSummoner.SummonerInfoModelId
+                    MatchInfoModelId = matchSummoner.MatchModelId, SummonerInfoModelId = matchSummoner.SummonerModelId
                 });
 
             modelBuilder.Entity<MatchToSummonerModel>()
                 .HasOne(matchSummoner => matchSummoner.Match)
                 .WithMany(matchInfo => matchInfo.SummonerInfoList)
-                .HasForeignKey(matchInfo => matchInfo.MatchInfoModelId);
+                .HasForeignKey(matchInfo => matchInfo.MatchModelId);
         }
     }
 }

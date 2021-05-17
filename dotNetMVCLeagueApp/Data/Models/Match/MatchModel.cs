@@ -23,6 +23,12 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         ///     Jak dlouho hra trvala v s
         /// </summary>
         public long GameDuration { get; set; }
+        
+        /// <summary>
+        /// Zda-li se uz v API hledalo match history - nektere hry nemuseji mit match history nahranou
+        /// a nemusime api zbytecne prohledavat vicekrat
+        /// </summary>
+        public bool MatchTimelineSearched { get; set; }
 
         /// <summary>
         ///     Seznam vsech banu postav
@@ -39,6 +45,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// </summary>
         public virtual ICollection<PlayerModel> PlayerInfoList { get; set; }
         
-        public virtual MatchTimelineModel MatchTimelineModel { get; set; }
+        public virtual MatchTimelineModel MatchTimeline { get; set; }
     }
 }

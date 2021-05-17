@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {
@@ -19,24 +21,38 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <returns>Seznam s N nebo mene entitami</returns>
         public List<MatchModel> GetNMatchesByDateTimeDesc(SummonerModel summoner, int n, int start = 0) =>
             LeagueDbContext.MatchToSummonerModels
-                .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
+                .Where(matchSummoner => matchSummoner.SummonerModelId == summoner.Id)
                 .OrderByDescending(match => match.Match.PlayTime)
                 .Skip(start) // Preskocime prvnich "start" prvku
                 .Take(n) // max N prvku
                 .ToList()
                 .ConvertAll(matchSummoner => matchSummoner.Match);
 
-        public MatchModel GetMatchFromPageOrGetLast(SummonerModel summoner, int toSkip) {
-            var matchToSummoner = LeagueDbContext.MatchToSummonerModels
-                .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)
-                .OrderByDescending(match => match.Match.PlayTime)
-                .Skip(toSkip)
-                .FirstOrDefault();
+        public async Task<List<MatchModel>> DeleteOldMatches(DateTime maxAge) {
+            // Nevim, zda-li neni explicitni transakce zbytecna
+            await using var transaction = await LeagueDbContext.Database.BeginTransactionAsync();
+            List<MatchModel> oldGames;
+            try {
+                oldGames = LeagueDbContext.MatchModels.Where(match => match.PlayTime < maxAge).ToList();
+                var oldGameLinks = new List<MatchToSummonerModel>();
 
-            return matchToSummoner is null
-                ? LeagueDbContext.MatchToSummonerModels
-                    .LastOrDefault(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id)?.Match
-                : matchToSummoner.Match;
+                // Ziskame vsechny linky, ktere jsou relevantni k danym hram a odstranime je
+                foreach (var linksForMatch in oldGames.Select(
+                    match => LeagueDbContext.MatchToSummonerModels.Where(matchSummoner =>
+                        matchSummoner.MatchModelId == match.Id).ToList())) {
+                    linksForMatch.ForEach(link => oldGameLinks.Add(link));
+                }
+
+                LeagueDbContext.MatchToSummonerModels.RemoveRange(oldGameLinks);
+                oldGames = (await DeleteAll(oldGames)).ToList();
+                await LeagueDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex) {
+                throw new ActionNotSuccessfulException(ex.Message);
+            }
+
+            return oldGames;
         }
 
         /// <summary>
@@ -50,7 +66,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         public List<MatchModel> GetNMatchesByQueueTypeAndDateTimeDesc(SummonerModel summoner, string queueType, int n,
             int start = 0)
             => LeagueDbContext.MatchToSummonerModels
-                .Where(matchSummoner => matchSummoner.SummonerInfoModelId == summoner.Id &&
+                .Where(matchSummoner => matchSummoner.SummonerModelId == summoner.Id &&
                                         matchSummoner.Match.QueueType.ToLower() == queueType.ToLower())
                 .OrderByDescending(match => match.Match.PlayTime)
                 .Skip(start) // Preskocime start prvku
