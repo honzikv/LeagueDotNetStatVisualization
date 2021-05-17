@@ -37,8 +37,6 @@ namespace dotNetMVCLeagueApp.Services {
             this.summonerRepository = summonerRepository;
         }
 
-        private const int MaxGamesFromApiPerRequest = 10;
-
         private readonly Dictionary<string, int> queueNameToQueueId = ServerConstants.QueueIdToQueueNames;
 
         /// <summary>
@@ -74,8 +72,27 @@ namespace dotNetMVCLeagueApp.Services {
             return await matchRepository.Get(apiMatch.Id);
         }
 
+        public List<MatchModel> GetFrontPage(SummonerModel summoner)
+            => matchRepository.GetNMatchesByDateTimeDesc(summoner, ServerConstants.DefaultNumberOfGamesInProfile);
 
-        
-        
+        public Task<List<MatchModel>> GetSpecificPage(SummonerModel summoner, int pageNumber, int numberOfGames, int[] queues) {
+            var toSkip = pageNumber * numberOfGames; // pocet prvku, ktere preskocime
+            
+            // Nyni budeme brat od aktualniho datumu az mesic zpet
+            // Bohuzel, Riot API nedovoluje, abychom udelali query kde je rozsah casu vetsi nez tyden, takze
+            // potrebujeme zavolat api az 4x abychom ziskali vsechny hry.
+            var toDate = DateTime.Now; // Datum DO ktereho hledame - v riot api jako endTime
+            var maxFromDate = toDate.Subtract(riotApiUpdateConfig.MaxMatchAgeDays);
+            var run = true;
+            while (run) {
+                var fromDate = toDate.SubtractWeek(); // datum OD ktereho hledame - v riot api jako startTime
+                if (fromDate < maxFromDate) {
+                    fromDate = maxFromDate;
+                    run = false;
+                }
+
+                
+            }
+        }
     }
 }
