@@ -1,11 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     /// <summary>
     ///     Reprezentuje timeline pro jeden zapas
     /// </summary>
     public class MatchTimelineModel {
+        
         public long Id { get; set; }
+        
+        public long MatchId { get; set; }
+        //
+        // [Required]
+        // public virtual MatchModel Match { get; set; }
 
         /// <summary>
         ///     Doba, jak dlouho trva jeden frame

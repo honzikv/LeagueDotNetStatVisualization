@@ -46,9 +46,11 @@ namespace dotNetMVCLeagueApp.Data {
 
         public DbSet<MatchParticipantFrameModel> MatchParticipantFrameModels { get; set; }
 
-        // Implementace M : N pro summoner a match pomoci fluent API
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); // pro Identity
+            
+            // Implementace M : N pro summoner a match pomoci fluent API
             modelBuilder.Entity<MatchToSummonerModel>()
                 .HasKey(matchSummoner => new {
                     MatchInfoModelId = matchSummoner.MatchModelId, SummonerInfoModelId = matchSummoner.SummonerModelId
@@ -58,6 +60,7 @@ namespace dotNetMVCLeagueApp.Data {
                 .HasOne(matchSummoner => matchSummoner.Match)
                 .WithMany(matchInfo => matchInfo.SummonerInfoList)
                 .HasForeignKey(matchInfo => matchInfo.MatchModelId);
+
         }
     }
 }

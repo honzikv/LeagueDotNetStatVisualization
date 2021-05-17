@@ -1,9 +1,14 @@
-﻿namespace dotNetMVCLeagueApp.Data.Models.Match {
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace dotNetMVCLeagueApp.Data.Models.Match {
     /// <summary>
     ///     Obsahuje statistiky pro daneho hrace (tato trida nema vsechny, pouze ty, ktere by se mohly pouzit)
     /// </summary>
     public class PlayerStatsModel {
         public int Id { get; set; }
+        
+        [Required]
+        public virtual PlayerModel Player { get; set; }
 
         public bool Win { get; set; }
 

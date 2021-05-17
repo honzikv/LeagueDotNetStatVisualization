@@ -16,7 +16,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         ///     Reference na statistiku
         /// </summary>
-        [Required]
         public virtual PlayerStatsModel PlayerStats { get; set; }
 
         /// <summary>
