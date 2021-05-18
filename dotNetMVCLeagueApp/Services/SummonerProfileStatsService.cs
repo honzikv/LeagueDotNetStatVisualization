@@ -4,11 +4,11 @@ using System.Linq;
 using AutoMapper;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Pages.Data.Profile;
 using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services.Utils;
 using dotNetMVCLeagueApp.Utils;
@@ -51,18 +51,22 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
         /// <exception cref="ActionNotSuccessfulException">Pokud neexistuje info o hraci</exception>
         public MatchHeaderDto GetMatchInfoHeader(SummonerModel summoner,
             MatchModel match) {
-            var playerInfo = match.PlayerInfoList
+            var playerInfo = match.PlayerList
                                  .FirstOrDefault(player => player.SummonerId == summoner.EncryptedSummonerId)
                              ?? throw new ActionNotSuccessfulException(
                                  "Error while obtaining the data from the database");
 
             // Statistika hrace
             var playerStats = playerInfo.PlayerStats;
-
+            
             // Nyni objekt muzeme rovnou inicializovat pomoci {}
             return new MatchHeaderDto {
                 Duration = TimeSpan.FromSeconds(match.GameDuration),
+                GameId = match.Id,
+                Server = summoner.Region,
+                SummonerName = summoner.Name,
                 QueueType = match.QueueType,
+                ParticipantId = playerInfo.ParticipantId,
                 TeamId = playerInfo.TeamId,
                 Kills = playerStats.Kills,
                 Deaths = playerStats.Deaths,
@@ -70,6 +74,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                 Gold = playerStats.GoldEarned,
                 DamageDealt = playerStats.TotalDamageDealtToChampions,
                 VisionScore = playerStats.VisionScore,
+                IsRemake = GameStatsUtils.IsRemake(match.GameDuration),
                 LargestMultiKill = GameStatsUtils.GetLargestMultiKill(playerStats),
                 CsPerMinute = GameStatsUtils.GetCsPerMinute(playerStats, match.GameDuration),
                 TotalCs = GameStatsUtils.GetTotalCs(playerStats),
@@ -113,7 +118,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
                     continue;
                 }
 
-                var player = match.PlayerInfoList.FirstOrDefault(playerModel =>
+                var player = match.PlayerList.FirstOrDefault(playerModel =>
                                  playerModel.SummonerId == summoner.EncryptedSummonerId) ??
                              throw new RedirectToHomePageException(
                                  $"There was an error with the database. Data for summoner: {summoner.Name} is " 
@@ -207,7 +212,7 @@ namespace dotNetMVCLeagueApp.Services.Summoner {
 
         private static void UpdateCounter(StatsCounter counter, PlayerModel player, MatchModel match) {
             // Ziskame hracovi spoluhrace
-            var playerTeam = match.PlayerInfoList.Where(matchPlayer =>
+            var playerTeam = match.PlayerList.Where(matchPlayer =>
                 matchPlayer.TeamId == player.TeamId).ToList();
 
             // Mapping statistik

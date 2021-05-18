@@ -1,3 +1,3 @@
-﻿namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Timeline {
+﻿namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     public class MatchTimelineOverviewDto { }
 }

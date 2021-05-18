@@ -106,7 +106,7 @@ namespace dotNetMVCLeagueApp.Tests {
             };
 
             var matchInfo = new MatchModel {
-                PlayerInfoList = playerInfoList
+                PlayerList = playerInfoList
             };
 
             var player = playerInfoList[2]; // hrac, pro ktereho pocitame kill participation - posledni ze seznamu
@@ -146,26 +146,11 @@ namespace dotNetMVCLeagueApp.Tests {
             var player = playerInfoList[0]; // Hrac, pro ktereho pocitame kill participation
             var expected = 1.0;
             var matchInfo = new MatchModel {
-                PlayerInfoList = playerInfoList
+                PlayerList = playerInfoList
             };
             var actual = GameStatsUtils.GetKillParticipation(player.PlayerStats, matchInfo, blueSide);
             Assert.Equal(expected, actual);
         }
 
-        /// <summary>
-        /// Test pro ziskani dvou nejhranejsich roli
-        /// </summary>
-        [Fact]
-        public void TestGetTwoMostPlayedRoles_TopMid() {
-            var stats = new GameListStats {
-                Roles = {
-                    [ServerConstants.Top] = 10, [ServerConstants.Mid] = 8, [ServerConstants.Jg] = 1, [ServerConstants.Adc] = 3
-                }
-            };
-
-            var mostPlayedRoles = GameStatsUtils.GetTwoMostPlayedRoles(stats.Roles);
-            Assert.Equal(mostPlayedRoles.Item1, ServerConstants.Top);
-            Assert.Equal(mostPlayedRoles.Item2, ServerConstants.Mid);
-        }
     }
 }

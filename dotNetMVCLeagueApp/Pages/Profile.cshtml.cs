@@ -50,8 +50,14 @@ namespace dotNetMVCLeagueApp.Pages {
         /// </summary>
         public readonly HashSet<int> NumberOfGames = new() {ServerConstants.DefaultPageSize, 15, 20};
 
+        /// <summary>
+        /// Parametry z GET requestu
+        /// </summary>
         [BindProperty(SupportsGet = true)] public ProfileQueryModel QueryParams { get; set; }
 
+        /// <summary>
+        /// Chybova zprava - mapuje se z TempData
+        /// </summary>
         [TempData] public string ErrorMessage { get; set; }
 
         /// <summary>

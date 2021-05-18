@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail;
-using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
+using dotNetMVCLeagueApp.Pages.Data.MatchDetail;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail;
+using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 
-namespace dotNetMVCLeagueApp.Services.MatchTimeline {
+namespace dotNetMVCLeagueApp.Services.Utils {
     /// <summary>
     /// Pro prehlednost je vetsina funkcionality pro vypocet statistik ve vlastni tride, aby se nemusely objekty
     /// predavat nejakym zpusobem ve MatchTimelineStatsService

@@ -1,7 +1,22 @@
 ﻿@page
+@using dotNetMVCLeagueApp.Config
 @model dotNetMVCLeagueApp.Pages.Match
 
 @{
     Layout = "Shared/_Layout";
+
+    var playerTeam = Model.MatchOverview.Players[Model.QueryParams.ParticipantId].TeamId == ServerConstants.BlueSideId ?
+        Model.MatchOverview.Teams.BlueSide : Model.MatchOverview.Teams.RedSide;
 }
 
+@section Scripts {
+    <script src="~/js/autohide.js"></script>
+}
+
+<div class="row d-flex align-content-around justify-content-center">
+
+    <div id="blueSide" class="col-md-6 col-sm-10">
+        @await Html.PartialAsync("Shared/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
+    </div>
+
+</div>

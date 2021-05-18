@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail {
+namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
     /// <summary>
     ///     Par cas a hodnota
     /// </summary>
@@ -26,6 +26,5 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail {
             TimeSpan = timeSpan;
         }
         
-        public override string ToString() => $"{nameof(TimeSpan)}: {TimeSpan}, {nameof(Value)}: {Value}";
     }
 }

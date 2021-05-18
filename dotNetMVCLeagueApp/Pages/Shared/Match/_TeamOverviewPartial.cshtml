@@ -1,0 +1,80 @@
+﻿@using dotNetMVCLeagueApp.Config
+@using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview
+@model dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview.MatchTeamsDto
+
+
+@{
+    var blueGold = ((double) Model.BlueSide.Gold / (Model.BlueSide.Gold + Model.RedSide.Gold)) * 100;
+    var blueWidth = blueGold.ToString("N1") + "%";
+    var redWidth = (100 - blueGold).ToString("N1") + "%";
+
+    var redSide = Model.RedSide; // abychom nemuseli neustale referencovat pres Model
+    var blueSide = Model.BlueSide; // abychom nemuseli neustale referencovat pres Model
+}
+
+@functions {
+
+    void PrintTeamInfo(TeamDto team, string teamClass) {
+        <text>
+            @if (team.Win) {
+                <p class="text-center heading3 no-spacing @teamClass">@team.TeamName (WIN)</p>
+            }
+            else {
+                <p class="text-center heading3 no-spacing @teamClass">@team.TeamName</p>
+            }
+            <div class="row d-flex justify-content-center align-content-center">
+                <div class="col-auto align-self-center">
+                    <p class="no-spacing text-center">@team.TotalKills Kills</p>
+                    <p class="no-spacing deaths text-center">@team.TotalDeaths Deaths</p>
+                    <p class="no-spacing text-center">@team.Barons Barons</p>
+                </div>
+
+                <div class="col-auto align-self-center">
+                    <p class="no-spacing text-center">@team.Dragons Dragons</p>
+                    <p class="no-spacing text-center">@team.TurretKills Turrets</p>
+                    <p class="no-spacing text-center">@team.InhibitorKills Inhibitors</p>
+                </div>
+            </div>
+        </text>
+    }
+
+
+}
+
+<div class="rounded-corners-small card-light card-match-header-light mt-2 animate__animated animate__fadeIn">
+
+    <div class="card d-flex justify-content-around card-body">
+        <div class="row no-gutters">
+            <div class="col-4" id="blueSide">
+                @{
+                    PrintTeamInfo(blueSide, "color-blue-side");
+                }
+            </div>
+
+
+            <div class="col-4">
+                <p class="text-center heading3 no-spacing">Team Gold</p>
+                <div class="progress team-overview-progress-bar">
+
+                    <div style="width: @blueWidth" class="progress-bar progress-bar-blueside">
+                        <span class="no-spacing text-white-color">@Model.BlueSide.Gold.ToString("N0")</span>
+                    </div>
+
+                    <div style="width: @redWidth" class="progress-bar progress-bar-redside">
+                        <span class="no-spacing text-white-color">@Model.RedSide.Gold.ToString("N0")</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-4">
+                @{
+                    PrintTeamInfo(redSide, "color-red-side");
+                }
+            </div>
+        </div>
+
+
+    </div>
+</div>

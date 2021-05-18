@@ -63,12 +63,18 @@ namespace dotNetMVCLeagueApp.Services {
             if (!match.MatchTimelineSearched) {
                 var matchTimeline = await riotApiRepository.GetMatchTimeline(matchId, region);
                 match.MatchTimeline = matchTimeline;
+                match.MatchTimelineSearched = true;
                 return await matchRepository.Update(match);
             }
 
             return match;
         }
 
+        /// <summary>
+        /// Ziska nefiltrovanou uvodni stranku pro profil
+        /// </summary>
+        /// <param name="summoner"></param>
+        /// <returns></returns>
         public List<MatchModel> GetFrontPage(SummonerModel summoner)
             => matchRepository.GetNMatchesByDateTimeDesc(summoner, ServerConstants.DefaultPageSize);
 

@@ -85,6 +85,11 @@ namespace dotNetMVCLeagueApp.Config {
         /// </summary>
         public const int GamesLimit = 200;
 
+        public const int BlueSideId = 100;
+        public const int RedSideId = 200;
+        public const string RedSide = "Red side";
+        public const string BlueSide = "Blue side";
+
         /// <summary>
         /// Vrati nazev queue z jeho id, pokud je queueId nevalidni, vrati prazdny retezec
         /// </summary>

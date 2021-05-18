@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Timeline {
+namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     /// <summary>
     ///     Obsahuje vybrane timeline pro jednoho hrace
     /// </summary>

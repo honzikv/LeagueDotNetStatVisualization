@@ -130,7 +130,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 MapParticipantToPlayer(match, participantIdentity)).ToList();
 
             result.Teams = teams;
-            result.PlayerInfoList = players;
+            result.PlayerList = players;
             return result;
         }
 

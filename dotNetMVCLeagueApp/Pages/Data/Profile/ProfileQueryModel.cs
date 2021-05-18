@@ -18,7 +18,6 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
         /// Jmeno serveru, napr. "EUW" nebo "euw"
         /// </summary>
         [Required]
-        [MinLength(1)]
         public string Server { get; set; }
 
         /// <summary>

@@ -1,8 +1,8 @@
-﻿namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
+﻿namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
     /// <summary>
     ///     Informace o tymu
     /// </summary>
-    public class TeamInfoDto {
+    public class TeamDto {
         /// <summary>
         ///     Jmeno tymu. Legalni hodnoty "Red" nebo "Blue"
         /// </summary>
@@ -47,5 +47,6 @@
         ///     Pocet znicenych inhibitoru
         /// </summary>
         public int InhibitorKills { get; set; }
+        
     }
 }

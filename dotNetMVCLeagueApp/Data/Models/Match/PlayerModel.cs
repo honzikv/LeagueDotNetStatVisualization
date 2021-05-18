@@ -74,7 +74,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public double? GoldDiffAt10 { get; set; }
 
         /// <summary>
-        /// Rozdil zlata oproti oponentovi v 15 minute
+        /// Rozdil zlata oproti oponentovi v 20 minute
         /// </summary>
         public double? GoldDiffAt20 { get; set; }
 
@@ -84,7 +84,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         public double? CsDiffAt10 { get; set; }
 
         /// <summary>
-        /// Rozdil cs v 15 minute
+        /// Rozdil cs v 20 minute
         /// </summary>
         public double? CsDiffAt20 { get; set; }
     }

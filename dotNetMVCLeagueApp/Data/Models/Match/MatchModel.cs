@@ -43,8 +43,11 @@ namespace dotNetMVCLeagueApp.Data.Models.Match {
         /// <summary>
         ///     Reference na hrace
         /// </summary>
-        public virtual ICollection<PlayerModel> PlayerInfoList { get; set; }
+        public virtual ICollection<PlayerModel> PlayerList { get; set; }
         
+        /// <summary>
+        /// Reference na timeline, muze byt null
+        /// </summary>
         public virtual MatchTimelineModel MatchTimeline { get; set; }
     }
 }

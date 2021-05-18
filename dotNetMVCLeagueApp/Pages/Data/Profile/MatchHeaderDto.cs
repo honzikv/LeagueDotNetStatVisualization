@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using dotNetMVCLeagueApp.Data.JsonMappings;
+using MingweiSamuel.Camille.Enums;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
+namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     /// <summary>
     ///     Trida, ktera obsahuje informace pro hlavicku pro dany zapas
     /// </summary>
@@ -12,6 +13,28 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
         /// </summary>
         public int TeamId { get; set; }
         
+        /// <summary>
+        /// Id hry - pro zobrazeni detailu
+        /// </summary>
+        public long GameId { get; set; }
+        
+        /// <summary>
+        /// Server - pro zobrazeni detailu
+        /// </summary>
+        public string Server { get; set; }
+        
+        /// <summary>
+        /// Summoner name - pro zobrazeni detailu
+        /// </summary>
+        public string SummonerName { get; set; }
+
+        public bool IsRemake { get; set; } = false;
+        
+        /// <summary>
+        /// Id ucastnika - pro zobrazeni detailu
+        /// </summary>
+        public int ParticipantId { get; set; }
+
         /// <summary>
         /// Jak dlouho hra trvala
         /// </summary>

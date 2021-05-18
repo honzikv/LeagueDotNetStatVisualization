@@ -96,9 +96,29 @@ $color-loss-light: darken($color-loss, 10%);
     color: $color-loss-light
 }
 
+.color-blue-side {
+    color: $color-blue-side;
+}
+
+.color-red-side {
+    color: $color-red-side;
+}
+
+.progress-bar-blueside {
+    background-color: $color-blue-side;
+}
+
+.progress-bar-redside {
+    background-color: $color-red-side;
+}
 
 .match-progress-bar {
     height: 16px;
+    border-radius: 8px;
+}
+
+.team-overview-progress-bar {
+    height: 20px;
     border-radius: 8px;
 }
 

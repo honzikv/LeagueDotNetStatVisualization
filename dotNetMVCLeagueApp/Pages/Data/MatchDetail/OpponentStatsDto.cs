@@ -1,10 +1,10 @@
-﻿namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail {
+﻿namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
     /// <summary>
     ///     Objekt, ktery obsahuje dulezite informace oproti oponentovi
     ///     Tento objekt muze byt null, pokud nejsou k dispozici informace o lince.
     ///     Nektera data poskytuje api uz primo, nicmene je snazsi je vypocitat a navic nejsou vzdy dostupna
     /// </summary>
-    public class OpponentStatsViewModel {
+    public class OpponentStatsDto {
         public bool LaneWon { get; set; }
 
         public double XpDiffAt10 { get; set; }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail {
     /// <summary>

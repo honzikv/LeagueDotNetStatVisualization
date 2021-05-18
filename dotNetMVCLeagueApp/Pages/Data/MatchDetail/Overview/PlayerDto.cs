@@ -1,14 +1,20 @@
 ﻿using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.JsonMappings;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
+namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
     /// <summary>
     ///     Informace o hraci pro zobrazeni do overview zapasu
     /// </summary>
-    public class PlayerInfoDto {
+    public class PlayerDto {
         /// <summary>
         ///     Id ucastnika
         /// </summary>
         public int ParticipantId { get; set; }
+        
+        /// <summary>
+        /// Id tymu - 100 nebo 200
+        /// </summary>
+        public int TeamId { get; set; }
 
         public string SummonerName { get; set; }
 
@@ -20,7 +26,7 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
         /// <summary>
         ///     Jmeno postavy
         /// </summary>
-        public string ChampionName { get; set; }
+        public ChampionAsset ChampionAsset { get; set; }
 
         /// <summary>
         ///     Pocet zabiti
@@ -36,6 +42,8 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
         ///     Pocet asistenci
         /// </summary>
         public int Assists { get; set; }
+        
+        public double Kda { get; set; }
 
         /// <summary>
         ///     Celkovy podil na zabiti v tymu
@@ -45,7 +53,7 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
         /// <summary>
         ///     Seznam predmetu pro id ikonek
         /// </summary>
-        public List<int> Items { get; set; } = new();
+        public List<ItemAsset> Items { get; set; }
 
         /// <summary>
         ///     Pocet zabitych jednotek
@@ -60,31 +68,61 @@ namespace dotNetMVCLeagueApp.Data.FrontendDtos.MatchDetail.Overview {
         /// <summary>
         ///     Id leveho summoner spellu
         /// </summary>
-        public int Spell1Id { get; set; }
+        public SummonerSpellAsset SummonerSpell1 { get; set; }
 
         /// <summary>
         ///     Id praveho summoner spellu
         /// </summary>
-        public int Spell2Id { get; set; }
+        public SummonerSpellAsset SummonerSpell2 { get; set; }
+        
+        /// <summary>
+        ///     Vision score - kolik vize hrac poskytl svemu tymu
+        /// </summary>
+        public long VisionScore { get; set; }
+        
+        /// <summary>
+        ///     Primary rune Id
+        /// </summary>
+        public RuneAsset PrimaryRune{ get; set; }
+
+        /// <summary>
+        ///     Secondary rune Id
+        /// </summary>
+        public RuneAsset SecondaryRune { get; set; }
 
         /// <summary>
         ///     Celkovy pocet zlata
         /// </summary>
-        public int GoldEarned { get; set; }
+        public int Gold { get; set; }
 
         /// <summary>
         ///     Celkove poskozeni do ostatnich hracu
         /// </summary>
-        public long TotalDamageDealtToChampions { get; set; }
+        public long DamageDealt { get; set; }
 
         /// <summary>
-        ///     Celkove poskozeni od ostatnich hracu
+        ///     Rozdil zlata v 10 minute
         /// </summary>
-        public long TotalDamageTaken { get; set; }
+        public double? GoldDiffAt10 { get; set; }
+        
+        /// <summary>
+        ///     Rozdil zlata v 20 minute
+        /// </summary>
+        public double? GoldDiffAt20 { get; set; }
+        
+        /// <summary>
+        ///     Rozdil cs v 10 minute
+        /// </summary>
+        public double? CsDiffAt10 { get; set; }
 
         /// <summary>
-        ///     Celkove "odrazene" poskozeni (napr. pres armor)
+        /// Rozdil cs v 20 minute
         /// </summary>
-        public long DamageSelfMitigated { get; set; }
+        public double? CsDiffAt20 { get; set; }
+        
+        /// <summary>
+        /// Uroven postavy
+        /// </summary>
+        public int Level { get; set; }
     }
 }

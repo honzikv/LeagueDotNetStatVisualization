@@ -4,6 +4,7 @@ using System.Linq;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
+using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview;
 
 namespace dotNetMVCLeagueApp.Services.Utils {
     public static class GameStatsUtils {
@@ -50,7 +51,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <returns>Kill participaci pro daneho hrace</returns>
         public static double GetKillParticipation(PlayerStatsModel playerStats, MatchModel matchModel,
             int teamId) {
-            var totalKills = matchModel.PlayerInfoList.Where(player => player.TeamId == teamId)
+            var totalKills = matchModel.PlayerList.Where(player => player.TeamId == teamId)
                 .Sum(player => player.PlayerStats.Kills); // celkovy pocet zabiti
 
             // Pokud je total 0 tak vratime 1.0, jinak vratime kills + assists / total kills
@@ -58,7 +59,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         }
 
         public static double GetKillParticipation(PlayerStatsModel player, IEnumerable<PlayerStatsModel> team) {
-            var playerKillsAssists =  player.Kills + player.Assists;
+            var playerKillsAssists = player.Kills + player.Assists;
             var totalKills = team.Sum(playerStats => playerStats.Kills);
 
             // Pokud je celkove 0 tak vratime 1.0, jinak vratime (pocet zabiti a asistenci) / celkovym poctem
@@ -100,90 +101,28 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <summary>
         /// Zjisti, zda-li se jedna o remake - pokud je hra do 4 minut (vcetne)
         /// </summary>
-        /// <param name="matchInfoGameDuration">Doba trvani hry v sekundach - z Riot Api</param>
+        /// <param name="gameDuration">Doba trvani hry v sekundach - z Riot Api</param>
         /// <returns></returns>
-        public static bool IsRemake(long matchInfoGameDuration) =>
-            TimeSpan.FromSeconds(matchInfoGameDuration) <= ServerConstants.GameDurationForRemake;
-
-        public static void UpdateStatTotals(GameListStats stats, MatchModel match, PlayerModel player,
-            TeamStatsModel playerTeam) {
-            var playerStats = player.PlayerStats;
-            // Celkovy pocet pro zabiti, smrti a asistence
-            stats.Kills.Add(playerStats.Kills);
-            stats.Assists.Add(playerStats.Assists);
-            stats.Deaths.Add(playerStats.Deaths);
-            stats.Gold.Add(playerStats.GoldEarned);
-
-            // Pridani CS (creep score) za minutu do seznamu
-            stats.CsPerMinuteList.Add(GetCsPerMinute(playerStats, match.GameDuration));
-
-            // Pridani kill participaci do seznamu
-            stats.KillParticipations.Add(GetKillParticipation(playerStats, match, playerTeam.TeamId));
-
-            if (player.GoldDiffAt10 is not null) {
-                stats.GoldDiffsAt10.Add((double) player.GoldDiffAt10);
-            }
-        }
+        public static bool IsRemake(long gameDuration) =>
+            TimeSpan.FromSeconds(gameDuration) <= ServerConstants.GameDurationForRemake;
 
         public static double GetKda(int kills, int deaths, int assists) =>
             // Pokud je deaths 0 vratime, jako kdyby bylo deaths 1 tzn (kills + assists) / 1
             // Jinak klasicky (kills + assists) / deaths
             deaths is 0 ? kills + assists : ((double) kills + assists) / deaths;
 
-        /// <summary>
-        /// Vypocte prumery pro dane hodnoty v GameListStatsViewModel
-        /// </summary>
-        /// <param name="statsDto">ViewModel objekt</param>
-        /// <param name="totals">Objekt s celkovym poctem pro dany seznam her</param>
-        public static void CalculateAverages(MatchListStatsDto statsDto, GameListStats totals) {
-            var realGamesPlayed = statsDto.GamesWon + statsDto.GamesLost; // Nepocitame remake hry
-            if (realGamesPlayed == 0) { // Pokud se nehraly zadne hry vratime se
-                return;
-            }
-
-            statsDto.AverageKills = totals.Kills.Average();
-            statsDto.AverageDeaths = totals.Deaths.Average();
-            statsDto.AverageAssists = totals.Assists.Average();
-
-            statsDto.AverageKda = GetKda(totals.Kills.Sum(), totals.Deaths.Sum(), totals.Assists.Sum());
-
-            statsDto.AverageKillParticipation = totals.KillParticipations.Average();
-            statsDto.AverageGoldDiffAt10 = totals.GoldDiffsAt10.Average();
-            statsDto.AverageCsPerMinute = totals.CsPerMinuteList.Average();
-
-            var mostPlayedRoles = GetTwoMostPlayedRoles(totals.Roles);
-            statsDto.MostPlayedRole = mostPlayedRoles.Item1;
-            statsDto.SecondMostPlayedRole = mostPlayedRoles.Item2;
-        }
-
-
-        /// <summary>
-        /// Ziska dve nejhranejsi role (pokud je alespon 1 nebo vice her)
-        /// </summary>
-        /// <param name="roles">slovnik s rolemi z StatsTotal objektu</param>
-        /// <returns></returns>
-        public static (string, string) GetTwoMostPlayedRoles(Dictionary<string, int> roles) {
-            var rolesFrequenciesList = roles.ToList();
-            // Seradime podle frekvenci a vybereme prvni dva
-            rolesFrequenciesList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
-            return (rolesFrequenciesList[0].Key, rolesFrequenciesList[1].Key);
-        }
-
-        public static void UpdateChampionFrequency(PlayerModel playerInfo, Dictionary<int, int> totalsChampions) {
-            if (!totalsChampions.ContainsKey(playerInfo.ChampionId)) { }
-        }
-
         public static double GetGoldShare(PlayerStatsModel playerStats, List<PlayerStatsModel> playerTeamStats) {
             var totalGold = playerTeamStats.Sum(player => player.GoldEarned);
             return totalGold == 0.0 ? 1.0 : (double) playerStats.GoldEarned / totalGold;
         }
 
-        public static double GetDamageShare(PlayerStatsModel playerStats, IEnumerable<PlayerStatsModel> playerTeamStats) {
+        public static double GetDamageShare(PlayerStatsModel playerStats,
+            IEnumerable<PlayerStatsModel> playerTeamStats) {
             var totalDamageDealt = playerTeamStats.Sum(player => player.TotalDamageDealtToChampions);
             return totalDamageDealt == 0.0 ? 1.0 : (double) playerStats.TotalDamageDealtToChampions / totalDamageDealt;
         }
 
-        public static double GetWinrate(int wins, int losses) => 
+        public static double GetWinrate(int wins, int losses) =>
             losses == 0 ? 1.0 : (double) wins / (wins + losses);
 
         public static double GetWinratePercentage(int wins, int losses) => GetWinrate(wins, losses) * 100;
@@ -192,5 +131,10 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             var totalVision = playerTeamStats.Sum(player => player.VisionScore);
             return totalVision == 0.0 ? 1.0 : (double) playerStats.VisionScore / totalVision;
         }
+
+        public static double GetKillParticipationFromTeamInfoDto(PlayerModel player, TeamDto team) =>
+            team.TotalKills == 0
+                ? 0.0
+                : (double) (player.PlayerStats.Kills + player.PlayerStats.Assists) / team.TotalKills;
     }
 }
