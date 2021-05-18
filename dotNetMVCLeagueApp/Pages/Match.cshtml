@@ -1,22 +1,67 @@
 ﻿@page
 @using dotNetMVCLeagueApp.Config
+@using dotNetMVCLeagueApp.Utils
 @model dotNetMVCLeagueApp.Pages.Match
 
 @{
     Layout = "Shared/_Layout";
 
+    var profileQuery = new Dictionary<string, string>() {
+        {"name", Model.QueryParams.SummonerName},
+        {"server", Model.QueryParams.Server}
+    };
+
     var playerTeam = Model.MatchOverview.Players[Model.QueryParams.ParticipantId].TeamId == ServerConstants.BlueSideId ?
         Model.MatchOverview.Teams.BlueSide : Model.MatchOverview.Teams.RedSide;
+    
+
+    // String tridy pro vysledek - nastaveni barvy
+    var matchResultClass = Model.MatchOverview.IsRemake ? "text-grey" :
+        Model.MatchOverview.Win ? "color-win-light" : "color-loss-light";
+
+    var matchResult = Model.MatchOverview.IsRemake ? "(Remake)" :
+        Model.MatchOverview.Win ? "(Win)" : "(Loss)";
+
+    var player = Model.MatchOverview.Players[Model.QueryParams.ParticipantId];
+    var playerChampion = player.ChampionAsset;
 }
+
+<div class="container">
+    <a asp-page="Profile" asp-all-route-data="profileQuery"
+       class="btn btn-grey rounded-corners-small float-right">
+        Back to Profile
+    </a>
+    <div id="match-header mb-4">
+        <h1 class="queue-type-text no-spacing">
+            @Model.MatchOverview.QueueType <span class="@matchResultClass">@matchResult</span>
+        </h1>
+
+        <div class="row d-flex no-gutters">
+            <div class="col-auto mr-4">
+                <img alt="N/A"
+                     data-toggle="tooltip" data-placement="top" title="@playerChampion.Name"
+                     src="@Url.Content($"/assets/{playerChampion.RelativeAssetPath}")" class="champion-icon">
+            </div>
+
+            <div class="col-auto font-medium">
+                <p class="no-spacing">@StringUtils.GetGameDuration(Model.MatchOverview.GameDuration)</p>
+                <p class="no-spacing mt-n1">
+                    <span> @player.Kills / </span>
+                    <span class="deaths">@player.Deaths</span>
+                    <span> / @player.Assists </span>
+                    as <span class="font-weight-bold">@player.ChampionAsset.Name</span>
+                </p>
+            </div>
+        </div>
+
+
+        <hr class="hr-header">
+    </div>
+    @await Html.PartialAsync("Shared/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
+
+</div>
+
 
 @section Scripts {
     <script src="~/js/autohide.js"></script>
 }
-
-<div class="row d-flex align-content-around justify-content-center">
-
-    <div id="blueSide" class="col-md-6 col-sm-10">
-        @await Html.PartialAsync("Shared/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
-    </div>
-
-</div>

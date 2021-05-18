@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview;
 using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services.Utils;
+using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
@@ -23,27 +25,35 @@ namespace dotNetMVCLeagueApp.Services {
         /// </summary>
         /// <param name="match"></param>
         /// <returns></returns>
-        public MatchOverviewDto GetMatchOverview(MatchModel match) {
+        public MatchOverviewDto GetMatchOverview(MatchModel match, int participantId) {
             // Nejprve vytvorime slovnik kde jsou (nebo by mely byt) dva tymy - RedSide (200) a BlueSide (100)
             // Slovnik dale pouzijeme k mapovani dat z hracu a data ze slovniku ulozime do objektu pro frontend
             var teamsDictionary = GetTeamDtoDictionary(match);
+            var participantPlayer = match.PlayerList.FirstOrDefault(player => player.ParticipantId == participantId) ??
+                                    throw new ActionNotSuccessfulException(
+                                        "Error, data in database is corrupt, cannot show match overview");
 
             if (!teamsDictionary.ContainsKey(ServerConstants.BlueSideId) ||
                 !teamsDictionary.ContainsKey(ServerConstants.RedSideId)) {
                 throw new ActionNotSuccessfulException(
                     "Error, data in database is corrupt, cannot show match overview");
             }
-            
+
             var teams = new MatchTeamsDto() {
                 BlueSide = teamsDictionary[ServerConstants.BlueSideId],
                 RedSide = teamsDictionary[ServerConstants.RedSideId]
             };
-            
+
+            var remake = GameStatsUtils.IsRemake(match.GameDuration); // zda-li se jedna o remake
             return new MatchOverviewDto {
-                IsRemake = GameStatsUtils.IsRemake(match.GameDuration),
+                IsRemake = remake,
+                Win = !remake &&teamsDictionary[participantPlayer.TeamId].Win,
                 PlayTime = match.PlayTime,
                 Teams = teams,
-                Players = MapPlayers(match, teamsDictionary)
+                Players = MapPlayers(match, teamsDictionary),
+                Summoner = participantPlayer.SummonerName,
+                GameDuration = TimeSpan.FromSeconds(match.GameDuration),
+                QueueType = match.QueueType
             };
         }
 
@@ -55,7 +65,8 @@ namespace dotNetMVCLeagueApp.Services {
                 logger.LogDebug($"Team: id - {team.Id}, teamId: {team.TeamId}");
                 result[team.TeamId] = new() {
                     Win = team.Win == ServerConstants.Win,
-                    TeamName = team.TeamId == ServerConstants.BlueSideId ? ServerConstants.BlueSide
+                    TeamName = team.TeamId == ServerConstants.BlueSideId
+                        ? ServerConstants.BlueSide
                         : ServerConstants.RedSide,
                     Gold = teamPlayers.Sum(x => x.PlayerStats.GoldEarned),
                     TotalKills = teamPlayers.Sum(x => x.PlayerStats.Kills),

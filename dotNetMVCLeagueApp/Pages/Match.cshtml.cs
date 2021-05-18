@@ -41,7 +41,7 @@ namespace dotNetMVCLeagueApp.Pages {
                 var match = await matchService.LoadMatchWithTimeline(QueryParams.GameId,
                     Region.Get(QueryParams.Server.ToLower()));
 
-                MatchOverview = matchStatsService.GetMatchOverview(match);
+                MatchOverview = matchStatsService.GetMatchOverview(match, QueryParams.ParticipantId);
                 return Page();
             }
             catch (Exception ex) {

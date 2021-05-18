@@ -19,6 +19,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
         /// Id ucastnika
         /// </summary>
         [Required]
+        [Range(1, 10)] // Maximalni rozsah pro hry co hledame bude vzdy 1 - 10
         public int ParticipantId { get; set; }
         
         /// <summary>

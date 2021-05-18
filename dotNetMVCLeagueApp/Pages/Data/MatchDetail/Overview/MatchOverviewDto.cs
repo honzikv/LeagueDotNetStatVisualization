@@ -3,7 +3,30 @@ using System.Collections.Generic;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
     public class MatchOverviewDto {
+        /// <summary>
+        /// Zda-li se jedna o remake
+        /// </summary>
         public bool IsRemake { get; set; }
+        
+        /// <summary>
+        /// Typ queue - solo queue, draft pick, blind pick ...
+        /// </summary>
+        public string QueueType { get; set; }
+        
+        /// <summary>
+        /// Doba trvani hry
+        /// </summary>
+        public TimeSpan GameDuration { get; set; }
+        
+        /// <summary>
+        /// Zda-li jde pro hrace o vyhru
+        /// </summary>
+        public bool Win { get; set; }
+        
+        /// <summary>
+        /// Summonername hrace
+        /// </summary>
+        public string Summoner { get; set; }
 
         /// <summary>
         ///     Hraci ve hre - klic je participant id (1 - 10) a hodnota
