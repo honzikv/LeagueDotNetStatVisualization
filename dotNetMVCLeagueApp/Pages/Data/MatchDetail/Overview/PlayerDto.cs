@@ -10,12 +10,25 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         ///     Id ucastnika
         /// </summary>
         public int ParticipantId { get; set; }
-        
+
+        /// <summary>
+        /// Server pro redirect na stranku
+        /// </summary>
+        public string Server { get; set; }
+
+        /// <summary>
+        /// Zda-li se jedna o hrace, pro ktereho si zapas zobrazujeme (z jehoz profilu jsme na zapas prisli)
+        /// </summary>
+        public bool IsPlayer { get; set; }
+
         /// <summary>
         /// Id tymu - 100 nebo 200
         /// </summary>
         public int TeamId { get; set; }
 
+        /// <summary>
+        /// Jmeno hrace
+        /// </summary>
         public string SummonerName { get; set; }
 
         /// <summary>
@@ -42,7 +55,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         ///     Pocet asistenci
         /// </summary>
         public int Assists { get; set; }
-        
+
         public double Kda { get; set; }
 
         /// <summary>
@@ -74,16 +87,16 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         ///     Id praveho summoner spellu
         /// </summary>
         public SummonerSpellAsset SummonerSpell2 { get; set; }
-        
+
         /// <summary>
         ///     Vision score - kolik vize hrac poskytl svemu tymu
         /// </summary>
         public long VisionScore { get; set; }
-        
+
         /// <summary>
         ///     Primary rune Id
         /// </summary>
-        public RuneAsset PrimaryRune{ get; set; }
+        public RuneAsset PrimaryRune { get; set; }
 
         /// <summary>
         ///     Secondary rune Id
@@ -101,15 +114,25 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         public long DamageDealt { get; set; }
 
         /// <summary>
+        /// Procentualni podil na poskozeni vuci vsem hracum
+        /// </summary>
+        public double DamagePercentage { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public double GoldPercentage { get; set; }
+
+        /// <summary>
         ///     Rozdil zlata v 10 minute
         /// </summary>
         public double? GoldDiffAt10 { get; set; }
-        
+
         /// <summary>
         ///     Rozdil zlata v 20 minute
         /// </summary>
         public double? GoldDiffAt20 { get; set; }
-        
+
         /// <summary>
         ///     Rozdil cs v 10 minute
         /// </summary>
@@ -119,7 +142,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         /// Rozdil cs v 20 minute
         /// </summary>
         public double? CsDiffAt20 { get; set; }
-        
+
         /// <summary>
         /// Uroven postavy
         /// </summary>

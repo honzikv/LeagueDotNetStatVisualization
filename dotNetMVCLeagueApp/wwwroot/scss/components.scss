@@ -5,6 +5,7 @@
 @mixin card-body($color) {
     border: 1px solid rgba(98, 98, 98, 0.2);
     background-color: $color;
+    box-shadow: 0 4px 8px 0 rgba(12, 12, 12, 0.2);
 }
 
 .card-dark {
@@ -12,19 +13,6 @@
     overflow: hidden;
     font-size: 14px;
     font-family: Sora, sans-serif;
-
-}
-
-.select-dark {
-    background-color: $color-primary-black;
-    color: $color-text-primary-white;
-    border: solid $border-color-header 2px;
-    font-family: ProximaNova, sans-serif;
-
-    &:focus {
-        box-shadow: none;
-        border: solid $border-color-header 2px;
-    }
 
 }
 
@@ -37,23 +25,6 @@
     width: 80px;
 }
 
-.input-text-dark, input {
-    background-color: $color-primary-black;
-    color: $color-text-primary-white;
-    border: solid $border-color-header 2px;
-    font-family: ProximaNova, sans-serif;
-
-
-    &:focus, &:active {
-        color: $color-text-primary-white;
-        font-family: ProximaNova, sans-serif;
-        background-color: inherit;
-        box-shadow: none;
-        border: solid $border-color-header 2px;
-    }
-
-}
-
 .card-light {
     @include card-body($card-background-light);
     overflow: hidden;
@@ -62,13 +33,14 @@
     color: $color-primary-black;
 }
 
-.card-match-header-light {
+.card-default-light {
     @include card-body($color-text-primary-white);
     overflow: hidden;
     font-size: 14px;
     font-family: Sora, sans-serif;
     color: $color-primary-black;
 }
+
 
 .dot {
     height: 24px;
@@ -140,19 +112,6 @@ $color-loss-light: darken($color-loss, 10%);
     background: $color-primary-blue !important;
 }
 
-.nav-pills {
-    font-family: OpenSans, "Roboto", sans-serif;
-}
-
-.nav-pills-blue .active a,
-.nav-pills-blue .active a:hover {
-    background-color: $color-primary-blue;
-}
-
-.dot-win {
-    background-color: $color-win;
-}
-
 .card-header-default {
     padding: 8px 24px;
     border-bottom: solid $border-color-header 2px;
@@ -201,3 +160,52 @@ $color-loss-light: darken($color-loss, 10%);
     color: $color-primary-blue;
 }
 
+
+.card-player-table {
+    background-color: $color-component-neutral;
+    overflow: hidden;
+}
+
+.champion-icon-match {
+    @extend .rounded;
+    width: 40px;
+}
+
+@mixin border-champion($color) {
+    border: 3px $color;
+}
+
+.champion-border-blue-side {
+    @include border-champion($color-blue-side);
+}
+
+.champion-border-red-side {
+    @include border-champion($color-red-side);
+}
+
+.summoner-icon-match {
+    width: 20px;
+    height: 20px;
+    @extend .rounded;
+}
+
+.icons-match {
+    max-width: 20px;
+}
+
+.rune-primary-match {
+    width: 23px;
+}
+
+.rune-secondary-match {
+    width: 16px;
+}
+
+.item-icon-match {
+    @extend .rounded;
+    width: 30px;
+}
+
+.gold-text {
+    color: $color-orange;
+}

@@ -38,17 +38,15 @@
         </text>
     }
 
-
 }
 
-<div class="rounded-corners-small card-light card-match-header-light mt-2 animate__animated animate__fadeIn">
+<div class="rounded-corners-small card-light card-default-light mt-3 animate__animated animate__fadeIn">
 
     <div class="card d-flex justify-content-around card-body">
         <div class="row no-gutters">
             <div class="col-4" id="blueSide">
                 @{ PrintTeamInfo(blueSide, "color-blue-side"); }
             </div>
-
 
             <div class="col-4">
                 <p class="text-center heading3 no-spacing">Team Gold</p>
@@ -63,6 +61,17 @@
                     </div>
 
                 </div>
+                
+                @if (Model.BlueSide.Gold >= Model.RedSide.Gold) {
+                    <p class="font-weight-bold no-spacing text-center">+ 
+                        @((Model.BlueSide.Gold - Model.RedSide.Gold).ToString("N0")) 
+                        Gold Lead <span class="color-blue-side">(Blue)</span></p>
+                }
+                else {
+                    <p class="font-weight-bold no-spacing text-center">+ 
+                        @((Model.RedSide.Gold - Model.BlueSide.Gold).ToString("N0")) Gold Lead 
+                        <span class="color-red-side">(Red)</span></p>
+                }
 
             </div>
 

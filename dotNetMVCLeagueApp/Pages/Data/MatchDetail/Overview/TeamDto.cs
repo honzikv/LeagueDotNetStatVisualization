@@ -1,4 +1,6 @@
-﻿namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
+﻿using System.Collections.Generic;
+
+namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
     /// <summary>
     ///     Informace o tymu
     /// </summary>
@@ -47,6 +49,5 @@
         ///     Pocet znicenych inhibitoru
         /// </summary>
         public int InhibitorKills { get; set; }
-        
     }
 }

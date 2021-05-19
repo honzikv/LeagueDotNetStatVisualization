@@ -68,3 +68,14 @@
     font-size: 24px;
     font-weight: bold;
 }
+
+.heading4 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.text-overflow-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

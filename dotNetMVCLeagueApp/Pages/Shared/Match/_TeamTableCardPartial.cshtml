@@ -1,0 +1,80 @@
+﻿@using dotNetMVCLeagueApp.Config
+@model dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview.PlayerDto
+
+@{
+    var side = Model.TeamId == ServerConstants.BlueSideId ? "blue-side" : "red-side";
+
+    var championBorderClass = $"champion-border-{side}";
+}
+
+<div class="row no-gutters mb-2 mt-2 d-flex justify-content-around">
+    <div class="col-2 d-flex align-items-center">
+        <img alt="N/A" data-toggle="tooltip" data-placement="top" title="@Model.ChampionAsset.Name"
+             src="@Url.Content($"/assets/{Model.ChampionAsset.RelativeAssetPath}")"
+             class="champion-icon-match @championBorderClass"/>
+
+        <div class="icons-match ml-1">
+            <img alt="N/A"
+                 data-toggle="tooltip" data-placement="top" title="@Model.SummonerSpell1.Name"
+                 src="@Url.Content($"/assets/{Model.SummonerSpell1.RelativeAssetPath}")" class="summoner-icon-match">
+            <img alt="N/A"
+                 data-toggle="tooltip" data-placement="top" title="@Model.SummonerSpell2.Name"
+                 src="@Url.Content($"/assets/{Model.SummonerSpell2.RelativeAssetPath}")" class="summoner-icon-match">
+        </div>
+
+        <div class="icons-match text-center">
+            <img alt="N/A"
+                 data-toggle="tooltip" data-placement="top" title="@Model.PrimaryRune.Name"
+                 src="@Url.Content($"/assets/{Model.PrimaryRune.RelativeAssetPath}")" class="rune-primary-match">
+            <img alt="N/A"
+                 data-toggle="tooltip" data-placement="top" title="@Model.SecondaryRune.Name"
+                 src="@Url.Content($"/assets/{Model.SecondaryRune.RelativeAssetPath}")" class="rune-secondary-match">
+        </div>
+
+        <p class="no-spacing ml-2 font-weight-bold text-overflow-ellipsis">@Model.SummonerName</p>
+    </div>
+
+    <div class="col-2">
+        <div class="text-center">
+            <p class="no-spacing ">
+                <span>@Model.Kda.ToString("N1")</span> KDA
+            </p>
+            <div class="font-weight-bold">
+                <span> @Model.Kills / </span>
+                <span class="deaths">@Model.Deaths</span>
+                <span> / @Model.Assists </span>
+            </div>
+            @* <p class="no-spacing">@Model.KillParticipation.ToString("N1")% KPA</p> *@
+        </div>
+    </div>
+
+    <div class="col-auto d-flex align-items-center">
+        @foreach (var item in Model.Items) {
+            <img alt="N/A" class="item-icon-match" data-toggle="tooltip" data-placement="top"
+                 title="@item.Name" src="@Url.Content($"/assets/{item.RelativeAssetPath}")">
+        }
+    </div>
+
+    <div class="col-2">
+        <div class="text-center">
+            <p class="no-spacing font-weight-bold">
+                @Model.Cs.ToString("N0") CS
+            </p>
+            <p class="no-spacing">
+                @Model.CsPerMinute.ToString("N1") CS/min
+            </p>
+        </div>
+    </div>
+
+    <div class="col-2 d-flex align-items-center">
+        <div class="text-center">
+            <p class="no-spacing font-weight-bold">
+                @Model.Gold.ToString("N0") Gold
+            </p>
+            <p class="no-spacing deaths">
+                @Model.DamageDealt.ToString("N0") DMG
+            </p>
+        </div>
+    </div>
+
+</div>

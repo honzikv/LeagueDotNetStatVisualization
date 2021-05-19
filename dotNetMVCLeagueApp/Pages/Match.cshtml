@@ -13,14 +13,14 @@
 
     var playerTeam = Model.MatchOverview.Players[Model.QueryParams.ParticipantId].TeamId == ServerConstants.BlueSideId ?
         Model.MatchOverview.Teams.BlueSide : Model.MatchOverview.Teams.RedSide;
-    
+
 
     // String tridy pro vysledek - nastaveni barvy
     var matchResultClass = Model.MatchOverview.IsRemake ? "text-grey" :
         Model.MatchOverview.Win ? "color-win-light" : "color-loss-light";
 
     var matchResult = Model.MatchOverview.IsRemake ? "(Remake)" :
-        Model.MatchOverview.Win ? "(Win)" : "(Loss)";
+        Model.MatchOverview.Win ? "(Victory)" : "(Defeat)";
 
     var player = Model.MatchOverview.Players[Model.QueryParams.ParticipantId];
     var playerChampion = player.ChampionAsset;
@@ -44,7 +44,7 @@
             </div>
 
             <div class="col-auto font-medium">
-                <p class="no-spacing">@StringUtils.GetGameDuration(Model.MatchOverview.GameDuration)</p>
+                <p class="no-spacing"> Game Length: @StringUtils.GetGameDuration(Model.MatchOverview.GameDuration)</p>
                 <p class="no-spacing mt-n1">
                     <span> @player.Kills / </span>
                     <span class="deaths">@player.Deaths</span>
@@ -54,11 +54,12 @@
             </div>
         </div>
 
-
-        <hr class="hr-header">
     </div>
     @await Html.PartialAsync("Shared/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
 
+    <div class="mt-4">
+        @await Html.PartialAsync("Shared/Match/_MatchPlayerTablePartial", Model.MatchOverview.Teams)
+    </div>
 </div>
 
 

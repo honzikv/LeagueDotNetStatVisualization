@@ -39,18 +39,24 @@ namespace dotNetMVCLeagueApp.Services {
                     "Error, data in database is corrupt, cannot show match overview");
             }
 
+            var players = MapPlayers(match, teamsDictionary);
+
             var teams = new MatchTeamsDto() {
                 BlueSide = teamsDictionary[ServerConstants.BlueSideId],
-                RedSide = teamsDictionary[ServerConstants.RedSideId]
+                BlueSidePlayers = players.Where(playerKeyVal => playerKeyVal.Value.TeamId == ServerConstants.BlueSideId)
+                    .ToDictionary(x => x.Key, x => x.Value),
+                RedSide = teamsDictionary[ServerConstants.RedSideId],
+                RedSidePlayers = players.Where(playerKeyVal => playerKeyVal.Value.TeamId == ServerConstants.RedSideId)
+                    .ToDictionary(x => x.Key, x => x.Value)
             };
 
             var remake = GameStatsUtils.IsRemake(match.GameDuration); // zda-li se jedna o remake
             return new MatchOverviewDto {
                 IsRemake = remake,
-                Win = !remake &&teamsDictionary[participantPlayer.TeamId].Win,
+                Win = !remake && teamsDictionary[participantPlayer.TeamId].Win,
                 PlayTime = match.PlayTime,
                 Teams = teams,
-                Players = MapPlayers(match, teamsDictionary),
+                Players = players,
                 Summoner = participantPlayer.SummonerName,
                 GameDuration = TimeSpan.FromSeconds(match.GameDuration),
                 QueueType = match.QueueType
