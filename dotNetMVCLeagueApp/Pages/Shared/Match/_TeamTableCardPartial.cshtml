@@ -35,7 +35,7 @@
         <p class="no-spacing ml-2 font-weight-bold text-overflow-ellipsis">@Model.SummonerName</p>
     </div>
 
-    <div class="col-lg-1 col-md-4 col-3 align-items-center justify-content-center justify-content-sm-center">
+    <div class="col-lg-1 col-md-4 col-12 align-items-center justify-content-center justify-content-sm-center">
         <div class="text-center">
             <p class="no-spacing ">
                 <span>@Model.Kda.ToString("N1")</span> KDA
@@ -57,7 +57,7 @@
 
     </div>
 
-    <div class="col-lg-1 col-md-4 col-6 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
+    <div class="col-lg-1 col-md-4 col-12 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
         <div class="text-center">
             <p class="no-spacing font-weight-bold">
                 @Model.Cs.ToString("N0") CS
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="col-lg-2 col-md-4 col-6 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
+    <div class="col-lg-2 col-md-4 col-12 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
         <div class="text-center">
             <p class=" no-spacing font-weight-bold">
                 @Model.Gold.ToString("N0") Gold
@@ -86,8 +86,11 @@
         </div>
     </div>
 
-    <div class="col-sm-12 d-lg-none d-xl-none">
-        <hr>
-    </div>
+    @if (Model.ParticipantId != 10 && Model.ParticipantId != 5) {
+        <div class="col-12 d-lg-none d-xl-none">
+            <hr class="hr-match">
+        </div>  
+    }
+    
 
 </div>

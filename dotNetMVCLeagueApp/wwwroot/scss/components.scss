@@ -209,3 +209,9 @@ $color-loss-light: darken($color-loss, 10%);
 .progress-bar-gold {
     background-color: $color-orange;
 }
+
+.hr-match {
+    margin: 3px;
+    color: $color-primary-light-gray;
+    background-color: $color-primary-light-gray;
+}
