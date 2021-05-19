@@ -7,8 +7,9 @@
     var championBorderClass = $"champion-border-{side}";
 }
 
-<div class="row no-gutters mb-2 mt-2 d-flex justify-content-around">
-    <div class="col-2 d-flex align-items-center">
+<div class="row no-gutters mb-4 mb-md-2 mt-4 mt-md-2 d-flex">
+
+    <div class="col-lg-3 col-md-4 col-12 d-flex align-items-center justify-content-center justify-content-md-start">
         <img alt="N/A" data-toggle="tooltip" data-placement="top" title="@Model.ChampionAsset.Name"
              src="@Url.Content($"/assets/{Model.ChampionAsset.RelativeAssetPath}")"
              class="champion-icon-match @championBorderClass"/>
@@ -34,7 +35,7 @@
         <p class="no-spacing ml-2 font-weight-bold text-overflow-ellipsis">@Model.SummonerName</p>
     </div>
 
-    <div class="col-2">
+    <div class="col-lg-1 col-md-4 col-3 align-items-center justify-content-center justify-content-sm-center">
         <div class="text-center">
             <p class="no-spacing ">
                 <span>@Model.Kda.ToString("N1")</span> KDA
@@ -44,18 +45,19 @@
                 <span class="deaths">@Model.Deaths</span>
                 <span> / @Model.Assists </span>
             </div>
-            @* <p class="no-spacing">@Model.KillParticipation.ToString("N1")% KPA</p> *@
+            <p class="no-spacing">@Model.KillParticipation.ToString("N1")% KPA</p>
         </div>
     </div>
 
-    <div class="col-auto d-flex align-items-center">
+    <div class="col-lg-3 col-md-4 col-12 d-flex align-items-center justify-content-center">
         @foreach (var item in Model.Items) {
             <img alt="N/A" class="item-icon-match" data-toggle="tooltip" data-placement="top"
                  title="@item.Name" src="@Url.Content($"/assets/{item.RelativeAssetPath}")">
         }
+
     </div>
 
-    <div class="col-2">
+    <div class="col-lg-1 col-md-4 col-6 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
         <div class="text-center">
             <p class="no-spacing font-weight-bold">
                 @Model.Cs.ToString("N0") CS
@@ -66,15 +68,26 @@
         </div>
     </div>
 
-    <div class="col-2 d-flex align-items-center">
+    <div class="col-lg-2 col-md-4 col-6 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
         <div class="text-center">
-            <p class="no-spacing font-weight-bold">
+            <p class=" no-spacing font-weight-bold">
                 @Model.Gold.ToString("N0") Gold
             </p>
-            <p class="no-spacing deaths">
-                @Model.DamageDealt.ToString("N0") DMG
+            <p class="no-spacing">
+                (@(Model.GoldPercentage.ToString("N1") + "%") Team)
             </p>
         </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 col-12 d-flex mt-lg-0 mt-2 align-items-center justify-content-center">
+        <div class="text-center">
+            <p class="no-spacing font-weight-bold">@Model.DamageDealt.ToString("N0") DMG</p>
+            <p class="no-spacing">@(Model.DamagePercentage.ToString("N0") + "%") MAX</p>
+        </div>
+    </div>
+
+    <div class="col-sm-12 d-lg-none d-xl-none">
+        <hr>
     </div>
 
 </div>

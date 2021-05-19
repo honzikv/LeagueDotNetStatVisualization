@@ -103,10 +103,6 @@ $color-loss-light: darken($color-loss, 10%);
 }
 
 
-.dot-loss {
-    background-color: $color-loss;
-}
-
 .btn-primary-blue {
     color: $color-text-primary-white !important;
     background: $color-primary-blue !important;
@@ -206,6 +202,10 @@ $color-loss-light: darken($color-loss, 10%);
     width: 30px;
 }
 
-.gold-text {
-    color: $color-orange;
+.gold-progress {
+    max-width: 50px;
+}
+
+.progress-bar-gold {
+    background-color: $color-orange;
 }

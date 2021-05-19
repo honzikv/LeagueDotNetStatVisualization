@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {
-
     /// <summary>
     /// Tato trida reprezentuje entity framework core repozitar - kazdy repozitar, ktery komunikuje s databazi
     /// musi tuto tridu dedit
@@ -20,7 +17,6 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
         protected readonly TContext LeagueDbContext;
-
 
         /// <summary>
         /// Konstruktor bude mit injektovany kontext
@@ -42,7 +38,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <param name="id">id entity; je typu object, protoze nekdy se pouziva long misto intu (kvuli api)</param>
         /// <returns>Entitu s danym id</returns>
         public async Task<TEntity> Get(object id) => await LeagueDbContext.Set<TEntity>().FindAsync(id);
-        
+
 
         /// <summary>
         /// Prida objekt s entitou do databaze
@@ -98,6 +94,5 @@ namespace dotNetMVCLeagueApp.Repositories {
             await LeagueDbContext.SaveChangesAsync();
             return entity;
         }
-        
     }
 }

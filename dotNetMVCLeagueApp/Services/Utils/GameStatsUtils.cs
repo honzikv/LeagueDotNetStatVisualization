@@ -116,6 +116,9 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             return totalGold == 0.0 ? 1.0 : (double) playerStats.GoldEarned / totalGold;
         }
 
+        public static double GetGoldSharePercentage(int playerGold, int teamGold) =>
+            teamGold == 0 ? 100 : ((double) playerGold / teamGold ) * 100;
+
         public static double GetDamageShare(PlayerStatsModel playerStats,
             IEnumerable<PlayerStatsModel> playerTeamStats) {
             var totalDamageDealt = playerTeamStats.Sum(player => player.TotalDamageDealtToChampions);
@@ -132,9 +135,12 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             return totalVision == 0.0 ? 1.0 : (double) playerStats.VisionScore / totalVision;
         }
 
-        public static double GetKillParticipationFromTeamInfoDto(PlayerModel player, TeamDto team) =>
+        public static double GetKillParticipationFromTeam(PlayerModel player, TeamDto team) =>
             team.TotalKills == 0
                 ? 0.0
                 : (double) (player.PlayerStats.Kills + player.PlayerStats.Assists) / team.TotalKills;
+
+        public static double GetMaxDamagePercentage(long playerDamage, long maxDamage) => 
+            maxDamage == 0 ? 100 : ((double) playerDamage / maxDamage) * 100;
     }
 }

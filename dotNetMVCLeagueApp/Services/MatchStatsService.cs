@@ -6,7 +6,6 @@ using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview;
 using dotNetMVCLeagueApp.Repositories.AssetResolver;
 using dotNetMVCLeagueApp.Services.Utils;
-using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
@@ -19,13 +18,8 @@ namespace dotNetMVCLeagueApp.Services {
             this.assetRepository = assetRepository;
             this.logger = logger;
         }
-
-        /// <summary>
-        /// Ziska overview objekt pro frontend
-        /// </summary>
-        /// <param name="match"></param>
-        /// <returns></returns>
-        public MatchOverviewDto GetMatchOverview(MatchModel match, int participantId) {
+        
+        public MatchOverviewDto GetMatchOverview(MatchModel match, int participantId, string server) {
             // Nejprve vytvorime slovnik kde jsou (nebo by mely byt) dva tymy - RedSide (200) a BlueSide (100)
             // Slovnik dale pouzijeme k mapovani dat z hracu a data ze slovniku ulozime do objektu pro frontend
             var teamsDictionary = GetTeamDtoDictionary(match);
@@ -39,7 +33,7 @@ namespace dotNetMVCLeagueApp.Services {
                     "Error, data in database is corrupt, cannot show match overview");
             }
 
-            var players = MapPlayers(match, teamsDictionary);
+            var players = MapPlayers(match, teamsDictionary, server);
 
             var teams = new MatchTeamsDto() {
                 BlueSide = teamsDictionary[ServerConstants.BlueSideId],
@@ -88,22 +82,35 @@ namespace dotNetMVCLeagueApp.Services {
             return result;
         }
 
-        private Dictionary<int, PlayerDto> MapPlayers(MatchModel match, Dictionary<int, TeamDto> teams) {
+        private Dictionary<int, PlayerDto> MapPlayers(MatchModel match, Dictionary<int, TeamDto> teams, string server) {
             var result = new Dictionary<int, PlayerDto>();
+
+            var maxDamage = match.PlayerList.Max(player => player.PlayerStats.TotalDamageDealtToChampions);
+            var teamGold = new Dictionary<int, int>(); // celkove zlato tymu
             foreach (var player in match.PlayerList) {
                 var playerTeam = teams[player.TeamId] ??
                                  throw new ActionNotSuccessfulException("Error, database data is corrupt");
                 var playerStats = player.PlayerStats;
+
+                if (!teamGold.ContainsKey(player.TeamId)) {
+                    teamGold[player.TeamId] = match.PlayerList.Where(x => x.TeamId == player.TeamId)
+                        .Sum(y => y.PlayerStats.GoldEarned);
+                }
+                
                 result[player.ParticipantId] = new() {
                     ParticipantId = player.ParticipantId,
                     TeamId = player.TeamId,
                     SummonerName = player.SummonerName,
+                    Server = server,
                     ChampionId = player.ChampionId,
                     ChampionAsset = assetRepository.GetChampionAsset(player.ChampionId),
                     Kills = playerStats.Kills,
                     Deaths = playerStats.Deaths,
                     Assists = playerStats.Assists,
-                    KillParticipation = GameStatsUtils.GetKillParticipationFromTeamInfoDto(player, playerTeam),
+                    DamagePercentage =
+                        GameStatsUtils.GetMaxDamagePercentage(playerStats.TotalDamageDealtToChampions, maxDamage),
+                    GoldPercentage = GameStatsUtils.GetGoldSharePercentage(playerStats.GoldEarned, teamGold[player.TeamId]),
+                    KillParticipation = GameStatsUtils.GetKillParticipationFromTeam(player, playerTeam) * 100,
                     Items = new() {
                         assetRepository.GetItemAsset(playerStats.Item0),
                         assetRepository.GetItemAsset(playerStats.Item1),

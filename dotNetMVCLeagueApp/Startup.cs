@@ -56,7 +56,7 @@ namespace dotNetMVCLeagueApp {
                 .AddDefaultUI();
             
             // Nastaveni restrikci, protoze Microsoft veri tomu, ze nekdo bude realne vyzadovat po uzivateli
-            // nenumericky znak v heslu
+            // znak ktery neni alfanumericky v heslu
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 8;
