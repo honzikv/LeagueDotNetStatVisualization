@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using dotNetMVCLeagueApp.Areas.Identity.Data;
 
 namespace dotNetMVCLeagueApp.Data.Models.User {
     /// <summary>
@@ -22,5 +23,10 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
         ///     Pozice na profilu
         /// </summary>
         public int Position { get; set; }
+        
+        /// <summary>
+        /// Reference na uzivatele
+        /// </summary>
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

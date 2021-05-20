@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
-using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview;
+using dotNetMVCLeagueApp.Pages.Data.Profile.Overview;
 
 namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     public class SummonerOverviewDto {

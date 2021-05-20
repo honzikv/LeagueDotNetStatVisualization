@@ -11,6 +11,8 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
 
         public static string ChangePassword => "ChangePassword";
 
+        public static string ManageProfileCards => "ManageProfileCards";
+
         public static string IndexNavClass(ViewContext viewContext) =>
             PageNavClass(viewContext, Index);
 
@@ -22,6 +24,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
 
         public static string SummonerLinkNavClass(ViewContext viewContext) =>
             PageNavClass(viewContext, LinkSummoner);
+
+        public static string ManageProfileCardsNavClass(ViewContext viewContext) =>
+            PageNavClass(viewContext, ManageProfileCards);
 
         private static string PageNavClass(ViewContext viewContext, string page) {
             var activePage = viewContext.ViewData["ActivePage"] as string

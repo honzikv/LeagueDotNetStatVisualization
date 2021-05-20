@@ -1,4 +1,4 @@
-﻿namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
+﻿namespace dotNetMVCLeagueApp.Repositories {
     /// <summary>
     /// Jednoduchy objekt, ktery v sobe uklada cesty pro dane soubory.
     /// Pro strukturu predpokladame, ze dane assety jsou ulozene v jedne slozce, ktera obsahuje dalsi slozky

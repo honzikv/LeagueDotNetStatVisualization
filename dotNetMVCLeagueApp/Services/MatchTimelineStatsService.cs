@@ -1,7 +1,7 @@
 ﻿using dotNetMVCLeagueApp.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace dotNetMVCLeagueApp.Services.MatchTimeline {
+namespace dotNetMVCLeagueApp.Services {
     /// <summary>
     /// Sluzba pro vypocet statistik z timeline
     /// </summary>

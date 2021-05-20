@@ -9,7 +9,7 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         public Dictionary<string, SummonerSpellAsset> SpellDict { get; set; }
     }
 
-    public class SummonerSpellAsset : MemberwiseCloneable<SummonerSpellAsset> {
+    public class SummonerSpellAsset {
         [JsonProperty("id")]
         public string Id { get; set; }
         

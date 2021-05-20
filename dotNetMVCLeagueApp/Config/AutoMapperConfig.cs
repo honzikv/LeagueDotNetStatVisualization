@@ -1,6 +1,5 @@
 ﻿using System;
 using AutoMapper;
-using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
@@ -21,7 +20,6 @@ namespace dotNetMVCLeagueApp.Config {
             CreateMap<Match, MatchModel>();
             CreateMap<TeamStats, TeamStatsModel>();
             CreateMap<Participant, PlayerModel>();
-            CreateMap<MatchPosition, MapPositionModel>();
             CreateMap<ParticipantStats, PlayerStatsModel>();
             CreateMap<MatchModel, MatchHeaderDto>();
             CreateMap<MatchParticipantFrame, MatchParticipantFrameModel>();

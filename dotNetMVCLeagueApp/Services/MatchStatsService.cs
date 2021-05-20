@@ -4,7 +4,7 @@ using System.Linq;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview;
-using dotNetMVCLeagueApp.Repositories.AssetResolver;
+using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Services.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;

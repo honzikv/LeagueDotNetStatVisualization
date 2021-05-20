@@ -7,24 +7,17 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         [JsonProperty("data")] public Dictionary<string, ItemAsset> ItemDict { get; set; }
     }
 
-    public class ItemAsset : MemberwiseCloneable<ItemAsset> {
+    /// <summary>
+    /// Obsahuje info pro dany asset predmetu
+    /// </summary>
+    public class ItemAsset {
         [JsonProperty("name")] public string Name { get; set; }
 
         [JsonProperty("description")] public string Description { get; set; }
 
         [JsonProperty("plaintext")] public string PlainText { get; set; }
 
-        private Gold gold;
-
-        /// <summary>
-        /// Objekt s informacemi o zlatu, autogetter a autosetter jsou vypnute pouze pro jistotu,
-        /// aby neslo pri ziskani objektu data zmenit, coz by pomoci MemberWiseCloneable bylo porad mozne
-        /// </summary>
-        [JsonProperty("gold")]
-        public Gold Gold {
-            get => gold;
-            set => gold ??= value;
-        }
+        [JsonProperty("gold")] public Gold Gold { get; set; }
 
         public string RelativeAssetPath { get; set; }
 

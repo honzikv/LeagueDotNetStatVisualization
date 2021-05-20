@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using dotNetMVCLeagueApp.Data.JsonMappings;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
+namespace dotNetMVCLeagueApp.Pages.Data.Profile.Overview {
     /// <summary>
     /// Obsahuje kumulativni statistiky pro daneho hrace - tuto tridu nasledne rozsiruje
     /// ChampionCumulativeStats, ktery obsahuje informace specificke pro danou postavu

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,8 +38,8 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// </summary>
         /// <param name="id">id entity; je typu object, protoze nekdy se pouziva long misto intu (kvuli api)</param>
         /// <returns>Entitu s danym id</returns>
-        public async Task<TEntity> Get(object id) => await LeagueDbContext.Set<TEntity>().FindAsync(id);
-
+        public async Task<TEntity> Get(object id) => 
+            await LeagueDbContext.Set<TEntity>().FindAsync(id);
 
         /// <summary>
         /// Prida objekt s entitou do databaze
@@ -61,14 +62,14 @@ namespace dotNetMVCLeagueApp.Repositories {
             await LeagueDbContext.SaveChangesAsync();
             return entity;
         }
-
+        
         /// <summary>
-        /// Prida kolekci entit do databaze
+        /// Aktualizuje seznam entit v databazi
         /// </summary>
-        /// <param name="entities">Kolekce entit - seznam</param>
-        /// <returns>Vrati stejnou kolekci, kdy entity maji validni id</returns>
-        public async Task<ICollection<TEntity>> AddAll(ICollection<TEntity> entities) {
-            await LeagueDbContext.Set<TEntity>().AddRangeAsync(entities);
+        /// <param name="entities">Seznam entit</param>
+        /// <returns>Seznam aktualizovanych entit</returns>
+        public async Task<List<TEntity>> UpdateAll(List<TEntity> entities) {
+            LeagueDbContext.Set<TEntity>().UpdateRange(entities);
             await LeagueDbContext.SaveChangesAsync();
             return entities;
         }

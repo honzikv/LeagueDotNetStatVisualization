@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     /// <summary>

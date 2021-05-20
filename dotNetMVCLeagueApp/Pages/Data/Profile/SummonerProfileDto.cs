@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.Models.User;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
+namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     public class SummonerProfileDto {
         
         public string Name { get; init; }

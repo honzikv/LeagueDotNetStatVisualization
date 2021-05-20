@@ -14,24 +14,24 @@
             <hr/>
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.Username"></label>
-                <input asp-for="Input.Username" class="form-control"/>
-                <span asp-validation-for="Input.Username" class="text-danger"></span>
+                <label asp-for="RegisterInput.Username"></label>
+                <input asp-for="RegisterInput.Username" class="form-control"/>
+                <span asp-validation-for="RegisterInput.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <label asp-for="RegisterInput.Email"></label>
+                <input asp-for="RegisterInput.Email" class="form-control" />
+                <span asp-validation-for="RegisterInput.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <label asp-for="RegisterInput.Password"></label>
+                <input asp-for="RegisterInput.Password" class="form-control" />
+                <span asp-validation-for="RegisterInput.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <label asp-for="RegisterInput.ConfirmPassword"></label>
+                <input asp-for="RegisterInput.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="RegisterInput.ConfirmPassword" class="text-danger"></span>
             </div>
             
             
@@ -39,14 +39,14 @@
             <h4 class="no-spacing">This can also be changed later.</h4>
             <hr>
             <div class="form-group">
-                <label asp-for="Input.SummonerName"></label>
-                <input asp-for="Input.SummonerName" class="form-control"/>
-                <span asp-validation-for="Input.SummonerName"></span>
+                <label asp-for="RegisterInput.SummonerName"></label>
+                <input asp-for="RegisterInput.SummonerName" class="form-control"/>
+                <span asp-validation-for="RegisterInput.SummonerName"></span>
             </div>
             
             <div class="form-group">
-                <label asp-for="Input.Server"></label>
-                <select class="browser-default custom-select rounded-corners-small" asp-for="Input.Server">
+                <label asp-for="RegisterInput.Server"></label>
+                <select class="browser-default custom-select rounded-corners-small" asp-for="RegisterInput.Server">
                     @foreach (var (_, server) in Model.QueryableServers) {
                         <option value="@server">@server</option>
                     }

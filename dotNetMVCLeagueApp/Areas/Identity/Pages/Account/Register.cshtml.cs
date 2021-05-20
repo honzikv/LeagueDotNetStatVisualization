@@ -7,8 +7,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Areas.Identity.Data;
+using dotNetMVCLeagueApp.Areas.Identity.Pages.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Services.Summoner;
+using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -45,46 +46,12 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
         public Dictionary<string, string> QueryableServers { get; }
 
-        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty] public RegisterInputDto RegisterInput { get; set; }
 
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        /// <summary>
-        /// Objekt pro formular
-        /// </summary>
-        public class InputModel {
-            [Required]
-            [Display(Name = "Username")]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-                MinimumLength = 4)]
-            [DataType(DataType.Text)]
-            public string Username { get; set; }
-
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-                MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
-            [Display(Name = "Server")] public string Server { get; set; }
-
-            [Display(Name = "Summoner name")]
-            [DataType(DataType.Text)]
-            public string SummonerName { get; set; }
-        }
+        
 
         public async Task OnGetAsync(string returnUrl = null) {
             ReturnUrl = returnUrl;
@@ -99,20 +66,22 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             }
 
             var user = new ApplicationUser {
-                UserName = Input.Username,
-                Email = Input.Email
+                UserName = RegisterInput.Username,
+                Email = RegisterInput.Email
             };
 
             try {
-                if (Input.SummonerName is not null) {
-                    var region = Region.Get(Input.Server);
-                    var summoner = await summonerService.GetSummoner(Input.SummonerName, region);
+                if (RegisterInput.SummonerName is not null) {
+                    var region = Region.Get(RegisterInput.Server);
+                    var summoner = await summonerService.GetSummoner(RegisterInput.SummonerName, region);
 
                     if (await summonerService.IsSummonerTaken(summoner)) {
                         ModelState.AddModelError("SummonerName", "This summoner is already taken");
                     }
+                    else {
+                        user.Summoner = summoner;
+                    }
 
-                    user.Summoner = summoner;
                 }
             }
             catch (RedirectToHomePageException) {
@@ -120,7 +89,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 return Page();
             }
 
-            var result = await userManager.CreateAsync(user, Input.Password);
+            var result = await userManager.CreateAsync(user, RegisterInput.Password);
             if (result.Succeeded) {
                 // Pro potvrzeni emailu
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -131,11 +100,11 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                     values: new {area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl},
                     protocol: Request.Scheme);
 
-                await emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                await emailSender.SendEmailAsync(RegisterInput.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 if (userManager.Options.SignIn.RequireConfirmedAccount) {
-                    return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
+                    return RedirectToPage("RegisterConfirmation", new {email = RegisterInput.Email, returnUrl = returnUrl});
                 }
 
                 await signInManager.SignInAsync(user, isPersistent: false);

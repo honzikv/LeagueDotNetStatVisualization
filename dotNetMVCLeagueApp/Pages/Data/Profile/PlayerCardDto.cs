@@ -1,4 +1,4 @@
-﻿namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
+﻿namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     public class PlayerCardDto {
         
     }

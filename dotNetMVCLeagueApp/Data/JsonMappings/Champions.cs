@@ -8,9 +8,15 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         [JsonProperty("data")] public Dictionary<string, ChampionAsset> ChampionDict { get; set; }
     }
 
-    public class ChampionAsset : MemberwiseCloneable<ChampionAsset> {
+    /// <summary>
+    /// Obsahuje data pro asset postavy - id, jmeno, cestu ... ziskane z champion.json
+    /// </summary>
+    public class ChampionAsset{
         [JsonProperty("id")] public string Id { get; set; }
 
+        /// <summary>
+        /// Jmeno postavy
+        /// </summary>
         [JsonProperty("name")] public string Name { get; set; }
 
         [JsonProperty("key")] public string Key { get; set; }

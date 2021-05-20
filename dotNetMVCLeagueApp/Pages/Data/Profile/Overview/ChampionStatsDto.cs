@@ -1,4 +1,4 @@
-﻿namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
+﻿namespace dotNetMVCLeagueApp.Pages.Data.Profile.Overview {
     /// <summary>
     /// Informace o postave, ktere jsou relevantni pro overview
     /// </summary>

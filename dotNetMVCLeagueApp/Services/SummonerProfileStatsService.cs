@@ -4,19 +4,17 @@ using System.Linq;
 using AutoMapper;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
-using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Pages.Data.Profile;
-using dotNetMVCLeagueApp.Repositories.AssetResolver;
+using dotNetMVCLeagueApp.Pages.Data.Profile.Overview;
+using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Services.Utils;
 using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
-using MingweiSamuel.Camille.MatchV4;
 
-namespace dotNetMVCLeagueApp.Services.Summoner {
+namespace dotNetMVCLeagueApp.Services {
     /// <summary>
     /// Sluzba pro vypocty statistik pro zobrazeni na strance
     /// </summary>

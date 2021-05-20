@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using dotNetMVCLeagueApp.Data.JsonMappings;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
+namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     /// <summary>
     ///     Tato trida obsahuje statistiky vypoctene pro dany seznam her - tzn. napr. z 20 zobrazenych her na uzivatelskem
     ///     profilu

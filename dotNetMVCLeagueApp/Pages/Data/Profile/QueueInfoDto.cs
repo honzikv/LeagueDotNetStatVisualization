@@ -1,6 +1,6 @@
 ﻿using dotNetMVCLeagueApp.Data.JsonMappings;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner {
+namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     public class QueueInfoDto {
         
         public string Name { get; set; }

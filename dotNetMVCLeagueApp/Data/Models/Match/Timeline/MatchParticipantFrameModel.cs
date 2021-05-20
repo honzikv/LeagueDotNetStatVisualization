@@ -6,7 +6,7 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     /// </summary>
     public class MatchParticipantFrameModel {
         /// <summary>
-        ///     Id by melo byt radeji long protoze techto dat bude opravdu hodne
+        ///     Id
         /// </summary>
         public long Id { get; set; }
 
@@ -14,8 +14,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         ///     1 - 10
         /// </summary>
         public int ParticipantId { get; set; }
-
-        [Required] public virtual MapPositionModel Position { get; set; }
 
         /// <summary>
         ///     Pocet aktualne zabitych minionu

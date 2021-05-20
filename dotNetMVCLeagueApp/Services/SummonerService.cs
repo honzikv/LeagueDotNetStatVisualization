@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 
-namespace dotNetMVCLeagueApp.Services.Summoner {
+namespace dotNetMVCLeagueApp.Services {
     /// <summary>
     /// Tato sluzba poskytuje informace o specifickem hraci (summoner) bud zavolani Riot Api nebo ziskanim dat z db
     /// </summary>

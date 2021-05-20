@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using dotNetMVCLeagueApp.Config;
 
-namespace dotNetMVCLeagueApp.Data.FrontendDtos.Summoner.Overview {
+namespace dotNetMVCLeagueApp.Pages.Data.Profile.Overview {
     public class MatchListOverviewDto {
         public CumulativeStatsDto TotalStats { get; set; }
 

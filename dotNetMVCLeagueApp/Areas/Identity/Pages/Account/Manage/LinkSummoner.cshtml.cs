@@ -2,8 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Areas.Identity.Data;
+using dotNetMVCLeagueApp.Areas.Identity.Pages.Data;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Services.Summoner;
+using dotNetMVCLeagueApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -30,19 +31,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
 
         [TempData] public string StatusMessage { get; set; }
 
-        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty] public LinkSummonerInputDto LinkSummonerInput { get; set; }
 
         public Dictionary<string, string> QueryableServers => ServerConstants.QueryableServers;
-
-        public class InputModel {
-            [Display(Name = "Summoner name")]
-            [DataType(DataType.Text)]
-            [Required]
-            [MinLength(1)]
-            public string SummonerName { get; set; }
-
-            [Display(Name = "Server")] [Required] public string Server { get; set; }
-        }
 
         public async Task<IActionResult> OnGetAsync() {
             var user = await userManager.GetUserAsync(User);
@@ -50,9 +41,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}.'");
             }
 
-            Input = user.Summoner is null
-                ? new InputModel()
-                : new InputModel {
+            LinkSummonerInput = user.Summoner is null
+                ? new LinkSummonerInputDto()
+                : new LinkSummonerInputDto {
                     SummonerName = user.Summoner.Name,
                     Server = user.Summoner.Region
                 };
@@ -72,7 +63,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
 
             // Validace serveru, pokud neexistuje vratime status message ze neexistuje
             // Toto by se melo stat pouze tehdy, pokud si nekdo umyslne upravi POST request mimo html
-            if (!QueryableServers.ContainsKey(Input.Server.ToLower())) {
+            if (!QueryableServers.ContainsKey(LinkSummonerInput.Server.ToLower())) {
                 StatusMessage = "Error, this server does not exist.";
                 return RedirectToPage();
             }
@@ -82,7 +73,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             }
 
             var operationResult =
-                await summonerService.LinkSummonerToApplicationUser(user, Input.SummonerName, Input.Server);
+                await summonerService.LinkSummonerToApplicationUser(user, LinkSummonerInput.SummonerName, LinkSummonerInput.Server);
 
             StatusMessage = operationResult.Message;
             if (!operationResult.Error) {

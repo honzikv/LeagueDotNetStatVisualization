@@ -6,7 +6,7 @@ using dotNetMVCLeagueApp.Data.JsonMappings;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 using Newtonsoft.Json;
 
-namespace dotNetMVCLeagueApp.Repositories.AssetResolver {
+namespace dotNetMVCLeagueApp.Repositories {
     /// <summary>
     /// Objekt, ktery pri startu programu provede parsing souboru
     /// </summary>

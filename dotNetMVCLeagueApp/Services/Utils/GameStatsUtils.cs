@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using dotNetMVCLeagueApp.Config;
-using dotNetMVCLeagueApp.Data.FrontendDtos.Summoner;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview;
 

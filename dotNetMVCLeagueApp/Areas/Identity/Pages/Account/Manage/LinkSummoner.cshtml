@@ -13,14 +13,14 @@
         <form id="link-summoner" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.SummonerName"></label>
-                <input asp-for="Input.SummonerName" class="form-control"/>
-                <span asp-validation-for="Input.SummonerName"></span>
+                <label asp-for="LinkSummonerInput.SummonerName"></label>
+                <input asp-for="LinkSummonerInput.SummonerName" class="form-control"/>
+                <span asp-validation-for="LinkSummonerInput.SummonerName"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Input.Server"></label>
-                <select class="browser-default custom-select rounded-corners-small" asp-for="Input.Server">
+                <label asp-for="LinkSummonerInput.Server"></label>
+                <select class="browser-default custom-select rounded-corners-small" asp-for="LinkSummonerInput.Server">
                     @foreach (var (_, server) in Model.QueryableServers) {
                         <option value="@server">@server</option>
                     }

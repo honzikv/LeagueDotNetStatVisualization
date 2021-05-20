@@ -52,10 +52,6 @@
         ///     Podtyp monstra - WATER_DRAGON, etc.
         /// </summary>
         public string MonsterSubType { get; set; }
-
-        /// <summary>
-        ///     X, Y coords
-        /// </summary>
-        public virtual MapPositionModel MapPosition { get; set; }
+        
     }
 }

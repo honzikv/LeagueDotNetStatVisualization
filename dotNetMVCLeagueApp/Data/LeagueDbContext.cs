@@ -38,15 +38,12 @@ namespace dotNetMVCLeagueApp.Data {
 
         public DbSet<MatchTimelineModel> MatchTimelineModels { get; set; }
 
-        public DbSet<MapPositionModel> MapPositionModels { get; set; }
-
         public DbSet<MatchEventModel> MatchEventModels { get; set; }
 
         public DbSet<MatchFrameModel> MatchFrameModels { get; set; }
 
         public DbSet<MatchParticipantFrameModel> MatchParticipantFrameModels { get; set; }
 
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder); // pro Identity
             

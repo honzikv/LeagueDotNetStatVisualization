@@ -23,7 +23,7 @@ namespace dotNetMVCLeagueApp.Data.JsonMappings {
         public List<RuneAsset> Runes { get; set; }
     }
 
-    public class RuneAsset : MemberwiseCloneable<RuneAsset> {
+    public class RuneAsset {
         
         [JsonProperty("key")]
         public string Id { get; set; }
