@@ -1,4 +1,6 @@
-﻿namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     /// <summary>
     ///     Udalost v zapase
     /// </summary>
@@ -7,6 +9,9 @@
         ///     Id v db
         /// </summary>
         public long Id { get; set; }
+        
+        [Required]
+        public virtual MatchFrameModel MatchFrame { get; set; }
 
         /// <summary>
         ///     Id ucastnika

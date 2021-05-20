@@ -13,6 +13,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         ///     Casove  razitko - pro serazeni z db
         /// </summary>
         public long Timestamp { get; set; }
+        
+        [Required]
+        public virtual MatchTimelineModel MatchTimeline { get; set; }
 
         /// <summary>
         ///     Framy pro kazdeho ucastnika - 1 - 10

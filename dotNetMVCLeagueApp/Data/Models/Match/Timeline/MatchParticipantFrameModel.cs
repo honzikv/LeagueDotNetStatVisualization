@@ -9,6 +9,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         ///     Id
         /// </summary>
         public long Id { get; set; }
+        
+        [Required]
+        public virtual MatchFrameModel MatchFrame { get; set; }
 
         /// <summary>
         ///     1 - 10
@@ -39,5 +42,6 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         ///     Uroven postavy
         /// </summary>
         public int Level { get; set; }
+        
     }
 }

@@ -29,30 +29,22 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .ConvertAll(matchSummoner => matchSummoner.Match);
 
         public async Task<List<MatchModel>> DeleteOldMatches(DateTime maxAge) {
-            await using var transaction = await LeagueDbContext.Database.BeginTransactionAsync();
             List<MatchModel> oldGames;
             try {
                 oldGames = LeagueDbContext.MatchModels.Where(match => match.PlayTime < maxAge).ToList();
 
                 var oldGameLinks = new List<MatchToSummonerModel>();
-                
+
                 // Ziskame vsechny linky, ktere jsou relevantni k danym hram a odstranime je
                 foreach (var linksForMatch in oldGames.Select(
                     match => LeagueDbContext.MatchToSummonerModels.Where(matchSummoner =>
                         matchSummoner.MatchModelId == match.Id).ToList())) {
                     linksForMatch.ForEach(link => oldGameLinks.Add(link));
                 }
+
                 LeagueDbContext.MatchToSummonerModels.RemoveRange(oldGameLinks);
-                
-                // foreach (var game in oldGames.Where(game => game.MatchTimeline is not null)) {
-                //     game.MatchTimeline
-                //     LeagueDbContext.MatchTimelineModels.Remove(game.MatchTimeline);
-                //     game.MatchTimeline = null;
-                // }
-                
                 LeagueDbContext.MatchModels.RemoveRange(oldGames);
                 await LeagueDbContext.SaveChangesAsync();
-                await transaction.CommitAsync();
             }
             catch (Exception ex) {
                 throw new ActionNotSuccessfulException(ex.Message);

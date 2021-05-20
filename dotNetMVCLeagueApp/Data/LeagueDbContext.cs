@@ -58,6 +58,11 @@ namespace dotNetMVCLeagueApp.Data {
                 .WithMany(matchInfo => matchInfo.SummonerInfoList)
                 .HasForeignKey(matchInfo => matchInfo.MatchModelId);
 
+            modelBuilder.Entity<MatchTimelineModel>()
+                .HasOne(timeline => timeline.Match)
+                .WithOne(match => match.MatchTimeline)
+                .HasForeignKey<MatchTimelineModel>(timeline => timeline.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

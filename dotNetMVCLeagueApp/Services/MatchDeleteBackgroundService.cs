@@ -48,9 +48,11 @@ namespace dotNetMVCLeagueApp.Services {
                 var matchRepository = new MatchRepository(scope.ServiceProvider.GetRequiredService<LeagueDbContext>());
                 var deletedGames =
                     matchRepository.DeleteOldMatches(DateTime.Now.Subtract(riotApiUpdateConfig.MaxMatchAgeDays))
-                        .GetAwaiter().GetResult();
+                    .GetAwaiter().GetResult();
 
-                if (deletedGames is null) return;
+                if (deletedGames is null) {
+                    return;
+                }
 
                 if (deletedGames.Count > 0) {
                     var games = string.Join(';',
