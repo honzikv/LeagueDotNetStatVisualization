@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using dotNetMVCLeagueApp.Areas.Identity.Data;
 
 namespace dotNetMVCLeagueApp.Data.Models.User {
     /// <summary>

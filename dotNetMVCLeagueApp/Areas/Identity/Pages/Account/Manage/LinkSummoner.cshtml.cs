@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Areas.Identity.Pages.Data;
 using dotNetMVCLeagueApp.Config;
+using dotNetMVCLeagueApp.Data.Models.User;
 using dotNetMVCLeagueApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

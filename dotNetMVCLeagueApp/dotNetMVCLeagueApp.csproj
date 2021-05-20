@@ -450,6 +450,7 @@
 
     <ItemGroup>
       <Folder Include="AdobeXd" />
+      <Folder Include="Areas\Identity\Data" />
       <Folder Include="Migrations" />
     </ItemGroup>
 

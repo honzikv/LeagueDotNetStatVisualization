@@ -1,5 +1,5 @@
 ﻿namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
-    public class CreateProfileCardInputDto {
+    public class AddNewProfileCardDto {
         
         public string Header { get; set; }
         

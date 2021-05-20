@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
-using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.AspNetCore.Identity;
 
-namespace dotNetMVCLeagueApp.Areas.Identity.Data {
+namespace dotNetMVCLeagueApp.Data.Models.User {
     public class ApplicationUser : IdentityUser { // Pro primarni klic bude pouzito GUID
 
         /// <summary>

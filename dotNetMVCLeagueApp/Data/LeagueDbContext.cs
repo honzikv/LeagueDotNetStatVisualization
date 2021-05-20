@@ -1,5 +1,4 @@
 ﻿using System;
-using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;

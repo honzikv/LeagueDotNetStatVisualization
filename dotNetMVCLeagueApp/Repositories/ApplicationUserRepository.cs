@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {

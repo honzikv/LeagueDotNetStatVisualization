@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Data.Models.User;
 using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;

@@ -1,4 +1,5 @@
-﻿@model dotNetMVCLeagueApp.Areas.Identity.Pages.Data.ManageProfileCardsDto
+﻿@page
+@model ManageProfileCards
 
 @{
     ViewData["Title"] = "Manage Profile Cards";
@@ -8,21 +9,27 @@
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
 
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Card Title</th>
-        <th scope="col">Card Description</th>
-        <th scope="col">Card Type</th>
-    </tr>
-    </thead>
+<div class="animate__animated animate__fadeIn">
+    <table class="table table-responsive-sm table-striped">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Card Title</th>
+            <th scope="col">Card Description</th>
+            <th scope="col">Card Type</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
         @foreach (var card in Model.ProfileCards) {
             // Render cards
         }
-    <tbody>
-    
-    </tbody>
-    
-</table>
+        <tbody>
+
+        </tbody>
+
+    </table>
+
+    <a class="btn btn-primary mt-4 rounded-corners-small float-right">Add New Card</a>
+
+</div>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using dotNetMVCLeagueApp.Areas.Identity.Data;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data;
 using dotNetMVCLeagueApp.Repositories;
@@ -46,6 +45,7 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<MatchInfoSummonerInfoRepository>();
             services.AddScoped<MatchTimelineRepository>();
             services.AddScoped<ApplicationUserRepository>();
+            services.AddScoped<ProfileCardRepository>();
 
             // Asset resolver musi byt jako singleton, protoze nechceme vytvaret objekt pro kazdy request
             services.AddSingleton(serviceProvider => new AssetRepository(
@@ -62,6 +62,7 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchStatsService>(); // Pro statistiky pro danou hru
             services.AddScoped<MatchService>();
+            services.AddScoped<ProfileCardService>();
 
             // Sluzba na pozadi, ktera kazdych N (3) minut zkontroluje DB a smaze hry, ktere uz nelze zobrazit
             // - hry, ktere jsou starsi nez M (30) dni.
