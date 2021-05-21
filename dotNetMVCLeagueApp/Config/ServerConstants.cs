@@ -104,6 +104,8 @@ namespace dotNetMVCLeagueApp.Config {
 
         public const int CardLimit = 10;
 
+        public const int VisibleCardLimit = 3;
+
         /// <summary>
         /// Vrati nazev queue z jeho id, pokud je queueId nevalidni, vrati prazdny retezec
         /// </summary>
