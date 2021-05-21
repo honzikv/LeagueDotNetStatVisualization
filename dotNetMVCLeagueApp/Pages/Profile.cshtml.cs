@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
-using Castle.Core.Logging;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;

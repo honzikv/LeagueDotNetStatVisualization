@@ -28,12 +28,14 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .OrderBy(card => card.Id)
                 .ToListAsync();
 
-        public async Task<List<ProfileCardModel>> GetUserProfileCards(ApplicationUser user) => await LeagueDbContext
-            .ProfileCardModels.Where(
-                card => card.ApplicationUser.Id == user.Id).ToListAsync();
+        public async Task<List<ProfileCardModel>> GetUserProfileCardsByPosition(ApplicationUser user) =>
+            await LeagueDbContext.ProfileCardModels
+                .Where(card => card.ApplicationUser.Id == user.Id)
+                .OrderBy(card => card.Position)
+                .ToListAsync();
 
         public async Task<List<ProfileCardModel>> DeleteCard(int cardId, ApplicationUser user) {
-            var cardToDelete = await 
+            var cardToDelete = await
                 LeagueDbContext.ProfileCardModels.Where(card =>
                     card.Id == cardId && card.ApplicationUser.Id == user.Id).FirstOrDefaultAsync();
 
@@ -44,14 +46,30 @@ namespace dotNetMVCLeagueApp.Repositories {
             var from = cardToDelete.Position; // budeme brat vsechny karty od pozice aktualni + 1
             var cardsAfterDeleted = await LeagueDbContext.ProfileCardModels.Where(card =>
                 card.ApplicationUser.Id == user.Id && card.Position > from).ToListAsync();
-            
+
             // Nyni pro kazdou kartu snizime jeji pozici o 1 a tim se zbavime "mezery" po karte, kterou smazeme
             cardsAfterDeleted.ForEach(card => card.Position -= 1);
             LeagueDbContext.Remove(cardToDelete);
             LeagueDbContext.UpdateRange(cardsAfterDeleted);
             await LeagueDbContext.SaveChangesAsync();
 
-            return await GetUserProfileCards(user);
+            return await GetUserProfileCardsByPosition(user);
+        }
+
+        public async Task<ProfileCardModel> AddProfileCardToCollection(ProfileCardModel profileCard,
+            List<ProfileCardModel> profileCards, bool showOnTop) {
+            if (showOnTop) {
+                profileCard.Position = 0;
+                profileCards.ForEach(card => card.Position += 1);
+                LeagueDbContext.UpdateRange(profileCards);
+            }
+            else {
+                profileCard.Position = profileCards.LastOrDefault()?.Position + 1 ?? 0;
+            }
+
+            LeagueDbContext.Add(profileCard);
+            await LeagueDbContext.SaveChangesAsync();
+            return profileCard;
         }
     }
 }

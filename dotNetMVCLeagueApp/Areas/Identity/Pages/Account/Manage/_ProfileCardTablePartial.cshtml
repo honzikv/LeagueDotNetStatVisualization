@@ -1,0 +1,91 @@
+﻿@model dotNetMVCLeagueApp.Areas.Identity.Pages.Data.ProfileCardTable
+
+
+@functions {
+
+    private static Dictionary<string, string> CardParams(int id) => new() {
+        {"CardId", id.ToString()}
+    };
+
+    private string TruncateIfNecessary(string text) {
+        if (text is null) {
+            return "";
+        }
+        return text.Length > Model.TextTableMaxCharacters
+            ? text[..Model.TextTableMaxCharacters] + "..." 
+            : text;
+
+    }
+
+}
+
+<div id="ProfileCardTables">
+    <table id="sortable" class="table table-responsive-lg table-striped mt-4">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Current Position</th>
+            <th scope="col">Card Title</th>
+            <th scope="col">Card Type</th>
+            <th scope="col">Desc. / Link</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Change Position</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var card in Model.ProfileCards) {
+            <tr>
+                <th scope="row">@(card.Position + 1)</th>
+                <td class="font-weight-bold">@TruncateIfNecessary(card.PrimaryText)</td>
+                @if (card.SocialMedia) {
+                    <td>Social Media</td>
+                    <td>
+                        <a class="page-link" href="@card.SecondaryText">@TruncateIfNecessary(card.SecondaryText)</a>
+                    </td>
+                }
+                else {
+                    <td>Text</td>
+                    <td>@TruncateIfNecessary(card.SecondaryText)</td>
+                }
+                <td>
+                    <form method="get" asp-page="/Account/EditCard" asp-all-route-data="@CardParams(card.Id)">
+                        <button class="btn btn-primary rounded-corners-small"><i class="fas fa-trash-alt"></i> Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-page-handler="MoveUp" asp-all-route-data="@CardParams(card.Id)">
+                        <button class="btn btn-sm btn-grey mb-0 rounded-corners-small">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                    </form>
+                    <form method="post" asp-page-handler="MoveUp" asp-all-route-data="@CardParams(card.Id)">
+                        <button class="btn btn-sm btn-grey rounded-corners-small">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-page-handler="DeleteCard" asp-all-route-data="@CardParams(card.Id)">
+                        <button class="btn btn-danger rounded-corners-small"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+
+    <div>
+        <a asp-area="Identity" asp-page="/Account/AddNewTextCard"
+           class="btn btn-primary mt-4 rounded-corners-small float-right">
+            Add New Text Card
+        </a>
+        <a asp-area="Identity" asp-page="/Account/AddNewSocialMediaCard"
+           class="btn btn-primary mt-4 rounded-corners-small float-right">
+            Add New Social Media Card
+        </a>
+    </div>
+
+
+</div>

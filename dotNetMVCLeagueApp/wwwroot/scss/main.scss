@@ -28,13 +28,18 @@
 
 body {
     font-family: OpenSans, "Roboto", sans-serif;
-    background: radial-gradient(adjust-color($background-color1, $alpha: -0.0), adjust-color($background-color2, $alpha: -0.0)),
-    url("../bgwall/msi_2021_wall.jpg") no-repeat center center !important;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+}
+
+table, thead, tr, tbody, th, td {
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+td{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }

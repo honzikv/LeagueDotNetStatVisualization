@@ -90,7 +90,7 @@ namespace dotNetMVCLeagueApp.Config {
         public const string RedSide = "Red side";
         public const string BlueSide = "Blue side";
 
-        public static readonly Dictionary<string, string> SocialMediaPlatforms = new() {
+        public static readonly Dictionary<string, string> SocialMediaPlatformPrefixes = new() {
             {"Youtube", "https://www.youtube.com/"},
             {"Twitter", "https://twitter.com/"},
             {"Discord", "https://discord.com/"},

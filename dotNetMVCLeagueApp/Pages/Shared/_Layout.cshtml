@@ -10,21 +10,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="~/mdb/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/mdb/css/mdb.min.css" rel="stylesheet">
     <link href="~/mdb/css/style.css" rel="stylesheet">
     <link href="~/css/main.css" rel="stylesheet">
     <link href="~/css/navbar.css" rel="stylesheet">
     <link href="~/css/match.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link href="~/css/site.css" rel="stylesheet"/>
+    <link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
           crossorigin="anonymous"/>
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 </head>
 <body>
@@ -65,6 +64,7 @@ prohlizeci *@
 <script type="text/javascript" src="~/mdb/js/popper.min.js"></script>
 <script type="text/javascript" src="~/mdb/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="~/mdb/js/mdb.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-ui/jquery-ui.min.js"></script>
 
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)

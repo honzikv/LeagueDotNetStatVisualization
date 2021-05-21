@@ -7,11 +7,16 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
     /// </summary>
     public class ProfileCardModel {
         public int Id { get; set; }
+        
+        /// <summary>
+        /// Header karticky - nadpis
+        /// </summary>
+        public string PrimaryText { get; set; }
 
         /// <summary>
-        ///     Text karticky - bud link nebo UTF-8 plain text
+        ///     Text karticky - bud link nebo plain text
         /// </summary>
-        public string Text { get; set; }
+        public string SecondaryText { get; set; }
 
         /// <summary>
         ///     Zda-li se jedna o odkaz na social media
@@ -26,6 +31,7 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
         /// <summary>
         /// Reference na uzivatele
         /// </summary>
+        [Required]
         public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

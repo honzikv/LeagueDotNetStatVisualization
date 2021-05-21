@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
-    public class AddNewProfileCardDto {
+    public class AddNewTextCardDto {
         
         [Required]
         [StringLength(100, ErrorMessage = "{0} can be at max {1} characters long.")]

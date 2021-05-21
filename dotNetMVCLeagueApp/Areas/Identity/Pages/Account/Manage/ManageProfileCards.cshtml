@@ -1,4 +1,5 @@
 ﻿@page
+@using dotNetMVCLeagueApp.Areas.Identity.Pages.Data
 @model ManageProfileCards
 
 @{
@@ -7,32 +8,9 @@
 }
 
 <h4>@ViewData["Title"]</h4>
+<p class="no-spacing">Only top three cards are shown.</p>
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
 
-<div class="animate__animated animate__fadeIn">
-    <table class="table table-responsive-sm table-striped">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Card Title</th>
-            <th scope="col">Card Description</th>
-            <th scope="col">Card Type</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-        </tr>
-        </thead>
-        @foreach (var card in Model.ProfileCards) {
-            // Render cards
-        }
-        <tbody>
-
-        </tbody>
-
-    </table>
-
-    <a asp-area="Identity" asp-page="/Account/AddNewTextCard" 
-       class="btn btn-primary mt-4 rounded-corners-small float-right">Add New Text Card</a>
-    <a asp-area="Identity" asp-page="/Account/AddNewSocialMediaCard" 
-       class="btn btn-primary mt-4 rounded-corners-small float-right">Add New Social Media Card</a>
-
-</div>
+@await Html.PartialAsync("_ProfileCardTablePartial", new ProfileCardTable() {
+    ProfileCards = Model.ProfileCards
+});
