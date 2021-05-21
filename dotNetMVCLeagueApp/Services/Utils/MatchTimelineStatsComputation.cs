@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail;
@@ -37,20 +38,20 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// <summary>
         /// Id vsech ucastniku
         /// </summary>
-        private readonly List<int> participantIds;
+        private readonly List<PlayerModel> players;
 
         /// <summary>
         /// Zda-li byl MatchTimelineModel zpracovany
         /// </summary>
         private bool processed;
 
-        public MatchTimelineStatsComputation(List<int> participantIds, int participantId,
-            int laneOpponentParticipantId, MatchTimelineModel matchTimeline) {
+        public MatchTimelineStatsComputation(PlayerModel player, PlayerModel laneOpponent, List<PlayerModel> players,
+            MatchTimelineModel matchTimeline) {
             this.matchTimeline = matchTimeline;
-            this.participantIds = participantIds;
-            playerDetailDto = new PlayerDetailDto(participantId, laneOpponentParticipantId, participantIds);
+            this.players = players;
+            playerDetailDto = new PlayerDetailDto(player, laneOpponent, players);
             matchTimelineDto = new MatchTimelineDto(
-                participantIds,
+                players,
                 TimeUtils.ConvertFrameTimeToTimeSpan(matchTimeline.FrameInterval)
             );
             frameDuration = matchTimeline.FrameInterval;
@@ -96,23 +97,25 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// Vypocte data pro PlayerDetailDto objekt
         /// </summary>
         private void ComputePlayerDetail() {
-            var playerParticipantId = playerDetailDto.ParticipantId;
+            var player = playerDetailDto.Player;
+            var playerParticipantId = player.ParticipantId;
 
-            // Vypocteme min max rozdili s kazdym jinym ucastnikem
-            foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
-                ComputePlayerDetailForParticipant(participantId, matchTimelineDto.PlayerTimelines[participantId]);
+            // Vypocteme min max rozdily s kazdym jinym ucastnikem
+            foreach (var participant in
+                players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
+                ComputePlayerDetailForParticipant(participant.Id, matchTimelineDto.PlayerTimelines[participant.ParticipantId]);
             }
-            
+
             // Vypocteme rozdil v 10 a 15 minute
 
-            var frameCount = matchTimelineDto.PlayerTimelines[participantIds[0]].CsOverTime.Count;
+            var frameCount = matchTimelineDto.PlayerTimelines[players[0].ParticipantId].CsOverTime.Count;
             var frameAt10 = GetClosestFrameIndex(TimeSpan.FromMinutes(10));
             if (frameAt10 >= frameCount) {
                 return;
             }
 
-            foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
-                ComputeDiffAt10(participantId, matchTimelineDto.PlayerTimelines[participantId], frameAt10);
+            foreach (var participant in players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
+                ComputeDiffAt10(participant.ParticipantId, matchTimelineDto.PlayerTimelines[participant.ParticipantId], frameAt10);
             }
 
             var frameAt15 = GetClosestFrameIndex(TimeSpan.FromMinutes(15));
@@ -120,8 +123,8 @@ namespace dotNetMVCLeagueApp.Services.Utils {
                 return;
             }
 
-            foreach (var participantId in participantIds.Where(participantId => participantId != playerParticipantId)) {
-                ComputeDiffAt15(participantId, matchTimelineDto.PlayerTimelines[participantId], frameAt15);
+            foreach (var participant in players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
+                ComputeDiffAt15(participant.ParticipantId, matchTimelineDto.PlayerTimelines[participant.ParticipantId], frameAt15);
             }
         }
 

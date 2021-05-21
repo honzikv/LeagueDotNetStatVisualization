@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using dotNetMVCLeagueApp.Data.Models.Match;
-using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Repositories;
 using dotNetMVCLeagueApp.Services.Utils;
@@ -51,9 +50,8 @@ namespace dotNetMVCLeagueApp.Services {
                                         GameStatsUtils.GetRole(opponent.Role, opponent.Lane);
 
             // Vytvorime si pomocny objekt, ktery provede vypocet statistik
-            var matchTimelineStatsComputation = new MatchTimelineStatsComputation(
-                match.PlayerList.Select(playerModel => playerModel.ParticipantId).ToList(),
-                player.ParticipantId, opponent.ParticipantId, timeline);
+            var matchTimelineStatsComputation = new MatchTimelineStatsComputation(player,
+                opponent, allPlayers, timeline);
             
             matchTimelineStatsComputation.Process();
             var (playerDetail, matchTimelineStats) = matchTimelineStatsComputation.GetResult;

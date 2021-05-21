@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.Models.Match;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail {
     /// <summary>
@@ -7,28 +8,28 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail {
     ///     Klice pro vsechny slovniky jsou ParticipantId
     /// </summary>
     public class PlayerDetailDto {
-        public int ParticipantId { get; }
+        public PlayerModel Player { get; }
 
-        public int LaneOpponentParticipantId { get; }
+        public PlayerModel LaneOpponentParticipantId { get; }
 
-        public PlayerDetailDto(int participantId, int laneOpponentParticipantId, IEnumerable<int> participantIds) {
-            ParticipantId = participantId;
-            LaneOpponentParticipantId = laneOpponentParticipantId;
+        public PlayerDetailDto(PlayerModel player, PlayerModel laneOpponent, IEnumerable<PlayerModel> opponents) {
+            Player = player;
+            LaneOpponentParticipantId = laneOpponent;
 
-            foreach (var id in participantIds) {
-                if (id == participantId) {
+            foreach (var playerModel in opponents) {
+                if (Player.ParticipantId == playerModel.ParticipantId) {
                     continue;
                 }
 
-                MaxXpDiff[id] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
-                MaxGoldDiff[id] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
-                MaxCsDiff[id] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
-                MaxLevelDiff[id] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
+                MaxXpDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
+                MaxGoldDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
+                MaxCsDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
+                MaxLevelDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MinValue, TimeSpan.FromSeconds(0));
 
-                MinXpDiff[id] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
-                MinGoldDiff[id] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
-                MinCsDiff[id] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
-                MinLevelDiff[id] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
+                MinXpDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
+                MinGoldDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
+                MinCsDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
+                MinLevelDiff[playerModel.ParticipantId] = new TimeValue<int>(int.MaxValue, TimeSpan.FromSeconds(0));
             }
         }
 

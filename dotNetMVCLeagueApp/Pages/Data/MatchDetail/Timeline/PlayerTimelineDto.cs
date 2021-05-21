@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
+using dotNetMVCLeagueApp.Data.Models.Match;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     /// <summary>
     ///     Obsahuje vybrane timeline pro jednoho hrace
     /// </summary>
     public class PlayerTimelineDto {
-        public PlayerTimelineDto(int participantId) {
-            ParticipantId = participantId;
+        public PlayerTimelineDto(PlayerModel player) {
+            ParticipantId = player.ParticipantId;
+            SummonerName = player.SummonerName;
         }
 
         /// <summary>
         ///     Id ucastnika
         /// </summary>
         public int ParticipantId { get; set; }
+        
+        public string SummonerName { get; set; }
 
         /// <summary>
         ///     Celkovy pocet XP za cas
