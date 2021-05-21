@@ -8,14 +8,14 @@
 
     <div class="card-player-table rounded-corners-small card-body">
         @foreach (var playerKv in Model.BlueSidePlayers) {
-            @await Html.PartialAsync("Shared/Match/_TeamTableCardPartial", playerKv.Value)
+            @await Html.PartialAsync("Shared/Partials/Match/_TeamTableCardPartial", playerKv.Value)
         }
     </div>
 
     <h4 class="heading4 mt-3 color-red-side">Red Team</h4>
     <div class="card-player-table rounded-corners-small card-body">
         @foreach (var playerKv in Model.RedSidePlayers) {
-            @await Html.PartialAsync("Shared/Match/_TeamTableCardPartial", playerKv.Value)
+            @await Html.PartialAsync("Shared/Partials/Match/_TeamTableCardPartial", playerKv.Value)
         }
     </div>
 </div>

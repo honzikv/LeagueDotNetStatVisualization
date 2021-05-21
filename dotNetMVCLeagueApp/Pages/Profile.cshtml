@@ -24,7 +24,7 @@
 <div class="row d-flex justify-content-around">
 
     <div class="col-lg-3 col-xs-12 order-xs-1 order-lg-0" id="summonerInfoPartial">
-        @{ await Html.RenderPartialAsync("Shared/Partial/_SummonerInfoPartial", Model.SummonerData.Summoner); }
+        @{ await Html.RenderPartialAsync("Partials/Profile/_SummonerInfoPartial", Model.SummonerData.Summoner); }
     </div>
 
     <div class="col-lg-auto col-xs-12 order-xs-2 order-lg-1">
@@ -52,7 +52,7 @@
             <div id="matchOverview">
                 @{
                     if (Model.SummonerData.MatchListOverview.TotalStats.Wins + Model.SummonerData.MatchListOverview.TotalStats.Losses > 0) {
-                        await Html.RenderPartialAsync("Shared/Partial/_MatchListOverviewPartial", Model.SummonerData.MatchListOverview);
+                        await Html.RenderPartialAsync("Partials/Profile/_MatchListOverviewPartial", Model.SummonerData.MatchListOverview);
                     }
                     else {
                         <div class="row d-flex justify-content-center">
@@ -88,7 +88,7 @@
             <div id="matches">
                 @{
                     var headerRenders = new List<Task>(Model.SummonerData.MatchHeaders.Count);
-                    headerRenders.AddRange(Model.SummonerData.MatchHeaders.Select(match => Html.RenderPartialAsync("Shared/Partial/_MatchHeaderPartial", match)));
+                    headerRenders.AddRange(Model.SummonerData.MatchHeaders.Select(match => Html.RenderPartialAsync("Partials/Profile/_MatchHeaderPartial", match)));
                     await Task.WhenAll(headerRenders);
                 }
             </div>

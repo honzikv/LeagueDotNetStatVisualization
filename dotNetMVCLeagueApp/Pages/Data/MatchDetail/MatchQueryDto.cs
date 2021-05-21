@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
-    public class MatchQueryModel {
+    public class MatchQueryDto {
         
         /// <summary>
         /// Id hry - pro ziskani z db

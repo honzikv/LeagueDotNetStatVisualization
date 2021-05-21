@@ -26,21 +26,18 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
     public class RegisterModel : PageModel {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<RegisterModel> logger;
-        private readonly IEmailSender emailSender;
+        private readonly ApplicationUserService applicationUserService;
         private readonly SummonerService summonerService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
             SummonerService summonerService,
-            IEmailSender emailSender) {
+            ApplicationUserService applicationUserService) {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.logger = logger;
             this.summonerService = summonerService;
-            this.emailSender = emailSender;
+            this.applicationUserService = applicationUserService;
             QueryableServers = summonerService.QueryableServers;
         }
 
@@ -51,7 +48,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-        
+
 
         public async Task OnGetAsync(string returnUrl = null) {
             ReturnUrl = returnUrl;
@@ -73,7 +70,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             try {
                 if (Input.SummonerName is not null) {
                     var region = Region.Get(Input.Server);
-                    var summoner = await summonerService.GetSummoner(Input.SummonerName, region);
+                    var summoner = await summonerService.GetSummoner(Input.SummonerName, region)
+                                   ?? throw new ActionNotSuccessfulException(
+                                       "Summoner does not exist on the specified server");
 
                     if (await summonerService.IsSummonerTaken(summoner)) {
                         ModelState.AddModelError("SummonerName", "This summoner is already taken");
@@ -84,29 +83,22 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
                 }
             }
-            catch (RedirectToHomePageException) {
-                ModelState.AddModelError("SummonerName", "Summoner does not exist on the specified server");
+            catch (Exception ex) {
+                ModelState.AddModelError("SummonerName",
+                    ex is ActionNotSuccessfulException or RiotApiException
+                        ? ex.Message
+                        : "Error, while performing registration, please register without summoner and link it later.");
                 return Page();
+            }
+
+            if (await applicationUserService.IsEmailTaken(Input.Email)) {
+                ModelState.AddModelError("Email", "The email is already taken.");
             }
 
             var result = await userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded) {
-                // Pro potvrzeni emailu
-                var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new {area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl},
-                    protocol: Request.Scheme);
-
-                await emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                if (userManager.Options.SignIn.RequireConfirmedAccount) {
-                    return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
-                }
-
+                user.EmailConfirmed = true; // nastavime jako potvrzeny email
+                await userManager.UpdateAsync(user);
                 await signInManager.SignInAsync(user, isPersistent: false);
                 return LocalRedirect(returnUrl);
             }

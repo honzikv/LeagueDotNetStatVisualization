@@ -38,7 +38,9 @@
         <hr>
         <p class="no-spacing text-center">Unlink any previously linked Summoner name</p>
         <div class="d-flex justify-content-center">
-            <a class="btn btn-primary-blue rounded-corners-small" asp-page-handler="/unlink">Unlink Summoner</a>
+            <form method="post" asp-page-handler="Unlink">
+                <button type="submit" class="btn btn-primary-blue rounded-corners-small">Unlink Summoner</button>
+            </form>
         </div>
     </div>
 </div>

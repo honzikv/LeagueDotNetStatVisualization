@@ -16,10 +16,10 @@
 
     <div>
         @if (Model.SoloQueue is not null) {
-            await Html.RenderPartialAsync("Shared/Partial/_RankCardPartial", Model.SoloQueue);
+            await Html.RenderPartialAsync("_RankCardPartial", Model.SoloQueue);
         }
         @if (Model.FlexQueue is not null) {
-            await Html.RenderPartialAsync("Shared/Partial/_RankCardPartial", Model.FlexQueue);
+            await Html.RenderPartialAsync("_RankCardPartial", Model.FlexQueue);
         }
     </div>
 

@@ -71,14 +71,35 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             if (!ModelState.IsValid) {
                 return Page();
             }
+            
+                var operationResult =
+                    await summonerService.LinkSummonerToApplicationUser(user, LinkSummonerInput.SummonerName,
+                        LinkSummonerInput.Server);
 
-            var operationResult =
-                await summonerService.LinkSummonerToApplicationUser(user, LinkSummonerInput.SummonerName, LinkSummonerInput.Server);
 
             StatusMessage = operationResult.Message;
             if (!operationResult.Error) {
                 await signInManager.RefreshSignInAsync(user); 
             }
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostUnlinkAsync() {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null) {
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+            }
+
+            if (user.Summoner is not null) {
+                user.Summoner = null;
+                await userManager.UpdateAsync(user);
+
+                StatusMessage = "Summoner name has been unlinked from your profile.";
+            }
+            else {
+                StatusMessage = "Error, no summoner is linked to your profile.";
+            }
+
             return RedirectToPage();
         }
     }

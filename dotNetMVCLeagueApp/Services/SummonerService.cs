@@ -65,9 +65,6 @@ namespace dotNetMVCLeagueApp.Services {
                 $"Summoner info was null, trying to fetch from API summonerName={summonerName}, region={region.Key}");
             // Jinak ziskame z API
             summonerInfo = await riotApiRepository.GetSummonerInfo(summonerName, region);
-            if (summonerInfo is null) { // Vyhodime exception pokud summoner neexistuje
-                throw new RedirectToHomePageException($"User {summonerName} on server {region.Key} does not exist!");
-            }
 
             logger.LogDebug($"Fetched: {summonerInfo}");
             // Pokud summoner neni null tak zavolame api pro ranked statistiky 
@@ -141,7 +138,16 @@ namespace dotNetMVCLeagueApp.Services {
                 };
             }
 
-            var summoner = await GetSummoner(summonerName, Region.Get(server.ToUpper()));
+            SummonerModel summoner;
+            try {
+                summoner = await GetSummoner(summonerName, Region.Get(server.ToUpper()));
+            }
+            catch (Exception ex) {
+                return new() {
+                    Error = true,
+                    Message = "Error, Summoner does not exist"
+                };
+            }
 
             if (user.Summoner is not null && summoner.EncryptedAccountId == user.Summoner.EncryptedAccountId) {
                 return new () {
@@ -172,6 +178,7 @@ namespace dotNetMVCLeagueApp.Services {
                 Message = "Profile sucessfully updated."
             };
         }
+
         
     }
 }

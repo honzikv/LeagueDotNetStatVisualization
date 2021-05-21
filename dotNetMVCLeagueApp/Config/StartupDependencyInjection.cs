@@ -63,6 +63,8 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<MatchStatsService>(); // Pro statistiky pro danou hru
             services.AddScoped<MatchService>();
             services.AddScoped<ProfileCardService>();
+            services.AddScoped<ApplicationUserService>();
+            services.AddScoped<MatchTimelineStatsService>();
 
             // Sluzba na pozadi, ktera kazdych N (3) minut zkontroluje DB a smaze hry, ktere uz nelze zobrazit
             // - hry, ktere jsou starsi nez M (30) dni.

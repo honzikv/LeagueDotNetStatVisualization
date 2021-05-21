@@ -462,6 +462,10 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.theme.min.css" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\LICENSE.txt" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\package.json" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_MatchHeaderPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_MatchListOverviewPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_RankCardPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_SummonerInfoPartial.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

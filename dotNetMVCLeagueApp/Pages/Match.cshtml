@@ -6,7 +6,7 @@
 @{
     Layout = "Shared/_Layout";
 
-    var profileQuery = new Dictionary<string, string>() {
+    var profileQuery = new Dictionary<string, string> {
         {"name", Model.QueryParams.SummonerName},
         {"server", Model.QueryParams.Server}
     };
@@ -24,6 +24,13 @@
 
     var player = Model.MatchOverview.Players[Model.QueryParams.ParticipantId];
     var playerChampion = player.ChampionAsset;
+
+    var matchTimelineQueryData = new Dictionary<string, string> {
+        {"gameId", Model.QueryParams.GameId.ToString()},
+        {"server", Model.QueryParams.Server},
+        {"participantId", Model.QueryParams.ParticipantId.ToString()},
+        {"summonerName", Model.QueryParams.SummonerName}
+    };
 }
 
 <div class="container">
@@ -55,10 +62,19 @@
         </div>
 
     </div>
-    @await Html.PartialAsync("Shared/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
+    @await Html.PartialAsync("Partials/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
 
     <div class="mt-4">
-        @await Html.PartialAsync("Shared/Match/_MatchPlayerTablePartial", Model.MatchOverview.Teams)
+        @await Html.PartialAsync("Partials/Match/_MatchPlayerTablePartial", Model.MatchOverview.Teams)
+    </div>
+
+    <div id="MatchTimeline" class="mt-4">
+        <form method="get" asp-page-handler="MatchTimeline" asp-all-route-data="@matchTimelineQueryData" data-ajax-method="get"
+              data-ajax="true" data-ajax-update="#MatchTimeline">
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary btn-lg rounded-corners-small">Show Timeline and Personal Stats</button>
+            </div>
+        </form>
     </div>
 </div>
 
