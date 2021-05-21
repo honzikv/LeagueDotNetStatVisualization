@@ -16,7 +16,7 @@
     }
 
     private string ClassActive(ProfileCardModel card) => 
-        card.Position < ServerConstants.VisibleCardLimit ? "table-primary" : "";
+        card.Position < ServerConstants.VisibleCardLimit ? "table-success" : "";
 }
 
 <div id="ProfileCardTable">
@@ -24,13 +24,13 @@
     <table id="sortable" class="table table-hover table-responsive-lg table-striped mt-4">
         <thead class="thead-dark">
         <tr>
-            <th scope="col">Position</th>
-            <th scope="col">Title</th>
-            <th scope="col">Type</th>
-            <th scope="col">Desc. / Link</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Move</th>
-            <th scope="col">Delete</th>
+            <th class="font-weight-bold" scope="col">Position</th>
+            <th class="font-weight-bold" scope="col">Title</th>
+            <th class="font-weight-bold" scope="col">Type</th>
+            <th class="font-weight-bold" scope="col">Desc. / Link</th>
+            <th class="font-weight-bold" scope="col">Edit</th>
+            <th class="font-weight-bold" scope="col">Move</th>
+            <th class="font-weight-bold" scope="col">Delete</th>
         </tr>
         </thead>
 
@@ -56,13 +56,13 @@
                     </form>
                 </td>
                 <td>
-                    <div class="row">
+                    <div class="row d-flex justify-content-center">
                         <form method="post" asp-page-handler="MoveUp"
                               data-ajax-method="post"
                               data-ajax="true"
                               data-ajax-update="#ProfileCardTable">
                             <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
-                            <button class="btn btn-sm btn-grey mb-0 rounded-corners-small">
+                            <button class="btn btn-sm btn-grey m-1 rounded-corners-small">
                                 <i class="fas fa-chevron-up"></i>
                             </button>
                         </form>
@@ -71,7 +71,7 @@
                               data-ajax="true"
                               data-ajax-update="#ProfileCardTable">
                             <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
-                            <button class="btn btn-sm btn-grey rounded-corners-small">
+                            <button class="btn btn-sm m-1 btn-grey rounded-corners-small">
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                         </form>

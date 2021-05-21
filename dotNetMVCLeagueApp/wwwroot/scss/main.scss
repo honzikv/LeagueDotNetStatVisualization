@@ -29,21 +29,21 @@
 body {
     font-family: OpenSans, "Roboto", sans-serif !important;
 }
-//
-//table, thead, tr, tbody, th, td {
-//    text-align: center;
-//}
-//
-//.table td {
-//    text-align: center;
-//}
-//
-//td{
-//    white-space:nowrap;
-//    overflow:hidden;
-//    text-overflow:ellipsis;
-//}
-//
-//td > * {
-//    vertical-align : middle;
-//}
+
+table, thead, tr, tbody, th, td {
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+td{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+td > * {
+    vertical-align : middle;
+}

@@ -8,10 +8,11 @@
 }
 
 <h4>@ViewData["Title"]</h4>
-<p class="no-spacing">Only top three cards (blue background) are shown.</p>
+<p class="no-spacing">Only top three cards (green background) are shown.</p>
 
-
+<div class="animate__animated animate__fadeIn">
 @await Html.PartialAsync("_ProfileCardTablePartial", new ProfileCardTableDto {
     ProfileCards = Model.ProfileCards,
     StatusMessage = Model.StatusMessage
 })
+</div>
