@@ -51,7 +51,7 @@ namespace dotNetMVCLeagueApp.Pages {
         /// <summary>
         /// Parametry z GET requestu
         /// </summary>
-        [BindProperty(SupportsGet = true)] public ProfileQueryModel QueryParams { get; set; }
+        [BindProperty(SupportsGet = true)] public ProfileQueryDto QueryParams { get; set; }
 
         /// <summary>
         /// Chybova zprava - mapuje se z TempData
@@ -147,10 +147,11 @@ namespace dotNetMVCLeagueApp.Pages {
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
                 summoner = await summonerService.UpdateSummoner(summoner.Id, true);
-                var matchHistory =
-                    await matchService.GetUpdatedMatchHistory(summoner, ServerConstants.DefaultPageSize);
-                SummonerData = GetSummonerData(summoner, matchHistory);
-                return Page();
+                await matchService.GetUpdatedMatchHistory(summoner, ServerConstants.DefaultPageSize);
+                return RedirectToPage("", new ProfileQueryDto {
+                    Name = QueryParams.Name,
+                    Server = QueryParams.Server
+                });
             }
 
             catch (Exception ex) {

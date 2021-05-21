@@ -90,6 +90,20 @@ namespace dotNetMVCLeagueApp.Config {
         public const string RedSide = "Red side";
         public const string BlueSide = "Blue side";
 
+        public static readonly Dictionary<string, string> SocialMediaPlatforms = new() {
+            {"Youtube", "https://www.youtube.com/"},
+            {"Twitter", "https://twitter.com/"},
+            {"Discord", "https://discord.com/"},
+            {"Reddit", "https://www.reddit.com/"},
+            {"Twitch", "https://www.twitch.tv/"}
+        };
+
+        public static readonly List<string> SocialMediaPlatformsNames = new() {
+            "Youtube", "Twitter", "Discord", "Reddit", "Twitch"
+        };
+
+        public const int CardLimit = 10;
+
         /// <summary>
         /// Vrati nazev queue z jeho id, pokud je queueId nevalidni, vrati prazdny retezec
         /// </summary>
@@ -104,11 +118,5 @@ namespace dotNetMVCLeagueApp.Config {
 
         public static int GetQueueId(string queueType) => QueueIdToQueueNames[queueType];
 
-        /// <summary>
-        /// Ziska queue id (cislo) z filtru
-        /// </summary>
-        /// <param name="filter">jmeno filtru v QueueFilters</param>
-        /// <returns></returns>
-        public static int GetQueueIdFromFilter(string filter) => GetQueueId(QueueFilters[filter]);
     };
 }

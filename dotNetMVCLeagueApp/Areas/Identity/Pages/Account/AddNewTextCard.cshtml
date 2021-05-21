@@ -1,0 +1,75 @@
+﻿@page
+@model dotNetMVCLeagueApp.Areas.Identity.Pages.Account.AddNewCard
+
+@{
+    ViewData["Title"] = "Add New Text Card";
+}
+
+
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+
+        <h1 class="heading1 text-center">@ViewData["Title"]</h1>
+        <p class="no-spacing text-small text-center">(You have @Model.UserProfileCards / @Model.CardLimit cards)</p>
+        <hr>
+        
+        <partial name="Manage/_StatusMessage" model="Model.StatusMessage"/>
+@* Zobrazime pouze tehdy, pokud muze uzivatel karty vytvorit*@
+        @if (Model.UserProfileCards < Model.CardLimit) {
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Input.Header"></label>
+                    <input asp-for="Input.Header" class="form-control"/>
+                    <span asp-validation-for="Input.Header" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Text"></label>
+                    <textarea asp-for="Input.Text" class="form-control"></textarea>
+                    <span asp-validation-for="Input.Text" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" asp-for="Input.ShowOnTop">
+                        <label class="form-check-label" asp-for="Input.ShowOnTop"></label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary rounded-corners-small float-right">Submit</button>
+
+            </form>
+        }
+        else {
+            <div class="d-flex justify-content-center">
+                <a asp-page="/Account/Manage/ManageProfileCards"
+                   asp-area="Identity" class="btn btn-primary rounded-corners-small">
+                    Return Back To Manage Profile
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@if (Model.UserProfileCards < Model.CardLimit) {
+    <div class="row d-flex justify-content-center mt-4">
+        <div class="col-md-4">
+            <hr>
+            <p class="no-spacing text-center ml-auto mr-auto">You can also create a card with social media link.</p>
+            <div class="d-flex justify-content-center">
+                <a asp-area="Identity" asp-page="/Account/AddNewSocialMediaCard"
+                   class="btn btn-blue-grey rounded-corners-small">
+                    Create Social Media Card
+                </a>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a asp-page="/Account/Manage/ManageProfileCards"
+                   asp-area="Identity" class="btn btn-blue-grey rounded-corners-small">
+                    Return Back To Manage Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+}

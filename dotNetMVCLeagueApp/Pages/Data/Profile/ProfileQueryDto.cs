@@ -5,7 +5,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     /// <summary>
     /// Data, ktera muze uzivatel hledat - Name a Server jsou povinna
     /// </summary>
-    public class ProfileQueryModel {
+    public class ProfileQueryDto {
         
         /// <summary>
         /// Jmeno uzivatele na serveru, napr. "Renekton Gaming"

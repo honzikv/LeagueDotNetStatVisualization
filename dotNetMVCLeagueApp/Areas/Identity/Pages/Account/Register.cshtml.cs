@@ -46,7 +46,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
         public Dictionary<string, string> QueryableServers { get; }
 
-        [BindProperty] public RegisterInputDto RegisterInput { get; set; }
+        [BindProperty] public RegisterDto Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -66,14 +66,14 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             }
 
             var user = new ApplicationUser {
-                UserName = RegisterInput.Username,
-                Email = RegisterInput.Email
+                UserName = Input.Username,
+                Email = Input.Email
             };
 
             try {
-                if (RegisterInput.SummonerName is not null) {
-                    var region = Region.Get(RegisterInput.Server);
-                    var summoner = await summonerService.GetSummoner(RegisterInput.SummonerName, region);
+                if (Input.SummonerName is not null) {
+                    var region = Region.Get(Input.Server);
+                    var summoner = await summonerService.GetSummoner(Input.SummonerName, region);
 
                     if (await summonerService.IsSummonerTaken(summoner)) {
                         ModelState.AddModelError("SummonerName", "This summoner is already taken");
@@ -89,7 +89,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 return Page();
             }
 
-            var result = await userManager.CreateAsync(user, RegisterInput.Password);
+            var result = await userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded) {
                 // Pro potvrzeni emailu
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -100,11 +100,11 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                     values: new {area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl},
                     protocol: Request.Scheme);
 
-                await emailSender.SendEmailAsync(RegisterInput.Email, "Confirm your email",
+                await emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 if (userManager.Options.SignIn.RequireConfirmedAccount) {
-                    return RedirectToPage("RegisterConfirmation", new {email = RegisterInput.Email, returnUrl = returnUrl});
+                    return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
                 }
 
                 await signInManager.SignInAsync(user, isPersistent: false);

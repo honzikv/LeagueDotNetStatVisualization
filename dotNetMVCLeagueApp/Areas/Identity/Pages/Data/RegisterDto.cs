@@ -4,7 +4,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
     /// <summary>
     /// Objekt s daty pro registraci
     /// </summary>
-    public class RegisterInputDto {
+    public class RegisterDto {
         [Required]
         [Display(Name = "Username")]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
