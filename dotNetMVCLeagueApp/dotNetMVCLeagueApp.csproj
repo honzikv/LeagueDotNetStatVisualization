@@ -29,6 +29,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0-preview.3.21201.13" />
+        <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="MingweiSamuel.Camille" Version="2.7.3-nightly-2021-01-17-519ad84617" />
@@ -442,6 +443,25 @@
       <_ContentIncludedByDefault Remove="ApiSamples\Timeline.json" />
       <_ContentIncludedByDefault Remove="ApiSamples\Timeline2.json" />
       <_ContentIncludedByDefault Remove="wwwroot\js\Summoner\SummonerControllerAjax.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\AUTHORS.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\external\jquery\jquery.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\images\ui-icons_444444_256x240.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\images\ui-icons_555555_256x240.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\images\ui-icons_777620_256x240.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\images\ui-icons_777777_256x240.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\images\ui-icons_cc0000_256x240.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\images\ui-icons_ffffff_256x240.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.structure.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.structure.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.theme.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\jquery-ui.theme.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-ui\package.json" />
     </ItemGroup>
 
     <ItemGroup>

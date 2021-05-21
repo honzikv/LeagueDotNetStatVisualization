@@ -1,25 +1,22 @@
-﻿@model dotNetMVCLeagueApp.Areas.Identity.Pages.Data.ProfileCardTable
+﻿@model dotNetMVCLeagueApp.Areas.Identity.Pages.Data.ProfileCardTableDto
 
 
 @functions {
-
-    private static Dictionary<string, string> CardParams(int id) => new() {
-        {"CardId", id.ToString()}
-    };
 
     private string TruncateIfNecessary(string text) {
         if (text is null) {
             return "";
         }
         return text.Length > Model.TextTableMaxCharacters
-            ? text[..Model.TextTableMaxCharacters] + "..." 
+            ? text[..Model.TextTableMaxCharacters] + "..."
             : text;
 
     }
 
 }
 
-<div id="ProfileCardTables">
+<div id="ProfileCardTable">
+    <partial name="_StatusMessage" model="Model.StatusMessage"/>
     <table id="sortable" class="table table-responsive-lg table-striped mt-4">
         <thead class="thead-dark">
         <tr>
@@ -49,24 +46,39 @@
                     <td>@TruncateIfNecessary(card.SecondaryText)</td>
                 }
                 <td>
-                    <form method="get" asp-page="/Account/EditCard" asp-all-route-data="@CardParams(card.Id)">
+                    <form method="get" asp-page="/Account/EditCard">
+                        <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
                         <button class="btn btn-primary rounded-corners-small"><i class="fas fa-trash-alt"></i> Edit</button>
                     </form>
                 </td>
                 <td>
-                    <form method="post" asp-page-handler="MoveUp" asp-all-route-data="@CardParams(card.Id)">
+                    <form method="post" asp-page-handler="MoveUp"
+                          data-ajax-method="post"
+                          data-ajax="true"
+                          data-ajax-update="#ProfileCardTable">
+                        <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
                         <button class="btn btn-sm btn-grey mb-0 rounded-corners-small">
                             <i class="fas fa-chevron-up"></i>
                         </button>
                     </form>
-                    <form method="post" asp-page-handler="MoveUp" asp-all-route-data="@CardParams(card.Id)">
+                    <form method="post" asp-page-handler="MoveDown"
+                          data-ajax-method="post"
+                          data-ajax="true"
+                          data-ajax-update="#ProfileCardTable">
+                        <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
                         <button class="btn btn-sm btn-grey rounded-corners-small">
                             <i class="fas fa-chevron-down"></i>
                         </button>
                     </form>
                 </td>
                 <td>
-                    <form method="post" asp-page-handler="DeleteCard" asp-all-route-data="@CardParams(card.Id)">
+                    <form method="post"
+                          asp-page-handler="DeleteCard"
+                          data-ajax-method="post"
+                          data-ajax="true"
+                          data-ajax-update="#ProfileCardTable"
+                          data-ajax-confirm="Are you sure? This action is irreversible.">
+                        <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
                         <button class="btn btn-danger rounded-corners-small"><i class="fas fa-trash-alt"></i> Delete</button>
                     </form>
                 </td>

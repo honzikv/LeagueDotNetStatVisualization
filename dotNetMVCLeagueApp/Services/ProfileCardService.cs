@@ -28,29 +28,65 @@ namespace dotNetMVCLeagueApp.Services {
             return await profileCardRepository.AddProfileCardToCollection(profileCard, userCards, showOnTop);
         }
 
-        public async Task<List<ProfileCardModel>> UpdateProfileCards(int[] ids, ApplicationUser user) {
-            if (ids.IsNullOrEmpty()) {
-                return new();
+        public async Task<List<ProfileCardModel>> MoveUp(int profileCardId, ApplicationUser user) {
+            var profileCards = await profileCardRepository.GetUserProfileCardsByPosition(user);
+            var card = profileCards.FirstOrDefault(profileCard => profileCard.Id == profileCardId);
+
+            if (card is null) {
+                throw new ActionNotSuccessfulException("Error, card does not exist");
             }
 
-            var profileCards = await profileCardRepository.GetProfileCardsWithIdsSortedById(ids, user);
-            if (profileCards.Count != ids.Length) {
-                throw new ActionNotSuccessfulException(
-                    "Error, cannot reorder profile cards as some may have been deleted");
+            if (card.Position == 0) {
+                return profileCards;
             }
 
-            for (var i = 0; i < ids.Length; i += 1) { // i je pozice v seznamu
-                var id = ids[i]; // id entity
+            // Ziskame kartu na predchozi pozici
+            var previousCard = profileCards[card.Position - 1];
+            var swap = card.Position;
+            card.Position = previousCard.Position;
+            previousCard.Position = swap;
 
-                profileCards[id].Position = i;
-            }
-
-            return await profileCardRepository.UpdateAll(profileCards);
+            await profileCardRepository.UpdateSwappedPositions(card, previousCard);
+            
+            // Nyni jeste potrebujeme zmenit pozice
+            profileCards[card.Position] = card;
+            profileCards[previousCard.Position] = previousCard;
+            
+            return profileCards;
         }
+        
+        public async Task<List<ProfileCardModel>> MoveDown(int profileCardId, ApplicationUser user) {
+            var profileCards = await profileCardRepository.GetUserProfileCardsByPosition(user);
+            var card = profileCards.FirstOrDefault(profileCard => profileCard.Id == profileCardId);
+
+            if (card is null) {
+                throw new ActionNotSuccessfulException("Error, card does not exist");
+            }
+
+            if (card.Position == profileCards.Count - 1) {
+                return profileCards;
+            }
+
+            // Ziskame kartu na predchozi pozici
+            var followingCard = profileCards[card.Position + 1];
+            var swap = card.Position;
+            card.Position = followingCard.Position;
+            followingCard.Position = swap;
+            
+
+            await profileCardRepository.UpdateSwappedPositions(card, followingCard);
+            
+            // Nyni jeste potrebujeme zmenit pozice
+            profileCards[card.Position] = card;
+            profileCards[followingCard.Position] = followingCard;
+            
+            return profileCards;
+        }
+
 
         public async Task<List<ProfileCardModel>> DeleteCard(int cardId, ApplicationUser user) {
             return await profileCardRepository.DeleteCard(cardId, user);
         }
-        
+
     }
 }

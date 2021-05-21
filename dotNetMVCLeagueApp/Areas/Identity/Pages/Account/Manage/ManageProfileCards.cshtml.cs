@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotNetMVCLeagueApp.Areas.Identity.Pages.Data;
 using dotNetMVCLeagueApp.Data.Models.User;
 using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Utils.Exceptions;
@@ -50,6 +51,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
 
             try {
                 ProfileCards = await profileCardService.DeleteCard(cardId, user);
+                return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
+                    ProfileCards = ProfileCards
+                });
             }
 
             catch (Exception ex) {
@@ -58,7 +62,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                     : "Error while deleting the card.";
             }
 
-            return Page();
+            return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
+                ProfileCards = ProfileCards,
+                StatusMessage = StatusMessage
+            });
         }
 
         public async Task<IActionResult> OnPostMoveUpAsync([FromForm] int? cardId) {
@@ -75,41 +82,57 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                 return Page();
             }
 
+            try {
+                var updatedCards = await profileCardService.MoveUp((int) cardId, user);
+                return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
+                    ProfileCards = updatedCards
+                });
+            }
+            catch(Exception ex) {
+                StatusMessage = ex is ActionNotSuccessfulException
+                    ? ex.Message
+                    : "Error while changing the position of profile cards.";
+            }
             
+            return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
+                ProfileCards = ProfileCards,
+                StatusMessage = StatusMessage
+            });
         }
 
-        public async Task<IActionResult> OnPostMoveDownAsync([FromForm] int? cardId) { }
-
-        public async Task<IActionResult> OnPostReorderCardsAsync([FromForm] int[] cardPositions) {
+        public async Task<IActionResult> OnPostMoveDownAsync([FromForm] int? cardId) {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}.'");
             }
+            
+            logger.LogDebug("Card id is" + cardId);
 
-            if (cardPositions is null) {
+            ProfileCards = user.ProfileCards?.OrderBy(card => card.Position).ToList() ?? new();
+            
+            // ReSharper disable once SimplifyLinqExpressionUseAll
+            if (cardId is null || !ProfileCards.Any(card => card.Id == cardId)) {
                 StatusMessage = "Error, card position could not be updated";
                 return Page();
             }
 
-            var isUnique = cardPositions.Length == cardPositions.Distinct().Count();
-
-            if (!isUnique) {
-                StatusMessage = "Error, invalid card identifiers.";
-                return Page();
-            }
-
             try {
-                var updatedProfileCards =
-                    await profileCardService.UpdateProfileCards(cardPositions, user);
-                ProfileCards = updatedProfileCards;
+                var updatedCards = await profileCardService.MoveDown((int) cardId, user);
+                return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
+                    ProfileCards = updatedCards
+                });
             }
-            catch (Exception ex) {
+            catch(Exception ex) {
                 StatusMessage = ex is ActionNotSuccessfulException
                     ? ex.Message
                     : "Error while changing the position of profile cards.";
             }
 
-            return Page();
+            return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
+                ProfileCards = ProfileCards,
+                StatusMessage = StatusMessage
+            });
         }
+
     }
 }

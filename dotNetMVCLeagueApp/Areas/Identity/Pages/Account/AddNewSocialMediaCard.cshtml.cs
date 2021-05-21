@@ -71,7 +71,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
             var socialMediaUrlPrefix = SocialMediaUrlPrefixes[Input.SocialPlatform];
             return !Input.UserUrl.StartsWith(socialMediaUrlPrefix, StringComparison.InvariantCultureIgnoreCase)
-                ? (false, $"Invalid url, must start with {socialMediaUrlPrefix}")
+                ? (false, $"Error, invalid url, must start with {socialMediaUrlPrefix}")
                 : (true, null);
         }
 
@@ -117,7 +117,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
             // Pokud se vse podarilo presmerujeme uzivatele na manage profile cards, ktere zobrazi
             // aktualizovany seznam karet
-            TempData["StatusMessage"] = "New text card has been sucessfully added.";
+            TempData["StatusMessage"] = "New social media card has been sucessfully added.";
             return RedirectToPage("/Account/Manage/ManageProfileCards", new {
                 area = "Identity"
             });

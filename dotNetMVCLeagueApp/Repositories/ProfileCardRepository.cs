@@ -56,6 +56,12 @@ namespace dotNetMVCLeagueApp.Repositories {
             return await GetUserProfileCardsByPosition(user);
         }
 
+        public async Task UpdateSwappedPositions(ProfileCardModel card1,
+            ProfileCardModel card2) {
+            LeagueDbContext.UpdateRange(card1, card2);
+            await LeagueDbContext.SaveChangesAsync();
+        }
+
         public async Task<ProfileCardModel> AddProfileCardToCollection(ProfileCardModel profileCard,
             List<ProfileCardModel> profileCards, bool showOnTop) {
             if (showOnTop) {

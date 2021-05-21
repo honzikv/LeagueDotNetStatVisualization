@@ -1,7 +1,9 @@
 {
     "name": "dotNetMVCLeagueApp",
     "version": "1.0.0",
-    "dependencies": {},
+    "dependencies": {
+        "jquery-ajax-unobtrusive": "^3.2.6"
+    },
     "devDependencies": {
         "grunt": "^1.4.0",
         "grunt-cli": "^1.4.2",

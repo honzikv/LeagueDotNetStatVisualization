@@ -98,6 +98,10 @@
               "target": "Package",
               "version": "[5.0.2, )"
             },
+            "Microsoft.jQuery.Unobtrusive.Ajax": {
+              "target": "Package",
+              "version": "[3.2.6, )"
+            },
             "MingweiSamuel.Camille": {
               "target": "Package",
               "version": "[2.7.3-nightly-2021-01-17-519ad84617, )"
