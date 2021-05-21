@@ -62,8 +62,9 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// Tato metoda se musi zavolat pro ziskani vysledku
         /// </summary>
         public void Process() {
-            // Ulozime data ze vsech framu
-            foreach (var matchFrame in matchTimeline.MatchFrames) {
+            // Nejprve seradime framy podle casoveho razitka, protoze se tak nemuselo stat
+            var framesOrderedByTimestamp = matchTimeline.MatchFrames.OrderBy(frame => frame.Timestamp);
+            foreach (var matchFrame in framesOrderedByTimestamp) {
                 ProcessFrame(matchFrame);
             }
 
@@ -103,7 +104,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             // Vypocteme min max rozdily s kazdym jinym ucastnikem
             foreach (var participant in
                 players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
-                ComputePlayerDetailForParticipant(participant.Id, matchTimelineDto.PlayerTimelines[participant.ParticipantId]);
+                ComputePlayerDetailForParticipant(participant.ParticipantId, matchTimelineDto.PlayerTimelines[participant.ParticipantId]);
             }
 
             // Vypocteme rozdil v 10 a 15 minute

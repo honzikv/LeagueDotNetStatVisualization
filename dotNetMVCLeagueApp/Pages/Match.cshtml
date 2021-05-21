@@ -33,6 +33,13 @@
     };
 }
 
+
+@section Scripts {
+    <script src="~/js/autohide.js"></script>
+    <script src="~/js/MatchMain.js" type="text/javascript"></script>
+
+}
+
 <div class="container">
     <a asp-page="Profile" asp-all-route-data="profileQuery"
        class="btn btn-grey rounded-corners-small float-right">
@@ -70,7 +77,7 @@
 
     <div id="MatchTimeline" class="mt-4">
         <form method="get" asp-page-handler="MatchTimeline" asp-all-route-data="@matchTimelineQueryData" data-ajax-method="get"
-              data-ajax="true" data-ajax-update="#MatchTimeline">
+              data-ajax="true" data-ajax-success="OnLoadTimeline">
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg rounded-corners-small">Show Timeline and Personal Stats</button>
             </div>
@@ -78,6 +85,7 @@
     </div>
 </div>
 
-@section Scripts {
-    <script src="~/js/autohide.js"></script>
-}
+
+<div class="chart-container" style="position: relative; height:40vh; width:80vw">
+    <canvas id="chart"></canvas>
+</div>

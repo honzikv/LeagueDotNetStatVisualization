@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
+using Newtonsoft.Json;
 
 namespace dotNetMVCLeagueApp.Pages {
     public class Match : PageModel {
@@ -90,10 +91,16 @@ namespace dotNetMVCLeagueApp.Pages {
                     "Match timeline overview constructed, returing as partial view. " +
                     $"Timeline was null = {MatchTimelineOverview is null}");
 
-                return Partial("Partials/Match/_MatchTimelinePartial", MatchTimelineOverview);
+                var serializedMatchTimelineOverview = JsonConvert.SerializeObject(MatchTimelineOverview,
+                    new JsonSerializerSettings {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                logger.LogDebug(serializedMatchTimelineOverview);
+                return Content(serializedMatchTimelineOverview, "application/json");
             }
             catch (Exception ex) {
-                return Partial("Partials/Match/_MatchTimelinePartial", new MatchTimelineOverviewDto {
+                logger.LogCritical(ex.Message);
+                return new JsonResult(new {
                     StatusMessage = "Could not load match timeline"
                 });
             }

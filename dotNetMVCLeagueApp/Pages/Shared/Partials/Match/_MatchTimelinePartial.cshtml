@@ -1,15 +1,11 @@
-﻿@model dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline.MatchTimelineOverviewDto
+﻿@using Newtonsoft.Json
+@model dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline.MatchTimelineOverviewDto
 
 @{
     var timeline = Model.MatchTimeline;
-}
-
-@section Scripts {
-    <script src="~/js/MatchTimelinePlayerGraph.js" type="text/javascript">
     
-    </script>
 }
 
-<div class="container">
-    <canvas id="playerGraph"></canvas>
-</div>
+
+@JsonConvert.SerializeObject(Model.MatchTimeline)
+
