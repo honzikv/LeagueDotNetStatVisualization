@@ -6,7 +6,6 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
     /// Data, ktera muze uzivatel hledat - Name a Server jsou povinna
     /// </summary>
     public class ProfileQueryDto {
-        
         /// <summary>
         /// Jmeno uzivatele na serveru, napr. "Renekton Gaming"
         /// </summary>
@@ -35,6 +34,11 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
         /// </summary>
         [Range(0, ServerConstants.GamesLimit, ErrorMessage = "Invalid page offset, must be at least 0 at max 200")]
         public int Offset { get; set; }
-        
+
+        public override string ToString() {
+            return
+                $"{nameof(Name)}: {Name}, {nameof(Server)}: {Server}, {nameof(Filter)}: {Filter}, " +
+                $"{nameof(PageSize)}: {PageSize}, {nameof(Offset)}: {Offset}";
+        }
     }
 }

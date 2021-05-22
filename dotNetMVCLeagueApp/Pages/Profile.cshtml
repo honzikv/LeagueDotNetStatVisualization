@@ -41,14 +41,16 @@
                     <select id="filter" class="browser-default mb-1 custom-select rounded-corners-small"
                             asp-for="QueryParams.Filter">
                         @foreach (var (filterKey, filterVal) in Model.QueueFilters) {
-                            <option name="@filterKey">@filterVal</option>
+                            <option value="@filterKey">@filterVal</option>
                         }
                     </select>
 
                     <label asp-for="QueryParams.PageSize">Games Per Page</label>
-                    <select id="pageSize" class="browser-default mb-1 custom-select rounded-corners-small" asp-for="QueryParams.PageSize">
+                    <select
+                        name="PageSize"
+                        id="pageSize" class="browser-default mb-1 custom-select rounded-corners-small">
                         @foreach (var pageSize in Model.NumberOfGames) {
-                            <option name="@pageSize" value="@pageSize">@pageSize</option>
+                            <option value="@pageSize">@pageSize</option>
                         }
                     </select>
 

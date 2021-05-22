@@ -68,7 +68,7 @@ namespace dotNetMVCLeagueApp.Pages {
         /// </summary>
         private void CheckQueryParams() {
             // Filtr nastavime bud jako vsechny hry, nebo specificky pokud je spravne
-            QueryParams.Filter = QueueFilters.ContainsKey(QueryParams.Filter ?? "")
+            QueryParams.Filter = QueueFilters.ContainsKey(QueryParams.Filter)
                 ? QueueFilters[QueryParams.Filter!]
                 : ServerConstants.AllGamesDbValue;
 
@@ -80,6 +80,7 @@ namespace dotNetMVCLeagueApp.Pages {
 
         public async Task<IActionResult> OnGetAsync() {
             logger.LogDebug("Profile.cshtml -> OnGet");
+            logger.LogDebug($"{QueryParams}");
             if (QueryParams is null || !ModelState.IsValid || !Servers.ContainsKey(QueryParams.Server.ToLower())) {
                 TempData["ErrorMessage"] = "Invalid search parameters";
                 return Redirect("/Index");
@@ -92,7 +93,6 @@ namespace dotNetMVCLeagueApp.Pages {
 
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
-                logger.LogDebug($"{QueryParams.Filter}");
                 List<MatchModel> matchHistory;
                 if (QueryParams.Filter == ServerConstants.AllGamesDbValue
                     && QueryParams.PageSize == ServerConstants.DefaultPageSize

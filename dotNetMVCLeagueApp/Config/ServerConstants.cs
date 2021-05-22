@@ -46,7 +46,7 @@ namespace dotNetMVCLeagueApp.Config {
         public const string RankedSolo = "RANKED_SOLO_5x5";
 
         public const string AllGamesDbValue = "All Games";
-        public const string RankedSoloDbValue = "Solo Ranked";
+        public const string RankedSoloDbValue = "Solo ranked";
         public const string RankedFlexDbValue = "Flex pick";
         public const string AllGamesText = "All Games";
         public const string RankedSoloText = "Ranked Solo";
