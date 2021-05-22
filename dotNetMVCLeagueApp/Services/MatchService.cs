@@ -87,7 +87,7 @@ namespace dotNetMVCLeagueApp.Services {
             // potrebujeme zavolat api az 4x abychom ziskali vsechny hry.
             var toDate = DateTime.Now; // Datum DO ktereho hledame - v riot api jako endTime
             var maxFromDate = toDate.Subtract(riotApiUpdateConfig.MaxMatchAgeDays);
-            var fromDate = toDate.SubtractWeek();
+            var fromDate = toDate.SubtractWeek(); // datum OD ktereho hledame
             var toSkip = offset; // pocet prvku, ktere preskocime
 
             // maximalni index, ktery ma smysl hledat
@@ -147,19 +147,22 @@ namespace dotNetMVCLeagueApp.Services {
 
                 var remainingGames = pageSize - matchReferences.Count;
                 var gameCount = matchHistory.Matches.Length;
+                logger.LogDebug($"Games remaining: {remainingGames}, Games this week: {gameCount}, Games to skip: {toSkip}");
                 if (gameCount > toSkip && remainingGames > 0) {
                     var pageSizeIdx = toSkip + remainingGames; // index pokud k fromIdx pridame zbyvajici pocet her
-
                     // Index, do ktereho prvky pridavame
-                    var toIdx = pageSizeIdx <= gameCount - 1 ? pageSizeIdx : gameCount - 1;
+                    var toIdx = pageSizeIdx <= gameCount ? pageSizeIdx - 1 : gameCount - 1;
                     for (var i = toSkip; i <= toIdx; i += 1) {
                         matchReferences.Add(matchHistory.Matches[i]);
                     }
+
+                    toSkip = 0;
                 }
                 else {
                     toSkip -= gameCount;
                 }
             }
+            logger.LogDebug($"Games to skip: {toSkip}");
 
             return toSkip;
         }

@@ -1,4 +1,5 @@
 ﻿@page
+@using dotNetMVCLeagueApp.Config
 @model dotNetMVCLeagueApp.Pages.Profile
 
 @{
@@ -58,6 +59,46 @@
                         Submit
                     </button>
                 </form>
+            </div>
+
+            <div id="PageButtons">
+                @{
+                    // Toto se stane pouze tedhy pokud budeme umyslne upravovat query string
+                    var offsetNextPage = Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit ?
+                        Model.QueryParams.Offset + Model.QueryParams.PageSize : ServerConstants.GamesLimit - Model.QueryParams.PageSize;
+
+                    var paramsNextPage = new Dictionary<string, string> {
+                        {"name", Model.QueryParams.Name},
+                        {"server", Model.QueryParams.Server},
+                        {"pageSize", Model.QueryParams.PageSize.ToString()},
+                        {"filter", Model.QueryParams.Filter},
+                        {"offset", offsetNextPage.ToString()}
+                    };
+
+                    var offsetPrevPage = Model.QueryParams.Offset - Model.QueryParams.PageSize < 0 ?
+                        0 : Model.QueryParams.Offset - Model.QueryParams.PageSize;
+                    var paramsPreviousPage = new Dictionary<string, string> {
+                        {"name", Model.QueryParams.Name},
+                        {"server", Model.QueryParams.Server},
+                        {"pageSize", Model.QueryParams.PageSize.ToString()},
+                        {"filter", Model.QueryParams.Filter},
+                        {"offset", offsetPrevPage.ToString()}
+                    };
+                }
+
+                @if (Model.SummonerData.MatchHeaders.Count > 0 && Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit) {
+                    <a asp-all-route-data="paramsNextPage" class="btn btn-primary rounded-corners-small float-right">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                }
+                
+                
+                @if (Model.QueryParams.Offset - Model.QueryParams.PageSize >= 0) {
+                    <a asp-all-route-data="paramsPreviousPage" class="btn btn-primary rounded-corners-small float-right">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                }
+
             </div>
         </div>
 

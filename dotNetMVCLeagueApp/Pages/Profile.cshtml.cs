@@ -69,7 +69,7 @@ namespace dotNetMVCLeagueApp.Pages {
         private void CheckQueryParams() {
             // Filtr nastavime bud jako vsechny hry, nebo specificky pokud je spravne
             QueryParams.Filter = QueueFilters.ContainsKey(QueryParams.Filter)
-                ? QueueFilters[QueryParams.Filter!]
+                ? QueryParams.Filter
                 : ServerConstants.AllGamesDbValue;
 
             // Pocet her je bud vychozich 10, nebo specificky pokud je spravne
@@ -94,7 +94,8 @@ namespace dotNetMVCLeagueApp.Pages {
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
                 List<MatchModel> matchHistory;
-                if (QueryParams.Filter == ServerConstants.AllGamesDbValue
+                var filterDbValue = QueueFilters[QueryParams.Filter];
+                if (filterDbValue == ServerConstants.AllGamesDbValue
                     && QueryParams.PageSize == ServerConstants.DefaultPageSize
                     && QueryParams.Offset == 0) {
                     matchHistory = matchService.GetFrontPage(summoner);
@@ -102,7 +103,7 @@ namespace dotNetMVCLeagueApp.Pages {
                 else {
                     var queues = QueryParams.Filter == ServerConstants.AllGamesDbValue
                         ? ServerConstants.RelevantQueues
-                        : new[] {ServerConstants.GetQueueId(QueryParams.Filter)};
+                        : new[] {ServerConstants.GetQueueId(filterDbValue)};
                     matchHistory = await matchService.GetMatchHistory(summoner, QueryParams.Offset,
                         QueryParams.PageSize, queues);
                 }

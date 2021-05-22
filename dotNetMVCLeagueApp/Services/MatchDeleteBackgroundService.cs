@@ -16,10 +16,26 @@ namespace dotNetMVCLeagueApp.Services {
     /// Sluzba v pozadi, ktera maze hry starsi jeden mesic
     /// </summary>
     public class MatchDeleteBackgroundService : IHostedService, IDisposable {
+        /// <summary>
+        /// Pro ziskani zavislosti
+        /// </summary>
         private readonly IServiceScopeFactory scopeFactory;
+        
         private readonly ILogger<MatchDeleteBackgroundService> logger;
+        
+        /// <summary>
+        /// Doba opakovani projizdeni databaze a mazani zaznamu
+        /// </summary>
         private readonly TimeSpan period;
+        
+        /// <summary>
+        /// Config objekt s informacemi o tom, co se ma mazat
+        /// </summary>
         private readonly RiotApiUpdateConfig riotApiUpdateConfig;
+        
+        /// <summary>
+        /// Vlakno pro mazani
+        /// </summary>
         private Timer timer;
 
         public MatchDeleteBackgroundService(IServiceScopeFactory scopeFactory,
@@ -41,10 +57,15 @@ namespace dotNetMVCLeagueApp.Services {
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Funkce, ktera se periodicky provadi
+        /// </summary>
+        /// <param name="state"></param>
         private void Work(object state) {
             logger.LogInformation("MatchDeleteBackground service is starting work");
             using var scope = scopeFactory.CreateScope();
             try {
+                // Ziskame novy repozitar pro zapasy
                 var matchRepository = new MatchRepository(scope.ServiceProvider.GetRequiredService<LeagueDbContext>());
                 var deletedGames =
                     matchRepository.DeleteOldMatches(DateTime.Now.Subtract(riotApiUpdateConfig.MaxMatchAgeDays))
