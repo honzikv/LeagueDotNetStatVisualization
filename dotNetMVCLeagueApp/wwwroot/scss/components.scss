@@ -57,7 +57,7 @@
     color: $color-win;
 }
 
-$color-win-light: darken($color-win, 20%);
+$color-win-light: darken($color-win, 30%);
 $color-loss-light: darken($color-loss, 10%);
 
 .color-win-light {
@@ -74,6 +74,10 @@ $color-loss-light: darken($color-loss, 10%);
 
 .color-red-side {
     color: $color-red-side;
+}
+
+.color-remake-light {
+    color: $color-primary-grey;
 }
 
 .progress-bar-blueside {

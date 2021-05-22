@@ -1,9 +1,9 @@
 ﻿@model dotNetMVCLeagueApp.Pages.Data.Profile.QueueInfoDto
 
-<div class="rounded-corners-small card-dark mt-2">
-    <div class="card-body card-dark-text">
+<div class="rounded-corners-small card-default-light mt-2">
+    <div class="card-body">
 
-        <div class="row d-flex justify-content-around no-gutters">
+        <div class="row d-flex justify-content-center align-items-center no-gutters">
             <div class="col-auto align-self-center justify-content-center">
                 <div class="d-flex justify-content-center align-content-center">
                     <img alt="N/A"
@@ -14,12 +14,12 @@
                 
             </div>
 
-            <div class="col-auto align-self-center align-content-center">
+            <div class="col-auto p-1 align-self-center align-content-center">
                 <p class="no-spacing text-center font-weight-bold">@Model.Tier @Model.Rank</p>
                                 <p class="no-spacing text-center">@Model.Name</p>
                 <p class="no-spacing text-center">
-                    <span class="color-win">@(Model.Wins + "W") </span>:
-                    <span class="color-loss">@(Model.Losses + "L")</span>
+                    <span class="color-win-light">@(Model.Wins + "W") </span>:
+                    <span class="color-loss-light">@(Model.Losses + "L")</span>
                 </p>
                 <p class="no-spacing text-center ">@Model.Winrate.ToString("N1")% WR</p>
             </div>

@@ -151,10 +151,18 @@ function Populate(playerDetailDto, propertyName, type, property) {
         }
         let timeValue = playerDetailDto[propertyName][participantId];
         let value = timeValue.Value;
-        value = value > 0 ? `+${value}` : value;
         let time = timeValue.Time;
-
-        $(`#participant-${participantId}-${type}-${property}`).text(value);
+        let propertyTextField = $(`#participant-${participantId}-${type}-${property}`);
+        
+        if (value > 0) {
+            propertyTextField.addClass("color-win-light");
+            value = value > 0 ? `+${value}` : value;
+        }
+        else {
+            propertyTextField.addClass("color-loss-light");
+        }
+        
+        propertyTextField.text(value);
         $(`#participant-${participantId}-${type}-${property}-time`).text("at " + time);
 
     }
@@ -167,8 +175,18 @@ function PopulateAtTime(playerDetailDto, propertyName, type, property) {
     for (let participantId in playerDetailDto[propertyName]) {
         if (playerDetailDto[propertyName].hasOwnProperty(participantId)) {
             let value = playerDetailDto[propertyName][participantId];
-            value = value > 0 ? `+${value}` : value;
-            $(`#participant-${participantId}-${type}-${property}`).text(value);
+            let propertyTextField = $(`#participant-${participantId}-${type}-${property}`);
+
+            if (value > 0) {
+                propertyTextField.addClass("color-win-light");
+                value = value > 0 ? `+${value}` : value;
+            }
+            else {
+                propertyTextField.addClass("color-loss-light");
+            }
+
+            propertyTextField.text(value);
+            
         }
     }
 }

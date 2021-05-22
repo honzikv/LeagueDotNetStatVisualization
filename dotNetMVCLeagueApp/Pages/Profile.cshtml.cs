@@ -48,12 +48,14 @@ namespace dotNetMVCLeagueApp.Pages {
         /// <summary>
         /// Parametry z GET requestu
         /// </summary>
-        [BindProperty(SupportsGet = true)] public ProfileQueryDto QueryParams { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public ProfileQueryDto QueryParams { get; set; }
 
         /// <summary>
         /// Chybova zprava - mapuje se z TempData
         /// </summary>
-        [TempData] public string ErrorMessage { get; set; }
+        [TempData]
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// Data daneho summonera
@@ -90,7 +92,7 @@ namespace dotNetMVCLeagueApp.Pages {
 
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
-
+                logger.LogDebug($"{QueryParams.Filter}");
                 List<MatchModel> matchHistory;
                 if (QueryParams.Filter == ServerConstants.AllGamesDbValue
                     && QueryParams.PageSize == ServerConstants.DefaultPageSize
@@ -114,7 +116,6 @@ namespace dotNetMVCLeagueApp.Pages {
                     return Redirect("/Index");
                 }
 
-
                 logger.LogCritical(ex.Message);
                 TempData["ErrorMessage"] = "Summoner does not exist";
                 return Redirect("/Index");
@@ -126,7 +127,7 @@ namespace dotNetMVCLeagueApp.Pages {
             var matchHeaders = summonerProfileStatsService.GetMatchInfoHeaderList(summoner, matchHistory);
             var matchListOverview = summonerProfileStatsService.GetMatchListOverview(summoner, matchHistory);
             var summonerProfileDto = summonerProfileStatsService.GetSummonerProfileDto(summoner);
-            return new SummonerOverviewDto(summonerProfileDto, QueryParams, matchListOverview,
+            return new SummonerOverviewDto(summonerProfileDto, matchListOverview,
                 matchHeaders);
         }
 

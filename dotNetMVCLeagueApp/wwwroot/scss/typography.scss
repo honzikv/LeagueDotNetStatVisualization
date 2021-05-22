@@ -45,7 +45,6 @@
 }
 
 .summoner-name-header {
-    @extend .text-white-color;
     font-size: 26px;
     font-weight: bold;
 }
@@ -77,4 +76,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.stats-text {
+    font-size: 18px;
 }

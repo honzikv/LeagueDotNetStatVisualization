@@ -28,24 +28,35 @@
     </div>
 
     <div class="col-lg-auto col-xs-12 order-xs-2 order-lg-1">
+        <div id="pageFilter" class="mb-4">
+            <button data-toggle="collapse" data-target="#filterForm" class="btn btn-primary rounded-corners-small">
+                <i class="fas fa-filter"></i> Filters
+            </button>
 
-        <div id="pageFilter">
-            <form method="get">
-                <label asp-for="QueryParams.Filter">Type of Queue</label>
-                <select class="browser-default mb-1 custom-select rounded-corners-small"
-                        asp-for="QueryParams.Filter">
-                    @foreach (var (filterKey, filterVal) in Model.QueueFilters) {
-                        <option name="@filterKey">@filterVal</option>
-                    }
-                </select>
+            <div id="filterForm" class="collapse">
+                <form method="get">
+                    <input type="hidden" id="name" asp-for="QueryParams.Name" value="@Model.QueryParams.Name">
+                    <input type="hidden" id="server" asp-for="QueryParams.Server" value="@Model.QueryParams.Server">
+                    <label asp-for="QueryParams.Filter">Type of Queue</label>
+                    <select id="filter" class="browser-default mb-1 custom-select rounded-corners-small"
+                            asp-for="QueryParams.Filter">
+                        @foreach (var (filterKey, filterVal) in Model.QueueFilters) {
+                            <option name="@filterKey">@filterVal</option>
+                        }
+                    </select>
 
-                <label asp-for="QueryParams.PageSize">Games Per Page</label>
-                @foreach (var pageSize in Model.NumberOfGames) {
-                    <div class="form-check form-check-inline">
-                        <input type="radio" asp-for="QueryParams.PageSize" value="@pageSize"/>
-                    </div>
-                }
-            </form>
+                    <label asp-for="QueryParams.PageSize">Games Per Page</label>
+                    <select id="pageSize" class="browser-default mb-1 custom-select rounded-corners-small" asp-for="QueryParams.PageSize">
+                        @foreach (var pageSize in Model.NumberOfGames) {
+                            <option name="@pageSize" value="@pageSize">@pageSize</option>
+                        }
+                    </select>
+
+                    <button type="submit" class="btn btn-primary rounded-corners-small float-right">
+                        Submit
+                    </button>
+                </form>
+            </div>
         </div>
 
         <div id="matchListPartial">
@@ -57,7 +68,15 @@
                     else {
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-6">
-                                <p class="no-spacing">The account either was not updated or there are no records for the summoner. Try updating the profile</p>
+                                @if (Model.QueryParams.Offset > 0) {
+                                    <p class="no-spacing">
+                                        No more games for the account in the last month.
+                                        Try previous pages or without queue filters.
+                                    </p>
+                                }
+                                else {
+                                    <p class="no-spacing">No Games for the account in the last month or it has not yet been updated.</p>
+                                }
                             </div>
                         </div>
                     }

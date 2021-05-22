@@ -4,8 +4,10 @@
 @using Newtonsoft.Json
 @model dotNetMVCLeagueApp.Pages.Match
 
+
 @{
     Layout = "Shared/_Layout";
+    ViewData["Title"] = Model.QueryParams.SummonerName + " Game";
 
     var profileQuery = new Dictionary<string, string> {
         {"name", Model.QueryParams.SummonerName},

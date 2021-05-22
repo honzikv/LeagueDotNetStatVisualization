@@ -33,7 +33,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
         /// <summary>
         /// Offset - kolik her preskocime 
         /// </summary>
-        [Range(0, ServerConstants.GamesLimit, ErrorMessage = "Invalid page offset, must be at least 0 at maximum of 200")]
+        [Range(0, ServerConstants.GamesLimit, ErrorMessage = "Invalid page offset, must be at least 0 at max 200")]
         public int Offset { get; set; }
         
     }

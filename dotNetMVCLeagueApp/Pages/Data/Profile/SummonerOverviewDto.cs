@@ -10,7 +10,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
 
         public MatchListOverviewDto MatchListOverview { get; }
 
-        public SummonerOverviewDto(SummonerProfileDto summoner, ProfileQueryDto profileQueryDto,
+        public SummonerOverviewDto(SummonerProfileDto summoner,
             MatchListOverviewDto matchListOverview, List<MatchHeaderDto> matchHeaders
         ) {
             MatchHeaders = matchHeaders;
