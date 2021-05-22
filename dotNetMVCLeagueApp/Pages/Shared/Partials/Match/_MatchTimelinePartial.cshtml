@@ -1,6 +1,4 @@
-﻿@using Newtonsoft.Json
-@using dotNetMVCLeagueApp.Config
-@using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline
+﻿@using dotNetMVCLeagueApp.Config
 @model dotNetMVCLeagueApp.Pages.Match
 
 @{
@@ -70,7 +68,7 @@
 
         <div class="tab-content" id="pills-tabContent">
             @* <div class="tab-pane fade show active" id="pills-gold-over-time" role="tabpanel"  *@
-            <div class="tab-pane fade show-active" id="pills-gold-over-time" role="tabpanel"
+            <div class="tab-pane fade show active" id="pills-gold-over-time" role="tabpanel"
                  aria-labelledby="pills-gold-over-time-tab">
                 @await Html.PartialAsync("Shared/Partials/Match/_MatchChartPartial", ServerConstants.GoldOverTimeChartId)
             </div>
