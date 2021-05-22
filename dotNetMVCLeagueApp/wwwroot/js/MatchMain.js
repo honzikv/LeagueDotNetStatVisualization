@@ -4,8 +4,6 @@
  */
 function OnLoadTimeline(response) {
 
-    // Smazeme match timeline, aby uzivatel nemohl snadno na server nesmyslne posilat pozadavky vicekrat
-    $('#MatchTimeline').remove();
 
     if (typeof response.StatusMessage === 'undefined') {
         return;
@@ -24,7 +22,11 @@ function OnLoadTimeline(response) {
     // Nyni muzeme vytvorit grafy pro jednotlive zaznamy
     PopulateCharts(matchTimeline);
     PopulatePlayerDetail(playerDetail, opponentParticipantId);
-    $('.ChampionTimeline').show();
+    $('#ChampionTimeline').removeClass('invisible');
+    $('#ProfileStats').removeClass('invisible');
+    
+    // Smazeme data fetch tlacitka
+    $('.MatchTimelineDataFetch').remove();
 }
 
 /**
@@ -139,9 +141,7 @@ function PopulatePlayerDetail(playerDetailDto, opponentParticipantId) {
     
 
     // Zobrazime oponenta
-    $('#pills-participant-' + opponentParticipantId).addClass("active");
     $('#pills-participant-' + opponentParticipantId + "-tab").tab('show');
-    $('#pills-participant-' + opponentParticipantId + "-tab").attr("aria-selected", "true");
 }
 
 /**
