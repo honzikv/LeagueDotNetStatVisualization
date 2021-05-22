@@ -83,21 +83,21 @@
 
     @* <div class="invisible" id="NavigationPills"> *@
     <div class="d-flex justify-content-center mt-4">
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <ul class="nav nav-pills rounded-corners-small mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="pills-match-overview-tab" data-toggle="pill" href="#pills-match-overview" role="tab"
+                <a class="nav-link rounded-corners-small active" id="pills-match-overview-tab" data-toggle="pill" href="#pills-match-overview" role="tab"
                    aria-controls="pills-match-overview" aria-selected="true">
                     Match Table
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-timeline-tab" data-toggle="pill" href="#pills-timeline" role="tab"
+                <a class="nav-link rounded-corners-small" id="pills-timeline-tab" data-toggle="pill" href="#pills-timeline" role="tab"
                    aria-controls="pills-timeline" aria-selected="false">
                     Graphs
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-player-stats-tab" data-toggle="pill" href="#pills-player-stats" role="tab"
+                <a class="nav-link rounded-corners-small" id="pills-player-stats-tab" data-toggle="pill" href="#pills-player-stats" role="tab"
                    aria-controls="pills-player-stats" aria-selected="false">
                     Player Stats
                 </a>
@@ -116,7 +116,7 @@
 
         </div>
         <div class="tab-pane fade" id="pills-player-stats" role="tabpanel" aria-labelledby="pills-player-stats-tab">
-            
+            @await Html.PartialAsync("Partials/Match/_PlayerStatsPartial")
         </div>
     </div>
 

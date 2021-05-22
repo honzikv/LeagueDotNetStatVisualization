@@ -12,7 +12,7 @@
 }
 
 
-<div id="MatchTimeline" class="mt-4">
+<div class="mt-4 MatchTimelineDataFetch">
     <form method="get" asp-page-handler="MatchTimeline" asp-all-route-data="@matchTimelineQueryData" data-ajax-method="get"
           data-ajax="true" data-ajax-success="OnLoadTimeline">
         <div class="d-flex justify-content-center">
@@ -26,45 +26,33 @@
 
     <div class="card-default-light card-body rounded-corners-small">
         <div class="d-flex justify-content-center">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills rounded-corners-small mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="pills-gold-over-time-tab" data-toggle="pill" href="#pills-gold-over-time" role="tab"
-                       aria-controls="pills-home" aria-selected="true">
+                    <a class="nav-link rounded-corners-small active" id="pills-gold-over-time-tab" data-toggle="pill" href="#pills-gold-over-time" role="tab"
+                       aria-controls="pills-gold-over-time" aria-selected="true">
                         Gold Over Time
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-cs-over-time-tab" data-toggle="pill" href="#pills-cs-over-time" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">
+                    <a class="nav-link rounded-corners-small" id="pills-cs-over-time-tab" data-toggle="pill" href="#pills-cs-over-time" role="tab"
+                       aria-controls="pills-cs-over-time" aria-selected="false">
                         Cs Over Time
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-xp-over-time-tab" data-toggle="pill" href="#pills-xp-over-time" role="tab"
-                       aria-controls="pills-profile" aria-selected="false">
+                    <a class="nav-link rounded-corners-small" id="pills-xp-over-time-tab" data-toggle="pill" href="#pills-xp-over-time" role="tab"
+                       aria-controls="pills-xp-over-time" aria-selected="false">
                         Xp Over Time
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-level-over-time-tab" data-toggle="pill" href="#pills-level-over-time" role="tab"
+                    <a class="nav-link rounded-corners-small" id="pills-level-over-time-tab" data-toggle="pill" href="#pills-level-over-time" role="tab"
                        aria-controls="pills-level-over-time" aria-selected="false">
                         Level Over Time
                     </a>
                 </li>
             </ul>
         </div>
-
-        @{
-            var blueSidePlayers = Model.MatchOverview.Players.Where(player => player.Value.TeamId == ServerConstants.BlueSideId)
-                .Select(player => player.Value).ToList();
-
-            var redSidePlayers = Model.MatchOverview.Players.Where(player => player.Value.TeamId == ServerConstants.RedSideId)
-                .Select(player => player.Value).ToList();
-
-            // Barva pro graf
-            var participantColors = Model.ParticipantColors;
-
-        }
 
         <div class="tab-content" id="pills-tabContent">
             @* <div class="tab-pane fade show active" id="pills-gold-over-time" role="tabpanel"  *@

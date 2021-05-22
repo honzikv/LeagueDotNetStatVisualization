@@ -51,6 +51,7 @@ namespace dotNetMVCLeagueApp.Services {
                 PlayTime = match.PlayTime,
                 Teams = teams,
                 Players = players,
+                ParticipantId = participantPlayer.ParticipantId,
                 Summoner = participantPlayer.SummonerName,
                 GameDuration = TimeSpan.FromSeconds(match.GameDuration),
                 QueueType = match.QueueType

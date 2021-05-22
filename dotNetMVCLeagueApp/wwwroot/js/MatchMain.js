@@ -6,8 +6,7 @@ function OnLoadTimeline(response) {
 
     // Smazeme match timeline, aby uzivatel nemohl snadno na server nesmyslne posilat pozadavky vicekrat
     $('#MatchTimeline').remove();
-
-    // todo: vypsat error message
+    
     if (typeof response.StatusMessage === 'undefined') {
         return;
     }
@@ -24,11 +23,6 @@ function OnLoadTimeline(response) {
     PopulateCharts(matchTimeline);
     $('#ChampionTimeline').show();
 }
-
-// const XpOverTimeChartId = @ServerConstants.XpOverTimeChartId;
-// const GoldOverTimeChartId = @ServerConstants.GoldOverTimeChartId;
-// const CsOverTimeChartId = @ServerConstants.CsOverTimeChartId;
-// const LevelOverTimeChartId = @ServerConstants.LevelOverTimeChartId;
 
 /**
  *

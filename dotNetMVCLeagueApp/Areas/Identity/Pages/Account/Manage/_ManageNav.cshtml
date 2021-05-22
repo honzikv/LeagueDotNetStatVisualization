@@ -1,32 +1,32 @@
 @using dotNetMVCLeagueApp.Data.Models.User
 @inject SignInManager<ApplicationUser> signInManager
-<ul class="nav nav-pills nav-pills-blue flex-column">
+<ul class="nav nav-pills rounded-corners-small flex-column">
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile"
+        <a class="nav-link rounded-corners-small @ManageNavPages.IndexNavClass(ViewContext)" id="profile"
            asp-page="./Index">
             Profile
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email"
+        <a class="nav-link rounded-corners-small @ManageNavPages.EmailNavClass(ViewContext)" id="email"
            asp-page="./Email">
             Email
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password"
+        <a class="nav-link rounded-corners-small @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password"
            asp-page="./ChangePassword">
             Password
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.SummonerLinkNavClass(ViewContext)" id="change-summoner"
+        <a class="nav-link rounded-corners-small @ManageNavPages.SummonerLinkNavClass(ViewContext)" id="change-summoner"
            asp-page="./LinkSummoner">
             Link Summoner
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.ManageProfileCardsNavClass(ViewContext)" id="manage-profile-cards"
+        <a class="nav-link rounded-corners-small @ManageNavPages.ManageProfileCardsNavClass(ViewContext)" id="manage-profile-cards"
            asp-page="./ManageProfileCards">
             Manage Profile Cards
         </a>

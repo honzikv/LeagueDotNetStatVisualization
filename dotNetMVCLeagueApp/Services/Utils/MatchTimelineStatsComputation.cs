@@ -67,7 +67,8 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             // Nejprve seradime framy podle casoveho razitka, protoze se tak nemuselo stat
             var framesOrderedByTimestamp = matchTimeline.MatchFrames.OrderBy(frame => frame.Timestamp);
             foreach (var matchFrame in framesOrderedByTimestamp) {
-                matchTimelineDto.Intervals.Add(StringUtils.FrameIntervalToSeconds(matchTimelineDto.Intervals.Count, matchTimelineDto.FrameIntervalSeconds));
+                matchTimelineDto.Intervals.Add(StringUtils.FrameIntervalToSeconds(matchTimelineDto.Intervals.Count,
+                    matchTimelineDto.FrameIntervalSeconds));
                 ProcessFrame(matchFrame);
             }
 
@@ -103,11 +104,15 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         private void ComputePlayerDetail() {
             var player = playerDetailDto.Player;
             var playerParticipantId = player.ParticipantId;
+            
+            // Timeline hrace, pro ktereho statistiku sestavujeme
+            var playerTimeline = matchTimelineDto.PlayerTimelines[playerParticipantId];
 
             // Vypocteme min max rozdily s kazdym jinym ucastnikem
             foreach (var participant in
                 players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
-                ComputePlayerDetailForParticipant(participant.ParticipantId, matchTimelineDto.PlayerTimelines[participant.ParticipantId]);
+                ComputePlayerDetailForParticipant(participant.ParticipantId,
+                    playerTimeline);
             }
 
             // Vypocteme rozdil v 10 a 15 minute
@@ -118,8 +123,13 @@ namespace dotNetMVCLeagueApp.Services.Utils {
                 return;
             }
 
-            foreach (var participant in players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
-                ComputeDiffAt10(participant.ParticipantId, matchTimelineDto.PlayerTimelines[participant.ParticipantId], frameAt10);
+            foreach (var participant in
+                players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
+                
+                // Vypocteme data a ulozime je do PlayerDetailDto objektu
+                ComputeDiff(participant.ParticipantId, playerTimeline, frameAt10,
+                    playerDetailDto.CsDiffAt10, playerDetailDto.GoldDiffAt10, playerDetailDto.LevelDiffAt10,
+                    playerDetailDto.XpDiffAt10);
             }
 
             var frameAt15 = GetClosestFrameIndex(TimeSpan.FromMinutes(15));
@@ -127,55 +137,33 @@ namespace dotNetMVCLeagueApp.Services.Utils {
                 return;
             }
 
-            foreach (var participant in players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
-                ComputeDiffAt15(participant.ParticipantId, matchTimelineDto.PlayerTimelines[participant.ParticipantId], frameAt15);
+            foreach (var participant in
+                players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
+                
+                // Vypocteme data a ulozime je do PlayerDetailDto objektu
+                ComputeDiff(participant.ParticipantId, playerTimeline, frameAt10,
+                    playerDetailDto.CsDiffAt15, playerDetailDto.GoldDiffAt15, playerDetailDto.LevelDiffAt15,
+                    playerDetailDto.XpDiffAt15);
             }
         }
 
-        /// <summary>
-        /// Vypocte rozdily hrace, ktereho sledujeme a ostatnich
-        /// </summary>
-        /// <param name="participantId">Id hrace, se kterym porovnavame</param>
-        /// <param name="playerTimeline">Timeline hrace, pro ktereho sestavujeme statistiku</param>
-        /// <param name="frameAt10">Index framu v 10 minute</param>
-        private void ComputeDiffAt10(int participantId, PlayerTimelineDto playerTimeline, int frameAt10) {
+        private void ComputeDiff(int participantId, PlayerTimelineDto playerTimeline, int frameAtN,
+            Dictionary<int, int> csDiff, Dictionary<int, int> goldDiff, Dictionary<int, int> levelDiff,
+            Dictionary<int, int> xpDiff) {
             // Timeline hrace, vuci kteremu porovnavame
             var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
 
-            playerDetailDto.CsDiffAt10[participantId] =
-                playerTimeline.CsOverTime[frameAt10] - comparedPlayerTimeline.CsOverTime[frameAt10];
+            csDiff[participantId] =
+                playerTimeline.CsOverTime[frameAtN] - comparedPlayerTimeline.CsOverTime[frameAtN];
 
-            playerDetailDto.GoldDiffAt10[participantId] =
-                playerTimeline.GoldOverTime[frameAt10] - comparedPlayerTimeline.GoldOverTime[frameAt10];
+            goldDiff[participantId] =
+                playerTimeline.GoldOverTime[frameAtN] - comparedPlayerTimeline.GoldOverTime[frameAtN];
 
-            playerDetailDto.LevelDiffAt10[participantId] =
-                playerTimeline.LevelOverTime[frameAt10] - comparedPlayerTimeline.LevelOverTime[frameAt10];
+            levelDiff[participantId] =
+                playerTimeline.LevelOverTime[frameAtN] - comparedPlayerTimeline.LevelOverTime[frameAtN];
 
-            playerDetailDto.XpDiffAt10[participantId] =
-                playerTimeline.XpOverTime[frameAt10] - comparedPlayerTimeline.XpOverTime[frameAt10];
-        }
-
-        /// <summary>
-        /// Vypocte rozdily hrace, ktereho sledujeme a ostatnich
-        /// </summary>
-        /// <param name="participantId">Id hrace, se kterym porovnavame</param>
-        /// <param name="playerTimeline">Timeline hrace, pro ktereho sestavujeme statistiku</param>
-        /// <param name="frameAt15">Index framu v 15 minute</param>
-        private void ComputeDiffAt15(int participantId, PlayerTimelineDto playerTimeline, int frameAt15) {
-            // Timeline hrace, vuci kteremu porovnavame
-            var comparedPlayerTimeline = matchTimelineDto.PlayerTimelines[participantId];
-
-            playerDetailDto.CsDiffAt15[participantId] =
-                playerTimeline.CsOverTime[frameAt15] - comparedPlayerTimeline.CsOverTime[frameAt15];
-
-            playerDetailDto.GoldDiffAt15[participantId] =
-                playerTimeline.GoldOverTime[frameAt15] - comparedPlayerTimeline.GoldOverTime[frameAt15];
-
-            playerDetailDto.LevelDiffAt15[participantId] =
-                playerTimeline.LevelOverTime[frameAt15] - comparedPlayerTimeline.LevelOverTime[frameAt15];
-
-            playerDetailDto.XpDiffAt15[participantId] =
-                playerTimeline.XpOverTime[frameAt15] - comparedPlayerTimeline.XpOverTime[frameAt15];
+            xpDiff[participantId] =
+                playerTimeline.XpOverTime[frameAtN] - comparedPlayerTimeline.XpOverTime[frameAtN];
         }
 
         /// <summary>

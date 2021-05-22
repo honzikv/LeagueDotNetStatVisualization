@@ -1,0 +1,92 @@
+﻿@model dotNetMVCLeagueApp.Pages.Match
+
+@{
+    var matchTimelineQueryData = new Dictionary<string, string> {
+        {"gameId", Model.QueryParams.GameId.ToString()},
+        {"server", Model.QueryParams.Server},
+        {"participantId", Model.QueryParams.ParticipantId.ToString()},
+        {"summonerName", Model.QueryParams.SummonerName}
+    };
+}
+
+@functions {
+
+    void CreatePillToggle(int participantId) {
+        <text>
+            <a class="nav-link" id="pills-participant-@participantId-tab" data-toggle="pill"
+               href="#pills-participant-@participantId" aria-controls="pills-participant-@participantId"
+               aria-selected="false">
+            </a>
+        </text>
+    }
+
+    void CreatePillDiv(int participantId) {
+        <text>
+            <div class="tab-pane fade show" id="pills-participant-@participantId" role="tabpanel"
+                 aria-labelledby="pills-participant-@participantId-tab">
+                @participantId
+            </div>
+        </text>
+    }
+
+}
+
+@{
+    var player = Model.MatchOverview.Players[Model.MatchOverview.ParticipantId];
+    var participants = Model.MatchOverview.Players.Where(playerKv => playerKv.Key != Model.MatchOverview.ParticipantId)
+        .Select(playerKv => playerKv.Value)
+        .OrderBy(playerDto => playerDto.ParticipantId)
+        .ToList();
+}
+
+<div class="mt-4 MatchTimelineDataFetch">
+    <form method="get" asp-page-handler="MatchTimeline" asp-all-route-data="@matchTimelineQueryData" data-ajax-method="get"
+          data-ajax="true" data-ajax-success="OnLoadTimeline">
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg rounded-corners-small">Show Timeline and Personal Stats</button>
+        </div>
+    </form>
+</div>
+
+<div id="ProfileStats">
+    <h2 class="heading2">Player Stats</h2>
+
+    <div class="card-default-light card-body rounded-corners-small">
+        <div class="row">
+            <div class="col-3">
+                <h4 class="heading4 text-center">Comparison to</h4>
+                <ul class="nav nav-pills flex-column rounded-corners-small" role="tablist">
+                    @foreach (var participant in participants) {
+                        var participantId = participant.ParticipantId;
+                        <li class="nav-item">
+                            <a class="nav-link rounded-corners-small" id="pills-participant-@participantId-tab" data-toggle="pill"
+                               href="#pills-participant-@participantId" aria-controls="pills-participant-@participantId"
+                               aria-selected="false">
+                                <div class="d-flex no-gutters justify-content-start align-items-center">
+                                    <img alt="N/A" data-toggle="tooltip" data-placement="top" title="@participant.ChampionAsset.Name"
+                                         src="@Url.Content($"/assets/{participant.ChampionAsset.RelativeAssetPath}")"
+                                         class="champion-icon-match"/>
+                                    <p class="no-spacing ml-2 font-weight-bold text-overflow-ellipsis">@participant.SummonerName</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="col-9">
+                <!-- Tab content -->
+                <div class="tab-content" id="v-pills-tabContent">
+                    @foreach (var participantId in participants.Select(participant => participant.ParticipantId)) {
+                        <div class="tab-pane fade show" id="pills-participant-@participantId" role="tabpanel"
+                             aria-labelledby="pills-participant-@participantId-tab">
+                            @participantId
+                        </div>
+                    }
+                </div>
+                <!-- Tab content -->
+            </div>
+        </div>
+
+    </div>
+</div>

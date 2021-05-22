@@ -27,6 +27,11 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         /// Summonername hrace
         /// </summary>
         public string Summoner { get; set; }
+        
+        /// <summary>
+        /// ParticipantId hrace
+        /// </summary>
+        public int ParticipantId { get; set; }
 
         /// <summary>
         ///     Hraci ve hre - klic je participant id (1 - 10) a hodnota

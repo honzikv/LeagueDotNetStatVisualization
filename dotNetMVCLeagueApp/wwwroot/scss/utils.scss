@@ -9,15 +9,15 @@ $rounded-radius: 100%;
 }
 
 .rounded-corners-small {
-    border-radius: $small-border-radius;
+    border-radius: $small-border-radius !important;
 }
 
 .rounded-corners-medium {
-    border-radius: $medium-border-radius;
+    border-radius: $medium-border-radius !important;
 }
 
 .rounded {
-    border-radius: $rounded-radius;
+    border-radius: $rounded-radius !important;
 }
 
 .toggler-white {

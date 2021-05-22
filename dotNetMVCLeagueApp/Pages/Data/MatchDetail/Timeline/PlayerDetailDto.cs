@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using dotNetMVCLeagueApp.Data.Models.Match;
+using Newtonsoft.Json;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail {
     /// <summary>
@@ -8,8 +9,10 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail {
     ///     Klice pro vsechny slovniky jsou ParticipantId
     /// </summary>
     public class PlayerDetailDto {
+        [JsonIgnore]
         public PlayerModel Player { get; }
 
+        [JsonIgnore]
         public PlayerModel LaneOpponentParticipantId { get; }
 
         public PlayerDetailDto(PlayerModel player, PlayerModel laneOpponent, IEnumerable<PlayerModel> opponents) {
