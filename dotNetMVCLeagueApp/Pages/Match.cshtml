@@ -1,6 +1,7 @@
 ﻿@page
 @using dotNetMVCLeagueApp.Config
 @using dotNetMVCLeagueApp.Utils
+@using Newtonsoft.Json
 @model dotNetMVCLeagueApp.Pages.Match
 
 @{
@@ -29,7 +30,23 @@
 
 
 @section Scripts {
-    <script src="~/js/autohide.js"></script>
+    <script src="~/js/autohide.js" type="text/javascript"></script>
+    
+    @* mohli bychom data predat i nejakym zpusobem v jsonu, ale toto je pro pouziti snazsi. Tyto promenne
+    bude mozne referencovat v MatchMain.js *@
+    <script type="text/javascript">
+        const BackgroundColors = [];
+        
+        @foreach (var backgroundColor in Model.ParticipantColors) {
+            @:BackgroundColors.push("@backgroundColor");
+        }
+        
+        const XpOverTimeChartId = "@ServerConstants.XpOverTimeChartId";
+        const GoldOverTimeChartId = "@ServerConstants.GoldOverTimeChartId";
+        const CsOverTimeChartId = "@ServerConstants.CsOverTimeChartId";
+        const LevelOverTimeChartId = "@ServerConstants.LevelOverTimeChartId";
+    </script>
+    
     <script src="~/js/MatchMain.js" type="text/javascript"></script>
 
 }

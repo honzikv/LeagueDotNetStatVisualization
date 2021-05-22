@@ -65,6 +65,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             // Nejprve seradime framy podle casoveho razitka, protoze se tak nemuselo stat
             var framesOrderedByTimestamp = matchTimeline.MatchFrames.OrderBy(frame => frame.Timestamp);
             foreach (var matchFrame in framesOrderedByTimestamp) {
+                matchTimelineDto.Intervals.Add(StringUtils.FrameIntervalToSeconds(matchTimelineDto.Intervals.Count, matchTimelineDto.FrameIntervalSeconds));
                 ProcessFrame(matchFrame);
             }
 

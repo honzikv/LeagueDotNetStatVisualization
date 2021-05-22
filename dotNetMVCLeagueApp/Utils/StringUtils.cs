@@ -2,8 +2,7 @@
 
 namespace dotNetMVCLeagueApp.Utils {
     public static class StringUtils {
-
-        public static string GetGameDuration(TimeSpan duration) => 
+        public static string GetGameDuration(TimeSpan duration) =>
             duration.Hours == 0 ? $"{duration.Minutes:0}:{duration.Seconds:00}" : duration.ToString();
 
         /// <summary>
@@ -15,11 +14,20 @@ namespace dotNetMVCLeagueApp.Utils {
             if (duration.Days > 0) {
                 return $"{duration.Days} Day(s) Ago";
             }
+
             if (duration.Hours > 0) {
                 return $"{duration.TotalHours:0} Hr(s) Ago";
             }
 
             return duration.Minutes > 0 ? $"{duration.Minutes} Mins ago" : "Just now";
+        }
+
+        public static string FrameIntervalToSeconds(int framesPassed, TimeSpan frameIntervalSeconds) {
+            // Api me pro vsechny pozadavky vratilo frame time 1 minutu, takze zde budeme vytvaret string,
+            // ktery reprezentuje minuty
+
+            var minutes = (int) frameIntervalSeconds.TotalMinutes * framesPassed;
+            return $"{minutes:00}:00";
         }
     }
 }

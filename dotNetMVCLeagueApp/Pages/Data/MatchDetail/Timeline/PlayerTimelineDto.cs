@@ -3,7 +3,10 @@ using dotNetMVCLeagueApp.Data.Models.Match;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     /// <summary>
-    ///     Obsahuje vybrane timeline pro jednoho hrace
+    ///     Obsahuje vybrane timeline pro jednoho hrace.
+    /// Pozn. promenne obsahujici data jako XpOverTime by se za zadnych okolnosti nemeli prejmenovavat
+    /// pokud se take neprejmenuji konstanty v ServerConstants (ServerConstants.XpOverTimeChartId apod.),
+    /// protoze se data serializuji do JSONu, ktery k nim pristupuje podle jejich jmena
     /// </summary>
     public class PlayerTimelineDto {
         public PlayerTimelineDto(PlayerModel player) {

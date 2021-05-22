@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
@@ -8,6 +9,8 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
         public Dictionary<int, PlayerTimelineDto> PlayerTimelines { get; } = new();
         
         public List<int> ParticipantIds { get; }
+
+        public List<string> Intervals { get; } = new();
 
         /// <summary>
         ///     Jak dlouho trval jeden frame
