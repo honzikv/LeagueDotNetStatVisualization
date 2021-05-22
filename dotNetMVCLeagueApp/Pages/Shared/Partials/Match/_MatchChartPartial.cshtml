@@ -1,43 +1,7 @@
-﻿@model dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline.MatchChartDto
+﻿@model string
 
-
-<div class="row d-flex justify-content-center">
-    @foreach (var player in Model.BlueSidePlayers) {
-        <div class="col-1 justify-content-center div-clickable not-selectable">
-            <div class="d-flex justify-content-center">
-                <img data-toggle="tooltip" data-placement="top" title="@player.ChampionAsset.Name"
-                     type="image" class="champion-icon-graph-control"
-                     src="@Url.Content($"/assets/{player.ChampionAsset.RelativeAssetPath}")" alt="N/A"/>
-            </div>
-            <p class="no-spacing font-weight-bold text-center text-overflow-ellipsis not-selectable">
-                @player.SummonerName
-            </p>
-            <hr style="border: 8px solid @Model.ParticipantColors[player.ParticipantId - 1] !important;border-radius: 8px !important;"/>
-        </div>
-
-    }
-</div>
-
-<div class="row d-flex justify-content-center mt-4">
-    @foreach (var player in Model.RedSidePlayers) {
-        <div class="col-1 justify-content-center div-clickable not-selectable"
-             id="@(Model.ChartId + "-participant-" + player.ParticipantId)">
-
-            <div class="d-flex justify-content-center">
-                <img data-toggle="tooltip" data-placement="top" title="@player.ChampionAsset.Name"
-                     type="image" class="champion-icon-graph-control"
-                     src="@Url.Content($"/assets/{player.ChampionAsset.RelativeAssetPath}")" alt="N/A"/>
-            </div>
-
-            <p class="no-spacing font-weight-bold text-center text-overflow-ellipsis not-selectable">
-                @player.SummonerName
-            </p>
-            <hr style="border: 8px solid @Model.ParticipantColors[player.ParticipantId - 1] !important;border-radius: 8px !important;"/>
-        </div>
-    }
-</div>
 
 @* container pro "responsivni" canvas *@
-<div class="chart-container mb-4" style="position: relative; height:40vh;">
-    <canvas id="@Model.ChartId"></canvas>
+<div class="chart-container mb-4" style="position: relative; min-height: 200px">
+    <canvas id="@Model"></canvas>
 </div>

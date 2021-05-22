@@ -31,7 +31,7 @@
 
 @section Scripts {
     <script src="~/js/autohide.js" type="text/javascript"></script>
-    
+
     @* mohli bychom data predat i nejakym zpusobem v jsonu, ale toto je pro pouziti snazsi. Tyto promenne
     bude mozne referencovat v MatchMain.js *@
     <script type="text/javascript">
@@ -46,7 +46,7 @@
         const CsOverTimeChartId = "@ServerConstants.CsOverTimeChartId";
         const LevelOverTimeChartId = "@ServerConstants.LevelOverTimeChartId";
     </script>
-    
+
     <script src="~/js/MatchMain.js" type="text/javascript"></script>
 
 }
@@ -78,15 +78,50 @@
                 </p>
             </div>
         </div>
-
     </div>
-    @await Html.PartialAsync("Partials/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
+
+
+    @* <div class="invisible" id="NavigationPills"> *@
+    <div class="d-flex justify-content-center mt-4">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                   aria-controls="pills-home" aria-selected="true">
+                    Match Table
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                   aria-controls="pills-profile" aria-selected="false">
+                    Graphs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                   aria-controls="pills-contact" aria-selected="false">
+                    Player Stats
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="tab-content pt-2 pl-1" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            @await Html.PartialAsync("Partials/Match/_TeamOverviewPartial", Model.MatchOverview.Teams)
+            @await Html.PartialAsync("Partials/Match/_MatchPlayerTablePartial", Model.MatchOverview.Teams)
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            @await Html.PartialAsync("Partials/Match/_MatchTimelinePartial")
+
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            Content3
+        </div>
+    </div>
 
     <div class="mt-4">
-        @await Html.PartialAsync("Partials/Match/_MatchPlayerTablePartial", Model.MatchOverview.Teams)
     </div>
 
-    @await Html.PartialAsync("Partials/Match/_MatchTimelinePartial")
-    
 
 </div>

@@ -40,46 +40,51 @@
 
 }
 
-<div class="rounded-corners-small card-light card-default-light mt-3 animate__animated animate__fadeIn">
+<div>
+    <h2 class="heading2">Game Overview</h2>
 
-    <div class="card d-flex justify-content-around card-body">
+    <div class="rounded-corners-small card-body card-default-light animate__animated animate__fadeIn">
         <div class="row no-gutters">
-            <div class="col-4" id="blueSide">
-                @{ PrintTeamInfo(blueSide, "color-blue-side"); }
-            </div>
+                <div class="col-4" id="blueSide">
+                    @{ PrintTeamInfo(blueSide, "color-blue-side"); }
+                </div>
 
-            <div class="col-4">
-                <p class="text-center heading3 no-spacing">Team Gold</p>
-                <div class="progress team-overview-progress-bar">
+                <div class="col-4">
+                    <p class="text-center heading3 no-spacing">Team Gold</p>
+                    <div class="progress team-overview-progress-bar">
 
-                    <div style="width: @blueWidth" class="progress-bar progress-bar-blueside">
-                        <span class="no-spacing text-white-color">@Model.BlueSide.Gold.ToString("N0")</span>
+                        <div style="width: @blueWidth" class="progress-bar progress-bar-blueside">
+                            <span class="no-spacing text-white-color">@Model.BlueSide.Gold.ToString("N0")</span>
+                        </div>
+
+                        <div style="width: @redWidth" class="progress-bar progress-bar-redside">
+                            <span class="no-spacing text-white-color">@Model.RedSide.Gold.ToString("N0")</span>
+                        </div>
+
                     </div>
 
-                    <div style="width: @redWidth" class="progress-bar progress-bar-redside">
-                        <span class="no-spacing text-white-color">@Model.RedSide.Gold.ToString("N0")</span>
-                    </div>
+                    @if (Model.BlueSide.Gold >= Model.RedSide.Gold) {
+                        <p class="font-weight-bold no-spacing text-center">
+                            +
+                            @((Model.BlueSide.Gold - Model.RedSide.Gold).ToString("N0"))
+                            Gold Lead <span class="color-blue-side">(Blue)</span>
+                        </p>
+                    }
+                    else {
+                        <p class="font-weight-bold no-spacing text-center">
+                            +
+                            @((Model.RedSide.Gold - Model.BlueSide.Gold).ToString("N0")) Gold Lead
+                            <span class="color-red-side">(Red)</span>
+                        </p>
+                    }
 
                 </div>
-                
-                @if (Model.BlueSide.Gold >= Model.RedSide.Gold) {
-                    <p class="font-weight-bold no-spacing text-center">+ 
-                        @((Model.BlueSide.Gold - Model.RedSide.Gold).ToString("N0")) 
-                        Gold Lead <span class="color-blue-side">(Blue)</span></p>
-                }
-                else {
-                    <p class="font-weight-bold no-spacing text-center">+ 
-                        @((Model.RedSide.Gold - Model.BlueSide.Gold).ToString("N0")) Gold Lead 
-                        <span class="color-red-side">(Red)</span></p>
-                }
 
+                <div class="col-4">
+                    @{ PrintTeamInfo(redSide, "color-red-side"); }
+                </div>
             </div>
 
-            <div class="col-4">
-                @{ PrintTeamInfo(redSide, "color-red-side"); }
-            </div>
+
         </div>
-
-
     </div>
-</div>

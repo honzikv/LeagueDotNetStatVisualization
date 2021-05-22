@@ -7,8 +7,6 @@ function OnLoadTimeline(response) {
     // Smazeme match timeline, aby uzivatel nemohl snadno na server nesmyslne posilat pozadavky vicekrat
     $('#MatchTimeline').remove();
 
-    console.log(response);
-
     // todo: vypsat error message
     if (typeof response.StatusMessage === 'undefined') {
         return;
@@ -24,6 +22,7 @@ function OnLoadTimeline(response) {
 
     // Nyni muzeme vytvorit grafy pro jednotlive zaznamy
     PopulateCharts(matchTimeline);
+    $('#ChampionTimeline').show();
 }
 
 // const XpOverTimeChartId = @ServerConstants.XpOverTimeChartId;
@@ -57,31 +56,44 @@ function PopulateCharts(timeline) {
     });
 
     let labels = timeline.Intervals;
+    // Mapper mappuje defaultne na string, ktery chceme pretypovat na cislo
+    let playerParticipantId = timeline.PlayerParticipantId;
+    let opponentParticipantId = timeline.OpponentParticipantId;
 
     // Nyni musime pro kazdy chart pridat data a nastavit onclick eventy pro ikonky aby data zobrazila
     // nebo deaktivovala
-    CreateChart(xpOverTime, labels, participantToSummonerName, BackgroundColors, XpOverTimeChartId);
-    CreateChart(goldOverTime, labels, participantToSummonerName, BackgroundColors, GoldOverTimeChartId);
-    CreateChart(csOverTime, labels, participantToSummonerName, BackgroundColors, CsOverTimeChartId);
-    CreateChart(levelOverTime, labels, participantToSummonerName, BackgroundColors, LevelOverTimeChartId);
+    CreateChart(xpOverTime, labels, participantToSummonerName, BackgroundColors, XpOverTimeChartId,
+        playerParticipantId, opponentParticipantId);
+    CreateChart(goldOverTime, labels, participantToSummonerName, BackgroundColors, GoldOverTimeChartId,
+        playerParticipantId, opponentParticipantId);
+    CreateChart(csOverTime, labels, participantToSummonerName, BackgroundColors, CsOverTimeChartId,
+        playerParticipantId, opponentParticipantId);
+    CreateChart(levelOverTime, labels, participantToSummonerName, BackgroundColors, LevelOverTimeChartId,
+        playerParticipantId, opponentParticipantId);
 
 }
 
-function CreateChart(dataOverTime, labels, participantToSummonerName, backgroundColors, chartId) {
+function CreateChart(dataOverTime, labels, participantToSummonerName, backgroundColors, chartId,
+                     playerParticipantId, opponentParticipantId) {
     let datasets = []
-
+    
     // Nyni iterujeme pres slovnik (properties) s klicem participantId a hodnotou list<int>
     for (const property in dataOverTime) {
         // Pridame novy objekt s daty pro graf
         let participantId = property; // z nejakeho duvodu je key od 0 ?
         let series = dataOverTime[participantId];
+        
+        let show = Number(participantId) === playerParticipantId || Number(participantId) === opponentParticipantId;
         datasets.push({
             label: participantToSummonerName[participantId],
-            backgroundColor: backgroundColors[participantId - 1], // participantId zacina od 1
+            backgroundColor: "rgba(0, 0, 0, 0)", // bez oblasti pod krivkou
             borderColor: backgroundColors[participantId - 1],
-            data: series
+            pointBackgroundColor: backgroundColors[participantId - 1],
+            data: series,
+            hidden: !show
         });
     }
+
 
     // Ziskame kontext, id je definovano v globalni promenne
     let selector = "#" + chartId;

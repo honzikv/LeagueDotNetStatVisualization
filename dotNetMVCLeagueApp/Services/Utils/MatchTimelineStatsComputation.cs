@@ -55,6 +55,8 @@ namespace dotNetMVCLeagueApp.Services.Utils {
                 TimeUtils.ConvertFrameTimeToTimeSpan(matchTimeline.FrameInterval)
             );
             frameDuration = matchTimeline.FrameInterval;
+            matchTimelineDto.PlayerParticipantId = player.ParticipantId;
+            matchTimelineDto.OpponentParticipantId = laneOpponent.ParticipantId;
         }
 
         /// <summary>

@@ -13,6 +13,16 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
         public List<string> Intervals { get; } = new();
 
         /// <summary>
+        /// Id hrace, pro ktereho profil zobrazujeme
+        /// </summary>
+        public int PlayerParticipantId { get; set; } = 1;
+
+        /// <summary>
+        /// Id opponenta pro zobrazeni grafu
+        /// </summary>
+        public int OpponentParticipantId { get; set; } = 6;
+
+        /// <summary>
         ///     Jak dlouho trval jeden frame
         /// </summary>
         public TimeSpan FrameIntervalSeconds { get; }
