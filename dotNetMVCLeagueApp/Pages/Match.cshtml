@@ -25,12 +25,6 @@
     var player = Model.MatchOverview.Players[Model.QueryParams.ParticipantId];
     var playerChampion = player.ChampionAsset;
 
-    var matchTimelineQueryData = new Dictionary<string, string> {
-        {"gameId", Model.QueryParams.GameId.ToString()},
-        {"server", Model.QueryParams.Server},
-        {"participantId", Model.QueryParams.ParticipantId.ToString()},
-        {"summonerName", Model.QueryParams.SummonerName}
-    };
 }
 
 
@@ -75,17 +69,7 @@
         @await Html.PartialAsync("Partials/Match/_MatchPlayerTablePartial", Model.MatchOverview.Teams)
     </div>
 
-    <div id="MatchTimeline" class="mt-4">
-        <form method="get" asp-page-handler="MatchTimeline" asp-all-route-data="@matchTimelineQueryData" data-ajax-method="get"
-              data-ajax="true" data-ajax-success="OnLoadTimeline">
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary btn-lg rounded-corners-small">Show Timeline and Personal Stats</button>
-            </div>
-        </form>
-    </div>
-</div>
+    @await Html.PartialAsync("Partials/Match/_MatchTimelinePartial")
+    
 
-
-<div class="chart-container" style="position: relative; height:40vh; width:80vw">
-    <canvas id="chart"></canvas>
 </div>

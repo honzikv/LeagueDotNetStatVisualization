@@ -43,6 +43,14 @@ namespace dotNetMVCLeagueApp.Pages {
         public MatchOverviewDto MatchOverview { get; set; }
 
         public MatchTimelineOverviewDto MatchTimelineOverview { get; set; }
+        
+        /// <summary>
+        /// Barvy pro ucastniky, ziskano z https://www.carbondesignsystem.com/data-visualization/color-palettes/
+        /// </summary>
+        public readonly List<string> ParticipantColors = new() {
+            "#6929c4", "#1192e8", "#005d5d", "#9f1853", "#fa4d56", "#002d9c", "#ee538b", "#b28600",
+            "#012749", "#570408"
+        };
 
         public async Task<IActionResult> OnGetAsync() {
             if (QueryParams is null || !ModelState.IsValid || !Servers.ContainsKey(QueryParams.Server.ToLower())) {

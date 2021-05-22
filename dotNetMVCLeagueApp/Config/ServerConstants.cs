@@ -52,6 +52,11 @@ namespace dotNetMVCLeagueApp.Config {
         public const string RankedSoloText = "Ranked Solo";
         public const string RankedFlexText = "Ranked Flex";
 
+        // Id pro grafy
+        public const string XpOverTimeChartId = "XpOverTime";
+        public const string GoldOverTimeChartId = "GoldOverTime";
+        public const string CsOverTimeChartId = "CsOverTime";
+        public const string LevelOverTimeChartId = "LevelOverTime";
 
         /// <summary>
         /// Vychozi pocet her, ktery nacteme - at uz z API nebo z DB

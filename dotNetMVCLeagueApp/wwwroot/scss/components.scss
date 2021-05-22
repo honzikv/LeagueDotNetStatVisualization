@@ -202,16 +202,17 @@ $color-loss-light: darken($color-loss, 10%);
     width: 30px;
 }
 
-.gold-progress {
-    max-width: 50px;
-}
-
-.progress-bar-gold {
-    background-color: $color-orange;
+.champion-icon-graph-control {
+    max-width: 60px;
+    @extend .rounded;
 }
 
 .hr-match {
     margin: 3px;
     color: $color-primary-light-gray;
     background-color: $color-primary-light-gray;
+}
+
+.champion-timeline {
+    min-height: 25vh;
 }

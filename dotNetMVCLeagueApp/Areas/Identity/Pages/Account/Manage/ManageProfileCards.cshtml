@@ -11,8 +11,8 @@
 <p class="no-spacing">Only top three cards (green background) are shown.</p>
 
 <div class="animate__animated animate__fadeIn">
-@await Html.PartialAsync("_ProfileCardTablePartial", new ProfileCardTableDto {
-    ProfileCards = Model.ProfileCards,
-    StatusMessage = Model.StatusMessage
-})
+    @await Html.PartialAsync("_ProfileCardTablePartial", new ProfileCardTableDto {
+        ProfileCards = Model.ProfileCards,
+        StatusMessage = Model.StatusMessage
+    })
 </div>

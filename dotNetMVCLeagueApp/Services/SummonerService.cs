@@ -142,7 +142,7 @@ namespace dotNetMVCLeagueApp.Services {
             try {
                 summoner = await GetSummoner(summonerName, Region.Get(server.ToUpper()));
             }
-            catch (Exception ex) {
+            catch {
                 return new() {
                     Error = true,
                     Message = "Error, Summoner does not exist"
