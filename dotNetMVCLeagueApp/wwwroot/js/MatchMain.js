@@ -6,6 +6,8 @@ function OnLoadTimeline(response) {
     if (typeof response.StatusMessage === 'undefined') {
         return;
     }
+    
+    console.log(response);
 
     // Nyni mame k dispozici objekt MatchTimelineOverviewDto
     let matchTimeline = response.MatchTimeline;

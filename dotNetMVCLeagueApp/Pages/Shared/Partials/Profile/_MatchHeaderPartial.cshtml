@@ -14,7 +14,7 @@
 <div class="rounded-corners-small card-default-light mt-2 animate__animated animate__fadeIn">
     <div class="card-header-default">
         <div class="row d-flex ">
-            <div class="col d-flex align-items-center align-self-center">
+            <div class="col d-flex align-items-center align-self-center ">
                 @if (Model.IsRemake) {
                     <p class="header-text-game-status color-remake-light">Remake</p>
                 } else if (Model.Win) {
@@ -27,7 +27,7 @@
             </div>
             <div class="col d-flex align-items-baseline align-self-center
                              flex-row-reverse">
-                <a asp-page="/match" asp-all-route-data="@queryParams" class="btn rounded-corners-small button-light button-light-primary">Show</a>
+                <a asp-page="/match" asp-all-route-data="@queryParams" class="btn rounded-corners-small btn-grey">Show</a>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="col-auto ml-4 d-flex align-self-center">
+            <div class="col-auto justify-content-center ml-4 d-flex align-self-center">
                 <div>
                     <img alt="N/A"
                          data-toggle="tooltip" data-placement="top" title="@Model.ChampionAsset.Name"
