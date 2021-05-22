@@ -141,7 +141,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
                 players.Where(playerModel => playerModel.ParticipantId != playerParticipantId)) {
                 
                 // Vypocteme data a ulozime je do PlayerDetailDto objektu
-                ComputeDiff(participant.ParticipantId, playerTimeline, frameAt10,
+                ComputeDiff(participant.ParticipantId, playerTimeline, frameAt15,
                     playerDetailDto.CsDiffAt15, playerDetailDto.GoldDiffAt15, playerDetailDto.LevelDiffAt15,
                     playerDetailDto.XpDiffAt15);
             }

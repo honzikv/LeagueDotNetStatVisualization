@@ -1,4 +1,5 @@
 ﻿using System;
+using dotNetMVCLeagueApp.Utils;
 
 namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
     /// <summary>
@@ -10,6 +11,11 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
         /// Cas v sekundach
         /// </summary>
         public TimeSpan TimeSpan { get; }
+        
+        /// <summary>
+        /// String pro frontend
+        /// </summary>
+        public string Time { get; set; }
 
         /// <summary>
         /// Hodnota, ktera implementuje IComparable
@@ -24,6 +30,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail {
         public TimeValue(T value, TimeSpan timeSpan) {
             Value = value;
             TimeSpan = timeSpan;
+            Time = StringUtils.GetGameDuration(timeSpan);
         }
         
     }

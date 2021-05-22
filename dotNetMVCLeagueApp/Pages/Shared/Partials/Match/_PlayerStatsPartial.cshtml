@@ -52,9 +52,11 @@
     <h2 class="heading2">Player Stats</h2>
 
     <div class="card-default-light card-body rounded-corners-small">
+
         <div class="row">
-            <div class="col-3">
+            <div class="col-md-4 col-sm-7">
                 <h4 class="heading4 text-center">Comparison to</h4>
+
                 <ul class="nav nav-pills flex-column rounded-corners-small" role="tablist">
                     @foreach (var participant in participants) {
                         var participantId = participant.ParticipantId;
@@ -74,17 +76,117 @@
                 </ul>
             </div>
 
-            <div class="col-9">
-                <!-- Tab content -->
+            <div class="col-md-8 col-sm-5">
                 <div class="tab-content" id="v-pills-tabContent">
                     @foreach (var participantId in participants.Select(participant => participant.ParticipantId)) {
                         <div class="tab-pane fade show" id="pills-participant-@participantId" role="tabpanel"
                              aria-labelledby="pills-participant-@participantId-tab">
-                            @participantId
+
+                            <div class="card-player-table align-self-center rounded-corners-small card-body mb-4">
+                                <h3 class="heading3">Highs (maximum)</h3>
+                                <p class="no-spacing">
+                                    Gold:
+                                    <span id="participant-@participantId-max-gold"></span>
+                                    <span id="participant-@participantId-max-gold-time"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    CS:
+                                    <span id="participant-@participantId-max-cs"></span>
+                                    <span id="participant-@participantId-max-cs-time"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Level:
+                                    <span id="participant-@participantId-max-level"></span>
+                                    <span id="participant-@participantId-max-level-time"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Experience:
+                                    <span id="participant-@participantId-max-xp"></span>
+                                    <span id="participant-@participantId-max-xp-time"></span>
+                                </p>
+                            </div>
+
+                            <div class="card-player-table rounded-corners-small card-body mb-3">
+                                <h3 class="heading3">Lows (minimum)</h3>
+                                <p class="no-spacing">
+                                    Gold:
+                                    <span id="participant-@participantId-min-gold"></span>
+                                    <span id="participant-@participantId-min-gold-time"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    CS:
+                                    <span id="participant-@participantId-min-cs"></span>
+                                    <span id="participant-@participantId-min-cs-time"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Level:
+                                    <span id="participant-@participantId-min-level"></span>
+                                    <span id="participant-@participantId-min-level-time"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Experience:
+                                    <span id="participant-@participantId-min-xp"></span>
+                                    <span id="participant-@participantId-min-xp-time"></span>
+                                </p>
+                            </div>
+
+                            <div id="participant-@participantId-stats-at-10" 
+                                 class="card-player-table rounded-corners-small card-body mb-3 invisible">
+                                <h3 class="heading3">At 10 Minutes</h3>
+                                <p class="no-spacing">
+                                    Gold:
+                                    <span id="participant-@participantId-gold-at-10"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    CS:
+                                    <span id="participant-@participantId-cs-at-10"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Level:
+                                    <span id="participant-@participantId-level-at-10"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Experience:
+                                    <span id="participant-@participantId-xp-at-10"></span>
+                                </p>
+                            </div>
+
+                            <div id="participant-@participantId-stats-at-15" 
+                                 class="card-player-table invisible rounded-corners-small card-body mb-3">
+                                <h3 class="heading3">At 15 Minutes</h3>
+                                <p class="no-spacing">
+                                    Gold:
+                                    <span id="participant-@participantId-gold-at-15"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    CS:
+                                    <span id="participant-@participantId-cs-at-15"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Level:
+                                    <span id="participant-@participantId-level-at-15"></span>
+                                </p>
+
+                                <p class="no-spacing">
+                                    Experience:
+                                    <span id="participant-@participantId-xp-at-15"></span>
+                                </p>
+                            </div>
+
                         </div>
                     }
                 </div>
-                <!-- Tab content -->
             </div>
         </div>
 
