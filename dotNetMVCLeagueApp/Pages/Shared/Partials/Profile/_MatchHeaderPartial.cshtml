@@ -75,7 +75,7 @@
                     <p class="no-spacing ">
                         <span>@Model.Kda.ToString("N1")</span> KDA
                     </p>
-                    <div>
+                    <div class="font-weight-bold">
                         <span> @Model.Kills / </span>
                         <span class="deaths">@Model.Deaths</span>
                         <span> / @Model.Assists </span>
@@ -92,7 +92,7 @@
                 <div class="text-center">
                     <p class="no-spacing"><span class="font-weight-bold">@Model.TotalCs</span> CS</p>
                     <p class="no-spacing">@Model.CsPerMinute.ToString("N1") CS/min</p>
-                    <p class="no-spacing">@Model.Gold.ToString("D0") Gold</p>
+                    <p class="no-spacing">@Model.Gold.ToString("#,0") Gold</p>
                     <p class="no-spacing">@Model.VisionScore Vision</p>
                 </div>
 

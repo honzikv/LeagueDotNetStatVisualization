@@ -101,7 +101,7 @@ namespace dotNetMVCLeagueApp.Pages {
                     matchHistory = matchService.GetFrontPage(summoner);
                 }
                 else {
-                    var queues = QueryParams.Filter == ServerConstants.AllGamesDbValue
+                    var queues = filterDbValue == ServerConstants.AllGamesDbValue
                         ? ServerConstants.RelevantQueues
                         : new[] {ServerConstants.GetQueueId(filterDbValue)};
                     matchHistory = await matchService.GetMatchHistory(summoner, QueryParams.Offset,

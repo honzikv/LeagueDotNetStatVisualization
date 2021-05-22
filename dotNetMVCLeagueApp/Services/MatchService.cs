@@ -87,6 +87,7 @@ namespace dotNetMVCLeagueApp.Services {
             // potrebujeme zavolat api az 4x abychom ziskali vsechny hry.
             var toDate = DateTime.Now; // Datum DO ktereho hledame - v riot api jako endTime
             var maxFromDate = toDate.Subtract(riotApiUpdateConfig.MaxMatchAgeDays);
+            logger.LogDebug($"Max FROM: {maxFromDate}");
             var fromDate = toDate.SubtractWeek(); // datum OD ktereho hledame
             var toSkip = offset; // pocet prvku, ktere preskocime
 
@@ -99,18 +100,22 @@ namespace dotNetMVCLeagueApp.Services {
                 // Tzn budeme projizdet pro fromDate -> toDate a 0 - 99, 100 - 199, 200 - 299 ... dokud nedostaneme
                 // pozadovany pocet her. Nicmene pro nas limit (20 stran) je max. pocet 200
 
+                // ukoncovaci podminka
+                if (fromDate == maxFromDate) {
+                    stop = true;
+                }
+                
                 toSkip = await GetGamesFromGivenWeek(summoner, queues, maxIdx, fromDate, toDate, matchReferences,
                     toSkip, pageSize);
                 if (matchReferences.Count == pageSize) {
                     break;
                 }
+                
+                logger.LogDebug($"from: {fromDate} to: {toDate}");
 
                 toDate = fromDate;
                 var fromDateMinusWeek = fromDate.SubtractWeek();
                 fromDate = fromDateMinusWeek < maxFromDate ? maxFromDate : fromDateMinusWeek;
-                if (fromDate == maxFromDate) {
-                    stop = true;
-                }
             }
 
             var result = new List<MatchModel>();
@@ -147,7 +152,6 @@ namespace dotNetMVCLeagueApp.Services {
 
                 var remainingGames = pageSize - matchReferences.Count;
                 var gameCount = matchHistory.Matches.Length;
-                logger.LogDebug($"Games remaining: {remainingGames}, Games this week: {gameCount}, Games to skip: {toSkip}");
                 if (gameCount > toSkip && remainingGames > 0) {
                     var pageSizeIdx = toSkip + remainingGames; // index pokud k fromIdx pridame zbyvajici pocet her
                     // Index, do ktereho prvky pridavame
@@ -158,11 +162,7 @@ namespace dotNetMVCLeagueApp.Services {
 
                     toSkip = 0;
                 }
-                else {
-                    toSkip -= gameCount;
-                }
             }
-            logger.LogDebug($"Games to skip: {toSkip}");
 
             return toSkip;
         }

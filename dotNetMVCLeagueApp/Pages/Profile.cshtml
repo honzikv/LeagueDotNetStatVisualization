@@ -47,8 +47,7 @@
                     </select>
 
                     <label asp-for="QueryParams.PageSize">Games Per Page</label>
-                    <select
-                        name="PageSize"
+                    <select asp-for="QueryParams.PageSize"
                         id="pageSize" class="browser-default mb-1 custom-select rounded-corners-small">
                         @foreach (var pageSize in Model.NumberOfGames) {
                             <option value="@pageSize">@pageSize</option>
@@ -86,7 +85,7 @@
                     };
                 }
 
-                @if (Model.SummonerData.MatchHeaders.Count > 0 && Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit) {
+                @if (Model.SummonerData.MatchHeaders.Count > Model.QueryParams.PageSize - 1 && Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit) {
                     <a asp-all-route-data="paramsNextPage" class="btn btn-primary rounded-corners-small float-right">
                         <i class="fas fa-angle-right"></i>
                     </a>
@@ -127,24 +126,6 @@
             </div>
 
             <div id="pages" class="d-flex row justify-content-end mb-4 pr-4">
-                @* @if (Model.SummonerData.MatchHeaders.Count > 0) { *@
-                @*      *@
-                @*      *@
-                @*     @if (Model.QueryParams.PageNumber > 0) { *@
-                @*         <a asp-route-Name="@Model.QueryParams.Name" *@
-                @*            asp-route-Server="@Model.QueryParams.Server" *@
-                @*            asp-route-PageSize="@Model.QueryParams.PageSize" *@
-                @*            asp-route-PageNumber="@(Model.QueryParams.Offset - Model.QueryParams.PageSize)" class="btn btn-primary-blue rounded-corners-small"> *@
-                @*             <i class="fas fa-angle-left"></i> *@
-                @*         </a> *@
-                @*     } *@
-                @*     <a asp-route-Name="@Model.QueryParams.Name" *@
-                @*            asp-route-Server="@Model.QueryParams.Server" *@
-                @*            asp-route-PageSize="@Model.QueryParams.PageSize" *@
-                @*            asp-route-Offset="@(Model.QueryParams.Offset + Model.QueryParams.PageSize)" class="btn btn-primary-blue rounded-corners-small"> *@
-                @*             <i class="fas fa-angle-right"></i> *@
-                @*         </a> *@
-                @*     } *@
             </div>
 
             <div id="matches">
@@ -159,39 +140,5 @@
     </div>
 
     <div class="col-lg-3 col-xs-12 order-xs-0 order-lg-2 card-dark-text">
-        @*     <div class="sticky pr-5"> *@
-        @*         <div class="row d-flex"> *@
-        @*             <button class="btn rounded-corners-small button-dark button-dark-secondary float-right ml-auto" type="button" data-toggle="collapse" data-target="#filter" *@
-        @*                     aria-expanded="false" aria-controls="filter"> *@
-        @*                 Filter *@
-        @*             </button> *@
-        @*         </div> *@
-        @*         <div class="collapse" id="filter"> *@
-        @*             <form method="post" id="formFilter"> *@
-        @*                 <div class="row justify-content-center"> *@
-        @*                     <div class="col-auto"> *@
-        @*                         <label class="" for="numberOfGames">Number of Games</label> *@
-        @*                         <select class="browser-default custom-select mb-1 select-dark rounded-corners-small" *@
-        @*                                 name="numberOfGames" *@
-        @*                                 id="numberOfGames"> *@
-        @*                             @foreach (var numberOfGames in Model.NumberOfGames) { *@
-        @*                                 <option value="@numberOfGames">@numberOfGames</option> *@
-        @*                             } *@
-        @*                         </select> *@
-        @* *@
-        @*                         <label class="mt-1" for="queueFilter">Queue Type</label> *@
-        @*                         <select *@
-        @*                             class="browser-default custom-select mb-1 select-dark rounded-corners-small" id="queueFilter"> *@
-        @*                             @foreach (var (key, value) in Model.QueueFilters) { *@
-        @*                                 <option value="@key">@value</option> *@
-        @*                             } *@
-        @*                         </select> *@
-        @* *@
-        @*                         <button type="submit" class="btn align-self-center float-right rounded-corners-small button-dark button-dark-primary">Show</button> *@
-        @*                     </div> *@
-        @*                 </div> *@
-        @*             </form> *@
-        @*         </div> *@
-        @*     </div> *@
     </div>
 </div>
