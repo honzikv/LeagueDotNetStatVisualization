@@ -3,21 +3,18 @@
  * @param response XHR odpoved
  */
 function OnLoadTimeline(response) {
-
-
     if (typeof response.StatusMessage === 'undefined') {
         return;
     }
 
     // Nyni mame k dispozici objekt MatchTimelineOverviewDto
     let matchTimeline = response.MatchTimeline;
-    let playerDetail = response.PlayerDetail;
-    let opponentParticipantId = matchTimeline.OpponentParticipantId;
-
-    // Pokud by nahodou byl undefined vratime se, to by se ale stat nemelo.
-    if (matchTimeline === undefined) {
+    if (matchTimeline ===  undefined) {
         return;
     }
+    
+    let playerDetail = response.PlayerDetail;
+    let opponentParticipantId = matchTimeline.OpponentParticipantId;
 
     // Nyni muzeme vytvorit grafy pro jednotlive zaznamy
     PopulateCharts(matchTimeline);
@@ -145,11 +142,7 @@ function PopulatePlayerDetail(playerDetailDto, opponentParticipantId) {
 }
 
 /**
- *
- * @param playerDetailDto dto objekt
- * @param propertyName jmeno property - MaxGoldDiff, MinGoldDiff apod.
- * @param type min nebo max
- * @param property gold, xp, level ...
+ * Funkce, ktera zapise data pro MIN / MAX karty
  */
 function Populate(playerDetailDto, propertyName, type, property) {
     for (let participantId in playerDetailDto[propertyName]) {
@@ -158,6 +151,7 @@ function Populate(playerDetailDto, propertyName, type, property) {
         }
         let timeValue = playerDetailDto[propertyName][participantId];
         let value = timeValue.Value;
+        value = value > 0 ? `+${value}` : value;
         let time = timeValue.Time;
 
         $(`#participant-${participantId}-${type}-${property}`).text(value);
@@ -166,15 +160,22 @@ function Populate(playerDetailDto, propertyName, type, property) {
     }
 }
 
+/**
+ * Funkce, ktera zapise data pro "AT 10" a "AT 15" karty
+ */
 function PopulateAtTime(playerDetailDto, propertyName, type, property) {
     for (let participantId in playerDetailDto[propertyName]) {
         if (playerDetailDto[propertyName].hasOwnProperty(participantId)) {
             let value = playerDetailDto[propertyName][participantId];
+            value = value > 0 ? `+${value}` : value;
             $(`#participant-${participantId}-${type}-${property}`).text(value);
         }
     }
 }
 
+/**
+ * Odstrani "invisible" tridu pro dany div
+ */
 function ShowDiv(playerDetailDto, propertyName, property) {
     let shown = false;
     for (let participantId in playerDetailDto[propertyName]) {
