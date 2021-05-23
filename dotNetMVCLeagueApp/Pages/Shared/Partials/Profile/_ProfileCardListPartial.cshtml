@@ -9,14 +9,14 @@
                 <div class="rounded-corners-small card-default-light mt-2">
                     <div class="card-body">
                         @if (card.SocialMedia) {
-                            <a href="@card.SecondaryText" class="text-overflow-ellipsis">
+                            <a href="@card.SecondaryText" class="display-block text-truncate">
                                 @card.SecondaryText
                             </a>
-                            <h4 class="heading4 no-spacing mt-2">@card.PrimaryText</h4>
+                            <h4 class="heading4 no-spacing mt-2 display-block text-truncate">@card.PrimaryText</h4>
                         }
                         else {
-                            <h3 class="heading3">@card.PrimaryText</h3>
-                            <p class="text-overflow-ellipsis">@card.SecondaryText</p>
+                            <h3 class="heading3 display-block text-truncate">@card.PrimaryText</h3>
+                            <p class="display-block text-truncate">@card.SecondaryText</p>
                         }
                     </div>
                 </div>

@@ -23,11 +23,11 @@
 }
 
 <div class="row d-flex justify-content-around">
-    <div class="col-md-3 d-flex justify-content-center col-12" id="summonerInfoPartial">
+    <div class="col-12 col-lg-3 col-md-6 order-md-0 order-lg-0 order-lg-0 order-0 order-xl-0 d-flex justify-content-center" id="summonerInfoPartial">
         @{ await Html.RenderPartialAsync("Partials/Profile/_SummonerInfoPartial", Model.SummonerData.Summoner); }
     </div>
 
-    <div class="col-md-auto col-12">
+    <div class="col-lg-auto col-12 order-2 order-md-2 order-lg-2 order-xl-1">
         <div>
             <div class="row d-flex mb-2">
                 <div id="pageFilter" class="col-9">
@@ -139,7 +139,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 col-12 justify-content-center d-flex">
+    <div class="col-lg-3 col-12 col-md-6 order-lg-2 order-1 order-md-1 order-lg-1 order-xl-2 justify-content-center d-flex">
         @await Html.PartialAsync("Partials/Profile/_ProfileCardListPartial", Model.ProfileCards)
     </div>
 </div>
