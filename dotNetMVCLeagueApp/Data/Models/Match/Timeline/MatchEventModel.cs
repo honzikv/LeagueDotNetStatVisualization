@@ -2,7 +2,8 @@
 
 namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
     /// <summary>
-    ///     Udalost v zapase
+    ///     Udalost v zapase - toto se nakonec nepouziva nikde, nicmene to zustalo kvuli
+    /// kompatibilite
     /// </summary>
     public class MatchEventModel {
         /// <summary>

@@ -10,6 +10,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         
         public long Id { get; set; }
         
+        /// <summary>
+        /// Reference na zapas - pro cascade mazani
+        /// </summary>
         [Required]
         public virtual MatchModel Match { get; set; }
         

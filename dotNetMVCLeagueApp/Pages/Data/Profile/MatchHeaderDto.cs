@@ -28,6 +28,9 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
         /// </summary>
         public string SummonerName { get; set; }
 
+        /// <summary>
+        /// Zda-li se jedna o remake
+        /// </summary>
         public bool IsRemake { get; set; } = false;
         
         /// <summary>
@@ -140,6 +143,9 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile {
         /// </summary>
         public RuneAsset SecondaryRune { get; set; }
         
+        /// <summary>
+        /// Zlato
+        /// </summary>
         public int Gold { get; set; }
 
     }

@@ -14,6 +14,12 @@ namespace dotNetMVCLeagueApp {
     /// Druha cast tridy Startup, zde je prehledneji videt co se bude davat do dependency containeru
     /// </summary>
     public partial class Startup {
+        
+        /// <summary>
+        /// Ziskani cesty k json souboru s popisy assetu (ikony postav, predmetu ...)
+        /// </summary>
+        /// <param name="assetJsonFileName"></param>
+        /// <returns></returns>
         private string GetAssetJsonPath(string assetJsonFileName) =>
             Path.Combine(Configuration["Assets:JsonRoot"], assetJsonFileName);
 
@@ -38,7 +44,7 @@ namespace dotNetMVCLeagueApp {
             );
 
             // Repozitare
-            services.AddScoped<RiotApiRepository>(); // Komunikace s Riot Api
+            services.AddScoped<RiotApiRepository>(); // Komunikace s Riot Api (nepouziva entity framework)
             services.AddScoped<SummonerRepository>();
             services.AddScoped<MatchRepository>();
             services.AddScoped<QueueInfoRepository>();
@@ -47,7 +53,7 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<ApplicationUserRepository>();
             services.AddScoped<ProfileCardRepository>();
 
-            // Asset resolver musi byt jako singleton, protoze nechceme vytvaret objekt pro kazdy request
+            // Pridani repozitare pro cesty k assetum
             services.AddSingleton(serviceProvider => new AssetRepository(
                 serviceProvider.GetRequiredService<AssetLocationConfig>(),
                 GetAssetJsonPath(Configuration["Assets:ChampionsJson"]),
@@ -61,10 +67,10 @@ namespace dotNetMVCLeagueApp {
             services.AddScoped<SummonerService>(); // Pro info o hracich
             services.AddScoped<SummonerProfileStatsService>(); // Pro vypocty statistik
             services.AddScoped<MatchStatsService>(); // Pro statistiky pro danou hru
-            services.AddScoped<MatchService>();
-            services.AddScoped<ProfileCardService>();
-            services.AddScoped<ApplicationUserService>();
-            services.AddScoped<MatchTimelineStatsService>();
+            services.AddScoped<MatchService>(); // ziskavani her
+            services.AddScoped<ProfileCardService>(); // manipulace s kartickami na profilu
+            services.AddScoped<ApplicationUserService>(); // ziskavani  dat pro uzivatele
+            services.AddScoped<MatchTimelineStatsService>(); // ziskavani dat pro casovou osu jednotlivych her
 
             // Sluzba na pozadi, ktera kazdych N (3) minut zkontroluje DB a smaze hry, ktere uz nelze zobrazit
             // - hry, ktere jsou starsi nez M (30) dni.

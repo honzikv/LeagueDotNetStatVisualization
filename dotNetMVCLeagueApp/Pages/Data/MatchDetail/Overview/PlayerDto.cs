@@ -119,7 +119,7 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Overview {
         public double DamagePercentage { get; set; }
         
         /// <summary>
-        /// 
+        /// % cast zlata
         /// </summary>
         public double GoldPercentage { get; set; }
 

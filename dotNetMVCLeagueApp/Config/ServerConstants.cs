@@ -95,7 +95,9 @@ namespace dotNetMVCLeagueApp.Config {
         public const string RedSide = "Red side";
         public const string BlueSide = "Blue side";
         
-        
+        /// <summary>
+        /// Jmena a adresy pro socialni site
+        /// </summary>
         public static readonly Dictionary<string, string> SocialMedia = new() {
             {"Youtube", "https://www.youtube.com/"},
             {"Twitter", "https://twitter.com/"},
@@ -108,9 +110,14 @@ namespace dotNetMVCLeagueApp.Config {
 
         public static readonly List<string> SocialMediaPlatformsNames = SocialMedia.Keys.ToList();
 
-
+        /// <summary>
+        /// Maximalni pocet karet pro uzivatele
+        /// </summary>
         public const int CardLimit = 10;
-
+        
+        /// <summary>
+        /// Maximalni mozny pocet viditelnych karet
+        /// </summary>
         public const int VisibleCardLimit = 3;
 
         /// <summary>
@@ -127,7 +134,6 @@ namespace dotNetMVCLeagueApp.Config {
 
         public static int GetQueueId(string queueType) => QueueIdToQueueNames[queueType];
 
-        public const int SocialPlatformMaxStringLength = 100;
         public const int CardDescriptionMaxStringLength = 200;
         public const int UserUrlMaxStringLength = 3000;
     };

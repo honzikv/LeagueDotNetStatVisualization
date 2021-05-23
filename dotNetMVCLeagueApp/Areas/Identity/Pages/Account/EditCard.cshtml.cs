@@ -157,6 +157,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             });
         }
 
+        /// <summary>
+        /// Funkce, ktera ulozi do slovniku ValidationErrors vsechny chyby
+        /// </summary>
+        /// <param name="validationResults">Vysledek validace</param>
         private void MapValidationErrors(List<ValidationResult> validationResults) {
             foreach (var validationResult in validationResults) {
                 if (validationResult.ErrorMessage is not null) {

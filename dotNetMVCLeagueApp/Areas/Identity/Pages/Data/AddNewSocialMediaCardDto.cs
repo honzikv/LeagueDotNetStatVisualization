@@ -2,6 +2,10 @@
 using static dotNetMVCLeagueApp.Config.ServerConstants;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
+    
+    /// <summary>
+    /// Objekt s daty z formulare pro vytvoreni nove karty pro socialni sit
+    /// </summary>
     public class AddNewSocialMediaCardDto {
 
         /// <summary>

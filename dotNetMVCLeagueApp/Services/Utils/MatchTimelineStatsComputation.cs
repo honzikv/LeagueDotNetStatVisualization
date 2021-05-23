@@ -44,6 +44,13 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         /// </summary>
         private bool processed;
 
+        /// <summary>
+        /// Konstruktor pro objekt, pro ziskani vysledku se musi zavolat metoda Process()
+        /// </summary>
+        /// <param name="player">hrac, pro ktereho sestavujeme statistiku</param>
+        /// <param name="laneOpponent">oponent na lince, ktereho jsme ziskali z Riot API</param>
+        /// <param name="players">Hraci ve hre</param>
+        /// <param name="matchTimeline">Objekt s casovou osou</param>
         public MatchTimelineStatsComputation(PlayerModel player, PlayerModel laneOpponent, List<PlayerModel> players,
             MatchTimelineModel matchTimeline) {
             this.matchTimeline = matchTimeline;
@@ -78,10 +85,18 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             processed = true;
         }
 
+        /// <summary>
+        /// Getter pro vysledek
+        /// </summary>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public (PlayerDetailDto, MatchTimelineDto) GetResult => !processed
             ? throw new ActionNotSuccessfulException("Error, timeline was not processed")
             : (playerDetailDto, matchTimelineDto);
 
+        /// <summary>
+        /// Zpracovani framu v casove ose a ulozeni do prislusnych struktur
+        /// </summary>
+        /// <param name="matchFrame"></param>
         private void ProcessFrame(MatchFrameModel matchFrame) {
             foreach (var frame in matchFrame.ParticipantFrames) {
                 var participantTimeline = matchTimelineDto.PlayerTimelines[frame.ParticipantId];
@@ -145,6 +160,16 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             }
         }
 
+        /// <summary>
+        /// Vypocte rozdily mezi hracem pro ktereho statistiky ziskavame a hracem s participantId
+        /// </summary>
+        /// <param name="participantId">participantId hrace, se kterym porovnavame</param>
+        /// <param name="playerTimeline">timeline hrace, pro ktereho sestavujeme statistiku</param>
+        /// <param name="frameAtN">cislo framu</param>
+        /// <param name="csDiff">struktura pro ukladani rozdilu CS</param>
+        /// <param name="goldDiff">struktura pro ukladani rozdilu zlata</param>
+        /// <param name="levelDiff">struktura pro ukladani rozdilu urovne</param>
+        /// <param name="xpDiff">struktura pro ukladani rozdilu XP</param>
         private void ComputeDiff(int participantId, PlayerTimelineDto playerTimeline, int frameAtN,
             Dictionary<int, int> csDiff, Dictionary<int, int> goldDiff, Dictionary<int, int> levelDiff,
             Dictionary<int, int> xpDiff) {

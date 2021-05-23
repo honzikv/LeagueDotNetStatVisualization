@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
+    /// <summary>
+    /// Trida pro odhlaseni (vytvoreno scaffoldingem)
+    /// </summary>
     [AllowAnonymous]
     public class LogoutModel : PageModel {
         private readonly SignInManager<ApplicationUser> signInManager;

@@ -22,6 +22,9 @@ using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
+    /// <summary>
+    /// Trida pro registraci (vytvoreno scaffoldingem Identity)
+    /// </summary>
     [AllowAnonymous]
     public class RegisterModel : PageModel {
         private readonly SignInManager<ApplicationUser> signInManager;
@@ -41,15 +44,27 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             QueryableServers = summonerService.QueryableServers;
         }
 
+        /// <summary>
+        /// Servery, ktere je mozno vybrat
+        /// </summary>
         public Dictionary<string, string> QueryableServers { get; }
 
+        /// <summary>
+        /// Data z formulare
+        /// </summary>
         [BindProperty] public RegisterDto Input { get; set; }
 
+        /// <summary>
+        /// Navratova adresa
+        /// </summary>
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
 
+        /// <summary>
+        /// GET pro ziskani stranky
+        /// </summary>
         public async Task OnGetAsync(string returnUrl = null) {
             ReturnUrl = returnUrl;
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -67,6 +82,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 Email = Input.Email
             };
 
+            // Zkusime pripojit summonera pokud je to mozne
             try {
                 if (Input.SummonerName is not null) {
                     var region = Region.Get(Input.Server);

@@ -8,8 +8,14 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     public class MatchTimelineDto {
         public Dictionary<int, PlayerTimelineDto> PlayerTimelines { get; } = new();
         
+        /// <summary>
+        /// Id ucastniku
+        /// </summary>
         public List<int> ParticipantIds { get; }
 
+        /// <summary>
+        /// Obsahuje casy pro graf
+        /// </summary>
         public List<string> Intervals { get; } = new();
 
         /// <summary>

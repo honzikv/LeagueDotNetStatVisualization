@@ -11,9 +11,5 @@ namespace dotNetMVCLeagueApp.Pages.Data.Profile.Overview {
         public int Remakes { get; set; } = 0;
 
         public Dictionary<int, ChampionCumulativeStatsDto> ChampionCumulativeStatsDict { get; } = new();
-        
-        public int Page { get; set; }
-
-        public int PageSize { get; set; } = ServerConstants.DefaultPageSize;
     }
 }

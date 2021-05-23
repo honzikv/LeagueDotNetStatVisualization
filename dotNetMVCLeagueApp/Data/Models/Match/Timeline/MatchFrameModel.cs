@@ -14,6 +14,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         /// </summary>
         public long Timestamp { get; set; }
         
+        /// <summary>
+        /// Reference na casovou osu - pro cascade mazani v db
+        /// </summary>
         [Required]
         public virtual MatchTimelineModel MatchTimeline { get; set; }
 
@@ -22,6 +25,9 @@ namespace dotNetMVCLeagueApp.Data.Models.Match.Timeline {
         /// </summary>
         public virtual IEnumerable<MatchParticipantFrameModel> ParticipantFrames { get; set; }
 
+        /// <summary>
+        /// Reference na vsechny udalosti (nakonec nepouzito)
+        /// </summary>
         public virtual IEnumerable<MatchEventModel> MatchEvents { get; set; }
     }
 }

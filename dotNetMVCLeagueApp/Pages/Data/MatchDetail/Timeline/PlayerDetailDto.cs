@@ -9,9 +9,16 @@ namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     ///     Klice pro vsechny slovniky jsou ParticipantId
     /// </summary>
     public class PlayerDetailDto {
+        
+        /// <summary>
+        /// Ignore aby serializer nebral objekt
+        /// </summary>
         [JsonIgnore]
         public PlayerModel Player { get; }
 
+        /// <summary>
+        /// Ignore aby serializer nebral objekt
+        /// </summary>
         [JsonIgnore]
         public PlayerModel LaneOpponentParticipantId { get; }
 

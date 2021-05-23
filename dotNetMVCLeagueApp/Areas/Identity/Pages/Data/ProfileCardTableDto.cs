@@ -2,6 +2,9 @@
 using dotNetMVCLeagueApp.Data.Models.User;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
+    /// <summary>
+    /// Objekt s daty pro partial view s tabulkou pro spravu karet (_ProfileCardTablePartial)
+    /// </summary>
     public class ProfileCardTableDto {
         
         /// <summary>

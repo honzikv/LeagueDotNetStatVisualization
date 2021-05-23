@@ -29,7 +29,7 @@ namespace dotNetMVCLeagueApp.Data.Models.User {
         public int Position { get; set; }
         
         /// <summary>
-        /// Reference na uzivatele
+        /// Reference na uzivatele - pro cascade smazani
         /// </summary>
         [Required]
         public virtual ApplicationUser ApplicationUser { get; set; }

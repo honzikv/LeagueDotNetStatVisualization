@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
+    /// <summary>
+    /// Trida pro pridani nove karty se socialni siti
+    /// </summary>
     public class AddNewSocialMediaCard : PageModel {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ProfileCardService profileCardService;
@@ -21,18 +24,18 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             ProfileCardService profileCardService) {
             this.userManager = userManager;
             this.profileCardService = profileCardService;
-            SocialMediaPlatformNames = profileCardService.SocialMediaPlatformNames;
             CardLimit = profileCardService.CardLimitPerUser;
             SocialMedia = profileCardService.SocialMedia;
         }
 
         /// <summary>
-        /// Obsahuje "legalni" hodnoty pro socialni site, aby uzivatele nemohli zadat jakykoliv odkaz
+        /// Obsahuje povolene socialni site pro server
         /// </summary>
-        public readonly List<string> SocialMediaPlatformNames;
-
         public readonly Dictionary<string, string> SocialMedia;
 
+        /// <summary>
+        /// Data pro formular
+        /// </summary>
         [BindProperty] public AddNewSocialMediaCardDto Input { get; set; }
 
         /// <summary>
@@ -47,6 +50,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
 
         [TempData] public string StatusMessage { get; set; }
 
+        /// <summary>
+        /// GET pozadavek
+        /// </summary>
+        /// <returns>Vrati vyrenderovane HTML</returns>
         public async Task<IActionResult> OnGetAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
@@ -63,6 +70,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             return Page();
         }
 
+        /// <summary>
+        /// POST pozadavek pro formular
+        /// </summary>
+        /// <returns>Vrati </returns>
         public async Task<IActionResult> OnPostAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
@@ -72,6 +83,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             var profileCards = user.ProfileCards?.ToList() ?? new();
             UserProfileCards = profileCards.Count;
 
+            // Nelze vytvorit novou kartu pokud jsme prekrocili limit
             if (UserProfileCards >= CardLimit) {
                 StatusMessage = "Error, you cannot create more cards and must delete some first.";
             }
@@ -80,12 +92,14 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 return Page();
             }
 
+            // Nyni jeste potrebujeme overit, zda-li se jedna o validni socialni sit
             var operationResult = profileCardService.IsSocialNetworkValid(Input.UserUrl);
             if (operationResult.Error) {
                 StatusMessage = operationResult.Message;
                 return Page();
             }
 
+            // Vytvorime model a pridame do db
             try {
                 var profileCard = new ProfileCardModel {
                     SocialMedia = true,

@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
+    /// <summary>
+    /// Trida pro obsluhu prihlaseni (vytvoreno scaffoldingem pomoci Identity)
+    /// </summary>
     [AllowAnonymous]
     public class LoginModel : PageModel {
         private readonly UserManager<ApplicationUser> userManager;

@@ -11,17 +11,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
-    public class AddNewCard : PageModel {
+    
+    /// <summary>
+    /// Objekt pro pridani nove karty obsahujici text
+    /// </summary>
+    public class AddNewTextCard : PageModel {
         
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ProfileCardService profileCardService;
 
-        public AddNewCard(UserManager<ApplicationUser> userManager, ProfileCardService profileCardService) {
+        public AddNewTextCard(UserManager<ApplicationUser> userManager, ProfileCardService profileCardService) {
             this.userManager = userManager;
             this.profileCardService = profileCardService;
             CardLimit = profileCardService.CardLimitPerUser;
         }
 
+        /// <summary>
+        /// Data z formulare
+        /// </summary>
         [BindProperty] public AddNewTextCardDto Input { get; set; }
         
         [TempData] public string StatusMessage { get; set; }
@@ -69,6 +76,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 return Page();
             }
 
+            // Zkusime pridat kartu do databaze
             try {
                 var profileCard = new ProfileCardModel {
                     SocialMedia = false,

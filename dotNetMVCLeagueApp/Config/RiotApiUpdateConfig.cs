@@ -2,7 +2,15 @@
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 
 namespace dotNetMVCLeagueApp.Config {
+    
+    /// <summary>
+    /// Objekt, ktery obsahuje konfiguraci pro praci s Riot API
+    /// </summary>
     public class RiotApiUpdateConfig {
+        
+        /// <summary>
+        /// Minimalni doba, pro kterou se nemuze uzivatelsky profil  aktualizovat (pres tlacitko Update v Profilu)
+        /// </summary>
         public TimeSpan MinUpdateTimeSpan { get; }
         
         /// <summary>
@@ -16,12 +24,5 @@ namespace dotNetMVCLeagueApp.Config {
             MinUpdateTimeSpan = minUpdateTimeSpan;
             MaxMatchAgeDays = maxMatchAgeDays;
         }
-
-        public bool IsSummonerUpdateable(SummonerModel summoner) =>
-            DateTime.Now - summoner.LastUpdate > MinUpdateTimeSpan;
-
-
-        public TimeSpan GetNextUpdateTime(SummonerModel summoner) =>
-            (summoner.LastUpdate + MinUpdateTimeSpan - DateTime.Now).Duration();
     }
 }
