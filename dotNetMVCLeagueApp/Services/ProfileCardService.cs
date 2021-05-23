@@ -4,18 +4,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using dotNetMVCLeagueApp.Config;
+using dotNetMVCLeagueApp.Data.Models.SummonerPage;
 using dotNetMVCLeagueApp.Data.Models.User;
 using dotNetMVCLeagueApp.Repositories;
+using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 
 namespace dotNetMVCLeagueApp.Services {
     public class ProfileCardService {
         private readonly ProfileCardRepository profileCardRepository;
+        private readonly ApplicationUserRepository applicationUserRepository;
 
-        private const int CardLimitPerUser = ServerConstants.CardLimit;
+        public readonly int CardLimitPerUser = ServerConstants.CardLimit;
 
-        public ProfileCardService(ProfileCardRepository profileCardRepository) {
+        public readonly List<string> SocialMediaUrlPrefixes = ServerConstants.SocialMediaPlatformPrefixes;
+
+        public readonly List<string> SocialMediaPlatformNames = ServerConstants.SocialMediaPlatformsNames;
+
+        public readonly Dictionary<string, string> SocialMedia = ServerConstants.SocialMedia;
+
+        public ProfileCardService(ProfileCardRepository profileCardRepository,
+            ApplicationUserRepository applicationUserRepository) {
             this.profileCardRepository = profileCardRepository;
+            this.applicationUserRepository = applicationUserRepository;
         }
 
         public async Task<ProfileCardModel> Add(ProfileCardModel profileCard, bool showOnTop, ApplicationUser user) {
@@ -47,14 +58,14 @@ namespace dotNetMVCLeagueApp.Services {
             previousCard.Position = swap;
 
             await profileCardRepository.UpdateSwappedPositions(card, previousCard);
-            
+
             // Nyni jeste potrebujeme zmenit pozice
             profileCards[card.Position] = card;
             profileCards[previousCard.Position] = previousCard;
-            
+
             return profileCards;
         }
-        
+
         public async Task<List<ProfileCardModel>> MoveDown(int profileCardId, ApplicationUser user) {
             var profileCards = await profileCardRepository.GetUserProfileCardsByPosition(user);
             var card = profileCards.FirstOrDefault(profileCard => profileCard.Id == profileCardId);
@@ -72,21 +83,48 @@ namespace dotNetMVCLeagueApp.Services {
             var swap = card.Position;
             card.Position = followingCard.Position;
             followingCard.Position = swap;
-            
+
 
             await profileCardRepository.UpdateSwappedPositions(card, followingCard);
-            
+
             // Nyni jeste potrebujeme zmenit pozice
             profileCards[card.Position] = card;
             profileCards[followingCard.Position] = followingCard;
-            
+
             return profileCards;
         }
 
+        public async Task<List<ProfileCardModel>> GetProfileCardsForSummonerByPosition(SummonerModel summoner) {
+            var linkedProfile = await applicationUserRepository.GetUserForSummoner(summoner);
 
-        public async Task<List<ProfileCardModel>> DeleteCard(int cardId, ApplicationUser user) {
-            return await profileCardRepository.DeleteCard(cardId, user);
+            if (linkedProfile is null) {
+                return new();
+            }
+
+            // Seradime podle pozice a vratime
+            return linkedProfile.ProfileCards.OrderBy(card => card.Position).ToList();
         }
 
+        /// <summary>
+        /// Zkontroluje, zda-li je URL link na socialni sit validni
+        /// </summary>
+        /// <returns>
+        /// Operation result, ktery obsahuje true pokud byla operace provedena s chybou a zpravu,
+        /// jinak false bez zpravy
+        /// </returns>
+        public OperationResult<string> IsSocialNetworkValid(string userUrl) =>
+            SocialMediaUrlPrefixes.Any(media =>
+                userUrl.StartsWith(media, StringComparison.InvariantCultureIgnoreCase))
+                ? new OperationResult<string>()
+                : new(true, "Error, this URL is not supported.");
+
+        public async Task<List<ProfileCardModel>> DeleteCard(int cardId, ApplicationUser user) =>
+            await profileCardRepository.DeleteCard(cardId, user);
+
+        public async Task<ProfileCardModel> GetCard(int cardId, ApplicationUser user) =>
+            await profileCardRepository.Get(cardId, user);
+
+        public async Task UpdateCard(ProfileCardModel card) =>
+            await profileCardRepository.Update(card);
     }
 }

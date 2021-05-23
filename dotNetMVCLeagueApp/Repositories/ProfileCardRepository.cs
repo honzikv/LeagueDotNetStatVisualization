@@ -77,5 +77,9 @@ namespace dotNetMVCLeagueApp.Repositories {
             await LeagueDbContext.SaveChangesAsync();
             return profileCard;
         }
+
+        public async Task<ProfileCardModel> Get(int cardId, ApplicationUser user) => await
+            LeagueDbContext.ProfileCardModels.Where(card => card.Id == cardId && card.ApplicationUser.Id == user.Id)
+                .FirstOrDefaultAsync();
     }
 }

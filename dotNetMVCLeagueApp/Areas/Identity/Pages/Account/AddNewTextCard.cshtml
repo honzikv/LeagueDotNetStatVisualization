@@ -18,15 +18,15 @@
         @if (Model.UserProfileCards < Model.CardLimit) {
             <form method="post">
                 <div class="form-group">
-                    <label asp-for="Input.Header"></label>
-                    <input asp-for="Input.Header" class="form-control"/>
-                    <span asp-validation-for="Input.Header" class="text-danger"></span>
+                    <label asp-for="Input.PrimaryText"></label>
+                    <input asp-for="Input.PrimaryText" class="form-control rounded-corners-small"/>
+                    <span asp-validation-for="Input.PrimaryText" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Input.Text"></label>
-                    <textarea asp-for="Input.Text" class="form-control"></textarea>
-                    <span asp-validation-for="Input.Text" class="text-danger"></span>
+                    <label asp-for="Input.SecondaryText"></label>
+                    <textarea asp-for="Input.SecondaryText" class="form-control rounded-corners-small"></textarea>
+                    <span asp-validation-for="Input.SecondaryText" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

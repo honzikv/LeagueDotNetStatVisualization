@@ -19,6 +19,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
         public AddNewCard(UserManager<ApplicationUser> userManager, ProfileCardService profileCardService) {
             this.userManager = userManager;
             this.profileCardService = profileCardService;
+            CardLimit = profileCardService.CardLimitPerUser;
         }
 
         [BindProperty] public AddNewTextCardDto Input { get; set; }
@@ -33,7 +34,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
         /// <summary>
         /// Limit karet, ktere je mozne vytvorit
         /// </summary>
-        public int CardLimit = ServerConstants.CardLimit;
+        public readonly int CardLimit;
 
         public async Task<IActionResult> OnGetAsync() {
             var user = await userManager.GetUserAsync(User);
@@ -71,8 +72,8 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             try {
                 var profileCard = new ProfileCardModel {
                     SocialMedia = false,
-                    PrimaryText = Input.Header,
-                    SecondaryText = Input.Text,
+                    PrimaryText = Input.PrimaryText,
+                    SecondaryText = Input.SecondaryText,
                     ApplicationUser = user
                 };
 

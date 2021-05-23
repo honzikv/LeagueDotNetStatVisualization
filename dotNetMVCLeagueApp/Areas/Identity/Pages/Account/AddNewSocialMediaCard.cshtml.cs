@@ -21,14 +21,17 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             ProfileCardService profileCardService) {
             this.userManager = userManager;
             this.profileCardService = profileCardService;
+            SocialMediaPlatformNames = profileCardService.SocialMediaPlatformNames;
+            CardLimit = profileCardService.CardLimitPerUser;
+            SocialMedia = profileCardService.SocialMedia;
         }
 
         /// <summary>
         /// Obsahuje "legalni" hodnoty pro socialni site, aby uzivatele nemohli zadat jakykoliv odkaz
         /// </summary>
-        public readonly List<string> SocialMediaPlatformNames = ServerConstants.SocialMediaPlatformsNames;
+        public readonly List<string> SocialMediaPlatformNames;
 
-        public readonly Dictionary<string, string> SocialMediaUrlPrefixes = ServerConstants.SocialMediaPlatformPrefixes;
+        public readonly Dictionary<string, string> SocialMedia;
 
         [BindProperty] public AddNewSocialMediaCardDto Input { get; set; }
 
@@ -37,7 +40,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
         /// </summary>
         public int UserProfileCards { get; set; }
 
-        public int CardLimit = ServerConstants.CardLimit;
+        /// <summary>
+        /// Maximalni pocet karet pro uzivatele
+        /// </summary>
+        public readonly int CardLimit;
 
         [TempData] public string StatusMessage { get; set; }
 
@@ -57,24 +63,6 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             return Page();
         }
 
-        /// <summary>
-        /// Zkontroluje, zda-li je URL link na socialni sit validni
-        /// </summary>
-        /// <returns>
-        /// dvojici bool a string, kdy bool indikuje zda-li je validni a string je bud null nebo
-        /// not null pri chybe
-        /// </returns>
-        private (bool, string) IsSocialNetworkValid() {
-            if (!SocialMediaUrlPrefixes.ContainsKey(Input.SocialPlatform)) {
-                return (false, "Invalid Social platform.");
-            }
-
-            var socialMediaUrlPrefix = SocialMediaUrlPrefixes[Input.SocialPlatform];
-            return !Input.UserUrl.StartsWith(socialMediaUrlPrefix, StringComparison.InvariantCultureIgnoreCase)
-                ? (false, $"Error, invalid url, must start with {socialMediaUrlPrefix}")
-                : (true, null);
-        }
-
         public async Task<IActionResult> OnPostAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
@@ -92,9 +80,9 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                 return Page();
             }
 
-            var (isUrlValid, errorMessage) = IsSocialNetworkValid();
-            if (!isUrlValid) {
-                StatusMessage = errorMessage;
+            var operationResult = profileCardService.IsSocialNetworkValid(Input.UserUrl);
+            if (operationResult.Error) {
+                StatusMessage = operationResult.Message;
                 return Page();
             }
 

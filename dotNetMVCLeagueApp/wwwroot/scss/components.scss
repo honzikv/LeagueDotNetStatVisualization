@@ -139,3 +139,22 @@ $color-loss-light: darken($color-loss, 10%);
 .champion-timeline {
     min-height: 25vh;
 }
+
+.link-blue-side {
+    color: $color-blue-side;
+    &:hover {
+        color: darken($color-blue-side, 20%);
+    }
+}
+
+.nav-pills .nav-link.active.link-selected-grey  {
+    background-color: $color-primary-grey !important;
+    border-color: $color-primary-light-gray !important;
+}
+
+.link-red-side {
+    color: $color-red-side;
+    &:hover {
+        color: darken($color-red-side, 20%);
+    }
+}

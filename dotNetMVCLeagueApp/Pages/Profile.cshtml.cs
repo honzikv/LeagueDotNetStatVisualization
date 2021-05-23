@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Config;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.SummonerPage;
+using dotNetMVCLeagueApp.Data.Models.User;
 using dotNetMVCLeagueApp.Pages.Data.Profile;
 using dotNetMVCLeagueApp.Services;
 using dotNetMVCLeagueApp.Utils.Exceptions;
@@ -16,6 +17,7 @@ using MingweiSamuel.Camille.Util;
 namespace dotNetMVCLeagueApp.Pages {
     public class Profile : PageModel {
         private readonly SummonerService summonerService;
+        private readonly ProfileCardService profileCardService;
         private readonly SummonerProfileStatsService summonerProfileStatsService;
         private readonly MatchService matchService;
         private readonly ILogger<Profile> logger;
@@ -23,11 +25,13 @@ namespace dotNetMVCLeagueApp.Pages {
         public Profile(SummonerService summonerService,
             SummonerProfileStatsService summonerProfileStatsService,
             ILogger<Profile> logger,
-            MatchService matchService) {
+            MatchService matchService,
+            ProfileCardService profileCardService) {
             this.summonerService = summonerService;
             this.summonerProfileStatsService = summonerProfileStatsService;
             this.logger = logger;
             this.matchService = matchService;
+            this.profileCardService = profileCardService;
         }
 
         /// <summary>
@@ -63,6 +67,8 @@ namespace dotNetMVCLeagueApp.Pages {
         /// </summary>
         public SummonerOverviewDto SummonerData { get; set; }
 
+        public List<ProfileCardModel> ProfileCards { get; set; } = new();
+
         /// <summary>
         /// Zkontroluje a pripadne upravi query parametry, abychom nemuseli uzivatele presmerovavat
         /// na Index. Tyto parametry jsou pouze pro p
@@ -94,6 +100,7 @@ namespace dotNetMVCLeagueApp.Pages {
 
             try {
                 var summoner = await summonerService.GetSummoner(QueryParams.Name, server);
+                var profileCardsTask = profileCardService.GetProfileCardsForSummonerByPosition(summoner);
                 List<MatchModel> matchHistory;
                 var filterDbValue = QueueFilters[QueryParams.Filter];
                 if (filterDbValue == ServerConstants.AllGamesDbValue
@@ -109,6 +116,7 @@ namespace dotNetMVCLeagueApp.Pages {
                         QueryParams.PageSize, queues);
                 }
 
+                ProfileCards = await profileCardsTask;
                 SummonerData = GetSummonerData(summoner, matchHistory);
                 return Page();
             }

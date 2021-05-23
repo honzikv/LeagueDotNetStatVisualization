@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using Newtonsoft.Json;
 
-namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail {
+namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     /// <summary>
     ///     Data, ktera jsou spojena s hracem pro ktereho detail zobrazujeme - tzn. z jehoz stranky jsme se na detail dostali
     ///     Klice pro vsechny slovniky jsou ParticipantId

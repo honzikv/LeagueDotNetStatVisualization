@@ -2,6 +2,13 @@
 
 namespace dotNetMVCLeagueApp.Utils {
     public static class StringUtils {
+        
+        /// <summary>
+        /// Vytvori string z TimeSpan objektu, ktery reprezentuje dobu trvani hry
+        /// Pr. 120 minut se prevede na "2:00:00". 54 minut se prevede na "54:00"
+        /// </summary>
+        /// <param name="duration">Doba trvani hry</param>
+        /// <returns>formatovany string</returns>
         public static string GetGameDuration(TimeSpan duration) =>
             duration.Hours == 0 ? $"{duration.Minutes:0}:{duration.Seconds:00}" : duration.ToString();
 
@@ -23,11 +30,25 @@ namespace dotNetMVCLeagueApp.Utils {
         }
 
         public static string FrameIntervalToSeconds(int framesPassed, TimeSpan frameIntervalSeconds) {
-            // Api me pro vsechny pozadavky vratilo frame time 1 minutu, takze zde budeme vytvaret string,
-            // ktery reprezentuje minuty
-
             var minutes = (int) frameIntervalSeconds.TotalMinutes * framesPassed;
             return $"{minutes:00}:00";
+        }
+
+        /// <summary>
+        /// Zkrati retezec, pokud prekroci pozadovany pocet znaku a prida suffix
+        /// </summary>
+        /// <param name="text">text, ktery kontrolujeme</param>
+        /// <param name="chars">maximalni pocet znaku</param>
+        /// <param name="suffix">string, ktery se prida na konec (...)</param>
+        /// <returns>zkraceny string, pokud bylo potreba</returns>
+        public static string TruncateIfNecessary(string text, int chars, string suffix = "...") {
+            if (text is null) {
+                return "";
+            }
+
+            return text.Length > chars
+                ? text[..chars] + suffix
+                : text;
         }
     }
 }

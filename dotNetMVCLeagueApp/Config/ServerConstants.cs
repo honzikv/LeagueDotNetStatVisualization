@@ -94,8 +94,9 @@ namespace dotNetMVCLeagueApp.Config {
         public const int RedSideId = 200;
         public const string RedSide = "Red side";
         public const string BlueSide = "Blue side";
-
-        public static readonly Dictionary<string, string> SocialMediaPlatformPrefixes = new() {
+        
+        
+        public static readonly Dictionary<string, string> SocialMedia = new() {
             {"Youtube", "https://www.youtube.com/"},
             {"Twitter", "https://twitter.com/"},
             {"Discord", "https://discord.com/"},
@@ -103,9 +104,10 @@ namespace dotNetMVCLeagueApp.Config {
             {"Twitch", "https://www.twitch.tv/"}
         };
 
-        public static readonly List<string> SocialMediaPlatformsNames = new() {
-            "Youtube", "Twitter", "Discord", "Reddit", "Twitch"
-        };
+        public static readonly List<string> SocialMediaPlatformPrefixes = SocialMedia.Values.ToList();
+
+        public static readonly List<string> SocialMediaPlatformsNames = SocialMedia.Keys.ToList();
+
 
         public const int CardLimit = 10;
 
@@ -125,5 +127,8 @@ namespace dotNetMVCLeagueApp.Config {
 
         public static int GetQueueId(string queueType) => QueueIdToQueueNames[queueType];
 
+        public const int SocialPlatformMaxStringLength = 100;
+        public const int CardDescriptionMaxStringLength = 200;
+        public const int UserUrlMaxStringLength = 3000;
     };
 }

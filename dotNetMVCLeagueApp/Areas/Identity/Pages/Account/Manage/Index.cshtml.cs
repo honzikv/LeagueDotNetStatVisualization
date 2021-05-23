@@ -20,8 +20,6 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-        
-
 
         [TempData] public string StatusMessage { get; set; }
 

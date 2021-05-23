@@ -23,16 +23,58 @@
 }
 
 <div class="row d-flex justify-content-around">
-
-    <div class="col-md-3 col-12 order-1 order-md-0" id="summonerInfoPartial">
+    <div class="col-md-3 d-flex justify-content-center col-12" id="summonerInfoPartial">
         @{ await Html.RenderPartialAsync("Partials/Profile/_SummonerInfoPartial", Model.SummonerData.Summoner); }
     </div>
 
-    <div class="col-md-auto col-12 order-2 order-md-1">
-        <div id="pageFilter" class="mb-4">
-            <button data-toggle="collapse" data-target="#filterForm" class="btn btn-primary rounded-corners-small">
-                <i class="fas fa-filter"></i> Filters
-            </button>
+    <div class="col-md-auto col-12">
+        <div>
+            <div class="row d-flex mb-2">
+                <div id="pageFilter" class="col-9">
+                    <button data-toggle="collapse" data-target="#filterForm" class="btn btn-primary rounded-corners-small">
+                        <i class="fas fa-filter"></i> Filters
+                    </button>
+
+                </div>
+                <div class="col-3 d-flex justify-content-end" id="PageButtons">
+                    @{
+                        // Toto se stane pouze tedhy pokud budeme umyslne upravovat query string
+                        var offsetNextPage = Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit ?
+                            Model.QueryParams.Offset + Model.QueryParams.PageSize : ServerConstants.GamesLimit - Model.QueryParams.PageSize;
+
+                        var paramsNextPage = new Dictionary<string, string> {
+                            {"name", Model.QueryParams.Name},
+                            {"server", Model.QueryParams.Server},
+                            {"pageSize", Model.QueryParams.PageSize.ToString()},
+                            {"filter", Model.QueryParams.Filter},
+                            {"offset", offsetNextPage.ToString()}
+                        };
+
+                        var offsetPrevPage = Model.QueryParams.Offset - Model.QueryParams.PageSize < 0 ?
+                            0 : Model.QueryParams.Offset - Model.QueryParams.PageSize;
+                        var paramsPreviousPage = new Dictionary<string, string> {
+                            {"name", Model.QueryParams.Name},
+                            {"server", Model.QueryParams.Server},
+                            {"pageSize", Model.QueryParams.PageSize.ToString()},
+                            {"filter", Model.QueryParams.Filter},
+                            {"offset", offsetPrevPage.ToString()}
+                        };
+                    }
+
+                    @if (Model.QueryParams.Offset - Model.QueryParams.PageSize >= 0) {
+                        <a asp-all-route-data="paramsPreviousPage" class="btn btn-primary rounded-corners-small">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    }
+
+                    @if (Model.SummonerData.MatchHeaders.Count > Model.QueryParams.PageSize - 1 && Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit) {
+                        <a asp-all-route-data="paramsNextPage" class="btn btn-primary rounded-corners-small">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    }
+
+                </div>
+            </div>
 
             <div id="filterForm" class="collapse">
                 <form method="get">
@@ -54,53 +96,14 @@
                         }
                     </select>
 
-                    <button type="submit" class="btn btn-primary rounded-corners-small float-right">
-                        Submit
-                    </button>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary rounded-corners-small">
+                            Submit
+                        </button>
+                    </div>
                 </form>
             </div>
-            
-            <div id="PageButtons">
-                            @{
-                                // Toto se stane pouze tedhy pokud budeme umyslne upravovat query string
-                                var offsetNextPage = Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit ?
-                                    Model.QueryParams.Offset + Model.QueryParams.PageSize : ServerConstants.GamesLimit - Model.QueryParams.PageSize;
-            
-                                var paramsNextPage = new Dictionary<string, string> {
-                                    {"name", Model.QueryParams.Name},
-                                    {"server", Model.QueryParams.Server},
-                                    {"pageSize", Model.QueryParams.PageSize.ToString()},
-                                    {"filter", Model.QueryParams.Filter},
-                                    {"offset", offsetNextPage.ToString()}
-                                };
-            
-                                var offsetPrevPage = Model.QueryParams.Offset - Model.QueryParams.PageSize < 0 ?
-                                    0 : Model.QueryParams.Offset - Model.QueryParams.PageSize;
-                                var paramsPreviousPage = new Dictionary<string, string> {
-                                    {"name", Model.QueryParams.Name},
-                                    {"server", Model.QueryParams.Server},
-                                    {"pageSize", Model.QueryParams.PageSize.ToString()},
-                                    {"filter", Model.QueryParams.Filter},
-                                    {"offset", offsetPrevPage.ToString()}
-                                };
-                            }
-            
-                            @if (Model.SummonerData.MatchHeaders.Count > Model.QueryParams.PageSize - 1 && Model.QueryParams.PageSize + Model.QueryParams.Offset < ServerConstants.GamesLimit) {
-                                <a asp-all-route-data="paramsNextPage" class="btn btn-primary rounded-corners-small float-right">
-                                    <i class="fas fa-angle-right"></i>
-                                </a>
-                            }
-                            
-                            
-                            @if (Model.QueryParams.Offset - Model.QueryParams.PageSize >= 0) {
-                                <a asp-all-route-data="paramsPreviousPage" class="btn btn-primary rounded-corners-small float-right">
-                                    <i class="fas fa-angle-left"></i>
-                                </a>
-                            }
-            
-                        </div>
         </div>
-
         <div id="matchListPartial">
             <div id="matchOverview">
                 @{
@@ -136,6 +139,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 col-12 order-0 order-md-2">
+    <div class="col-md-3 col-12 justify-content-center d-flex">
+        @await Html.PartialAsync("Partials/Profile/_ProfileCardListPartial", Model.ProfileCards)
     </div>
 </div>

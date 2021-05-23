@@ -36,6 +36,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// <summary>
         /// Ziska entitu podle id
         /// </summary>
+        /// <param name="cardId"></param>
         /// <param name="id">id entity; je typu object, protoze nekdy se pouziva long misto intu (kvuli api)</param>
         /// <returns>Entitu s danym id</returns>
         public async Task<TEntity> Get(object id) => 

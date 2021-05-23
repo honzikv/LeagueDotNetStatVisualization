@@ -4,7 +4,6 @@ using System.Linq;
 using dotNetMVCLeagueApp.Data.Models.Match;
 using dotNetMVCLeagueApp.Data.Models.Match.Timeline;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail;
-using dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail;
 using dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline;
 using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;

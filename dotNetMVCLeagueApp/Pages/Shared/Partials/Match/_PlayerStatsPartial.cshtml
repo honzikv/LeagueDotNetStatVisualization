@@ -1,4 +1,5 @@
-﻿@model dotNetMVCLeagueApp.Pages.Match
+﻿@using dotNetMVCLeagueApp.Config
+@model dotNetMVCLeagueApp.Pages.Match
 
 @{
     var matchTimelineQueryData = new Dictionary<string, string> {
@@ -9,30 +10,8 @@
     };
 }
 
-@functions {
-
-    void CreatePillToggle(int participantId) {
-        <text>
-            <a class="nav-link" id="pills-participant-@participantId-tab" data-toggle="pill"
-               href="#pills-participant-@participantId" aria-controls="pills-participant-@participantId"
-               aria-selected="false">
-            </a>
-        </text>
-    }
-
-    void CreatePillDiv(int participantId) {
-        <text>
-            <div class="tab-pane fade show" id="pills-participant-@participantId" role="tabpanel"
-                 aria-labelledby="pills-participant-@participantId-tab">
-                @participantId
-            </div>
-        </text>
-    }
-
-}
 
 @{
-    var player = Model.MatchOverview.Players[Model.MatchOverview.ParticipantId];
     var participants = Model.MatchOverview.Players.Where(playerKv => playerKv.Key != Model.MatchOverview.ParticipantId)
         .Select(playerKv => playerKv.Value)
         .OrderBy(playerDto => playerDto.ParticipantId)
@@ -60,8 +39,12 @@
                 <ul class="nav nav-pills flex-column rounded-corners-small" role="tablist">
                     @foreach (var participant in participants) {
                         var participantId = participant.ParticipantId;
+
+                        var linkClass = participant.TeamId == ServerConstants.BlueSideId 
+                            ? "link-blue-side" : "link-red-side";
+
                         <li class="nav-item">
-                            <a class="nav-link rounded-corners-small" id="pills-participant-@participantId-tab" data-toggle="pill"
+                            <a class="nav-link @linkClass link-selected-grey rounded-corners-small" id="pills-participant-@participantId-tab" data-toggle="pill"
                                href="#pills-participant-@participantId" aria-controls="pills-participant-@participantId"
                                aria-selected="false">
                                 <div class="d-flex no-gutters justify-content-start align-items-center">
@@ -83,7 +66,7 @@
                              aria-labelledby="pills-participant-@participantId-tab">
 
                             <div class="card-player-table align-self-center rounded-corners-small card-body mb-4">
-                                <h3 class="heading3">Highs (maximum)</h3>
+                                <h3 class="heading3">Highs (Most Ahead)</h3>
                                 <p class="no-spacing stats-text">
                                     Gold:
                                     <span class="font-weight-bold" id="participant-@participantId-max-gold"></span>
@@ -110,7 +93,7 @@
                             </div>
 
                             <div class="card-player-table rounded-corners-small card-body mb-3">
-                                <h3 class="heading3">Lows (minimum)</h3>
+                                <h3 class="heading3">Lows (Most Behind)</h3>
                                 <p class="no-spacing stats-text">
                                     Gold:
                                     <span class="font-weight-bold" id="participant-@participantId-min-gold"></span>
@@ -136,9 +119,9 @@
                                 </p>
                             </div>
 
-                            <div id="participant-@participantId-stats-at-10" 
+                            <div id="participant-@participantId-stats-at-10"
                                  class="card-player-table rounded-corners-small card-body mb-3 invisible">
-                                <h3 class="heading3">At 10 Minutes</h3>
+                                <h3 class="heading3">Difference At 10 Minutes</h3>
                                 <p class="no-spacing stats-text">
                                     Gold:
                                     <span class="font-weight-bold" id="participant-@participantId-gold-at-10"></span>
@@ -160,9 +143,9 @@
                                 </p>
                             </div>
 
-                            <div id="participant-@participantId-stats-at-15" 
+                            <div id="participant-@participantId-stats-at-15"
                                  class="card-player-table invisible rounded-corners-small card-body mb-3">
-                                <h3 class="heading3">At 15 Minutes</h3>
+                                <h3 class="heading3">Difference At 15 Minutes</h3>
                                 <p class="no-spacing stats-text">
                                     Gold:
                                     <span class="font-weight-bold" id="participant-@participantId-gold-at-15"></span>

@@ -1,22 +1,14 @@
 ﻿@using dotNetMVCLeagueApp.Data.Models.User
 @using dotNetMVCLeagueApp.Config
+@using dotNetMVCLeagueApp.Utils
 @model dotNetMVCLeagueApp.Areas.Identity.Pages.Data.ProfileCardTableDto
 
 
 @functions {
 
-    private string TruncateIfNecessary(string text) {
-        if (text is null) {
-            return "";
-        }
-        return text.Length > Model.TextTableMaxCharacters
-            ? text[..Model.TextTableMaxCharacters] + "..."
-            : text;
-
-    }
-
-    private string ClassActive(ProfileCardModel card) => 
+    private static string ClassActive(ProfileCardModel card) =>
         card.Position < ServerConstants.VisibleCardLimit ? "table-success" : "";
+
 }
 
 <div id="ProfileCardTable">
@@ -38,19 +30,23 @@
         @foreach (var card in Model.ProfileCards) {
             <tr class="@ClassActive(card)">
                 <th scope="row">@(card.Position + 1)</th>
-                <td class="font-weight-bold">@TruncateIfNecessary(card.PrimaryText)</td>
+                <td class="font-weight-bold">
+                    @StringUtils.TruncateIfNecessary(card.PrimaryText, Model.TextTableMaxCharacters)
+                </td>
                 @if (card.SocialMedia) {
                     <td>Social Media</td>
                     <td>
-                        <a class="page-link" href="@card.SecondaryText">@TruncateIfNecessary(card.SecondaryText)</a>
+                        <a class="page-link" href="@card.SecondaryText">
+                            @StringUtils.TruncateIfNecessary(card.SecondaryText, Model.TextTableMaxCharacters)
+                        </a>
                     </td>
                 }
                 else {
                     <td>Text</td>
-                    <td>@TruncateIfNecessary(card.SecondaryText)</td>
+                    <td>@StringUtils.TruncateIfNecessary(card.SecondaryText, Model.TextTableMaxCharacters)</td>
                 }
                 <td>
-                    <form method="get" asp-page="/Account/EditCard">
+                    <form method="get" asp-area="Identity" asp-page="/Account/EditCard">
                         <input type="hidden" class="form-control" name="cardId" value="@card.Id"/>
                         <button class="btn btn-sm btn-primary rounded-corners-small"><i class="fas fa-trash-alt"></i> Edit</button>
                     </form>

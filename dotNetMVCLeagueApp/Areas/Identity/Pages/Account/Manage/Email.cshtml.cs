@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Linq;
 using System.Threading.Tasks;
 using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.AspNetCore.Identity;
@@ -26,8 +23,6 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             this.signInManager = signInManager;
             this.emailSender = emailSender;
         }
-
-        public string Username { get; set; }
 
         public string Email { get; set; }
 
@@ -99,17 +94,20 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             return RedirectToPage();
         }
 
+        #region verificationEmail
+
+#if false
         public async Task<IActionResult> OnPostSendVerificationEmailAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user == null) {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
-
+        
             if (!ModelState.IsValid) {
                 await LoadAsync(user);
                 return Page();
             }
-
+        
             var userId = await userManager.GetUserIdAsync(user);
             var email = await userManager.GetEmailAsync(user);
             var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -123,9 +121,12 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                 email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+        
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
+#endif
+
+        #endregion
     }
 }

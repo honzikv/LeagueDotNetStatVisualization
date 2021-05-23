@@ -15,5 +15,10 @@ namespace dotNetMVCLeagueApp.Repositories {
         public async Task<bool> IsEmailTaken(string email) =>
             await LeagueDbContext.Users.AnyAsync(user => user.EmailConfirmed &&
                                                          user.Email.ToLower() == email.ToLower());
+
+        public async Task<ApplicationUser> GetUserForSummoner(SummonerModel summoner) =>
+            await LeagueDbContext.Users
+                .Where(user => user.Summoner != null && user.Summoner.EncryptedAccountId == summoner.EncryptedAccountId)
+                .FirstOrDefaultAsync();
     }
 }

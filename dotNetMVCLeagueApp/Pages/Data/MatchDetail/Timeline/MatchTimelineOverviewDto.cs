@@ -1,6 +1,4 @@
-﻿using dotNetMVCLeagueApp.Pages.Data.MatchDetail.PlayerDetail;
-
-namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
+﻿namespace dotNetMVCLeagueApp.Pages.Data.MatchDetail.Timeline {
     public class MatchTimelineOverviewDto {
         
         public string StatusMessage { get; set; }

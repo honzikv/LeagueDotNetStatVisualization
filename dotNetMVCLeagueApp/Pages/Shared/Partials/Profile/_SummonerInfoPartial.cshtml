@@ -1,13 +1,13 @@
 ﻿@model dotNetMVCLeagueApp.Pages.Data.Profile.SummonerProfileDto
 
-<div class="sticky">
-    <div class="rounded-corners-small card-default-light mt-4 mb-2">
-        <div class="row card-body no-gutters d-flex justify-content-center">
-            <div class="col-4">
+<div class="w-100 align-items-stretch mt-4">
+    <div class="rounded-corners-small card-default-light mb-2">
+        <div class="row card-body no-gutters d-flex justify-content-center w-100">
+            <div class="col-4 align-self-center">
                 <img class="summoner-icon-large"
                      alt="N/A" src="@Url.Content($"/assets/{Model.ProfileIconRelativeAssetPath}")">
             </div>
-            <div class="col-8 align-items-center align-self-center">
+            <div class="col-8 align-items-center align-self-center justify-items-center">
                 <p class="summoner-name-header no-spacing text-center">@Model.Name</p>
                 <p class="no-spacing mt-n2 text-center">Level @Model.SummonerLevel</p>
             </div>

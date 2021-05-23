@@ -14,10 +14,6 @@
         {"server", Model.QueryParams.Server}
     };
 
-    var playerTeam = Model.MatchOverview.Players[Model.QueryParams.ParticipantId].TeamId == ServerConstants.BlueSideId ?
-        Model.MatchOverview.Teams.BlueSide : Model.MatchOverview.Teams.RedSide;
-
-
     // String tridy pro vysledek - nastaveni barvy
     var matchResultClass = Model.MatchOverview.IsRemake ? "text-grey" :
         Model.MatchOverview.Win ? "color-win-light" : "color-loss-light";
@@ -28,6 +24,9 @@
     var player = Model.MatchOverview.Players[Model.QueryParams.ParticipantId];
     var playerChampion = player.ChampionAsset;
 
+    var playerTeam = player.TeamId == ServerConstants.BlueSideId ?
+        ServerConstants.BlueSide : ServerConstants.RedSide;
+    var playerTeamClass = player.TeamId == ServerConstants.BlueSideId ? "color-blue-side" : "color-red-side";
 }
 
 
@@ -77,6 +76,7 @@
                     <span class="deaths">@player.Deaths</span>
                     <span> / @player.Assists </span>
                     as <span class="font-weight-bold">@player.ChampionAsset.Name</span>
+                    <span class="@playerTeamClass"> (@playerTeam)</span>
                 </p>
             </div>
         </div>

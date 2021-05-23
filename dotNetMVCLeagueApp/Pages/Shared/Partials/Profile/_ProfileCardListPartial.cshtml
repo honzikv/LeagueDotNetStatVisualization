@@ -1,0 +1,27 @@
+﻿@model List<dotNetMVCLeagueApp.Data.Models.User.ProfileCardModel>
+
+@if (Model.Count > 0) {
+    <div class="row align-items-stretch mt-4 w-100">
+        <div class="w-100">
+            <h2 class="heading2">Profile Cards</h2>
+
+            @foreach (var card in Model) {
+                <div class="rounded-corners-small card-default-light mt-2">
+                    <div class="card-body">
+                        @if (card.SocialMedia) {
+                            <a href="@card.SecondaryText" class="text-overflow-ellipsis">
+                                @card.SecondaryText
+                            </a>
+                            <h4 class="heading4 no-spacing mt-2">@card.PrimaryText</h4>
+                        }
+                        else {
+                            <h3 class="heading3">@card.PrimaryText</h3>
+                            <p class="text-overflow-ellipsis">@card.SecondaryText</p>
+                        }
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+}

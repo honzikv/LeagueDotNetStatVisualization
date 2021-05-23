@@ -28,7 +28,8 @@ $rounded-radius: 100%;
 div.sticky {
     position: -webkit-sticky;
     position: sticky;
-    top: 20px;
+    top: 24px;
+    align-self: flex-start;
 }
 
 

@@ -1,31 +1,25 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static dotNetMVCLeagueApp.Config.ServerConstants;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
     public class AddNewSocialMediaCardDto {
-        
-        /// <summary>
-        /// Vybrana platforma, pro kterou se bude karta zobrazovat - Twitter, Youtube, Reddit ...
-        /// </summary>
-        [Required]
-        [StringLength(100, ErrorMessage = "Invalid social platform provided")]
-        [Display(Name = "Social Platform")]
-        public string SocialPlatform { get; set; }
-        
+
         /// <summary>
         /// Kratky popisek u karty
         /// </summary>
-        [Display(Name = "Card Description (max 200 chars)")]
+        [Display(Name = "Card Description")]
         [DataType(DataType.Text)]
-        [StringLength(200, ErrorMessage = "{0} can be at max {1} characters long.")]
+        [StringLength(CardDescriptionMaxStringLength, ErrorMessage = "{0} can be at max {1} characters long.")]
+        [Required]
         public string Description { get; set; }
         
         /// <summary>
         /// URL uzivatele pro odkaz
         /// </summary>
         [Required]
-        [StringLength(2000, ErrorMessage = "{0} can be at max {1} characters long.")]
+        [StringLength(UserUrlMaxStringLength, ErrorMessage = "{0} can be at max {1} characters long.")]
         [DataType(DataType.Url)]
-        [Display(Name = "Profile URL")]
+        [Display(Name = "Social Media URL")]
         public string UserUrl { get; set; }
         
         /// <summary>

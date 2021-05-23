@@ -1,0 +1,76 @@
+﻿@page
+@model dotNetMVCLeagueApp.Areas.Identity.Pages.Account.EditCard
+
+@{
+    ViewData["Title"] = "Edit Card";
+}
+
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+
+        <h1 class="heading1 text-center">@ViewData["Title"]</h1>
+        <hr>
+
+        <partial name="Manage/_StatusMessage" model="Model.StatusMessage"/>
+
+
+        @if (Model.Input.IsSocialMedia) {
+            <form method="post">
+
+                @{
+                    Model.ValidationErrors.TryGetValue("Description", out var primaryTextError);
+                    Model.ValidationErrors.TryGetValue("UserUrl", out var secondaryTextError);
+                }
+
+                <div class="form-group">
+                    <label>Card Description (max 200 chars)</label>
+                    <textarea asp-for="Input.PrimaryText" class="form-control rounded-corners-small"></textarea>
+                    <span class="text-danger">@primaryTextError</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Social Media URL</label>
+                    <input asp-for="Input.SecondaryText" class="form-control rounded-corners-small"/>
+                    <p class="no-spacing text-danger">@secondaryTextError</p>
+                    <label>
+                        <p class="no-spacing">Possible sites are:</p>
+                        @foreach (var (name, prefix) in Model.SocialMedia) {
+                            <p class="no-spacing text-small">@name (@prefix)</p>
+                        }
+                    </label>
+                </div>
+                <input asp-for="Input.Id" value="@Model.Input.Id" type="hidden">
+                <input asp-for="Input.IsSocialMedia" value="@Model.Input.IsSocialMedia" type="hidden">
+
+                <button type="submit" class="btn btn-primary rounded-corners-small float-right">Update</button>
+            </form>
+        }
+        else {
+            <form method="post">
+
+                @{
+                    Model.ValidationErrors.TryGetValue("PrimaryText", out var primaryTextError);
+                    Model.ValidationErrors.TryGetValue("SecondaryText", out var secondaryTextError);
+                }
+
+                <div class="form-group">
+                    <label>Card Title</label>
+                    <input asp-for="Input.PrimaryText" class="form-control rounded-corners-small"/>
+                    <span class="text-danger">@primaryTextError</span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.SecondaryText">Text</label>
+                    <textarea asp-for="Input.SecondaryText" class="form-control rounded-corners-small"></textarea>
+                    <span class="text-danger">@secondaryTextError</span>
+                </div>
+                
+                <input asp-for="Input.Id" value="@Model.Input.Id" type="hidden">
+                <input asp-for="Input.IsSocialMedia" value="@Model.Input.IsSocialMedia" type="hidden">
+                <button type="submit" class="btn btn-primary rounded-corners-small float-right">Update</button>
+
+            </form>
+        }
+
+    </div>
+</div>

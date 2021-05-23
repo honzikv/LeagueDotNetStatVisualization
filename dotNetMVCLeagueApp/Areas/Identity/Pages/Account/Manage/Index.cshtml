@@ -11,18 +11,18 @@
     <div class="col-md-6">
         <div class="form-group">
             <label asp-for="UserData.Username"></label>
-            <input asp-for="UserData.Username" class="form-control" disabled/>
+            <input asp-for="UserData.Username" class="form-control rounded-corners-small" disabled/>
         </div>
 
         @if (Model.UserData.SummonerName is not null && Model.UserData.Server is not null) {
             <div class="form-group">
                 <label asp-for="UserData.SummonerName"></label>
-                <input asp-for="UserData.SummonerName" class="form-control" disabled>
+                <input asp-for="UserData.SummonerName" class="form-control rounded-corners-small" disabled>
             </div>
             
             <div class="form-group">
                 <label asp-for="UserData.Server"></label>
-                <input asp-for="UserData.Server" class="form-control" disabled/>
+                <input asp-for="UserData.Server" class="form-control rounded-corners-small" disabled/>
             </div>
 
             var routeData = new Dictionary<string, string>() {

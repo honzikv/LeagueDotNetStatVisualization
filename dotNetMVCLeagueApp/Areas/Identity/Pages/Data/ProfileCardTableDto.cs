@@ -10,6 +10,6 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Data {
         public int TextTableMaxCharacters = 15;
         
         public string StatusMessage { get; set; }
-        public List<ProfileCardModel> ProfileCards { get; set; }
+        public List<ProfileCardModel> ProfileCards { get; set; } = new();
     }
 }

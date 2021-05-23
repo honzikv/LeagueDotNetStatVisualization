@@ -17,27 +17,23 @@
         @* Zobrazime pouze tehdy, pokud muze uzivatel karty vytvorit*@
         @if (Model.UserProfileCards < Model.CardLimit) {
             <form method="post">
+
                 <div class="form-group">
-                    <label asp-for="Input.SocialPlatform"></label>
-                    <select class="browser-default custom-select rounded-corners-small" asp-for="Input.SocialPlatform">
-                        @foreach (var socialNetwork in Model.SocialMediaPlatformNames) {
-                            <option value="@socialNetwork">@socialNetwork</option>
-                        }
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label asp-for="Input.Description"></label>
+                    <label>Card Description (max 200 chars)</label>
                     <textarea asp-for="Input.Description" class="form-control"></textarea>
                     <span asp-validation-for="Input.Description" class="text-danger"></span>
                 </div>
-                
+
                 <div class="form-group">
                     <label asp-for="Input.UserUrl"></label>
                     <input asp-for="Input.UserUrl" class="form-control"/>
-                    <span asp-validation-for="Input.UserUrl"></span>
+                    <p class="no-spacing"><span class="no-spacing text-danger" asp-validation-for="Input.UserUrl"></span></p>
+                    <p class="no-spacing">Possible sites are:</p>
+                    @foreach (var (name, prefix) in Model.SocialMedia) {
+                        <p class="no-spacing text-small">@name (@prefix)</p>
+                    }
                 </div>
-                
+
                 <div class="form-group">
                     <div class="form-check">
                         <input class="form-check-input" asp-for="Input.ShowOnTop">
