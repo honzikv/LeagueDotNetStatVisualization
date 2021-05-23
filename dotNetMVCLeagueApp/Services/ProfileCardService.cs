@@ -29,6 +29,14 @@ namespace dotNetMVCLeagueApp.Services {
             this.applicationUserRepository = applicationUserRepository;
         }
 
+        /// <summary>
+        /// Prida kartu k danemu uzivateli
+        /// </summary>
+        /// <param name="profileCard">reference na kartu</param>
+        /// <param name="showOnTop">zda-li ma byt karta na vrchu</param>
+        /// <param name="user">refernece na uzivatele (vlastnika karty)</param>
+        /// <returns></returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<ProfileCardModel> Add(ProfileCardModel profileCard, bool showOnTop, ApplicationUser user) {
             var userCards = await profileCardRepository.GetUserProfileCardsByPosition(user);
             if (userCards.Count >= CardLimitPerUser) {
@@ -39,6 +47,13 @@ namespace dotNetMVCLeagueApp.Services {
             return await profileCardRepository.AddProfileCardToCollection(profileCard, userCards, showOnTop);
         }
 
+        /// <summary>
+        /// Posune kartu smerem nahoru
+        /// </summary>
+        /// <param name="profileCardId">id karty</param>
+        /// <param name="user">vlastnik karty</param>
+        /// <returns>seznam karet po posunu</returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<List<ProfileCardModel>> MoveUp(int profileCardId, ApplicationUser user) {
             var profileCards = await profileCardRepository.GetUserProfileCardsByPosition(user);
             var card = profileCards.FirstOrDefault(profileCard => profileCard.Id == profileCardId);
@@ -66,6 +81,13 @@ namespace dotNetMVCLeagueApp.Services {
             return profileCards;
         }
 
+        /// <summary>
+        /// Posune kartu smerem dolu
+        /// </summary>
+        /// <param name="profileCardId">Id karty</param>
+        /// <param name="user">vlastnik karty</param>
+        /// <returns>seznam karet po posunu</returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<List<ProfileCardModel>> MoveDown(int profileCardId, ApplicationUser user) {
             var profileCards = await profileCardRepository.GetUserProfileCardsByPosition(user);
             var card = profileCards.FirstOrDefault(profileCard => profileCard.Id == profileCardId);
@@ -94,6 +116,11 @@ namespace dotNetMVCLeagueApp.Services {
             return profileCards;
         }
 
+        /// <summary>
+        /// Ziska seznam karet pro summonera a seradi je podle pozice
+        /// </summary>
+        /// <param name="summoner">summoner</param>
+        /// <returns>Seznam karet - pokud existuji, nebo prazdny seznam</returns>
         public async Task<List<ProfileCardModel>> GetProfileCardsForSummonerByPosition(SummonerModel summoner) {
             var linkedProfile = await applicationUserRepository.GetUserForSummoner(summoner);
 
@@ -118,12 +145,28 @@ namespace dotNetMVCLeagueApp.Services {
                 ? new OperationResult<string>()
                 : new(true, "Error, this URL is not supported.");
 
+        /// <summary>
+        /// Odstrani kartu z databaze
+        /// </summary>
+        /// <param name="cardId">id karty</param>
+        /// <param name="user">vlastnik karty</param>
+        /// <returns>Seznam karet po odstraneni</returns>
         public async Task<List<ProfileCardModel>> DeleteCard(int cardId, ApplicationUser user) =>
             await profileCardRepository.DeleteCard(cardId, user);
 
+        /// <summary>
+        /// Ziska kartu podle jejiho id a vlastnika
+        /// </summary>
+        /// <param name="cardId">id karty</param>
+        /// <param name="user">vlastnik karty</param>
+        /// <returns>Kartu nebo null</returns>
         public async Task<ProfileCardModel> GetCard(int cardId, ApplicationUser user) =>
             await profileCardRepository.Get(cardId, user);
 
+        /// <summary>
+        /// Aktualizuje kartu v db
+        /// </summary>
+        /// <param name="card">karta, kterou chceme aktualizovat</param>
         public async Task UpdateCard(ProfileCardModel card) =>
             await profileCardRepository.Update(card);
     }

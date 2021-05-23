@@ -93,6 +93,11 @@ namespace dotNetMVCLeagueApp.Repositories {
             return jsonObj;
         }
 
+        /// <summary>
+        /// Mapovani postav
+        /// </summary>
+        /// <param name="championsJsonFilePath">cesta k JSON souboru</param>
+        /// <exception cref="AssetException"></exception>
         private void MapChampions(string championsJsonFilePath) {
             var jsonObj = ParseJsonObject<Champions>(championsJsonFilePath, "champions");
 
@@ -187,6 +192,10 @@ namespace dotNetMVCLeagueApp.Repositories {
             }
         }
 
+        /// <summary>
+        /// Mapovani ikon s ranky
+        /// </summary>
+        /// <param name="rankedIconsJsonFilePath">cesta k JSON souboru s informacemi</param>
         private void MapRankedIcons(string rankedIconsJsonFilePath) {
             var jsonObj = ParseJsonObject<List<RankAsset>>(rankedIconsJsonFilePath, "rank");
 
@@ -246,6 +255,11 @@ namespace dotNetMVCLeagueApp.Repositories {
             ? config.EmptyAssetFileName
             : Path.Combine(config.ProfileIconsFolderName, $"{id}.png");
 
+        /// <summary>
+        /// Vrati asset objekt pro dany tier
+        /// </summary>
+        /// <param name="tier">tier</param>
+        /// <returns></returns>
         public RankAsset GetRankedIcon(string tier) {
             var exists = ranks.TryGetValue(tier, out var rankAsset);
             return exists ? rankAsset : RankAsset.Empty(config.EmptyAssetFileName);

@@ -128,9 +128,21 @@ namespace dotNetMVCLeagueApp.Services {
             return await summonerRepository.Update(dbSummoner);
         }
 
+        /// <summary>
+        /// Zjisti, zda-li je summoner zabrany
+        /// </summary>
+        /// <param name="summoner">summoner</param>
+        /// <returns>True, pokud je summoner zabrany, jinak false</returns>
         public async Task<bool> IsSummonerTaken(SummonerModel summoner) 
             => await applicationUserRepository.IsSummonerTaken(summoner);
 
+        /// <summary>
+        /// Spoji summonera a uzivatele
+        /// </summary>
+        /// <param name="user">Uzivatel, ktereho chceme pripojit</param>
+        /// <param name="summonerName">Summoner, ktereho chceme pripojit</param>
+        /// <param name="server">Server, na kterem se summoner nachazi</param>
+        /// <returns>OperationResult objekt, ktery indikuje vysledek operace</returns>
         public async Task<OperationResult<string>> LinkSummonerToApplicationUser(ApplicationUser user, string summonerName, string server) {
             if (!QueryableServers.ContainsKey(server.ToLower())) {
                 return new()  {
@@ -144,7 +156,7 @@ namespace dotNetMVCLeagueApp.Services {
                 summoner = await GetSummoner(summonerName, Region.Get(server.ToUpper()));
             }
             catch(Exception ex) {
-                if (ex is RiotResponseException) {
+                if (ex is RiotResponseException) { // chyba pri komunikaci s api
                     return new () {
                         Error = true,
                         Message = "Error while communicating with Riot servers. Summoner could not be linked."

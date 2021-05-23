@@ -12,6 +12,10 @@ using MingweiSamuel.Camille.Enums;
 using MingweiSamuel.Camille.MatchV4;
 
 namespace dotNetMVCLeagueApp.Services {
+    
+    /// <summary>
+    /// Sluzba pro ziskavani zapasu
+    /// </summary>
     public class MatchService {
         private readonly RiotApiRepository riotApiRepository;
         private readonly MatchRepository matchRepository;
@@ -33,8 +37,17 @@ namespace dotNetMVCLeagueApp.Services {
             this.riotApiUpdateConfig = riotApiUpdateConfig;
         }
 
+        /// <summary>
+        /// Maximalni pocet her v seznamu zapasu z Riot Api
+        /// </summary>
         private const int MaxGamesInMatchlist = 100;
 
+        /// <summary>
+        /// Prida zapas do databaze nebo ho aktualizuje
+        /// </summary>
+        /// <param name="summoner">Model hrace</param>
+        /// <param name="matchReference">reference na zapas</param>
+        /// <returns></returns>
         private async Task<MatchModel> AddOrUpdateMatch(SummonerModel summoner, MatchReference matchReference) {
             var match = await matchRepository.Get(matchReference.GameId) ?? await riotApiRepository.GetMatch(
                 matchReference.GameId, Region.Get(summoner.Region));
@@ -78,6 +91,14 @@ namespace dotNetMVCLeagueApp.Services {
         public List<MatchModel> GetFrontPage(SummonerModel summoner)
             => matchRepository.GetNMatchesByDateTimeDesc(summoner, ServerConstants.DefaultPageSize);
 
+        /// <summary>
+        /// Ziska historii zapasu pro daneho hrace
+        /// </summary>
+        /// <param name="summoner">Hrac, pro ktereho hry hledame</param>
+        /// <param name="offset">Pocet her, ktery chceme preskocit</param>
+        /// <param name="pageSize">Velikost stranky</param>
+        /// <param name="queues">Fronty, ktere prohledavame</param>
+        /// <returns></returns>
         public async Task<List<MatchModel>> GetMatchHistory(SummonerModel summoner, int offset, int pageSize,
             int[] queues = null) {
             var matchReferences = new List<MatchReference>(pageSize);
@@ -167,6 +188,12 @@ namespace dotNetMVCLeagueApp.Services {
             return toSkip;
         }
 
+        /// <summary>
+        /// Ziska aktualizovanou historii zapasu
+        /// </summary>
+        /// <param name="summoner">Uzivateluv ucet</param>
+        /// <param name="numberOfGames">Pocet her</param>
+        /// <returns>Seznam s aktualizovanou historii zapasu</returns>
         public async Task<List<MatchModel>> GetUpdatedMatchHistory(SummonerModel summoner, int numberOfGames)
             => await GetMatchHistory(summoner, 0, numberOfGames);
     }

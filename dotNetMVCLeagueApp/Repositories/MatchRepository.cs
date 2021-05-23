@@ -28,6 +28,12 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .ToList()
                 .ConvertAll(matchSummoner => matchSummoner.Match);
 
+        /// <summary>
+        /// Funkce pro smazani starych zapasu
+        /// </summary>
+        /// <param name="maxAge">Maximalni doba, do ktere zapas nesmazeme</param>
+        /// <returns>Seznam smazanych zapasu</returns>
+        /// <exception cref="ActionNotSuccessfulException">Chyba s databazi</exception>
         public async Task<List<MatchModel>> DeleteOldMatches(DateTime maxAge) {
             List<MatchModel> oldGames;
             try {
@@ -42,7 +48,10 @@ namespace dotNetMVCLeagueApp.Repositories {
                     linksForMatch.ForEach(link => oldGameLinks.Add(link));
                 }
 
+                // Smazeme linky a hry
                 LeagueDbContext.MatchToSummonerModels.RemoveRange(oldGameLinks);
+                
+                // Hry "kaskadove" smazou i ostatni zavisle objekty
                 LeagueDbContext.MatchModels.RemoveRange(oldGames);
                 await LeagueDbContext.SaveChangesAsync();
             }

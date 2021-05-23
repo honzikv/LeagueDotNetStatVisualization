@@ -187,6 +187,17 @@ namespace dotNetMVCLeagueApp.Repositories {
             return playerModel;
         }
 
+        /// <summary>
+        /// Ziska match history pro uzivatele
+        /// </summary>
+        /// <param name="summoner">Ucet uzivatele</param>
+        /// <param name="region">Server, na kterem se hra hrala</param>
+        /// <param name="start">Datum, od ktereho hledame</param>
+        /// <param name="end">Datum, do ktereho hledame</param>
+        /// <param name="beginIndex">Index, od ktereho hledame</param>
+        /// <param name="endIndex">Index, do ktereho hledame</param>
+        /// <param name="queues">Fronty, ktere hledame</param>
+        /// <returns></returns>
         public async Task<Matchlist> GetMatchHistory(SummonerModel summoner, Region region,
             DateTime? start, DateTime? end, int? beginIndex, int? endIndex, int[] queues = null) =>
             await riotApi.MatchV4.GetMatchlistAsync(
@@ -199,11 +210,14 @@ namespace dotNetMVCLeagueApp.Repositories {
                 queue: queues ?? ServerConstants.RelevantQueues
             );
 
+        /// <summary>
+        /// Ziskani zapasu z id a regionu
+        /// </summary>
+        /// <param name="gameId">Id hry</param>
+        /// <param name="region">Server, na kterem se hra hrala</param>
+        /// <returns></returns>
         public async Task<MatchModel> GetMatch(long gameId, Region region) =>
             MapMatchToMatchModel(await riotApi.MatchV4.GetMatchAsync(region, gameId));
-
-        public async Task<MatchModel> GetMatch(MatchReference matchReference, Region region)
-            => MapMatchToMatchModel(await riotApi.MatchV4.GetMatchAsync(region, matchReference.GameId));
 
         /// <summary>
         /// Ziska timeline pro dany zapas z API

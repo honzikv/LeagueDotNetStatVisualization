@@ -24,8 +24,6 @@ namespace dotNetMVCLeagueApp {
             Configuration = configuration;
         }
 
-        private const bool UseLiveReload = false;
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -65,8 +63,6 @@ namespace dotNetMVCLeagueApp {
                 options.Password.RequireUppercase = true;
             });
 
-            services.AddLiveReload();
-            
             // Pridani automapperu
             services.AddAutoMapper(typeof(Startup));
 
@@ -93,10 +89,6 @@ namespace dotNetMVCLeagueApp {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-
-                if (UseLiveReload) {
-                    app.UseLiveReload();
-                }
             }
             else {
                 app.UseExceptionHandler("/Error");

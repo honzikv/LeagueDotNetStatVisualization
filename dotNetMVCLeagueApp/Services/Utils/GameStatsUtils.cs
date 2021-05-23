@@ -70,18 +70,6 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             => GetKillParticipation(playerStatsModel, matchModel, teamId) * 100;
 
         /// <summary>
-        /// Aktualizuje slovnik s frekvencemi roli - pricte 1 pro spravnou roli
-        /// </summary>
-        /// <param name="player">Info o hraci</param>
-        /// <param name="roles"></param>
-        public static void UpdateRoleFrequency(PlayerModel player, Dictionary<string, int> roles) {
-            var role = player.Role;
-            var lane = player.Lane;
-
-            roles[GetRole(role, lane)] += 1;
-        }
-
-        /// <summary>
         /// Ziska roli podle parametru role a lane (z nejakeho duvodu ma Riot Api dva retezce, ze kterych je potreba
         /// vyparsovat)
         /// </summary>

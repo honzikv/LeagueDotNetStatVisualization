@@ -28,6 +28,11 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .OrderBy(card => card.Id)
                 .ToListAsync();
 
+        /// <summary>
+        /// Ziska karty a seradi je podle pozice
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<List<ProfileCardModel>> GetUserProfileCardsByPosition(ApplicationUser user) =>
             await LeagueDbContext.ProfileCardModels
                 .Where(card => card.ApplicationUser.Id == user.Id)
@@ -62,6 +67,14 @@ namespace dotNetMVCLeagueApp.Repositories {
             await LeagueDbContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Prida profilovou kartu do kolekce. Musi mit jiz prirazeny ApplicationUser objekt, jinak
+        /// rozbije databazi.
+        /// </summary>
+        /// <param name="profileCard">Karta, ktera se ma pridat</param>
+        /// <param name="profileCards">Seznam vsech karet</param>
+        /// <param name="showOnTop">Zda-li se ma pridat jako prvni</param>
+        /// <returns></returns>
         public async Task<ProfileCardModel> AddProfileCardToCollection(ProfileCardModel profileCard,
             List<ProfileCardModel> profileCards, bool showOnTop) {
             if (showOnTop) {
@@ -78,6 +91,12 @@ namespace dotNetMVCLeagueApp.Repositories {
             return profileCard;
         }
 
+        /// <summary>
+        /// Ziska kartu podle id a uzivatele
+        /// </summary>
+        /// <param name="cardId">Id karty</param>
+        /// <param name="user">id uzivatele</param>
+        /// <returns></returns>
         public async Task<ProfileCardModel> Get(int cardId, ApplicationUser user) => await
             LeagueDbContext.ProfileCardModels.Where(card => card.Id == cardId && card.ApplicationUser.Id == user.Id)
                 .FirstOrDefaultAsync();

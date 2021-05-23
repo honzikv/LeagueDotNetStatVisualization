@@ -10,6 +10,10 @@ using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace dotNetMVCLeagueApp.Services {
+    
+    /// <summary>
+    /// Sluzba, ktera pocita statistiky pro vsechny zapasy
+    /// </summary>
     public class MatchStatsService {
         private readonly AssetRepository assetRepository;
         private readonly ILogger<MatchService> logger;
@@ -19,6 +23,14 @@ namespace dotNetMVCLeagueApp.Services {
             this.logger = logger;
         }
         
+        /// <summary>
+        /// Ziska MatchOverviewDto objekt, ktery obsahuje data pro vizualizaci tabulky hracu
+        /// </summary>
+        /// <param name="match">Objekt se zapasem</param>
+        /// <param name="participantId">Id ucastnika, z jehoz profilu jsme se na zapas dosali</param>
+        /// <param name="server">Server, na kterem se hra hrala</param>
+        /// <returns>MatchOverviewDto objekt, ktery obsahuje data pro vizualizaci tabulky hracu</returns>
+        /// <exception cref="ActionNotSuccessfulException">Data z databaze jsou nekonzistentni</exception>
         public MatchOverviewDto GetMatchOverview(MatchModel match, int participantId, string server) {
             // Nejprve vytvorime slovnik kde jsou (nebo by mely byt) dva tymy - RedSide (200) a BlueSide (100)
             // Slovnik dale pouzijeme k mapovani dat z hracu a data ze slovniku ulozime do objektu pro frontend
@@ -58,6 +70,11 @@ namespace dotNetMVCLeagueApp.Services {
             };
         }
 
+        /// <summary>
+        /// Ziska slovnik s Id tymu a TeamDto
+        /// </summary>
+        /// <param name="match">Reference na zapas</param>
+        /// <returns></returns>
         private Dictionary<int, TeamDto> GetTeamDtoDictionary(MatchModel match) {
             var result = new Dictionary<int, TeamDto>();
 
@@ -83,6 +100,14 @@ namespace dotNetMVCLeagueApp.Services {
             return result;
         }
 
+        /// <summary>
+        /// Namapuje hrace na PlayerDto objekty pro frontend
+        /// </summary>
+        /// <param name="match">Reference na zapas</param>
+        /// <param name="teams">Slovnik s id tymu a TeamDto objekty z metody GetTeamDtoDictionary</param>
+        /// <param name="server">Server, na kterem se hra hrala</param>
+        /// <returns>Slovnik kdy klic je id ucastnika (participantId) a hodnota je PlayerDto</returns>
+        /// <exception cref="ActionNotSuccessfulException">Pokud jsou data v DB nekonzistentni</exception>
         private Dictionary<int, PlayerDto> MapPlayers(MatchModel match, Dictionary<int, TeamDto> teams, string server) {
             var result = new Dictionary<int, PlayerDto>();
 

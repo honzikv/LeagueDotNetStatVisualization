@@ -45,7 +45,6 @@ namespace dotNetMVCLeagueApp.Services {
             var opponent = GetOpponent(player, allPlayers);
 
             // Zkontrolujeme role hrace a oponenta. Nekdy se muze stat ze api nevypocte role spravne
-            // V takoveto situaci data vypocteme ale na frontendu zobrazime ze muzou byt v api spatne
             result.IsOpponentAccurate = GameStatsUtils.GetRole(player.Role, player.Lane) ==
                                         GameStatsUtils.GetRole(opponent.Role, opponent.Lane);
 
@@ -73,7 +72,7 @@ namespace dotNetMVCLeagueApp.Services {
             var opponent = opponents.FirstOrDefault(playerModel =>
                 GameStatsUtils.GetRole(playerModel.Role, playerModel.Lane) == playerRole);
 
-            return opponent ?? opponents[0];
+            return opponent ?? opponents[0]; // pokud je oponent null vratime prvniho oponenta
         }
     }
 }
