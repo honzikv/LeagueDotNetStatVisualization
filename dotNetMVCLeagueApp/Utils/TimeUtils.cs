@@ -21,8 +21,18 @@ namespace dotNetMVCLeagueApp.Utils {
         /// <returns></returns>
         public static TimeSpan ConvertFrameTimeToTimeSpan(long frameTime) => TimeSpan.FromMilliseconds(frameTime);
 
+        /// <summary>
+        /// Ziska uplynuly cas od aktualniho casu a nejakeho "playTime" casu
+        /// </summary>
+        /// <param name="playTime"></param>
+        /// <returns>Uplynuly cas mezi aktualnim a playTime</returns>
         public static TimeSpan GetTimeFromToday(DateTime playTime) => DateTime.Now - playTime;
 
+        /// <summary>
+        /// Prevede datetime na cas v milisekundach od epochy
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
         public static long ConvertDateTimeToMillis(DateTime dateTime) {
             var universalTime = dateTime.ToUniversalTime();
             var dateTimeOffset = new DateTimeOffset(universalTime);

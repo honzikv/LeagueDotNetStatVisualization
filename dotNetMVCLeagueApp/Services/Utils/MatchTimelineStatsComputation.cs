@@ -35,7 +35,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
         private readonly long frameDuration;
 
         /// <summary>
-        /// Id vsech ucastniku
+        /// Ucastnici
         /// </summary>
         private readonly List<PlayerModel> players;
 
@@ -115,7 +115,6 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             }
 
             // Vypocteme rozdil v 10 a 15 minute
-
             var frameCount = matchTimelineDto.PlayerTimelines[players[0].ParticipantId].CsOverTime.Count;
             var frameAt10 = GetClosestFrameIndex(TimeSpan.FromMinutes(10));
             if (frameAt10 >= frameCount) {
@@ -180,7 +179,7 @@ namespace dotNetMVCLeagueApp.Services.Utils {
             // Nejmene bolestivy zpusob bez pouziti reflection je odecist kazdy prvek v seznamu naseho hrace a 
             // hrace, vuci kteremu porovnavame - tzn dostaneme seznam L_diff = [L1[0] - L2[0], L1[1] - L2[1], ...]
             // Toto provedeme pro kazdou property a z vysledku zjistime minima a maxima, ktera ulozime
-
+            
             var xpDiffList = playerTimeline.XpOverTime.Zip(comparedPlayerTimeline.XpOverTime,
                 (first, second) => first - second).ToList();
 

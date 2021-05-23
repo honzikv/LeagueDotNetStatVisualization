@@ -8,6 +8,9 @@ namespace dotNetMVCLeagueApp.Tests {
     /// </summary>
     public class DateTimeUtilsTests {
 
+        /// <summary>
+        /// Test prevedeni datumu z milisekund od epochy do C# DateTime
+        /// </summary>
         [Fact]
         public void TestConvertFromMillisToDateTime_16April1717CEST() {
             var expected = DateTime.Parse("Friday, April 16, 2021 3:17:11.476 PM").ToLocalTime();
@@ -16,6 +19,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test prevodu z DateTime do milisekund od epochy
+        /// </summary>
         [Fact]
         public void TestConvertDateTimeToMillis_15May2021221732GMT() {
             var expected = 1621117052000;
@@ -24,6 +30,9 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test extension funkce "odecteni tydne"
+        /// </summary>
         [Fact]
         public void TestSubtractWeekDateTimeExtension() {
             var date = DateTime.Parse("Sat, 15 May 2021 22:17:32 GMT");

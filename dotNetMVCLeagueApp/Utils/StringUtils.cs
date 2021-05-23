@@ -2,7 +2,6 @@
 
 namespace dotNetMVCLeagueApp.Utils {
     public static class StringUtils {
-        
         /// <summary>
         /// Vytvori string z TimeSpan objektu, ktery reprezentuje dobu trvani hry
         /// Pr. 120 minut se prevede na "2:00:00". 54 minut se prevede na "54:00"
@@ -10,7 +9,9 @@ namespace dotNetMVCLeagueApp.Utils {
         /// <param name="duration">Doba trvani hry</param>
         /// <returns>formatovany string</returns>
         public static string GetGameDuration(TimeSpan duration) =>
-            duration.Hours == 0 ? $"{duration.Minutes:0}:{duration.Seconds:00}" : duration.ToString();
+            duration.Hours == 0
+                ? $"{duration.Minutes:0}:{duration.Seconds:00}"
+                : $"{duration.Hours:0}:{duration.Minutes:0}:{duration.Seconds:00}";
 
         /// <summary>
         /// Zformatuje TimeSpan s dobou trvani hry do retezce
@@ -29,9 +30,17 @@ namespace dotNetMVCLeagueApp.Utils {
             return duration.Minutes > 0 ? $"{duration.Minutes} Mins ago" : "Just now";
         }
 
+        /// <summary>
+        /// Prevede casovy interval na string (hh):mm:ss
+        /// </summary>
+        /// <param name="framesPassed">Kolik snimku problehlo</param>
+        /// <param name="frameIntervalSeconds">doba jednoho snimku</param>
+        /// <returns></returns>
         public static string FrameIntervalToSeconds(int framesPassed, TimeSpan frameIntervalSeconds) {
-            var minutes = (int) frameIntervalSeconds.TotalMinutes * framesPassed;
-            return $"{minutes:00}:00";
+            var result = TimeSpan.FromSeconds(frameIntervalSeconds.TotalSeconds * framesPassed);
+            return result.Hours > 1
+                ? $"{result.Hours:0}:{result.Minutes:00}:{result.Seconds:00}"
+                : $"{result.Minutes:00}:{result.Seconds:00}";
         }
 
         /// <summary>

@@ -466,6 +466,15 @@
       <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_MatchListOverviewPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_RankCardPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Shared\Partial\_SummonerInfoPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\debug.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\Match1.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\Match2.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\MatchList.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\MatchList2.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\MatchNormalGame.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\MorganaJungleInt.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\Timeline.json" />
+      <_ContentIncludedByDefault Remove="Utils\ApiSamples\Timeline2.json" />
     </ItemGroup>
 
     <ItemGroup>
