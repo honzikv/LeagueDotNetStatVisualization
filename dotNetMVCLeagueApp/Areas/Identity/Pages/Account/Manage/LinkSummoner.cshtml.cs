@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
+    /// <summary>
+    /// Trida pro zpracovany zmeny Summoner uctu pro prihlaseneho uzivatele
+    /// </summary>
     public partial class LinkSummoner : PageModel {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
@@ -29,12 +32,25 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             this.summonerService = summonerService;
         }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData] public string StatusMessage { get; set; }
 
+        /// <summary>
+        /// Objekt s daty pro pripojeni summonera k uctu
+        /// </summary>
         [BindProperty] public LinkSummonerInputDto LinkSummonerInput { get; set; }
 
+        /// <summary>
+        /// Vsechny servery, ktere je mozno prohledavat
+        /// </summary>
         public Dictionary<string, string> QueryableServers => ServerConstants.QueryableServers;
 
+        /// <summary>
+        /// GET pozadavek pro ziskani stranky
+        /// </summary>
+        /// <returns>Vrati render HTML</returns>
         public async Task<IActionResult> OnGetAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
@@ -62,7 +78,6 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             }
 
             // Validace serveru, pokud neexistuje vratime status message ze neexistuje
-            // Toto by se melo stat pouze tehdy, pokud si nekdo umyslne upravi POST request mimo html
             if (!QueryableServers.ContainsKey(LinkSummonerInput.Server.ToLower())) {
                 StatusMessage = "Error, this server does not exist.";
                 return RedirectToPage();
@@ -72,6 +87,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                 return Page();
             }
 
+            // Priradime uzivatele
             var operationResult =
                 await summonerService.LinkSummonerToApplicationUser(user, LinkSummonerInput.SummonerName,
                     LinkSummonerInput.Server);
@@ -85,19 +101,24 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// Metoda pro odstraneni Summonera z uzivatelova uctu
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostUnlinkAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user == null) {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
+            // Pokud neni summoner null odstranime ho
             if (user.Summoner is not null) {
                 user.Summoner = null;
                 await userManager.UpdateAsync(user);
 
                 StatusMessage = "Summoner name has been unlinked from your profile.";
             }
-            else {
+            else { // Jinak vratime zpravu, ze zadny summoner nebyl k uzivateli prirazeny
                 StatusMessage = "Error, no summoner is linked to your profile.";
             }
 

@@ -67,6 +67,8 @@ namespace dotNetMVCLeagueApp.Pages {
         /// </summary>
         public SummonerOverviewDto SummonerData { get; set; }
 
+        public const int CardsInProfile = 3;
+
         public List<ProfileCardModel> ProfileCards { get; set; } = new();
 
         /// <summary>
@@ -116,7 +118,13 @@ namespace dotNetMVCLeagueApp.Pages {
                         QueryParams.PageSize, queues);
                 }
 
-                ProfileCards = await profileCardsTask;
+                var profileCards = await profileCardsTask;
+
+                if (profileCards.Count > CardsInProfile) {
+                    profileCards = profileCards.GetRange(0, CardsInProfile);
+                }
+
+                ProfileCards = profileCards;
                 SummonerData = GetSummonerData(summoner, matchHistory);
                 return Page();
             }

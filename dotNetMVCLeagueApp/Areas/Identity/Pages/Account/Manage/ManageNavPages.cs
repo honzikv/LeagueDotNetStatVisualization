@@ -2,6 +2,9 @@ using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
+    /// <summary>
+    /// Vytvoreno scaffoldingem pro Identity, slouzi k vytvareni navigace pro spravu uctu
+    /// </summary>
     public static class ManageNavPages {
         public static string Index => "Index";
 

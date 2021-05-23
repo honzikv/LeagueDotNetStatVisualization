@@ -10,28 +10,44 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
+    
+    /// <summary>
+    /// Trida pro zpracovani zmeny emailu
+    /// </summary>
     public partial class EmailModel : PageModel {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailSender emailSender;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender) {
             this.userManager = userManager;
-            this.signInManager = signInManager;
             this.emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Email uzivatele
+        /// </summary>
         public string Email { get; set; }
 
+        /// <summary>
+        /// Zda-li je email potvrzeny
+        /// </summary>
         public bool IsEmailConfirmed { get; set; }
 
+        /// <summary>
+        /// Status zprava pro uzivatele
+        /// </summary>
         [TempData] public string StatusMessage { get; set; }
 
+        /// <summary>
+        /// Data z formulare
+        /// </summary>
         [BindProperty] public InputModel Input { get; set; }
 
+        /// <summary>
+        /// Data pro formular
+        /// </summary>
         public class InputModel {
             [Required]
             [EmailAddress]
@@ -39,6 +55,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             public string NewEmail { get; set; }
         }
 
+        /// <summary>
+        /// Nacteni dat uzivatele
+        /// </summary>
+        /// <param name="user">Prihlaseny uzivatel</param>
         private async Task LoadAsync(ApplicationUser user) {
             var email = await userManager.GetEmailAsync(user);
             Email = email;
@@ -50,6 +70,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             IsEmailConfirmed = await userManager.IsEmailConfirmedAsync(user);
         }
 
+        /// <summary>
+        /// Get pro ziskani stranky
+        /// </summary>
+        /// <returns>Vraci render HTML</returns>
         public async Task<IActionResult> OnGetAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user == null) {
@@ -60,6 +84,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             return Page();
         }
 
+        /// <summary>
+        /// Post pro odeslani formulare na zmenu emailu
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostChangeEmailAsync() {
             var user = await userManager.GetUserAsync(User);
             if (user == null) {

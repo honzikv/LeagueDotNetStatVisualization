@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
+    
+    /// <summary>
+    /// Trida pro spravu karticek na profil
+    /// </summary>
     public class ManageProfileCards : PageModel {
         private readonly ProfileCardService profileCardService;
         private readonly UserManager<ApplicationUser> userManager;
@@ -25,11 +29,20 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Status message
+        /// </summary>
         [TempData] public string StatusMessage { get; set; }
 
+        /// <summary>
+        /// Seznam karticek uzivatele
+        /// </summary>
         public List<ProfileCardModel> ProfileCards { get; set; }
 
-
+        /// <summary>
+        /// GET pro ziskani stranky
+        /// </summary>
+        /// <returns>Vraci HTML stranku</returns>
         public async Task<IActionResult> OnGetAsync() {
             logger.LogDebug("OnGetAsync");
             var user = await userManager.GetUserAsync(User);
@@ -43,6 +56,11 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             return Page();
         }
 
+        /// <summary>
+        /// Metoda pro smazani karty
+        /// </summary>
+        /// <param name="cardId">Id karty</param>
+        /// <returns>Aktualizovane view</returns>
         public async Task<IActionResult> OnPostDeleteCardAsync([FromForm] int cardId) {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
@@ -68,12 +86,18 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             });
         }
 
+        /// <summary>
+        /// Presune danou kartu nahoru v tabulce nahoru
+        /// </summary>
+        /// <param name="cardId">id karty, kterou chceme posunout</param>
+        /// <returns>Aktualizovane view po provedeni operace</returns>
         public async Task<IActionResult> OnPostMoveUpAsync([FromForm] int? cardId) {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}.'");
             }
-
+            
+            // Seradime karty podle pozice
             ProfileCards = user.ProfileCards?.OrderBy(card => card.Position).ToList() ?? new();
 
             // ReSharper disable once SimplifyLinqExpressionUseAll
@@ -82,6 +106,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                 return Page();
             }
 
+            // Provedeme posunuti nahoru
             try {
                 var updatedCards = await profileCardService.MoveUp((int) cardId, user);
                 return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
@@ -94,12 +119,18 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                     : "Error while changing the position of profile cards.";
             }
             
+            // Vratime partial view, ktere se zobrazi pomoci AJAXu
             return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
                 ProfileCards = ProfileCards,
                 StatusMessage = StatusMessage
             });
         }
 
+        /// <summary>
+        /// Posune kartu dolu (pokud je to mozne)
+        /// </summary>
+        /// <param name="cardId">Id karty, kterou cheme posunout</param>
+        /// /// <returns>Aktualizovane view po provedeni operace</returns>
         public async Task<IActionResult> OnPostMoveDownAsync([FromForm] int? cardId) {
             var user = await userManager.GetUserAsync(User);
             if (user is null) {
@@ -116,6 +147,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                 return Page();
             }
 
+            // Posune kartu dolu
             try {
                 var updatedCards = await profileCardService.MoveDown((int) cardId, user);
                 return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
@@ -128,6 +160,7 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
                     : "Error while changing the position of profile cards.";
             }
 
+            // Vratime partial view, ktere se zobrazi pomoci AJAXu
             return Partial("_ProfileCardTablePartial", new ProfileCardTableDto {
                 ProfileCards = ProfileCards,
                 StatusMessage = StatusMessage
