@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
+using MingweiSamuel.Camille.Util;
 
 namespace dotNetMVCLeagueApp.Pages {
     public class Profile : PageModel {
@@ -112,9 +113,13 @@ namespace dotNetMVCLeagueApp.Pages {
                 return Page();
             }
             catch (Exception ex) {
-                if (ex is RedirectToHomePageException) {
-                    TempData["ErrorMessage"] = ex.Message;
-                    return Redirect("/Index");
+                switch (ex) {
+                    case RedirectToHomePageException:
+                        TempData["ErrorMessage"] = ex.Message;
+                        return Redirect("/Index");
+                    case RiotResponseException:
+                        TempData["ErrorMessage"] = "There was an error while communicating with the Riot servers.";
+                        return Redirect("/Index");
                 }
 
                 logger.LogCritical(ex.Message);
@@ -161,7 +166,17 @@ namespace dotNetMVCLeagueApp.Pages {
                         return Redirect("/Index");
                     case ActionNotSuccessfulException:
                         ErrorMessage = ex.Message;
-                        return await OnGetAsync();
+                        return RedirectToPage("", new ProfileQueryDto {
+                            Name = QueryParams.Name,
+                            Server = QueryParams.Server
+                        });
+                    case RiotResponseException:
+                        ErrorMessage =
+                            "There was an error while communicating with Riot servers. Profile could not be updated.";
+                        return RedirectToPage("", new ProfileQueryDto {
+                            Name = QueryParams.Name,
+                            Server = QueryParams.Server
+                        });
                     default:
                         ErrorMessage = "Error while refreshing user profile";
                         return Page();

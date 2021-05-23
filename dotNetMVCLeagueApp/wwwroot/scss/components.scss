@@ -5,15 +5,7 @@
 @mixin card-body($color) {
     border: 1px solid rgba(98, 98, 98, 0.2);
     background-color: $color;
-    box-shadow: 0 4px 8px 0 rgba(12, 12, 12, 0.2);
-}
-
-.card-dark {
-    @include card-body($card-background-dark);
-    overflow: hidden;
-    font-size: 14px;
-    font-family: Sora, sans-serif;
-
+    box-shadow: 0 4px 8px 0 rgba(38, 37, 37, 0.2);
 }
 
 .summoner-icon-large {
@@ -25,14 +17,6 @@
     width: 80px;
 }
 
-.card-light {
-    @include card-body($card-background-light);
-    overflow: hidden;
-    font-size: 16px;
-    font-family: Sora, sans-serif;
-    color: $color-primary-black;
-}
-
 .card-default-light {
     @include card-body($color-text-primary-white);
     overflow: hidden;
@@ -41,21 +25,6 @@
     color: $color-primary-black;
 }
 
-
-.dot {
-    height: 24px;
-    width: 24px;
-    border-radius: 50%;
-    margin-right: 8px !important;
-}
-
-.color-loss {
-    color: $color-loss;
-}
-
-.color-win {
-    color: $color-win;
-}
 
 $color-win-light: darken($color-win, 30%);
 $color-loss-light: darken($color-loss, 10%);
@@ -107,59 +76,14 @@ $color-loss-light: darken($color-loss, 10%);
 }
 
 
-.btn-primary-blue {
-    color: $color-text-primary-white !important;
-    background: $color-primary-blue !important;
-}
-
 .card-header-default {
     padding: 8px 24px;
     border-bottom: solid $border-color-header 2px;
 }
 
-.button-dark {
-    font-family: ProximaNova, sans-serif;
-    font-weight: bold;
-    color: $color-primary-black !important;
-}
-
-.button-dark-primary {
-    background: $color-text-primary-white !important;
-}
-
-.button-dark-blue {
-    background: $color-primary-blue;
-}
-
-.button-light-primary {
-    background: $color-primary-black !important;
-}
-
-.button-light {
-    @extend .button-dark;
-    color: $color-text-primary-white !important;
-}
-
-.button-red {
-    background: $color-primary-red;
-}
-
-.card-dark-text {
-    color: $color-text-card-default;
-}
-
 .card-light-text {
     color: $color-primary-black;
 }
-
-.card-dark-text-header {
-    color: $color-text-primary-white;
-}
-
-.card-text-primary-blue {
-    color: $color-primary-blue;
-}
-
 
 .card-player-table {
     background-color: $color-component-neutral;
@@ -172,7 +96,7 @@ $color-loss-light: darken($color-loss, 10%);
 }
 
 @mixin border-champion($color) {
-    border: 3px $color;
+    border: 3px solid $color;
 }
 
 .champion-border-blue-side {
@@ -204,11 +128,6 @@ $color-loss-light: darken($color-loss, 10%);
 .item-icon-match {
     @extend .rounded;
     width: 30px;
-}
-
-.champion-icon-graph-control {
-    max-width: 60px;
-    @extend .rounded;
 }
 
 .hr-match {

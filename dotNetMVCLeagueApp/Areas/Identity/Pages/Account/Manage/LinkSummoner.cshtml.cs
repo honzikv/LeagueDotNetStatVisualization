@@ -71,16 +71,17 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account.Manage {
             if (!ModelState.IsValid) {
                 return Page();
             }
-            
-                var operationResult =
-                    await summonerService.LinkSummonerToApplicationUser(user, LinkSummonerInput.SummonerName,
-                        LinkSummonerInput.Server);
+
+            var operationResult =
+                await summonerService.LinkSummonerToApplicationUser(user, LinkSummonerInput.SummonerName,
+                    LinkSummonerInput.Server);
 
 
             StatusMessage = operationResult.Message;
             if (!operationResult.Error) {
-                await signInManager.RefreshSignInAsync(user); 
+                await signInManager.RefreshSignInAsync(user);
             }
+
             return RedirectToPage();
         }
 

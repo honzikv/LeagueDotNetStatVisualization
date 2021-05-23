@@ -10,6 +10,7 @@ using dotNetMVCLeagueApp.Utils.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
+using MingweiSamuel.Camille.Util;
 
 namespace dotNetMVCLeagueApp.Services {
     /// <summary>
@@ -142,7 +143,14 @@ namespace dotNetMVCLeagueApp.Services {
             try {
                 summoner = await GetSummoner(summonerName, Region.Get(server.ToUpper()));
             }
-            catch {
+            catch(Exception ex) {
+                if (ex is RiotResponseException) {
+                    return new () {
+                        Error = true,
+                        Message = "Error while communicating with Riot servers. Summoner could not be linked."
+                    };
+                }
+                
                 return new() {
                     Error = true,
                     Message = "Error, Summoner does not exist"

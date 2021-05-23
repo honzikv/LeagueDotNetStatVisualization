@@ -32,7 +32,6 @@
     color: initial;
 }
 
-
 .navbar-background {
     background-color: $color-primary-blue;
     backdrop-filter: blur(10px);
@@ -40,7 +39,7 @@
 }
 
 .navbar-menu-item {
-    font-family: ProximaNova, sans-serif !important;
+    font-family: ProximaNova, sans-serif;
     font-size: 18px;
     color: $primary-white;
 

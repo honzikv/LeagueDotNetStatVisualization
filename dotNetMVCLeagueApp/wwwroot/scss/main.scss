@@ -3,17 +3,15 @@
 @import "components.scss";
 @import "utils";
 
-// Override pro vychozi Bootstrap container aby byl vice siroky, protoze jinak je stranka zbytecne
-// uzka
-.container-main {
-    padding: 0 10px;
+.btn, .nav-item {
+    font-family: Sora, OpenSans, "Roboto", sans-serif !important;
 }
 
 
 .heading-search {
-    font-family: AirbnbCereal, sans-serif;
+    font-family: OpenSans, sans-serif;
     font-size: 80px;
-    font-weight: bolder;
+    font-weight: bold;
     color: $color-primary-grey;
 }
 

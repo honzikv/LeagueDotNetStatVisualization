@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MingweiSamuel.Camille.Enums;
+using MingweiSamuel.Camille.Util;
 using Newtonsoft.Json;
 
 namespace dotNetMVCLeagueApp.Pages {
@@ -43,7 +44,7 @@ namespace dotNetMVCLeagueApp.Pages {
         public MatchOverviewDto MatchOverview { get; set; }
 
         public MatchTimelineOverviewDto MatchTimelineOverview { get; set; }
-        
+
         /// <summary>
         /// Barvy pro ucastniky, ziskano z https://www.carbondesignsystem.com/data-visualization/color-palettes/
         /// </summary>
@@ -67,17 +68,27 @@ namespace dotNetMVCLeagueApp.Pages {
                 return Page();
             }
             catch (Exception ex) {
-                if (ex is ActionNotSuccessfulException) {
-                    TempData["ErrorMessage"] = ex.Message;
-                    return RedirectToPage("Profile",
-                        new {
-                            Name = QueryParams.SummonerName,
-                            Server = QueryParams.Server
-                        });
+                switch (ex) {
+                    case ActionNotSuccessfulException:
+                        TempData["ErrorMessage"] = ex.Message;
+                        return RedirectToPage("Profile",
+                            new {
+                                Name = QueryParams.SummonerName,
+                                Server = QueryParams.Server
+                            });
+                    case RiotResponseException:
+                        TempData["ErrorMessage"] =
+                            "There was an error while communicating with Riot servers. Match could not be loaded.";
+                        return RedirectToPage("Profile",
+                            new {
+                                Name = QueryParams.SummonerName,
+                                Server = QueryParams.Server
+                            });
+                    default:
+                        TempData["ErrorMessage"] = "There was an unknown error while searching for match details.";
+                        return Redirect("/");
                 }
 
-                TempData["ErrorMessage"] = "Invalid search parameters";
-                return Redirect("/");
             }
         }
 
@@ -103,14 +114,27 @@ namespace dotNetMVCLeagueApp.Pages {
                     new JsonSerializerSettings {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-                
+
                 return Content(serializedMatchTimelineOverview, "application/json");
             }
             catch (Exception ex) {
+                if (ex is RiotApiException) {
+                    TempData["ErrorMessage"] =
+                        "There was an error while communicating with Riot servers. Match could not be loaded.";
+                    return RedirectToPage("Profile",
+                        new {
+                            Name = QueryParams.SummonerName,
+                            Server = QueryParams.Server
+                        });
+                }
+
                 logger.LogCritical(ex.Message);
-                return new JsonResult(new {
-                    StatusMessage = "Could not load match timeline"
-                });
+                TempData["ErrorMessage"] = "There was an unknown error while loading Match Timeline.";
+                return RedirectToPage("Profile",
+                    new {
+                        Name = QueryParams.SummonerName,
+                        Server = QueryParams.Server
+                    });
             }
         }
     }
