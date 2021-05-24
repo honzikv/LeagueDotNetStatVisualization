@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using Castle.Core;
 
 namespace dotNetMVCLeagueApp.Utils {
+    
+    /// <summary>
+    /// Utilitni trida pro prevody mezi DateTime a Unix formaty
+    /// </summary>
     public class TimeUtils {
         /// <summary>
         /// Slouzi pro prevod timestapu ziskaneho z RiotApi

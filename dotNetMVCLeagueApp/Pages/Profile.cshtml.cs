@@ -67,6 +67,9 @@ namespace dotNetMVCLeagueApp.Pages {
         /// </summary>
         public SummonerOverviewDto SummonerData { get; set; }
 
+        /// <summary>
+        /// Pocet karet na profilu
+        /// </summary>
         public const int CardsInProfile = 3;
 
         public List<ProfileCardModel> ProfileCards { get; set; } = new();
@@ -87,6 +90,10 @@ namespace dotNetMVCLeagueApp.Pages {
                 : ServerConstants.DefaultPageSize;
         }
 
+        /// <summary>
+        /// GET pro ziskani stranky
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync() {
             logger.LogDebug("Profile.cshtml -> OnGet");
             logger.LogDebug($"{QueryParams}");
@@ -153,6 +160,10 @@ namespace dotNetMVCLeagueApp.Pages {
                 matchHeaders);
         }
 
+        /// <summary>
+        /// POST pro refresh profilu
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostRefreshAsync() {
             if (QueryParams is null || !ModelState.IsValid || !Servers.ContainsKey(QueryParams.Server.ToLower())) {
                 ErrorMessage = "Error, summoner could not be updated due to invalid parameters";

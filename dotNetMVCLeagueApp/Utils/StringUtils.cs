@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace dotNetMVCLeagueApp.Utils {
+    /// <summary>
+    /// Utilitni trida pro formatovani stringu
+    /// </summary>
     public static class StringUtils {
         /// <summary>
         /// Vytvori string z TimeSpan objektu, ktery reprezentuje dobu trvani hry
