@@ -475,6 +475,9 @@
       <_ContentIncludedByDefault Remove="Utils\ApiSamples\MorganaJungleInt.json" />
       <_ContentIncludedByDefault Remove="Utils\ApiSamples\Timeline.json" />
       <_ContentIncludedByDefault Remove="Utils\ApiSamples\Timeline2.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\bgwall\default.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\bgwall\jhin.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\bgwall\msi_2021_wall.jpg" />
     </ItemGroup>
 
     <ItemGroup>
@@ -482,7 +485,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AdobeXd" />
       <Folder Include="Migrations" />
     </ItemGroup>
 
