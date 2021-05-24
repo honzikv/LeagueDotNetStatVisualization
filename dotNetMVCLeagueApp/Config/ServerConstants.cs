@@ -5,6 +5,7 @@ using System.Linq;
 namespace dotNetMVCLeagueApp.Config {
     /// <summary>
     /// Obsahuje konstanty pro web server
+    ///
     /// </summary>
     public class ServerConstants {
         public const string Win = "Win";

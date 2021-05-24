@@ -114,6 +114,8 @@ namespace dotNetMVCLeagueApp.Pages {
                     new JsonSerializerSettings {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
+                
+                logger.LogDebug(serializedMatchTimelineOverview);
 
                 return Content(serializedMatchTimelineOverview, "application/json");
             }

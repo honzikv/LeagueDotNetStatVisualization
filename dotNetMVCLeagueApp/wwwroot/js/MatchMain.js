@@ -3,15 +3,10 @@
  * @param response XHR odpoved
  */
 function OnLoadTimeline(response) {
-    if (typeof response.StatusMessage === 'undefined') {
-        return;
-    }
-    
-    console.log(response);
-
     // Nyni mame k dispozici objekt MatchTimelineOverviewDto
     let matchTimeline = response.MatchTimeline;
     if (matchTimeline ===  undefined) {
+        console.log("Timeline is undefined");
         return;
     }
     
