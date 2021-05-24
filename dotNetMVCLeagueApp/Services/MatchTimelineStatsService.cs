@@ -22,6 +22,14 @@ namespace dotNetMVCLeagueApp.Services {
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Ziska TimelineOverview objekt pro frontend
+        /// </summary>
+        /// <param name="participantId">Id ucastnika, pro ktereho data pocitame</param>
+        /// <param name="match">Reference na zapas</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public MatchTimelineOverviewDto GetMatchTimelineOverview(int participantId, MatchModel match) {
             if (!match.MatchTimelineSearched) {
                 throw new ArgumentException("Error, game has not loaded match timeline yet");
@@ -60,6 +68,13 @@ namespace dotNetMVCLeagueApp.Services {
             return result;
         }
 
+        /// <summary>
+        /// Ziska oponenta pro hrace
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="players"></param>
+        /// <returns></returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         private PlayerModel GetOpponent(PlayerModel player, List<PlayerModel> players) {
             var playerTeam = player.TeamId; // id tymu hrace - bude blue side nebo red side
             var opponents = players.Where(playerModel => playerModel.TeamId != playerTeam).ToList();

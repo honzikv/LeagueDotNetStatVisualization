@@ -64,7 +64,7 @@ namespace dotNetMVCLeagueApp.Repositories {
                 MapRankedIcons(rankedIconsJsonFilePath);
             }
             catch (Exception ex) {
-                if (ex is AssetException) {
+                if (ex is AssetException) { // Pokud se vyhodi tato exception aplikace nebude pokracovat
                     throw;
                 }
 
@@ -259,7 +259,7 @@ namespace dotNetMVCLeagueApp.Repositories {
         /// Vrati asset objekt pro dany tier
         /// </summary>
         /// <param name="tier">tier</param>
-        /// <returns></returns>
+        /// <returns>RankedAsset objekt obsahujici informace o assetu</returns>
         public RankAsset GetRankedIcon(string tier) {
             var exists = ranks.TryGetValue(tier, out var rankAsset);
             return exists ? rankAsset : RankAsset.Empty(config.EmptyAssetFileName);

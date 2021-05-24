@@ -6,9 +6,18 @@ using dotNetMVCLeagueApp.Data.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotNetMVCLeagueApp.Repositories {
+    
+    /// <summary>
+    /// Repozitar pro uzivatele v aplikaci
+    /// </summary>
     public class ApplicationUserRepository : EfCoreEntityRepository<ApplicationUser, LeagueDbContext> {
         public ApplicationUserRepository(LeagueDbContext leagueDbContext) : base(leagueDbContext) { }
 
+        /// <summary>
+        /// Zda-li je summoner zabrany
+        /// </summary>
+        /// <param name="summoner"></param>
+        /// <returns></returns>
         public async Task<bool> IsSummonerTaken(SummonerModel summoner) =>
             await LeagueDbContext.Users.AnyAsync(user => user.Summoner.Id == summoner.Id);
 

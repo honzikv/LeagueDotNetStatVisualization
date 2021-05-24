@@ -2,6 +2,9 @@
 using dotNetMVCLeagueApp.Repositories;
 
 namespace dotNetMVCLeagueApp.Services {
+    /// <summary>
+    /// Sluzba pro operace s uzivateli
+    /// </summary>
     public class ApplicationUserService {
 
         private readonly ApplicationUserRepository applicationUserRepository;

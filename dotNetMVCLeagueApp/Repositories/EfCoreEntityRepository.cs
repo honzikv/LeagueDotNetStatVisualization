@@ -75,6 +75,11 @@ namespace dotNetMVCLeagueApp.Repositories {
             return entities;
         }
 
+        /// <summary>
+        /// Smazani vsech entit z kolekce a zavolani SaveChangesAsync()
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<TEntity>> DeleteAll(ICollection<TEntity> entities) {
             LeagueDbContext.Set<TEntity>().RemoveRange(entities);
             await LeagueDbContext.SaveChangesAsync();

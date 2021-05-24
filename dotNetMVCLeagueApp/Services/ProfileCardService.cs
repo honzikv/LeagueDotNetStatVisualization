@@ -11,10 +11,17 @@ using dotNetMVCLeagueApp.Utils;
 using dotNetMVCLeagueApp.Utils.Exceptions;
 
 namespace dotNetMVCLeagueApp.Services {
+    
+    /// <summary>
+    /// Sluzba pro operace s kartami na profilu
+    /// </summary>
     public class ProfileCardService {
         private readonly ProfileCardRepository profileCardRepository;
         private readonly ApplicationUserRepository applicationUserRepository;
 
+        /// <summary>
+        /// Max limit karet pro uzivatele
+        /// </summary>
         public readonly int CardLimitPerUser = ServerConstants.CardLimit;
 
         public readonly List<string> SocialMediaUrlPrefixes = ServerConstants.SocialMediaPlatformPrefixes;

@@ -70,6 +70,12 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        /// <summary>
+        /// POST pro registraci
+        /// </summary>
+        /// <param name="returnUrl">Navratova adresa po odeslani formulare</param>
+        /// <returns></returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null) {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -90,8 +96,10 @@ namespace dotNetMVCLeagueApp.Areas.Identity.Pages.Account {
                                    ?? throw new ActionNotSuccessfulException(
                                        "Summoner does not exist on the specified server");
 
+                    // Pokud je summoner zabrany, vratime chybu
                     if (await summonerService.IsSummonerTaken(summoner)) {
                         ModelState.AddModelError("SummonerName", "This summoner is already taken");
+                        return Page();
                     }
                     else {
                         user.Summoner = summoner;

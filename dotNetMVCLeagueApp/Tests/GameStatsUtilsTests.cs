@@ -9,7 +9,6 @@ namespace dotNetMVCLeagueApp.Tests {
     /// Obsahuje testy tridy GameStatsUtils, ktera tvori vetsinu vypoctu pro statistiky
     /// </summary>
     public class GameStatsUtilsTests {
-        
         /// <summary>
         /// Test funkce pro ziskani nejvetsiho multi killu
         /// </summary>
@@ -41,7 +40,7 @@ namespace dotNetMVCLeagueApp.Tests {
             var gameDuration = 10 * 60; // 10 minut
             var expected = 12;
             var actual = GameStatsUtils.GetCsPerMinute(statsModel, gameDuration);
-            
+
             Assert.Equal(expected, actual);
         }
 
@@ -58,7 +57,7 @@ namespace dotNetMVCLeagueApp.Tests {
             var gameDuration = 10 * 60; // 10 minut
             var expected = 6.4;
             var actual = GameStatsUtils.GetCsPerMinute(statsModel, gameDuration);
-            
+
             Assert.Equal(expected, actual);
         }
 
@@ -152,5 +151,31 @@ namespace dotNetMVCLeagueApp.Tests {
             Assert.Equal(expected, actual);
         }
 
+        /// <summary>
+        /// Test ziskani role pro toplane
+        /// </summary>
+        [Fact]
+        public void TestGetRole_Toplane() {
+            var role = "SOLO";
+            var lane = "TOP";
+
+            var expected = ServerConstants.Top;
+            var actual = GameStatsUtils.GetRole(role, lane);
+            Assert.Equal(expected, actual);
+        }
+
+        /// <summary>
+        /// Test podilu zlata v tymu pro 20% podil
+        /// </summary>
+        [Fact]
+        public void TestGetGoldSharePercentage_20Percent() {
+            var teamGold = 20000;
+            var playerGold = 4000;
+
+            var expected = 20; // %
+            var actual = GameStatsUtils.GetGoldSharePercentage(playerGold, teamGold);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

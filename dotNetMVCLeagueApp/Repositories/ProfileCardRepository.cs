@@ -39,6 +39,13 @@ namespace dotNetMVCLeagueApp.Repositories {
                 .OrderBy(card => card.Position)
                 .ToListAsync();
 
+        /// <summary>
+        /// Smaze kartu pro daneho uzivatele
+        /// </summary>
+        /// <param name="cardId">Id karty</param>
+        /// <param name="user">Reference na uzivatele</param>
+        /// <returns>Seznam karet po smazani</returns>
+        /// <exception cref="ActionNotSuccessfulException"></exception>
         public async Task<List<ProfileCardModel>> DeleteCard(int cardId, ApplicationUser user) {
             var cardToDelete = await
                 LeagueDbContext.ProfileCardModels.Where(card =>
@@ -61,6 +68,11 @@ namespace dotNetMVCLeagueApp.Repositories {
             return await GetUserProfileCardsByPosition(user);
         }
 
+        /// <summary>
+        /// Aktualizuje karty po prohozeni pozic
+        /// </summary>
+        /// <param name="card1">Karta 1</param>
+        /// <param name="card2">Karta 2</param>
         public async Task UpdateSwappedPositions(ProfileCardModel card1,
             ProfileCardModel card2) {
             LeagueDbContext.UpdateRange(card1, card2);

@@ -107,8 +107,14 @@ namespace dotNetMVCLeagueApp.Config {
             {"Twitch", "https://www.twitch.tv/"}
         };
 
+        /// <summary>
+        /// Prefixy URL pro socialni site
+        /// </summary>
         public static readonly List<string> SocialMediaPlatformPrefixes = SocialMedia.Values.ToList();
 
+        /// <summary>
+        /// Jmena socialnich siti
+        /// </summary>
         public static readonly List<string> SocialMediaPlatformsNames = SocialMedia.Keys.ToList();
 
         /// <summary>

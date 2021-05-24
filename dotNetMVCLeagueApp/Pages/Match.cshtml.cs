@@ -17,6 +17,9 @@ using MingweiSamuel.Camille.Util;
 using Newtonsoft.Json;
 
 namespace dotNetMVCLeagueApp.Pages {
+    /// <summary>
+    /// Trida pro obsluhu detailu zapasu
+    /// </summary>
     public class Match : PageModel {
         private readonly MatchService matchService;
         private readonly MatchStatsService matchStatsService;
@@ -32,6 +35,9 @@ namespace dotNetMVCLeagueApp.Pages {
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Parametry pro GET pro zapas
+        /// </summary>
         [FromQuery]
         [BindProperty(SupportsGet = true)]
         public MatchQueryDto QueryParams { get; set; }
@@ -41,8 +47,14 @@ namespace dotNetMVCLeagueApp.Pages {
         /// </summary>
         public readonly Dictionary<string, string> Servers = ServerConstants.QueryableServers;
 
+        /// <summary>
+        /// Objekt pro tabulku s hraci
+        /// </summary>
         public MatchOverviewDto MatchOverview { get; set; }
 
+        /// <summary>
+        /// Objekt pro  timeline a statistiky z timeline
+        /// </summary>
         public MatchTimelineOverviewDto MatchTimelineOverview { get; set; }
 
         /// <summary>
@@ -53,6 +65,10 @@ namespace dotNetMVCLeagueApp.Pages {
             "#012749", "#570408"
         };
 
+        /// <summary>
+        /// GET pro ziskani tabulky s hraci
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync() {
             if (QueryParams is null || !ModelState.IsValid || !Servers.ContainsKey(QueryParams.Server.ToLower())) {
                 TempData["ErrorMessage"] = "Invalid search parameters";
@@ -60,14 +76,16 @@ namespace dotNetMVCLeagueApp.Pages {
             }
 
             try {
+                // Ziskame zapas a nacteme timeline, pokud timeline nebylo nactene
                 var match = await matchService.LoadMatchWithTimeline(QueryParams.GameId,
                     Region.Get(QueryParams.Server.ToLower()));
 
+                // Namapujeme objekt / vypocteme data
                 MatchOverview =
                     matchStatsService.GetMatchOverview(match, QueryParams.ParticipantId, QueryParams.Server);
                 return Page();
             }
-            catch (Exception ex) {
+            catch (Exception ex) { // Error handling
                 switch (ex) {
                     case ActionNotSuccessfulException:
                         TempData["ErrorMessage"] = ex.Message;
@@ -76,7 +94,7 @@ namespace dotNetMVCLeagueApp.Pages {
                                 Name = QueryParams.SummonerName,
                                 Server = QueryParams.Server
                             });
-                    case RiotResponseException:
+                    case RiotResponseException: // Problem s Riot API
                         TempData["ErrorMessage"] =
                             "There was an error while communicating with Riot servers. Match could not be loaded.";
                         return RedirectToPage("Profile",
@@ -92,6 +110,10 @@ namespace dotNetMVCLeagueApp.Pages {
             }
         }
 
+        /// <summary>
+        /// GET pro ziskani dat z timeline (aby se zbytecne nepocitali rovnou)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetMatchTimelineAsync() {
             logger.LogDebug("Getting match timeline from ajax");
             if (QueryParams is null || !ModelState.IsValid || !Servers.ContainsKey(QueryParams.Server.ToLower())) {
@@ -114,8 +136,6 @@ namespace dotNetMVCLeagueApp.Pages {
                     new JsonSerializerSettings {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-                
-                logger.LogDebug(serializedMatchTimelineOverview);
 
                 return Content(serializedMatchTimelineOverview, "application/json");
             }

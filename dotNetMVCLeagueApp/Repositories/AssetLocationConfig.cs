@@ -6,6 +6,8 @@
     ///
     /// Soubory museji byt identicke se soubory z https://developer.riotgames.com/docs/lol#data-dragon_data-assets
     ///
+    /// Navic jsem jeste vytvoril JSON soubor pro obrazky ranku (rank.json)
+    ///
     /// Pozn. nelze nastavit cestu pro runy, kde je brana jako vychozi perk-images/..., protoze je struktura
     /// run relativne slozita. Soubory ve slozkach se museji jmenovat stejne jako assety ziskane z Data Dragon
     /// </summary>

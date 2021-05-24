@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace dotNetMVCLeagueApp.Services {
     /// <summary>
-    /// Sluzba v pozadi, ktera maze hry starsi jeden mesic
+    /// Sluzba v pozadi, ktera maze stare hry
     /// </summary>
     public class MatchDeleteBackgroundService : IHostedService, IDisposable {
         /// <summary>
