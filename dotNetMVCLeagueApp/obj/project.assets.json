@@ -10314,7 +10314,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
-      "projectName": "dotNetMVCLeagueApp",
+      "projectName": "LeagueStats",
       "projectPath": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\dotNetMVCLeagueApp.csproj",
       "packagesPath": "C:\\Users\\itznu\\.nuget\\packages\\",
       "outputPath": "C:\\dev-projects\\dotNetSpLeagueApp\\dotNetMVCLeagueApp\\obj\\",

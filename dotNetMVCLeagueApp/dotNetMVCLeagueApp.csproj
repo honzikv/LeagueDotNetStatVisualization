@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>aspnet-dotNetMVCLeagueApp-B5ACC60C-7936-4259-B6B5-6FBBDA20FFE2</UserSecretsId>
+        <AssemblyName>LeagueStats</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup>
